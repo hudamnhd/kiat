@@ -69,8 +69,12 @@ function TabExample() {
 			<TabPanel className="w-full" id="FoR">
 				Arma virumque cano, Troiae qui primus ab oris.
 			</TabPanel>
-			<TabPanel className="w-full" id="MaR">Senatus Populusque Romanus.</TabPanel>
-			<TabPanel className="w-full" id="Emp">Alea jacta est.</TabPanel>
+			<TabPanel className="w-full" id="MaR">
+				Senatus Populusque Romanus.
+			</TabPanel>
+			<TabPanel className="w-full" id="Emp">
+				Alea jacta est.
+			</TabPanel>
 		</Tabs>
 	);
 }
@@ -89,8 +93,6 @@ import {
 	DisclosureHeader,
 	DisclosurePanel,
 } from "#src/components/ui/disclosure";
-
-export const meta: MetaFunction = () => [{ title: "Components | Doti App" }];
 
 function DisclosureGroupExample() {
 	return (
