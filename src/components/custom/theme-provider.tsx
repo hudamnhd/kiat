@@ -10,21 +10,21 @@ type ThemeProviderProps = {
 };
 
 export function ThemeProvider({ children }: ThemeProviderProps) {
-	const root = document.documentElement;
-	const theme = getTheme();
-	root.setAttribute("data-theme", theme);
-	root.classList.remove("light", "dark");
-
-	if (theme === "system") {
-		const systemTheme = window.matchMedia("(prefers-color-scheme: dark)")
-			.matches
-			? "dark"
-			: "light";
-
-		root.classList.add(systemTheme);
-	} else {
-		root.classList.add(theme);
-	}
+	// const root = document.documentElement;
+	// const theme = getTheme();
+	// root.setAttribute("data-theme", theme);
+	// root.classList.remove("light", "dark");
+	//
+	// if (theme === "system") {
+	// 	const systemTheme = window.matchMedia("(prefers-color-scheme: dark)")
+	// 		.matches
+	// 		? "dark"
+	// 		: "light";
+	//
+	// 	root.classList.add(systemTheme);
+	// } else {
+	// 	root.classList.add(theme);
+	// }
 
 	return <React.Fragment>{children}</React.Fragment>;
 }

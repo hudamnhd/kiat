@@ -14,7 +14,7 @@ import { Header } from "#src/components/custom/header.tsx";
 const BOOKMARK_KEY = "BOOKMARK";
 const LASTREAD_KEY = "LASTREAD";
 
-const App: React.FC = () => {
+export function Component() {
 	const [bookmarks, setBookmarks] = React.useState<Bookmark[]>([]);
 	const [lastRead, setLastRead] = React.useState<number | null>(null);
 
@@ -89,7 +89,7 @@ const App: React.FC = () => {
 
 	return (
 		<div className="prose dark:prose-invert max-w-xl mx-auto border-x border-b min-h-screen">
-			<Header redirectTo="/" title="Bookmarks" />
+			<Header redirectTo="/muslim" title="Bookmarks" />
 			<div
 				className={cn(
 					"text-center text-3xl font-bold leading-tight tracking-tighter capitalize py-2 border-b",
@@ -238,9 +238,7 @@ const App: React.FC = () => {
 			</div>
 		</div>
 	);
-};
-
-export default App;
+}
 
 function ActionItem(props: MenuItemProps) {
 	return (

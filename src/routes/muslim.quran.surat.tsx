@@ -1,6 +1,6 @@
 import { cn } from "#src/utils/misc";
-import { SettingsDisplay } from "#src/components/custom/settings-display";
 import { Header } from "#src/components/custom/header";
+import type { loader as muslimLoader } from "./muslim.data";
 import {
 	Popover,
 	PopoverDialog,
@@ -12,7 +12,6 @@ import { ScrollToFirstIndex } from "#src/components/custom/scroll-to-top.tsx";
 import {
 	Link,
 	useLoaderData,
-	useMatches,
 	useSearchParams,
 	useRouteLoaderData,
 } from "react-router";
@@ -27,6 +26,75 @@ import {
 	SliderTrack,
 } from "react-aria-components";
 import type { SliderProps } from "react-aria-components";
+import type { LoaderFunctionArgs } from "react-router";
+import { get_cache, set_cache } from "#src/utils/cache-client.ts";
+import ky from "ky";
+
+export type Ayah = {
+	number: string;
+	name: string;
+	name_latin: string;
+	number_of_ayah: string;
+	text: { [key: string]: string };
+	translations: {
+		id: {
+			name: string;
+			text: { [key: string]: string };
+		};
+	};
+	tafsir: {
+		id: {
+			kemenag: {
+				name: string;
+				source: string;
+				text: { [key: string]: string };
+			};
+		};
+	};
+};
+
+type Surah = Record<string, Ayah>; // Object with dynamic string keys
+
+export async function loader({ params }: LoaderFunctionArgs) {
+	const api = ky.create({
+		prefixUrl:
+			"https://raw.githubusercontent.com/rioastamal/quran-json/refs/heads/master/surah",
+	});
+
+	const { id } = params;
+	const surah_number = id;
+
+	if (!surah_number) {
+		throw new Response("Not Found", { status: 404 });
+	}
+
+	const CACHE_KEY = `/muslim/quran/${id}`;
+	const cached_data = await get_cache(CACHE_KEY);
+
+	if (cached_data) return cached_data;
+	const surah_data = await api.get(`${surah_number}.json`).json<Surah>();
+
+	const parse = Object.values(surah_data);
+	const ayah = parse[0];
+
+	if (!ayah) {
+		throw new Response("Not Found", { status: 404 });
+	}
+
+	const data = {
+		...ayah,
+	};
+
+	await set_cache(CACHE_KEY, data);
+	return data;
+
+	return new Response(JSON.stringify(data), {
+		status: 200,
+		headers: {
+			"Content-Type": "application/json; utf-8",
+		},
+	});
+}
 
 interface MySliderProps<T> extends SliderProps<T> {
 	label?: string;
@@ -46,7 +114,7 @@ function MySlider<T extends number | number[]>({
 					state.values.map((_, i) => state.getThumbValueLabel(i)).join(" – ")
 				}
 			</SliderOutput>
-			<SliderTrack className="relative w-full h-2 bg-primary/20 rounded mt-2">
+			<SliderTrack className="relative w-full h-2 bg-primary/20 rounded mt-2 px-2">
 				{({ state }) => {
 					const thumb1Percent = state.getThumbPercent(0) * 100;
 					const thumb2Percent = state.getThumbPercent(1) * 100;
@@ -66,7 +134,7 @@ function MySlider<T extends number | number[]>({
 								<SliderThumb
 									key={i}
 									index={i}
-									className="absolute w-4 h-4 bg-background ring-2 ring-primary rounded transform -translate-x-1/2 -translate-y-1/2 top-1/2"
+									className="absolute w-3 h-3 bg-background ring-2 ring-primary rounded transform -translate-y-1/2 top-2.5"
 									aria-label={thumbLabels?.[i]}
 								/>
 							))}
@@ -114,8 +182,6 @@ export type Ayat = {
 	};
 };
 
-import { get_cache, set_cache } from "#src/utils/cache-client.ts";
-
 const BOOKMARK_KEY = "BOOKMARK";
 const LASTREAD_KEY = "LASTREAD";
 
@@ -145,16 +211,14 @@ const toArabicNumber = (number: number) => {
 
 import { useVirtualizer } from "@tanstack/react-virtual";
 
-const SuratDetail: React.FC = () => {
+export function Component() {
 	const surat = useLoaderData();
 
 	const title = `${surat.number}. ${surat.name_latin}`;
 	return (
 		<React.Fragment>
 			<div className="prose-base dark:prose-invert w-full max-w-xl mx-auto border-x">
-				<Header redirectTo="/muslim/quran" title={title}>
-					<SettingsDisplay />
-				</Header>
+				<Header redirectTo="/muslim/quran" title={title}></Header>
 
 				<VirtualizedListSurah>
 					<div className="text-3xl font-bold md:text-4xl w-fit mx-auto text-primary pb-3 pt-1">
@@ -209,13 +273,13 @@ const SuratDetail: React.FC = () => {
 			</div>
 		</React.Fragment>
 	);
-};
+}
 
 import { motion, useSpring, useScroll } from "framer-motion";
 
 const VirtualizedListSurah = ({ children }: { children: React.ReactNode }) => {
 	const [children1, children2] = React.Children.toArray(children);
-	const surat = useLoaderData<typeof clientLoader>();
+	const surat = useLoaderData();
 	const datas = Object.keys(surat.text); // Mendapatkan list nomor ayat
 
 	const [searchParams, setSearchParams] = useSearchParams();
@@ -236,8 +300,8 @@ const VirtualizedListSurah = ({ children }: { children: React.ReactNode }) => {
 		estimateSize: () => 56, // Perkiraan tinggi item (70px)
 	});
 
-	const loaderRoot = useRouteLoaderData<typeof any>("muslim");
-	const opts = loaderRoot?.opts || {};
+	const parentLoader = useRouteLoaderData<typeof muslimLoader>("muslim");
+	const opts = parentLoader?.opts;
 	const font_size_opts = fontSizeOpt.find((d) => d.label === opts?.font_size);
 
 	const virtualItems = rowVirtualizer.getVirtualItems();
@@ -254,8 +318,12 @@ const VirtualizedListSurah = ({ children }: { children: React.ReactNode }) => {
 		restDelta: 0.001,
 	});
 
-	const [lastRead, setLastRead] = React.useState<any | null>(null);
-	const [bookmarks, setBookmarks] = React.useState<AyatBookmark[]>([]);
+	const [lastRead, setLastRead] = React.useState<any | null>(
+		parentLoader?.lastRead || null,
+	);
+	const [bookmarks, setBookmarks] = React.useState<AyatBookmark[]>(
+		parentLoader?.bookmarks || [],
+	);
 
 	React.useEffect(() => {
 		const load_bookmark_from_lf = async () => {
@@ -272,8 +340,11 @@ const VirtualizedListSurah = ({ children }: { children: React.ReactNode }) => {
 				scrollToAyat(parseInt(ayat) - 1);
 			}
 		};
+		// load_bookmark_from_lf();
 
-		load_bookmark_from_lf();
+		if (ayat !== null) {
+			scrollToAyat(parseInt(ayat) - 1);
+		}
 	}, []);
 
 	React.useEffect(() => {
@@ -299,6 +370,7 @@ const VirtualizedListSurah = ({ children }: { children: React.ReactNode }) => {
 	// Fungsi untuk toggle favorit
 	const toggleBookmark = (key: string) => {
 		const data_bookmark = {
+			id: `${surat.number}:${key}`,
 			title: `${surat.name_latin}:${key}`,
 			arab: surat.text[key],
 			latin: "",
@@ -394,7 +466,7 @@ const VirtualizedListSurah = ({ children }: { children: React.ReactNode }) => {
 			<div className="relative bg-linear-to-r from-fuchsia-500 to-cyan-500 dark:from-fuchsia-400 dark:to-cyan-400 max-w-xl mx-auto">
 				<PopoverTrigger>
 					<Button
-						variant="outline"
+						variant="ghost"
 						size="icon"
 						className="gap-2 absolute right-[87px] -mt-[45px] bg-background z-10 transition-all duration-300 data-focused:outline-hidden data-focused:ring-none data-focused:ring-0 data-focus-visible:outline-hidden data-focus-visible:ring-none data-focus-visible:ring-0"
 						title="Pindah ke ayat"
@@ -694,5 +766,3 @@ const VirtualizedListSurah = ({ children }: { children: React.ReactNode }) => {
 		</React.Fragment>
 	);
 };
-
-export default SuratDetail;

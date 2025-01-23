@@ -85,8 +85,8 @@ export default function ThemeSwitch() {
 	return (
 		<Button
 			onPress={() => setTheme(nextMode as typeof theme)}
-			title="Change theme"
-			variant="outline"
+			title="Ubah Tema"
+			variant="ghost"
 			size="icon"
 			className="bg-transparent"
 		>

@@ -52,7 +52,7 @@ import {
 	SelectValue,
 } from "#src/components/ui/select";
 
-export default function Route() {
+export function Component() {
 	const { surat, juz_amma } = useLoaderData<typeof quranIndexLoader>();
 	const [input, setInput] = useState("");
 	const [query, setQuery] = useState("");

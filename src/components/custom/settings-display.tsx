@@ -1,5 +1,5 @@
 import React from "react";
-import type loader from "#src/routes/muslim.data";
+import type { loader } from "#src/routes/muslim.data";
 import {
 	DialogContent,
 	DialogDescription,
@@ -22,28 +22,7 @@ import {
 	SelectValue,
 } from "#src/components/ui/select";
 import { Settings2, X, Save } from "lucide-react";
-import { json, type ActionFunctionArgs } from "react-router";
-import { useFetcher, useFetchers, useRouteLoaderData } from "react-router";
-
-// write the state to the cookie
-// export async function action({ request }: ActionFunctionArgs) {
-// 	const cookieHeader = request.headers.get("Cookie");
-// 	const cookie = (await prefs.parse(cookieHeader)) || {};
-// 	const formData = await request.formData();
-// 	const all = Object.fromEntries(formData);
-// 	// return json({ options: all });
-//
-// 	// const isOpen = formData.get("sidebar") === "open";
-// 	cookie.opts = all;
-//
-// 	return json(all, {
-// 		headers: {
-// 			"Set-Cookie": await prefs.serialize(cookie),
-// 		},
-// 	});
-// }
-
-// read the state from the cookie
+import { useFetcher, useRouteLoaderData } from "react-router";
 
 import {
 	fontTypeOptions,
@@ -65,9 +44,9 @@ const preBismillah = {
 };
 
 export function SettingsDisplay() {
-	// Daftar variasi font dengan nama dan font-weight yang sesuai
 	const loaderRoot = useRouteLoaderData<typeof loader>("muslim");
-	const opts = loaderRoot?.opts || {};
+
+	const opts = loaderRoot?.opts;
 
 	const fetcher = useFetcher();
 	// Mengelola state untuk font weight
@@ -97,7 +76,7 @@ export function SettingsDisplay() {
 				<Button
 					type="button"
 					size="icon"
-					variant="outline"
+					variant="ghost"
 					className="bg-transparent"
 					title="Pengaturan Tampilan"
 				>
@@ -107,7 +86,7 @@ export function SettingsDisplay() {
 					<DialogContent className="relative sm:max-w-[425px] max-h-[95vh] overflow-y-auto">
 						{({ close }) => (
 							<>
-								<fetcher.Form method="post" action="/resources/prefs">
+								<fetcher.Form method="post" action="/muslim">
 									<DialogHeader>
 										<DialogTitle>Pengaturan Tampilan</DialogTitle>
 										<DialogDescription>

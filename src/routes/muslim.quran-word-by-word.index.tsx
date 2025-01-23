@@ -11,6 +11,20 @@ import { Spinner } from "#src/components/ui/spinner-circle";
 import React, { JSX, useMemo, useState } from "react";
 import lodash from "lodash";
 import quranIndexLoader from "./muslim.quran.index.data";
+import type { LoaderFunctionArgs } from "react-router";
+import { data as daftar_surat } from "#src/constants/daftar-surat.json";
+
+export async function loader({ params }: LoaderFunctionArgs) {
+	const { id } = params;
+
+	const data = {
+		id,
+		surat: daftar_surat,
+		juz_amma: daftar_surat.filter((surat) => parseInt(surat.number) >= 78),
+	};
+
+	return data;
+}
 
 interface SearchProps<T> {
 	data: T[];
@@ -51,7 +65,7 @@ import {
 	SelectValue,
 } from "#src/components/ui/select";
 
-export default function Route() {
+export function Component() {
 	const { surat, juz_amma } = useLoaderData<typeof quranIndexLoader>();
 	const [input, setInput] = useState("");
 	const [query, setQuery] = useState("");
@@ -111,7 +125,7 @@ export default function Route() {
 			<Header redirectTo="/muslim" title="Daftar Surat" menu={menu}>
 				<Link
 					className={cn(
-						buttonVariants({ size: "icon", variant: "outline" }),
+						buttonVariants({ size: "icon", variant: "ghost" }),
 						"prose-none [&_svg]:size-6 mr-0.5",
 					)}
 					to="/muslim/quran-v2/1"

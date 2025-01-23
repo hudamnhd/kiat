@@ -9,10 +9,10 @@ import { Header } from "#src/components/custom/header";
 import { fontSizeOpt } from "#src/constants/prefs";
 import { useVirtualizer } from "@tanstack/react-virtual";
 
-function App() {
+export function Component() {
 	const loaderData = data_doa;
-	const loaderRoot = useRouteLoaderData("root");
-	const opts = loaderRoot?.opts || {};
+	const loaderRoot = useRouteLoaderData("muslim");
+	const opts = loaderRoot?.opts;
 	const font_size_opts = fontSizeOpt.find((d) => d.label === opts?.font_size);
 	const parentRef = React.useRef<HTMLDivElement>(null);
 
@@ -155,8 +155,4 @@ function App() {
 			/>
 		</div>
 	);
-}
-
-export default function Route() {
-	return <App />;
 }

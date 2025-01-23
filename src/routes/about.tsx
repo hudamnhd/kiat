@@ -1,7 +1,7 @@
 import { Link } from "react-router";
 import { Header } from "#src/components/custom/header";
 
-export default function Index() {
+export function Component() {
 	return (
 		<div className="prose-base dark:prose-invert w-full max-w-xl mx-auto border-x">
 			<Header redirectTo="/" title="About" />

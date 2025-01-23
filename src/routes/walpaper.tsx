@@ -1,6 +1,4 @@
-import React from "react";
-
-const Wallpaper = () => {
+export function Component() {
 	return (
 		<div className="flex items-center justify-center h-screen w-screen">
 			<div className="text-8xl font-medium bg-black text-white px-2 rounded-lg">
@@ -8,6 +6,4 @@ const Wallpaper = () => {
 			</div>
 		</div>
 	);
-};
-
-export default Wallpaper;
+}

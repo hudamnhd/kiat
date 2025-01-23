@@ -43,7 +43,7 @@ const data = sumber.map((d: string) => {
 	return _d;
 });
 
-export default function Route() {
+export function Component() {
 	return (
 		<React.Fragment>
 			<Header redirectTo="/muslim" title="Kumpulan Do'a" />

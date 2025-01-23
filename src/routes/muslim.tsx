@@ -2,7 +2,7 @@ import { Header } from "#src/components/custom/header";
 import { muslimNavigationLink } from "#src/constants/nav-link";
 import { NavigationList } from "#src/components/custom/navigation-list.tsx";
 
-export default function Example() {
+export function Component() {
 	const data = muslimNavigationLink;
 
 	return (

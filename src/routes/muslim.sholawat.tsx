@@ -17,7 +17,8 @@ type AddIndex<T> = T & { index: string };
 
 type SholawatItem = (typeof sholawat)[number];
 type SholawatItemWithIndex = AddIndex<SholawatItem>;
-export default function Sholawat() {
+
+export function Component() {
 	const loaderRoot = useRouteLoaderData("muslim");
 	const opts = loaderRoot?.opts || {};
 

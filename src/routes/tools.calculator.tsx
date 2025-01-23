@@ -37,7 +37,7 @@ interface HistoryItem {
 	result: string;
 }
 
-const Calculator: React.FC = () => {
+export const Component = () => {
 	const [currentInput, setCurrentInput] = useState<string>(() => {
 		// Ambil currentInput dari localStorage jika ada
 		const savedCurrentInput = localStorage.getItem("calcCurrentInput");
@@ -413,10 +413,10 @@ const Calculator: React.FC = () => {
 								// Menampilkan angka
 								if (index % 2 === 0) {
 									return (
-										<div key={index} className="text-right">
+										<div key={index} className="text-right w-full">
 											{index === 0 ? (
 												// Menampilkan angka pertama dengan warna biru
-												<div className="flex items-center justify-between border-b border-dashed border-gray-400 px-1">
+												<div className="flex items-center justify-between border-b border-dashed border-gray-400 px-1 w-full">
 													<div className="gap-x-4 flex items-center text-[16px] w-3 text-start text-muted-foreground">
 														<span>{index === 0 && "1."}</span>
 													</div>
@@ -428,7 +428,7 @@ const Calculator: React.FC = () => {
 												<>
 													{/* Menampilkan operator setelah angka */}
 													<div
-														className={`${index === lastIndex ? "" : " border-b border-dashed border-muted-foreground"} flex items-center justify-between gap-2 items-center justify-end py-0.5 px-1`}
+														className={`${index === lastIndex ? "" : " border-b border-dashed border-muted-foreground"} w-full flex items-center justify-between gap-2  py-0.5 px-1`}
 													>
 														<div className="gap-x-3 flex items-center">
 															<span className="text-[16px] w-3 text-start text-muted-foreground">
@@ -518,4 +518,3 @@ const Calculator: React.FC = () => {
 		</div>
 	);
 };
-export default Calculator;

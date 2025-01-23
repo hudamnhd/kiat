@@ -1,5 +1,7 @@
 import React from "react";
-import "#src/styles/reload-prompt.css";
+import { X, Info, RefreshCcw } from "lucide-react";
+import { buttonVariants } from "#src/components/ui/button";
+import { cn } from "#src/utils/misc";
 
 import { useRegisterSW } from "virtual:pwa-register/react";
 
@@ -23,33 +25,68 @@ function ReloadPrompt() {
 		setNeedRefresh(false);
 	};
 
+	const date = "__DATE__";
 	return (
-		<div className="ReloadPrompt-container">
+		<>
 			{(offlineReady || needRefresh) && (
-				<div className="ReloadPrompt-toast">
-					<div className="ReloadPrompt-message">
-						{offlineReady ? (
-							<span>App ready to work offline</span>
-						) : (
-							<span>
-								New content available, click on reload button to update.
-							</span>
-						)}
+				<div className="fixed z-[200] bottom-0 left-0 right-0 sm:left-4 sm:bottom-4 w-full sm:max-w-md duration-700 transition-[opacity,transform] translate-y-0 opacity-100">
+					<div className="bg-background rounded-md m-3 border border-border shadow-lg">
+						<div className="grid gap-2">
+							<div className="border-b border-border h-12 flex items-center justify-between px-4">
+								<h1 className="text-lg font-medium">Kiat Info</h1>
+								<Info />
+							</div>
+							<div className="px-4 py-1">
+								{offlineReady ? (
+									<p className="text-sm font-normal text-start">
+										Kiat Applikasi bisa di gunakan secara{" "}
+										<strong>offline</strong> kecuali di halaman quran.
+										<br />
+										<br />
+										<span className="text-xs">
+											Untuk quran bisa di gunakan secara ofline jika sudah
+											pernah membaca surat tersebut.
+										</span>
+										<br />
+									</p>
+								) : (
+									<p className="text-sm font-normal text-start">
+										Versi terbaru Kiat Applikasi tersedia, klik tombol Refresh
+										untuk memperbarui.
+										<br />
+										<br />
+										<div className="Home-built gap-1 text-xs [&_svg]:size-3 mb-1.5">
+											Versi sekarang: {date}
+										</div>
+									</p>
+								)}
+							</div>
+							<div className="flex gap-2 p-4 border-t border-border">
+								{needRefresh && (
+									<button
+										className={cn(buttonVariants({ variant: "default" }))}
+										onClick={() => updateServiceWorker(true)}
+									>
+										<RefreshCcw /> Reload
+									</button>
+								)}
+
+								<button
+									className={cn(
+										buttonVariants({
+											variant: needRefresh ? "outline" : "default",
+										}),
+									)}
+									onClick={() => close()}
+								>
+									<X /> Close
+								</button>
+							</div>
+						</div>
 					</div>
-					{needRefresh && (
-						<button
-							className="ReloadPrompt-toast-button"
-							onClick={() => updateServiceWorker(true)}
-						>
-							Reload
-						</button>
-					)}
-					<button className="ReloadPrompt-toast-button" onClick={() => close()}>
-						Close
-					</button>
 				</div>
 			)}
-		</div>
+		</>
 	);
 }
 

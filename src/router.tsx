@@ -4,30 +4,7 @@ import { createBrowserRouter } from "react-router";
 import ErrorPage from "./routes/error-page";
 import NotFoundError from "./routes/404.tsx";
 import Index from "./routes/index";
-import Muslim from "./routes/muslim";
-import Tools from "./routes/tools";
-import About from "./routes/about";
-import Pomodoro from "./routes/tools.pomodoro.tsx";
-import DailyTasks from "./routes/tools.daily-tasks.tsx";
-import Calculator from "./routes/tools.calculator.tsx";
-import Habit from "./routes/tools.habit.tsx";
-import Sholawat from "./routes/muslim.sholawat";
-import Dzikir from "./routes/muslim.dzikir";
-import Tahlil from "./routes/muslim.tahlil";
-import DoaIndex from "./routes/muslim.doa.index";
-import Bookmarks from "./routes/muslim.bookmarks";
-import DoaSehariHari from "./routes/muslim.doa-sehari-hari";
-import DoaSumber from "./routes/muslim.doa.sumber";
-import QuranIndex from "./routes/muslim.quran.index";
-import QuranWBWIndex from "./routes/muslim.quran-word-by-word.index";
-import QuranWBWSurat from "./routes/muslim.quran-word-by-word.surat";
-import quranWbwSuratLoader from "./routes/muslim.quran-word-by-word.data";
-import QuranSurat from "./routes/muslim.quran.surat";
-import muslimLoader from "./routes/muslim.data";
-import quranIndexLoader from "./routes/muslim.quran.index.data.ts";
-import doaSumberLoader from "./routes/muslim.doa.data";
-import quranSuratLoader from "./routes/muslim.quran.surat.data.ts";
-import Wallpaper from "./routes/walpaper";
+import { getTheme } from "./components/custom/theme-provider.tsx";
 
 export const router = createBrowserRouter([
 	{
@@ -35,6 +12,31 @@ export const router = createBrowserRouter([
 		path: "/",
 		element: <ThemeProvider />,
 		errorElement: <ErrorPage />,
+		loader: async ({ request }) => {
+			const root = document.documentElement;
+			const theme = getTheme();
+			root.setAttribute("data-theme", theme);
+
+			if (theme === "system") {
+				const systemTheme = window.matchMedia("(prefers-color-scheme: dark)")
+					.matches
+					? "dark"
+					: "light";
+
+				root.classList.add(systemTheme);
+			} else {
+				root.classList.add(theme);
+			}
+
+			return {
+				requestInfo: {
+					path: new URL(request.url).pathname,
+					userPrefs: {
+						theme: getTheme(),
+					},
+				},
+			};
+		},
 		HydrateFallback: Loader,
 		children: [
 			{
@@ -43,70 +45,80 @@ export const router = createBrowserRouter([
 			},
 			{
 				path: "/wallpaper",
-				element: <Wallpaper />,
+				lazy: () => import("./routes/walpaper"),
+			},
+			{
+				path: "/components",
+				lazy: () => import("./routes/demo.components"),
 			},
 			{
 				path: "/about",
-				element: <About />,
+				lazy: () => import("./routes/about"),
 			},
 			{
 				path: "/muslim",
 				id: "muslim",
 				element: <Layout />,
-				loader: muslimLoader,
+				lazy: async () => await import("./routes/muslim.data"),
+				shouldRevalidate: ({ formMethod, currentUrl, nextUrl }) => {
+					const shouldRevalidate =
+						formMethod === "POST" || currentUrl.pathname !== nextUrl.pathname;
+					return shouldRevalidate;
+				},
 				children: [
 					{
-						path: "/muslim",
 						index: true,
-						element: <Muslim />,
+						lazy: () => import("./routes/muslim"),
 					},
 					{
 						path: "/muslim/bookmarks",
 						index: true,
-						element: <Bookmarks />,
+						lazy: () => import("./routes/muslim.bookmarks"),
 					},
 					{
 						path: "/muslim/doa",
 						index: true,
-						element: <DoaIndex />,
+						lazy: () => import("./routes/muslim.doa.index"),
 					},
 					{
 						path: "/muslim/doa-sehari-hari",
 						index: true,
-						element: <DoaSehariHari />,
+						lazy: () => import("./routes/muslim.doa-sehari-hari"),
 					},
 					{
 						path: "/muslim/doa/:source",
-						loader: doaSumberLoader,
-						element: <DoaSumber />,
+						lazy: () => import("./routes/muslim.doa.sumber"),
 					},
 					{
 						path: "/muslim/sholawat",
-						element: <Sholawat />,
+						lazy: () => import("./routes/muslim.sholawat"),
 					},
 					{
 						path: "/muslim/tahlil",
-						element: <Tahlil />,
+						lazy: () => import("./routes/muslim.tahlil"),
 					},
 					{
 						path: "/muslim/dzikir",
-						element: <Dzikir />,
+						lazy: () => import("./routes/muslim.dzikir"),
+					},
+					{
+						path: "/muslim/quran-v2/:id",
+						HydrateFallback: Loader,
+						lazy: async () => await import("./routes/muslim.quran-v2.page"),
 					},
 					{
 						path: "/muslim/quran",
 						children: [
 							{
 								path: "/muslim/quran/:id",
-								loader: quranSuratLoader,
 								HydrateFallback: Loader,
-								element: <QuranSurat />,
+								lazy: async () => await import("./routes/muslim.quran.surat"),
 							},
 							{
 								path: "/muslim/quran",
 								index: true,
-								loader: quranIndexLoader,
 								HydrateFallback: Loader,
-								element: <QuranIndex />,
+								lazy: () => import("./routes/muslim.quran.index"),
 							},
 						],
 					},
@@ -115,16 +127,15 @@ export const router = createBrowserRouter([
 						children: [
 							{
 								path: "/muslim/quran-word-by-word/:id",
-								loader: quranWbwSuratLoader,
 								HydrateFallback: Loader,
-								element: <QuranWBWSurat />,
+								lazy: async () =>
+									await import("./routes/muslim.quran-word-by-word.surat"),
 							},
 							{
 								path: "/muslim/quran-word-by-word",
 								index: true,
-								loader: quranIndexLoader,
+								lazy: () => import("./routes/muslim.quran-word-by-word.index"),
 								HydrateFallback: Loader,
-								element: <QuranWBWIndex />,
 							},
 						],
 					},
@@ -137,23 +148,23 @@ export const router = createBrowserRouter([
 					{
 						path: "/tools",
 						index: true,
-						element: <Tools />,
+						lazy: () => import("./routes/tools"),
 					},
 					{
 						path: "/tools/calculator",
-						element: <Calculator />,
+						lazy: () => import("./routes/tools.calculator"),
 					},
 					{
 						path: "/tools/habit",
-						element: <Habit />,
+						lazy: () => import("./routes/tools.habit"),
 					},
 					{
 						path: "/tools/daily-tasks",
-						element: <DailyTasks />,
+						lazy: () => import("./routes/tools.daily-tasks"),
 					},
 					{
 						path: "/tools/pomodoro",
-						element: <Pomodoro />,
+						lazy: () => import("./routes/tools.pomodoro"),
 					},
 				],
 			},

@@ -271,6 +271,6 @@ const App: React.FC = () => {
 	);
 };
 
-export default function Route() {
+export function Component() {
 	return <App />;
 }

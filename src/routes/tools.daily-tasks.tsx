@@ -619,7 +619,7 @@ const TaskApp = ({
 		<div className="">
 			{/*<RenderTracker name="TASK APP" stateName={totalTargetSessions} />*/}
 
-			<Header redirectTo="/" title="Tasks">
+			<Header redirectTo="/tools" title="Tasks">
 				{/*<Link
             to="./garden"
             className={cn(
@@ -640,7 +640,7 @@ const TaskApp = ({
 					</Popover>
 				</PopoverTrigger>
 				<PopoverTrigger>
-					<Button variant="outline" size="icon">
+					<Button variant="ghost" size="icon">
 						<Flame />
 					</Button>
 
@@ -654,7 +654,7 @@ const TaskApp = ({
 					</Popover>
 				</PopoverTrigger>
 				<PopoverTrigger>
-					<Button variant="outline" size="icon">
+					<Button variant="ghost" size="icon">
 						<Activity />
 					</Button>
 
@@ -665,7 +665,7 @@ const TaskApp = ({
 					</Popover>
 				</PopoverTrigger>
 				<PopoverTrigger>
-					<Button variant="outline" size="icon">
+					<Button variant="ghost" size="icon">
 						<Info />
 					</Button>
 
@@ -3280,7 +3280,7 @@ const DragDropListSubTask: React.FC = ({
 	);
 };
 
-export default function Route() {
+export function Component() {
 	return (
 		<Provider store={store}>
 			<Layout />

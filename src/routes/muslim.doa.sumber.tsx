@@ -1,12 +1,79 @@
 import { Header } from "#src/components/custom/header";
+import { useVirtualizer } from "@tanstack/react-virtual";
 import { ScrollToFirstIndex } from "#src/components/custom/scroll-to-top.tsx";
 import { Heart } from "lucide-react";
 import { useLoaderData } from "react-router";
 import { cn } from "#src/utils/misc";
+import {
+	get_cache,
+	set_cache,
+	construct_key,
+} from "#src/utils/cache-client.ts";
+
+import ky from "ky";
+import type { LoaderFunctionArgs } from "react-router";
 
 const BOOKMARK_KEY = "BOOKMARK";
 
-function Doa() {
+const sumber = [
+	"quran",
+	"hadits",
+	"pilihan",
+	"harian",
+	"ibadah",
+	"haji",
+	"lainnya",
+];
+
+export type ResponseData = {
+	status: boolean;
+	request: {
+		path: string;
+	};
+	data: Datum[];
+};
+
+export type Datum = {
+	arab: string;
+	indo: string;
+	judul: string;
+	source: "quran";
+};
+
+export async function loader({ params }: LoaderFunctionArgs) {
+	const { source } = params;
+
+	if (!source) {
+		throw new Error("404: Source not found");
+	}
+
+	if (!sumber.includes(source)) {
+		throw new Error("404: Source not found");
+	}
+
+	const CACHE_KEY = `/muslim/doa/${source}`;
+	const cached_data = await get_cache(CACHE_KEY);
+
+	if (cached_data) return cached_data;
+
+	const api = ky.create({ prefixUrl: "https://api.myquran.com/v2/doa/sumber" });
+	const res = await api.get(source).json<ResponseData>();
+
+	if (!res.status) {
+		throw new Response("Not Found", { status: 404 });
+	}
+
+	const data = {
+		label: res.request.path.replace(/\//g, " ").replace(/sumber/gi, ""), // Ganti '/' dengan spasi
+		source: res.request.path.replace(/\//g, " ").trim().split(" ").pop(),
+		data: res.data,
+	};
+
+	await set_cache(CACHE_KEY, data);
+	return data;
+}
+
+export function Component() {
 	const loaderData = useLoaderData();
 
 	return (
@@ -28,7 +95,6 @@ function Doa() {
 	);
 }
 
-import { get_cache, set_cache } from "#src/utils/cache-client.ts";
 import { save_bookmarks, type Bookmark } from "#src/utils/bookmarks";
 
 import React from "react";
@@ -247,9 +313,3 @@ const DoaView = ({ items, children }) => {
 		</React.Fragment>
 	);
 };
-
-import { useVirtualizer } from "@tanstack/react-virtual";
-
-export default function Route() {
-	return <Doa />;
-}

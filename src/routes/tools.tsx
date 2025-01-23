@@ -2,7 +2,7 @@ import { toolsNavigationLink } from "#src/constants/nav-link";
 import { Header } from "#src/components/custom/header.tsx";
 import { NavigationList } from "#src/components/custom/navigation-list.tsx";
 
-export default function Tools() {
+export function Component() {
 	const data = toolsNavigationLink;
 	return (
 		<>

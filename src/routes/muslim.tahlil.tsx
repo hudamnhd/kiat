@@ -4,7 +4,7 @@ import { useRouteLoaderData } from "react-router";
 import { fontSizeOpt } from "#src/constants/prefs";
 import { cn } from "#src/utils/misc";
 
-export default function Route() {
+export function Component() {
 	const loaderRoot = useRouteLoaderData("muslim");
 	const opts = loaderRoot?.opts || {};
 	const tahlil = data;

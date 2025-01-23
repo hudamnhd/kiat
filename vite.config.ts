@@ -8,7 +8,7 @@ import replace from "@rollup/plugin-replace";
 const pwaOptions: Partial<VitePWAOptions> = {
 	mode: "development",
 	base: "/",
-	includeAssets: ["favicon.svg"],
+	includeAssets: ["fonts/*", "favicon/*"],
 	manifest: {
 		name: "Kiat",
 		short_name: "Kiat",

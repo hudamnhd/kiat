@@ -545,6 +545,6 @@ const FocusList = () => {
 };
 
 import Loader from "#src/components/ui/loader";
-export default function Route() {
+export function Component() {
 	return <HabitTracker />;
 }

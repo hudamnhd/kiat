@@ -1,10 +1,10 @@
 import { data } from "#src/constants/dzikr.ts";
 import React from "react";
-import { Button, buttonVariants } from "#src/components/ui/button";
-import { useRouteLoaderData, Link, useLoaderData } from "react-router";
+import { buttonVariants } from "#src/components/ui/button";
+import { useRouteLoaderData } from "react-router";
 import { fontSizeOpt } from "#src/constants/prefs";
 import { cn } from "#src/utils/misc";
-import { Sun, Moon, Plus, ChevronLeft } from "lucide-react";
+import { Sun, Moon, Plus } from "lucide-react";
 import { Header } from "#src/components/custom/header";
 
 function getWaktuSekarang(): string {
@@ -19,7 +19,7 @@ function getWaktuSekarang(): string {
 
 const time = getWaktuSekarang();
 
-export default function DzikrView() {
+export function Component() {
 	const { dzikr } = data;
 	const loaderRoot = useRouteLoaderData("muslim");
 	const opts = loaderRoot?.opts || {};

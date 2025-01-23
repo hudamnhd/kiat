@@ -85,8 +85,7 @@ export default function Index() {
 			</div>
 			<div className="flex items-center justify-between">
 				<div className="Home-built px-4 text-muted-foreground gap-1 uppercase text-xs [&_svg]:size-3 mb-1.5">
-					Built at:
-					{date}
+					Built at : {date}
 				</div>
 				<Link
 					className={cn(
@@ -211,9 +210,9 @@ function KeyboardModalTrigger(props: KeyboardModalTriggerProps) {
 	return (
 		<ModalContext.Provider value={{ isOpen, onOpenChange: setOpen }}>
 			<Button
-				variant="outline"
+				variant="ghost"
 				className={cn(
-					"focus-visible:ring-0 outline-hidden relative w-full justify-start rounded-md font-normal text-muted-foreground shadow-none sm:pr-12 w-9 px-2 sm:w-36 sm:text-sm text-base",
+					"focus-visible:ring-0 sm:border outline-hidden relative w-full justify-start rounded-md font-normal text-muted-foreground shadow-none sm:pr-12 w-9 px-2 sm:w-36 sm:text-sm text-base",
 				)}
 				onPress={() => setOpen(true)}
 				{...props}
@@ -228,7 +227,7 @@ function KeyboardModalTrigger(props: KeyboardModalTriggerProps) {
 		</ModalContext.Provider>
 	);
 }
-import { TimerReset, Menu, Frame } from "lucide-react";
+import { TimerReset, Menu } from "lucide-react";
 import {
 	Dialog,
 	DialogTrigger,
