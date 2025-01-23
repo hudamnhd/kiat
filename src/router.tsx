@@ -27,6 +27,7 @@ import muslimLoader from "./routes/muslim.data";
 import quranIndexLoader from "./routes/muslim.quran.index.data.ts";
 import doaSumberLoader from "./routes/muslim.doa.data";
 import quranSuratLoader from "./routes/muslim.quran.surat.data.ts";
+import Wallpaper from "./routes/walpaper";
 
 export const router = createBrowserRouter([
 	{
@@ -39,6 +40,10 @@ export const router = createBrowserRouter([
 			{
 				path: "/",
 				element: <Index />,
+			},
+			{
+				path: "/wallpaper",
+				element: <Wallpaper />,
 			},
 			{
 				path: "/about",

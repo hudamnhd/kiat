@@ -2,6 +2,7 @@ import { ThemeProvider } from "#src/components/custom/theme-provider.tsx";
 import { Outlet } from "react-router";
 import { Toaster } from "react-hot-toast";
 import { GlobalPendingIndicator } from "./global-pending-indicator";
+import ReloadPrompt from "../pwa/reload-prompt";
 
 export default function ThemeProviderWrapper() {
 	return (
@@ -9,6 +10,7 @@ export default function ThemeProviderWrapper() {
 			<Toaster />
 			<Outlet />
 			<GlobalPendingIndicator />
+			<ReloadPrompt />
 		</ThemeProvider>
 	);
 }

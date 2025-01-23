@@ -53,6 +53,8 @@ export default function Index() {
 			icon: Wrench,
 		},
 	];
+
+	const date = "__DATE__";
 	return (
 		<div className="flex flex-col justify-between border-x h-[calc(100vh)] max-w-xl mx-auto relative">
 			<div>
@@ -81,7 +83,11 @@ export default function Index() {
 					)}
 				</div>
 			</div>
-			<div className="flex items-center justify-center">
+			<div className="flex items-center justify-between">
+				<div className="Home-built px-4 text-muted-foreground gap-1 uppercase text-xs [&_svg]:size-3 mb-1.5">
+					Built at:
+					{date}
+				</div>
 				<Link
 					className={cn(
 						buttonVariants({ variant: "ghost" }),
