@@ -86,8 +86,9 @@ export default function ThemeSwitch() {
 		<Button
 			onPress={() => setTheme(nextMode as typeof theme)}
 			title="Change theme"
-			variant="ghost"
+			variant="outline"
 			size="icon"
+			className="bg-transparent"
 		>
 			{modeLabel[theme]}
 		</Button>

@@ -1,8 +1,9 @@
 /** @type {import('tailwindcss').Config} */
 
 import animatePlugin from "tailwindcss-animate";
-import { type Config } from "tailwindcss";
 import { extendedTheme } from "./src/utils/extended-theme";
+import { marketingPreset } from "./src/utils/tailwind-preset";
+
 export default {
 	content: ["./index.html", "./src/**/*.{js,ts,jsx,tsx}"],
 	darkMode: "class",
@@ -16,5 +17,6 @@ export default {
 		},
 		extend: extendedTheme,
 	},
-	plugins: [animatePlugin],
-} satisfies Config;
+	presets: [marketingPreset],
+	plugins: [animatePlugin, require("@tailwindcss/typography")],
+};

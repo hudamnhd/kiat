@@ -40,7 +40,7 @@ export const Tab = ({ className, ...props }: ReactAria.TabProps) => {
   return (
     <ReactAria.Tab
       className={cn(
-        "relative shrink-0 cursor-pointer border-[length:var(--border-width)] border-transparent px-4 py-2 text-slate-500 outline-none transition-colors dark:text-slate-400",
+        "relative shrink-0 cursor-pointer border-[length:var(--border-width)] border-transparent px-4 py-2 text-slate-500 outline-hidden transition-colors dark:text-slate-400",
         // Focus-visible
         "focus-visible:ring-2 focus-visible:ring-slate-400",
         // Disabled

@@ -1,6 +1,25 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import 'tailwindcss';
+
+@config '../../tailwind.config.ts';
+
+/*
+  The default border color has changed to `currentColor` in Tailwind CSS v4,
+  so we've added these compatibility styles to make sure everything still
+  looks the same as it did with Tailwind CSS v3.
+
+  If we ever want to remove these styles, we need to add an explicit border
+  color utility to any element that depends on these defaults.
+*/
+@layer base {
+  *,
+  ::after,
+  ::before,
+  ::backdrop,
+  ::file-selector-button {
+    border-color: hsl(var(--border));
+  }
+}
+
 /*
   Theme variables
 */
@@ -41,10 +60,10 @@
 		--accent-dark: 217.2 32.6% 17.5%;
 		--accent-foreground-dark: 210 40% 98%;
 
-		--destructive: 0 84.2% 60.2%;
-		--destructive-foreground: 210 40% 98%;
-		--destructive-dark: 0 62.8% 30.6%;
-		--destructive-foreground-dark: 210 40% 98%;
+		--destructive: 1, 79%, 45%;
+		--destructive-foreground: 0 0% 100%;
+		--destructive-dark: 0, 92%, 30%;
+		--destructive-foreground-dark: 0 0% 100%;
 
 		--border: 214.3 31.8% 91.4%;
 		--input: 214.3 31.8% 91.4%;
@@ -53,6 +72,17 @@
 		--input-dark: 217.2 32.6% 17.5%;
 		--ring-dark: 212.7 26.8% 83.9%;
 
+		--chart-1: 12 76% 61%;
+		--chart-2: 173 58% 39%;
+		--chart-3: 197 37% 24%;
+		--chart-4: 43 74% 66%;
+		--chart-5: 27 87% 67%;
+
+		--chart-1-dark: 220 70% 50%;
+		--chart-2-dark: 160 60% 45%;
+		--chart-3-dark: 30 80% 55%;
+		--chart-4-dark: 280 65% 60%;
+		--chart-5-dark: 340 75% 55%;
 		--radius: 0.5rem;
 	}
 }
@@ -94,7 +124,7 @@
 	}
 	body {
 		@apply bg-background text-foreground;
-		font-family: "Geist", serif;
+		font-family: "Inter", serif;
 		font-style: normal;
 	}
 }
@@ -202,4 +232,19 @@ code {
 
 .bounce-left-right {
 	animation: bounceLeftRight 2s ease-in-out infinite;
+}
+
+.blink-cursor {
+	display: inline-block;
+	animation: blink 1.5s steps(2, start) infinite;
+}
+
+@keyframes blink {
+	0%,
+	100% {
+		opacity: 1;
+	}
+	50% {
+		opacity: 0;
+	}
 }

@@ -78,7 +78,7 @@ export function SwipableList() {
       {/* Toolbar */}
       <div className="flex pb-4 justify-between">
         <Button
-          className="text-blue-600 outline-none bg-transparent border-none transition pressed:text-blue-700 focus-visible:ring disabled:text-gray-400"
+          className="text-blue-600 outline-hidden bg-transparent border-none transition pressed:text-blue-700 focus-visible:ring-3 disabled:text-gray-400"
           style={{ opacity: selectionMode === "none" ? 0 : 1 }}
           isDisabled={selectedKeys !== "all" && selectedKeys.size === 0}
           onPress={onDelete}
@@ -86,7 +86,7 @@ export function SwipableList() {
           Delete
         </Button>
         <Button
-          className="text-blue-600 outline-none bg-transparent border-none transition pressed:text-blue-700 focus-visible:ring"
+          className="text-blue-600 outline-hidden bg-transparent border-none transition pressed:text-blue-700 focus-visible:ring-3"
           onPress={() => {
             setSelectionMode((m) => (m === "none" ? "multiple" : "none"));
             setSelectedKeys(new Set());
@@ -152,7 +152,7 @@ function ListItem({ id, children, textValue, onRemove }) {
     <MotionItem
       id={id}
       textValue={textValue}
-      className="outline-none group relative overflow-clip border-t border-0 border-solid last:border-b border-gray-200 dark:border-gray-800 pressed:bg-gray-200 dark:pressed:bg-gray-800 selected:bg-gray-200 dark:selected:bg-gray-800 focus-visible:outline focus-visible:outline-blue-600 focus-visible:-outline-offset-2"
+      className="outline-hidden group relative overflow-clip border-t border-0 border-solid last:border-b border-gray-200 dark:border-gray-800 pressed:bg-gray-200 dark:pressed:bg-gray-800 selected:bg-gray-200 dark:selected:bg-gray-800 focus-visible:outline focus-visible:outline-blue-600 focus-visible:-outline-offset-2"
       layout
       transition={{ duration: 0.25 }}
       exit={{ opacity: 0 }}
@@ -196,7 +196,7 @@ function ListItem({ id, children, textValue, onRemove }) {
           </motion.div>
           {selectionMode === "none" && (
             <Button
-              className="bg-red-600 pressed:bg-red-700 cursor-default text-lg outline-none border-none transition-colors text-white flex items-center absolute top-0 left-[100%] py-2 h-full z-0 isolate focus-visible:outline focus-visible:outline-blue-600 focus-visible:-outline-offset-2"
+              className="bg-red-600 pressed:bg-red-700 cursor-default text-lg outline-hidden border-none transition-colors text-white flex items-center absolute top-0 left-[100%] py-2 h-full z-0 isolate focus-visible:outline focus-visible:outline-blue-600 focus-visible:-outline-offset-2"
               style={{
                 // Calculate the size of the button based on the drag position,
                 // which is stored in a CSS variable above.
@@ -239,7 +239,7 @@ function SelectionCheckmark({ isSelected }) {
       aria-hidden="true"
       viewBox="0 0 24 24"
       fill="currentColor"
-      className="w-6 h-6 flex-shrink-0 ml-4"
+      className="w-6 h-6 shrink-0 ml-4"
       initial={{ x: -40 }}
       animate={{ x: 0 }}
       transition={{ duration: 0.25 }}

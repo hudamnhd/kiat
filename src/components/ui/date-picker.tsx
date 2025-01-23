@@ -49,7 +49,7 @@ const DatePickerContent = ({
   >
     <AriaDialog
       className={cn(
-        "flex w-full flex-col space-y-4 outline-none sm:flex-row sm:space-x-4 sm:space-y-0",
+        "flex w-full flex-col space-y-4 outline-hidden sm:flex-row sm:space-x-4 sm:space-y-0",
         className,
       )}
       {...props}
@@ -84,7 +84,7 @@ function JollyDatePicker<T extends AriaDateValue>({
         <Button
           variant="ghost"
           size="icon"
-          className="size-6 focus-visible:ring-none focus-visible:ring-0 outline-none"
+          className="size-6 focus-visible:ring-none focus-visible:ring-0 outline-hidden"
         >
           <CalendarIcon aria-hidden className="size-4" />
         </Button>
@@ -144,7 +144,7 @@ function JollyDateRangePicker<T extends AriaDateValue>({
         <Button
           variant="ghost"
           size="icon"
-          className="mr-1 size-6 data-[focus-visible]:ring-offset-0"
+          className="mr-1 size-6 data-focus-visible:ring-offset-0"
         >
           <Calendar aria-hidden className="size-4" />
         </Button>

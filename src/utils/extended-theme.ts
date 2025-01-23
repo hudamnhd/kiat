@@ -7,7 +7,7 @@ export const extendedTheme = {
 	colors: {
 		border: lightDarkVar("border"),
 		input: lightDarkVar("input"),
-		ring: lightDarkVar("ring"),
+		ring: lightDarkVar("ring-3"),
 		background: lightDarkVar("background"),
 		foreground: lightDarkVar("foreground"),
 		primary: {
@@ -37,6 +37,13 @@ export const extendedTheme = {
 		card: {
 			DEFAULT: lightDarkVar("card"),
 			foreground: lightDarkVar("card-foreground"),
+		},
+		chart: {
+			1: lightDarkVar("chart-1"),
+			2: lightDarkVar("chart-2"),
+			3: lightDarkVar("chart-3"),
+			4: lightDarkVar("chart-4"),
+			5: lightDarkVar("chart-5"),
 		},
 	},
 	borderColor: {

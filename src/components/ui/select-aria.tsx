@@ -26,7 +26,7 @@ export const SelectContent = <T extends object>({
   return (
     <ReactAria.Popover
       className={cn(
-        "min-w-[--trigger-width] overflow-auto rounded-md border border-slate-200 bg-white p-1 shadow-md dark:border-border dark:bg-background",
+        "min-w-(--trigger-width) overflow-auto rounded-md border border-slate-200 bg-white p-1 shadow-md dark:border-border dark:bg-background",
         // Entering
         "entering:animate-in entering:fade-in",
         // Exiting
@@ -39,7 +39,7 @@ export const SelectContent = <T extends object>({
       )}
       {...props}
     >
-      <ReactAria.ListBox className={cn("outline-none", className)} {...props} />
+      <ReactAria.ListBox className={cn("outline-hidden", className)} {...props} />
     </ReactAria.Popover>
   );
 };
@@ -53,10 +53,10 @@ export const SelectItem = ({
     <ReactAria.ListBoxItem
       className={cn(
         "group",
-        "flex cursor-pointer items-center gap-2 rounded-sm px-2 py-1.5 text-foreground outline-none transition-colors dark:text-foreground",
+        "flex cursor-pointer items-center gap-2 rounded-sm px-2 py-1.5 text-foreground outline-hidden transition-colors dark:text-foreground",
         // Focus
         "focus:bg-accent dark:focus:bg-accent",
-        "[&_svg]:data-[selected=true]:visible",
+        "data-[selected=true]:[&_svg]:visible",
         className,
       )}
       {...props}

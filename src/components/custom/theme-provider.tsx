@@ -10,7 +10,21 @@ type ThemeProviderProps = {
 };
 
 export function ThemeProvider({ children }: ThemeProviderProps) {
-	document.documentElement.setAttribute("data-theme", getTheme());
+	const root = document.documentElement;
+	const theme = getTheme();
+	root.setAttribute("data-theme", theme);
+	root.classList.remove("light", "dark");
+
+	if (theme === "system") {
+		const systemTheme = window.matchMedia("(prefers-color-scheme: dark)")
+			.matches
+			? "dark"
+			: "light";
+
+		root.classList.add(systemTheme);
+	} else {
+		root.classList.add(theme);
+	}
 
 	return <React.Fragment>{children}</React.Fragment>;
 }
@@ -34,11 +48,27 @@ export function toggleTheme() {
 	localStorage.setItem(storageKey, newTheme);
 	document.documentElement.setAttribute("data-theme", newTheme);
 }
+
 export function setTheme(theme: Theme | string) {
 	let themeToSet: Theme | null = validateTheme(theme);
 	if (themeToSet === "system") {
 		themeToSet = null;
 	}
+
+	const root = document.documentElement;
+	root.classList.remove("light", "dark");
+
+	if (theme === "system") {
+		const systemTheme = window.matchMedia("(prefers-color-scheme: dark)")
+			.matches
+			? "dark"
+			: "light";
+
+		root.classList.add(systemTheme);
+	} else {
+		root.classList.add(theme);
+	}
+
 	if (themeToSet) {
 		localStorage.setItem(storageKey, themeToSet);
 		document.documentElement.setAttribute("data-theme", themeToSet);

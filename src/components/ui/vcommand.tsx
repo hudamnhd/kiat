@@ -59,7 +59,7 @@ export function Command({ data, search_key, onSelect }) {
       <div className="relative">
         <input
           id="input-26"
-          className="h-10 peer pe-12 ps-12 outline-none focus-visible:ring-0 focus-visible:ring-none border-b rounded-t-lg w-full px-3 py-6 bg-background text-sm"
+          className="h-10 peer pe-12 ps-12 outline-hidden focus-visible:ring-0 focus-visible:ring-none border-b rounded-t-lg w-full px-3 py-6 bg-background text-sm"
           placeholder="Cari Surat..."
           type="search"
           value={input}

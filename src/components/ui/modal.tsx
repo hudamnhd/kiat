@@ -7,7 +7,7 @@ import { cva, cx } from '../lib/cva.config'
 
 export const modalVariants = cva({
   base: [
-    'mx-auto w-full flex-col rounded bg-white outline-none dark:bg-slate-800',
+    'mx-auto w-full flex-col rounded bg-white outline-hidden dark:bg-slate-800',
     // Entering
     'entering:animate-in entering:zoom-in-95',
     // Exiting
@@ -55,7 +55,7 @@ export const ModalContent = ({
       )}
       {...props}
     >
-      <ReactAria.Dialog className="relative flex h-full flex-col outline-none">
+      <ReactAria.Dialog className="relative flex h-full flex-col outline-hidden">
         {children}
       </ReactAria.Dialog>
     </ReactAria.Modal>
@@ -71,8 +71,8 @@ export const ModalOverlay = ({
     <ReactAria.ModalOverlay
       isDismissable={isDismissable}
       className={cn(
-        'h-[--visual-viewport-height]',
-        'fixed inset-x-0 top-0 z-50 bg-black/60 backdrop-blur-sm transition-all',
+        'h-(--visual-viewport-height)',
+        'fixed inset-x-0 top-0 z-50 bg-black/60 backdrop-blur-xs transition-all',
         // Entering
         'entering:duration-75 entering:animate-in entering:fade-in',
         // Exiting

@@ -8,7 +8,7 @@ export const dateInputGroupVariants = cva({
     'inline-flex w-full', // Using .inline-flex here, as opposed to .flex appears to fix this issue https://github.com/adobe/react-spectrum/issues/3164
     'w-full items-center border border-slate-300 bg-transparent placeholder:text-slate-400 dark:border-slate-700 dark:text-slate-50',
     // Focus
-    'focus:outline-none',
+    'focus:outline-hidden',
     // Focus-visible
     'focus-visible:ring-2 focus-visible:ring-slate-400 focus-visible:ring-offset-2 dark:focus-visible:ring-slate-400 dark:focus-visible:ring-offset-slate-900',
     // Disabled
@@ -75,7 +75,7 @@ export const DateSegment = ({
   return (
     <ReactAria.DateSegment
       className={cn(
-        'flex items-center rounded px-1 focus:outline-none',
+        'flex items-center rounded px-1 focus:outline-hidden',
         // Placeholder
         'placeholder-shown:text-slate-500 placeholder-shown:focus:text-black dark:placeholder-shown:focus:text-white',
         // Focus

@@ -39,11 +39,11 @@ const BreadcrumbLink = ({ className, ...props }: AriaLinkProps) => (
       cn(
         "transition-colors",
         /* Hover */
-        "data-[hovered]:text-foreground",
+        "data-hovered:text-foreground",
         /* Disabled */
-        "data-[disabled]:pointer-events-none data-[disabled]:opacity-50",
+        "data-disabled:pointer-events-none data-disabled:opacity-50",
         /* Current */
-        "data-[current]:pointer-events-auto data-[current]:opacity-100",
+        "data-current:pointer-events-auto data-current:opacity-100",
         className,
       ),
     )}
