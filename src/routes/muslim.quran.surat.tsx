@@ -188,6 +188,7 @@ export type Ayat = {
 const BOOKMARK_KEY = 'BOOKMARK';
 const LASTREAD_KEY = 'LASTREAD';
 const LASTREADSURAH_KEY = 'LASTREADSURAH';
+const FAVORITESURAH_KEY = 'FAVORITESURAH';
 
 import { fontSizeOpt } from '#/src/constants/prefs';
 
@@ -215,8 +216,18 @@ const toArabicNumber = (number: number) => {
 
 import { useVirtualizer } from '@tanstack/react-virtual';
 
+const saveFavoriteSurah = async (data: any) => {
+  const savedData = await get_cache(FAVORITESURAH_KEY) || [];
+
+  // Tambahkan atau perbarui key `id` dengan objek baru
+  const updatedData = !savedData.includes(data)
+    ? [...savedData, data]
+    : savedData.filter((currentId: string) => currentId !== data);
+  await set_cache(FAVORITESURAH_KEY, updatedData);
+};
+
 const saveLastReadSurah = async (data: any) => {
-  const savedData = await get_cache(LASTREADSURAH_KEY) || [];
+  const savedData = await get_cache(LASTREADSURAH_KEY) || {};
 
   // Tambahkan atau perbarui key `id` dengan objek baru
   const updatedData = {
@@ -225,6 +236,45 @@ const saveLastReadSurah = async (data: any) => {
   };
   await set_cache(LASTREADSURAH_KEY, updatedData);
 };
+
+function ButtonStar() {
+  const surat = useLoaderData();
+  const [isFavorite, setIsFavorite] = React.useState(false);
+
+  React.useEffect(() => {
+    const checkFavoriteSurah = async (data: any) => {
+      const savedDataFavorite = await get_cache(FAVORITESURAH_KEY) || [];
+      setIsFavorite(savedDataFavorite.includes(data));
+    };
+
+    checkFavoriteSurah(surat.number);
+  }, []);
+
+  return (
+    <Button
+      variant='ghost'
+      title={isFavorite
+        ? 'Hapus dari daftar favorit'
+        : 'Tambahkan ke daftar favorit'}
+      onPress={() => {
+        saveFavoriteSurah(surat.number);
+        setIsFavorite(!isFavorite);
+      }}
+      className='[&_svg]:size-4'
+      size='icon'
+    >
+      <Star
+        className={cn(
+          isFavorite
+            ? 'text-yellow-500 fill-yellow-500 dark:text-yellow-400 dark:fill-yellow-400'
+            : '',
+        )}
+      >
+        <title>Surat Favorit</title>
+      </Star>
+    </Button>
+  );
+}
 
 export function Component() {
   const surat = useLoaderData();
@@ -236,12 +286,15 @@ export function Component() {
         created_at: new Date().toISOString(),
       },
     };
+
     saveLastReadSurah(obj);
   }, []);
 
   return (
     <React.Fragment>
-      <Header redirectTo='/muslim/quran' title={title}></Header>
+      <Header redirectTo='/muslim/quran' title={title}>
+        <ButtonStar />
+      </Header>
       <VirtualizedListSurah>
         <div className='text-3xl font-bold md:text-4xl w-fit mx-auto text-primary pb-3 pt-1 text-center'>
           {surat.name_latin}
@@ -487,7 +540,7 @@ const VirtualizedListSurah = ({ children }: { children: React.ReactNode }) => {
           <Button
             variant='ghost'
             size='icon'
-            className='gap-2 absolute right-[87px] -mt-[45px] bg-background z-10 transition-all duration-300 data-focused:outline-hidden data-focused:ring-none data-focused:ring-0 data-focus-visible:outline-hidden data-focus-visible:ring-none data-focus-visible:ring-0'
+            className='gap-2 absolute right-[127px] -mt-[45px] bg-background z-10 transition-all duration-300 data-focused:outline-hidden data-focused:ring-none data-focused:ring-0 data-focus-visible:outline-hidden data-focus-visible:ring-none data-focus-visible:ring-0'
             title='Pindah ke ayat'
           >
             <MoveDown />

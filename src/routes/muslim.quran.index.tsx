@@ -23,14 +23,17 @@ import React, { JSX, useMemo, useState } from 'react';
 import { Link, useLoaderData } from 'react-router';
 import type { LoaderFunctionArgs } from 'react-router';
 import quranIndexLoader from './muslim.quran.index.data';
+
 const LASTREADSURAH_KEY = 'LASTREADSURAH';
+const FAVORITESURAH_KEY = 'FAVORITESURAH';
 
 export async function Loader({ params }: LoaderFunctionArgs) {
   const { id } = params;
 
   const data = {
     id,
-    last_read_surah: await get_cache(LASTREADSURAH_KEY),
+    favorite_surah: await get_cache(FAVORITESURAH_KEY) || [],
+    last_read_surah: await get_cache(LASTREADSURAH_KEY) || {},
     surat: daftar_surat,
     juz_amma: daftar_surat.filter((surat) => parseInt(surat.number) >= 78),
   };
@@ -80,7 +83,7 @@ import {
 } from '#src/components/ui/select';
 
 export function Component() {
-  const { last_read_surah, surat, juz_amma } = useLoaderData<
+  const { last_read_surah, favorite_surah, surat, juz_amma } = useLoaderData<
     typeof quranIndexLoader
   >();
   const [input, setInput] = useState('');
@@ -107,17 +110,7 @@ export function Component() {
     ? 'Cari Surat..'
     : 'Cari Surat Juz Amma..';
 
-  const [selectedIds, setSelectedIds] = useState<string[]>([
-    '16',
-    '17',
-    // '87',
-    // '67',
-    // '36',
-    // '75',
-    // '18',
-    // '48',
-    // '55',
-  ]);
+  const [selectedIds, setSelectedIds] = useState<string[]>(favorite_surah);
 
   const menu = (
     <TooltipTrigger defaultOpen={true} delay={300}>
@@ -417,7 +410,7 @@ const VirtualizedListSurah: React.FC<
                             : (
                               <svg
                                 fill='currentColor'
-                                className='w-4 h-4 scale-[120%] -translate-y-[1px]'
+                                className='w-4 h-4 scale-[120%] -translate-y-[2px]'
                                 version='1.1'
                                 viewBox='-5.0 -10.0 110.0 110.0'
                               >
@@ -438,7 +431,7 @@ const VirtualizedListSurah: React.FC<
                       {relativeTime && (
                         <div className='flex items-center text-sm text-muted-foreground gap-x-1 mt-2.5'>
                           <History className='w-4 h-4 fill-muted' />
-                          <span>Dibaca {relativeTime}</span>
+                          <span>Dibuka {relativeTime}</span>
                         </div>
                       )}
                     </div>
