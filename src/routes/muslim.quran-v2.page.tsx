@@ -37,7 +37,7 @@ export type GroupedAyat = {
 	};
 };
 
-export async function loader({ params }: LoaderFunctionArgs) {
+export async function Loader({ params }: LoaderFunctionArgs) {
 	const api = ky.create({ prefixUrl: "https://api.myquran.com/v2/quran" });
 
 	const { id } = params;

@@ -15,7 +15,7 @@ import quranIndexLoader from "./muslim.quran.index.data";
 import type { LoaderFunctionArgs } from "react-router";
 import { data as daftar_surat } from "#src/constants/daftar-surat.json";
 
-export async function loader({ params }: LoaderFunctionArgs) {
+export async function Loader({ params }: LoaderFunctionArgs) {
 	const { id } = params;
 
 	const data = {

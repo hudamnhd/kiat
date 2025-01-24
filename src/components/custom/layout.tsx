@@ -1,3 +1,4 @@
+import { cn } from "#src/utils/misc";
 import { ThemeProvider } from "#src/components/custom/theme-provider.tsx";
 import { Outlet, useLocation } from "react-router";
 import React from "react";
@@ -24,7 +25,10 @@ export default function ThemeProviderWrapper() {
 
 export function Layout() {
 	return (
-		<div className="border-x min-h-[calc(100vh)] sm:max-w-xl mx-auto">
+		<div
+			id="container-main"
+			className="border-x min-h-[calc(100vh)] sm:max-w-xl mx-auto"
+		>
 			<Outlet />
 		</div>
 	);
@@ -47,6 +51,22 @@ const TrackLastRoutes = () => {
 	React.useEffect(() => {
 		const currentPath = location.pathname;
 
+		const containerMain = document.getElementById("container-main");
+
+		if (
+			currentPath === "/tools/calculator" &&
+			containerMain instanceof HTMLDivElement
+		) {
+			containerMain.classList.remove("border-x", "sm:max-w-xl");
+		} else {
+			if (!containerMain?.classList.contains("border-x")) {
+				containerMain?.classList.add("border-x");
+			}
+
+			if (!containerMain?.classList.contains("sm:max-w-xl")) {
+				containerMain?.classList.add("sm:max-w-xl");
+			}
+		}
 		// Cek apakah currentPath cocok dengan salah satu href di muslimLinks.
 		const matchedLink = navigate_link.find((link) => link.href === currentPath);
 
@@ -70,7 +90,7 @@ const TrackLastRoutes = () => {
 			// Simpan ke localStorage.
 			localStorage.setItem("lastUsedRoutes", JSON.stringify(limitedRoutes));
 		}
-	}, [location]);
+	}, [location.pathname]);
 
 	return null;
 };

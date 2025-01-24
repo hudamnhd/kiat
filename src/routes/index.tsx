@@ -84,7 +84,7 @@ export default function Index() {
 				</div>
 			</div>
 			<div className="flex items-center justify-between">
-				<div className="Home-built px-4 text-muted-foreground gap-1 uppercase text-xs [&_svg]:size-3 mb-1.5">
+				<div className="Home-built px-4 text-muted-foreground gap-1 text-xs [&_svg]:size-3 mb-1.5">
 					Built at : {date}
 				</div>
 				<Link

@@ -1,14 +1,11 @@
 import { Header } from "#src/components/custom/header";
+import type { Loader as muslimLoader } from "./muslim.data";
 import { useVirtualizer } from "@tanstack/react-virtual";
 import { ScrollToFirstIndex } from "#src/components/custom/scroll-to-top.tsx";
 import { Heart } from "lucide-react";
-import { useLoaderData } from "react-router";
+import { useLoaderData, useRouteLoaderData } from "react-router";
 import { cn } from "#src/utils/misc";
-import {
-	get_cache,
-	set_cache,
-	construct_key,
-} from "#src/utils/cache-client.ts";
+import { get_cache, set_cache } from "#src/utils/cache-client.ts";
 
 import ky from "ky";
 import type { LoaderFunctionArgs } from "react-router";
@@ -40,7 +37,7 @@ export type Datum = {
 	source: "quran";
 };
 
-export async function loader({ params }: LoaderFunctionArgs) {
+export async function Loader({ params }: LoaderFunctionArgs) {
 	const { source } = params;
 
 	if (!source) {
@@ -74,13 +71,13 @@ export async function loader({ params }: LoaderFunctionArgs) {
 }
 
 export function Component() {
-	const loaderData = useLoaderData();
+	const loaderData = useLoaderData<typeof Loader>();
 
 	return (
 		<React.Fragment>
 			<Header redirectTo="/muslim/doa" title={`Do'a ${loaderData.source}`} />
 
-			<DoaView items={loaderData.data}>
+			<DoaView>
 				<div className="text-center p-2 border-b">
 					<div className="text-center text-3xl font-bold leading-tight tracking-tighter md:text-4xl lg:leading-[1.1] capitalize">
 						Do'a {loaderData.source}
@@ -95,12 +92,22 @@ export function Component() {
 	);
 }
 
-import { save_bookmarks, type Bookmark } from "#src/utils/bookmarks";
+import {
+	AyatBookmark,
+	save_bookmarks,
+	type Bookmark,
+} from "#src/utils/bookmarks";
 
 import React from "react";
+import { fontSizeOpt } from "#/src/constants/prefs";
 import { motion, useSpring, useScroll } from "framer-motion";
 
-const DoaView = ({ items, children }) => {
+const DoaView = ({ children }: { children: React.ReactNode }) => {
+	const parentLoader = useRouteLoaderData<typeof muslimLoader>("muslim");
+	const opts = parentLoader?.opts;
+
+	const font_size_opts = fontSizeOpt.find((d) => d.label === opts?.font_size);
+	const { data: items } = useLoaderData<typeof Loader>();
 	const parentRef = React.useRef<HTMLDivElement>(null);
 
 	const [bookmarks, setBookmarks] = React.useState<Bookmark[]>([]);
@@ -133,8 +140,6 @@ const DoaView = ({ items, children }) => {
 			{
 				title: doa.judul,
 				arab: doa.arab,
-				latin: null,
-				tafsir: null,
 				translation: doa.indo,
 				source: `/muslim/doa?index=${doa.index}&source=${doa.source}`,
 			},
@@ -154,7 +159,7 @@ const DoaView = ({ items, children }) => {
 	};
 
 	React.useEffect(() => {
-		const save_bookmark_to_lf = async (bookmarks) => {
+		const save_bookmark_to_lf = async (bookmarks: AyatBookmark[]) => {
 			await set_cache(BOOKMARK_KEY, bookmarks);
 		};
 		save_bookmark_to_lf(bookmarks);
@@ -284,7 +289,15 @@ const DoaView = ({ items, children }) => {
 
 										<div className="w-full px-4 text-right flex gap-x-2.5 items-start justify-end">
 											<p
-												className="relative mt-2 font-lpmq text-right text-primary"
+												className={cn(
+													"relative mt-2 font-lpmq text-right text-primary font-lpmq",
+													opts?.font_type,
+												)}
+												style={{
+													fontWeight: opts?.font_weight,
+													fontSize: font_size_opts?.fontSize || "1.5rem",
+													lineHeight: font_size_opts?.lineHeight || "3.5rem",
+												}}
 												dangerouslySetInnerHTML={{
 													__html: doa.arab,
 												}}

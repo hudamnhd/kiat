@@ -1,4 +1,4 @@
-import { defineConfig } from "vite";
+import { defineConfig, PluginOption } from "vite";
 import react from "@vitejs/plugin-react";
 import tailwindcss from "@tailwindcss/vite";
 import type { ManifestOptions, VitePWAOptions } from "vite-plugin-pwa";
@@ -83,6 +83,6 @@ export default defineConfig({
 		tailwindcss(),
 		react(),
 		VitePWA(pwaOptions),
-		replace(replaceOptions),
+		replace(replaceOptions) as PluginOption,
 	],
 });

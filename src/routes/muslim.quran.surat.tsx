@@ -1,6 +1,6 @@
 import { cn } from "#src/utils/misc";
 import { Header } from "#src/components/custom/header";
-import type { loader as muslimLoader } from "./muslim.data";
+import type { Loader as muslimLoader } from "./muslim.data";
 import {
 	Popover,
 	PopoverDialog,
@@ -30,6 +30,10 @@ import type { LoaderFunctionArgs } from "react-router";
 import { get_cache, set_cache } from "#src/utils/cache-client.ts";
 import ky from "ky";
 
+function sleep(ms: number) {
+	return new Promise((resolve) => setTimeout(resolve, 0));
+}
+
 export type Ayah = {
 	number: string;
 	name: string;
@@ -55,7 +59,7 @@ export type Ayah = {
 
 type Surah = Record<string, Ayah>; // Object with dynamic string keys
 
-export async function loader({ params }: LoaderFunctionArgs) {
+export async function Loader({ params }: LoaderFunctionArgs) {
 	const api = ky.create({
 		prefixUrl:
 			"https://raw.githubusercontent.com/rioastamal/quran-json/refs/heads/master/surah",
@@ -343,7 +347,7 @@ const VirtualizedListSurah = ({ children }: { children: React.ReactNode }) => {
 		// load_bookmark_from_lf();
 
 		if (ayat !== null) {
-			scrollToAyat(parseInt(ayat) - 1);
+			sleep(50).then(() => scrollToAyat(parseInt(ayat) - 1));
 		}
 	}, []);
 
@@ -675,7 +679,7 @@ const VirtualizedListSurah = ({ children }: { children: React.ReactNode }) => {
 												opts?.font_type,
 											)}
 											style={{
-												fontWeight: opts.font_weight,
+												fontWeight: opts?.font_weight,
 												fontSize: font_size_opts?.fontSize || "1.5rem",
 												lineHeight: font_size_opts?.lineHeight || "3.5rem",
 											}}

@@ -1,5 +1,5 @@
 import React from "react";
-import type { loader } from "#src/routes/muslim.data";
+import type { Loader } from "#src/routes/muslim.data";
 import {
 	DialogContent,
 	DialogDescription,
@@ -44,7 +44,7 @@ const preBismillah = {
 };
 
 export function SettingsDisplay() {
-	const loaderRoot = useRouteLoaderData<typeof loader>("muslim");
+	const loaderRoot = useRouteLoaderData<typeof Loader>("muslim");
 
 	const opts = loaderRoot?.opts;
 

@@ -5,6 +5,7 @@ import ErrorPage from "./routes/error-page";
 import NotFoundError from "./routes/404.tsx";
 import Index from "./routes/index";
 import { getTheme } from "./components/custom/theme-provider.tsx";
+import { lazyWrapper } from "./utils/misc";
 
 export const router = createBrowserRouter([
 	{
@@ -59,7 +60,7 @@ export const router = createBrowserRouter([
 				path: "/muslim",
 				id: "muslim",
 				element: <Layout />,
-				lazy: async () => await import("./routes/muslim.data"),
+				lazy: lazyWrapper(() => import("./routes/muslim.data")),
 				shouldRevalidate: ({ formMethod, currentUrl, nextUrl }) => {
 					const shouldRevalidate =
 						formMethod === "POST" || currentUrl.pathname !== nextUrl.pathname;
@@ -87,7 +88,7 @@ export const router = createBrowserRouter([
 					},
 					{
 						path: "/muslim/doa/:source",
-						lazy: () => import("./routes/muslim.doa.sumber"),
+						lazy: lazyWrapper(() => import("./routes/muslim.doa.sumber")),
 					},
 					{
 						path: "/muslim/sholawat",
@@ -104,7 +105,7 @@ export const router = createBrowserRouter([
 					{
 						path: "/muslim/quran-v2/:id",
 						HydrateFallback: Loader,
-						lazy: async () => await import("./routes/muslim.quran-v2.page"),
+						lazy: lazyWrapper(() => import("./routes/muslim.quran-v2.page")),
 					},
 					{
 						path: "/muslim/quran",
@@ -112,13 +113,13 @@ export const router = createBrowserRouter([
 							{
 								path: "/muslim/quran/:id",
 								HydrateFallback: Loader,
-								lazy: async () => await import("./routes/muslim.quran.surat"),
+								lazy: lazyWrapper(() => import("./routes/muslim.quran.surat")),
 							},
 							{
 								path: "/muslim/quran",
 								index: true,
 								HydrateFallback: Loader,
-								lazy: () => import("./routes/muslim.quran.index"),
+								lazy: lazyWrapper(() => import("./routes/muslim.quran.index")),
 							},
 						],
 					},
@@ -128,13 +129,16 @@ export const router = createBrowserRouter([
 							{
 								path: "/muslim/quran-word-by-word/:id",
 								HydrateFallback: Loader,
-								lazy: async () =>
-									await import("./routes/muslim.quran-word-by-word.surat"),
+								lazy: lazyWrapper(
+									() => import("./routes/muslim.quran-word-by-word.surat"),
+								),
 							},
 							{
 								path: "/muslim/quran-word-by-word",
 								index: true,
-								lazy: () => import("./routes/muslim.quran-word-by-word.index"),
+								lazy: lazyWrapper(
+									() => import("./routes/muslim.quran-word-by-word.index"),
+								),
 								HydrateFallback: Loader,
 							},
 						],

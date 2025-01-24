@@ -36,7 +36,7 @@ type Surah = Record<string, Ayat>; // Object with dynamic string keys
 
 import { LoaderFunctionArgs } from "react-router";
 
-export async function loader({ params }: LoaderFunctionArgs) {
+export async function Loader({ params }: LoaderFunctionArgs) {
 	const api = ky.create({
 		prefixUrl:
 			"https://raw.githubusercontent.com/qazasaz/quranwbw/refs/heads/master/surahs/data",
@@ -71,7 +71,7 @@ const shuffleArray = (array: TextType[]) => {
 };
 
 export function Component() {
-	const { ayats, surat } = useLoaderData<typeof loader>();
+	const { ayats, surat } = useLoaderData<typeof Loader>();
 
 	const words = ayats.map((d) => {
 		const original = d.w.map((w, index) => {
