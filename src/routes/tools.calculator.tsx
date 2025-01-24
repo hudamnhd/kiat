@@ -2,6 +2,7 @@ import { Header } from '#src/components/custom/header';
 import { Button, buttonVariants } from '#src/components/ui/button';
 import { Input } from '#src/components/ui/input';
 import {
+  ChevronDown,
   ChevronLeft,
   Delete,
   Equal,
@@ -249,8 +250,8 @@ export const Component = () => {
                 {({ close }) => (
                   <>
                     <DialogHeader>
-                      <DialogTitle className='flex items-center gap-1.5 justify-start'>
-                        <History className='w-4 h-4' /> Riwayat
+                      <DialogTitle>
+                        Riwayat
                       </DialogTitle>
                       <DialogDescription>
                         Klik list untuk melihat rincian
@@ -262,23 +263,28 @@ export const Component = () => {
                           history.map((d, index) => (
                             <div key={index} className='grid break-words py-2'>
                               <Collapsible>
-                                <CollapsibleTrigger className='w-full [&[data-state=open]>div.chev]:hidden'>
-                                  <div className='text-pretty text-xl font-medium text-start w-[300px]'>
-                                    {splitExpression(
-                                      processInput(d.expression),
-                                    ).map((dt, index) => (
-                                      <React.Fragment key={index}>
-                                        {dt}
-                                      </React.Fragment>
-                                    ))}
-                                  </div>
+                                <div className='text-pretty text-xl font-medium text-start flex flex-wrap px-1'>
+                                  {splitExpression(
+                                    processInput(d.expression),
+                                  ).map((dt, index) => (
+                                    <React.Fragment key={index}>
+                                      <span>{dt}</span>
+                                    </React.Fragment>
+                                  ))}
+                                </div>
+                                <div className='flex items-center justify-between text-sm'>
+                                  <CollapsibleTrigger className='flex items-center gap-2'>
+                                    <ChevronDown className='w-4 h-4 group-data-expanded:rotate-180 duration-300 transition-all' />
+                                    {' '}
+                                    <span>Lihat</span>
+                                  </CollapsibleTrigger>
                                   <div className='chev text-2xl text-right font-semibold'>
                                     {d.result &&
                                       `${formatRupiah(parseFloat(d.result))}`}
                                   </div>
-                                </CollapsibleTrigger>
+                                </div>
                                 <CollapsibleContent>
-                                  <div className='text-xl font-semibold max-h-[calc(100vh-360px)] overflow-y-auto pr-3 my-3'>
+                                  <div className='text-xl font-semibold max-h-[calc(100vh-360px)] overflow-y-auto my-3'>
                                     {splitExpression(
                                       processInput(d.expression),
                                     ).map((item, index, arr) => {
@@ -398,10 +404,25 @@ export const Component = () => {
                           </div>
                         )}
                     </div>
-                    <DialogFooter className='sm:hidden block'>
-                      <Button onPress={close} variant='outline'>
+                    <DialogFooter className='grid gap-2'>
+                      <Button
+                        onPress={close}
+                        variant='outline'
+                        className='sm:hidden '
+                      >
                         <X /> Tutup
                       </Button>
+                      {history.length > 0 && (
+                        <Button
+                          onPress={() => {
+                            setHistory([]);
+                            close();
+                          }}
+                          variant='destructive'
+                        >
+                          <X /> Hapus Riwayat
+                        </Button>
+                      )}
                     </DialogFooter>
                   </>
                 )}

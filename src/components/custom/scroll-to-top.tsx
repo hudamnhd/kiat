@@ -1,97 +1,101 @@
-import React from "react";
-import { cn } from "#src/utils/misc";
-import { Button } from "#src/components/ui/button";
-import { ArrowUp } from "lucide-react";
+import { Button } from '#src/components/ui/button';
+import { cn } from '#src/utils/misc';
+import { ArrowUp } from 'lucide-react';
+import React from 'react';
 
 export const ScrollTopButton = ({
-	container,
+  container,
 }: { container: React.RefObject<HTMLDivElement> | null }) => {
-	const [showGoTop, setShowGoTop] = React.useState(false);
+  const [showGoTop, setShowGoTop] = React.useState(false);
 
-	const handleVisibleButton = () => {
-		if (container?.current) {
-			const shouldShow = container.current.scrollTop > 50;
-			if (shouldShow !== showGoTop) {
-				setShowGoTop(shouldShow);
-			}
-		}
-	};
+  const handleVisibleButton = () => {
+    if (container?.current) {
+      const shouldShow = container.current.scrollTop > 50;
+      if (shouldShow !== showGoTop) {
+        setShowGoTop(shouldShow);
+      }
+    }
+  };
 
-	const handleScrollUp = () => {
-		container?.current?.scrollTo({ left: 0, top: 0, behavior: "smooth" });
-	};
+  const handleScrollUp = () => {
+    container?.current?.scrollTo({ left: 0, top: 0, behavior: 'smooth' });
+  };
 
-	React.useEffect(() => {
-		const currentContainer = container?.current;
-		if (!currentContainer) return;
+  React.useEffect(() => {
+    const currentContainer = container?.current;
+    if (!currentContainer) return;
 
-		currentContainer.addEventListener("scroll", handleVisibleButton);
+    currentContainer.addEventListener('scroll', handleVisibleButton);
 
-		return () => {
-			currentContainer.removeEventListener("scroll", handleVisibleButton);
-		};
-	}, [container, showGoTop]);
+    return () => {
+      currentContainer.removeEventListener('scroll', handleVisibleButton);
+    };
+  }, [container, showGoTop]);
 
-	return (
-		<div
-			className={cn(
-				"sticky inset-x-0 ml-auto w-fit -translate-x-3 z-60 bottom-0 -mt-11",
-				!showGoTop && "hidden",
-			)}
-		>
-			<Button onPress={handleScrollUp} variant="default" size="icon">
-				<ArrowUp />
-			</Button>
-		</div>
-	);
+  return (
+    <div
+      className={cn(
+        'sticky inset-x-0 ml-auto w-fit -translate-x-3 z-60 bottom-0 -mt-11',
+        !showGoTop && 'hidden',
+      )}
+    >
+      <Button onPress={handleScrollUp} variant='default' size='icon'>
+        <ArrowUp />
+      </Button>
+    </div>
+  );
 };
 
 export const ScrollToFirstIndex = ({
-	handler,
-	container,
-	className,
+  handler,
+  container,
+  className,
 }: {
-	handler: () => void;
-	container: React.RefObject<HTMLDivElement> | null;
-	className?: string;
+  handler: () => void;
+  container: React.RefObject<HTMLDivElement> | null;
+  className?: string;
 }) => {
-	const [showGoTop, setShowGoTop] = React.useState(false);
+  const [showGoTop, setShowGoTop] = React.useState(false);
 
-	const handleVisibleButton = () => {
-		if (container?.current) {
-			const shouldShow = container.current.scrollTop > 50;
-			if (shouldShow !== showGoTop) {
-				setShowGoTop(shouldShow);
-			}
-		}
-	};
+  const handleVisibleButton = () => {
+    if (container?.current) {
+      const shouldShow = container.current.scrollTop > 50;
+      if (shouldShow !== showGoTop) {
+        setShowGoTop(shouldShow);
+      }
+    }
+  };
 
-	const handleScrollUp = () => {
-		handler();
-	};
+  const handleScrollUp = () => {
+    handler();
+  };
 
-	React.useEffect(() => {
-		const currentContainer = container?.current;
-		if (!currentContainer) return;
+  React.useEffect(() => {
+    const currentContainer = container?.current;
+    if (!currentContainer) return;
 
-		currentContainer.addEventListener("scroll", handleVisibleButton);
+    currentContainer.addEventListener('scroll', handleVisibleButton);
 
-		return () => {
-			currentContainer.removeEventListener("scroll", handleVisibleButton);
-		};
-	}, [container, showGoTop]);
+    return () => {
+      currentContainer.removeEventListener('scroll', handleVisibleButton);
+    };
+  }, [container, showGoTop]);
 
-	return (
-		<div
-			className={cn(
-				"sticky inset-x-0 ml-auto w-fit -translate-x-5 z-60 bottom-0 -mt-11",
-				!showGoTop && "hidden",
-				className,
-			)}
-		>
-			<Button onPress={handleScrollUp} variant="default" size="icon">
-				<ArrowUp />
-			</Button>
-		</div>
-	);
+  return (
+    <div
+      className={cn(
+        'sticky inset-x-0 ml-auto w-fit -translate-x-5 z-60 bottom-0 -mt-11',
+        !showGoTop && 'hidden',
+        className,
+      )}
+    >
+      <Button
+        onPress={handleScrollUp}
+        variant='default'
+        size='icon'
+      >
+        <ArrowUp />
+      </Button>
+    </div>
+  );
 };
