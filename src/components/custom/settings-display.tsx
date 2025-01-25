@@ -60,15 +60,9 @@ export function SettingsDisplay() {
   const [fontSize, setFontSize] = React.useState<string>(
     opts?.font_size || 'text-2xl',
   ); // Default ke "Normal"
-  const [showTranslation] = React.useState<boolean>(
-    opts?.font_translation && opts?.font_translation === 'on' ? true : false,
-  ); // Default ke "Normal"
-  const [showLatin] = React.useState<boolean>(
-    opts?.font_latin && opts?.font_latin === 'on' ? true : false,
-  ); // Default ke "Normal"
-  const [showTafsir] = React.useState<boolean>(
-    opts?.font_tafsir && opts?.font_tafsir === 'on' ? true : false,
-  ); // Default ke "Normal"
+  let showTranslation = opts?.font_translation === 'on' ? true : false; // Default ke "Normal"
+  let showLatin = opts?.font_latin === 'on' ? true : false; // Default ke "Normal"
+  let showTafsir = opts?.font_tafsir === 'on' ? true : false;
 
   const font_size_opts = fontSizeOpt.find((d) => d.label === fontSize);
   return (
