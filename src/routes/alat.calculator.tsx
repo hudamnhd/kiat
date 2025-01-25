@@ -562,13 +562,12 @@ export const Component = () => {
               </Button>
               <Button
                 size='lg'
-                variant='destructive'
-                className='[&_svg]:size-9 h-14 bg-red-600 dark:bg-red-500'
+                variant='default'
+                className='[&_svg]:size-9 h-14 bg-slate-600 dark:bg-slate-500'
                 onPress={handleBackspace}
               >
                 <Delete
-                  strokeWidth={2}
-                  className='stroke-white'
+                  strokeWidth={1.5}
                 />
               </Button>
 
@@ -660,7 +659,7 @@ export const Component = () => {
                 3
               </Button>
               <Button
-                className='[&_svg]:size-9 h-14 bg-teal-700  dark:bg-teal-600'
+                className='[&_svg]:size-9 h-14 bg-orange-600 dark:bg-orange-500 data-hovered:bg-orange-600/90 dark:data-hovered:bg-orange-500/90'
                 size='lg'
                 onPress={handleEvaluate}
               >
