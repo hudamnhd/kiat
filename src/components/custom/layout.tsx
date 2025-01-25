@@ -85,7 +85,7 @@ const TrackLastRoutes = () => {
       updatedRoutes.unshift(matchedLink.href);
 
       // Simpan hanya hingga maksimal 3 route terakhir.
-      const limitedRoutes = updatedRoutes.slice(0, 5);
+      const limitedRoutes = updatedRoutes.slice(0, 12);
 
       // Simpan ke localStorage.
       localStorage.setItem('lastUsedRoutes', JSON.stringify(limitedRoutes));

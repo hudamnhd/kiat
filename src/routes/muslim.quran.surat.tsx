@@ -153,12 +153,13 @@ import { JollyNumberFieldV2 } from '#src/components/ui/number-field';
 import { save_bookmarks } from '#src/utils/bookmarks';
 import type { AyatBookmark } from '#src/utils/bookmarks';
 import {
+  ArrowUpDown,
   Bookmark,
   ChevronLeft,
   ChevronRight,
+  CornerUpRight,
   Dot,
   Ellipsis,
-  MoveDown,
   Star,
 } from 'lucide-react';
 
@@ -278,7 +279,6 @@ function ButtonStar() {
 
 export function Component() {
   const surat = useLoaderData();
-  const title = `${surat.number}. ${surat.name_latin}`;
 
   React.useEffect(() => {
     const obj = {
@@ -292,9 +292,6 @@ export function Component() {
 
   return (
     <React.Fragment>
-      <Header redirectTo='/muslim/quran' title={title}>
-        <ButtonStar />
-      </Header>
       <VirtualizedListSurah>
         <div className='text-3xl font-bold md:text-4xl w-fit mx-auto text-primary pb-3 pt-1 text-center'>
           {surat.name_latin}
@@ -520,6 +517,7 @@ const VirtualizedListSurah = ({ children }: { children: React.ReactNode }) => {
     : null;
 
   const maxValue = datas.length;
+  const title = `${surat.number}. ${surat.name_latin}`;
   return (
     <React.Fragment>
       <motion.div
@@ -535,15 +533,16 @@ const VirtualizedListSurah = ({ children }: { children: React.ReactNode }) => {
         }}
       />
 
-      <div className='relative bg-linear-to-r from-fuchsia-500 to-cyan-500 dark:from-fuchsia-400 dark:to-cyan-400 max-w-xl mx-auto'>
+      <Header redirectTo='/muslim/quran' title={title}>
+        <ButtonStar />
+
         <PopoverTrigger>
           <Button
             variant='ghost'
             size='icon'
-            className='gap-2 absolute right-[127px] -mt-[45px] bg-background z-10 transition-all duration-300 data-focused:outline-hidden data-focused:ring-none data-focused:ring-0 data-focus-visible:outline-hidden data-focus-visible:ring-none data-focus-visible:ring-0'
             title='Pindah ke ayat'
           >
-            <MoveDown />
+            <ArrowUpDown />
           </Button>
           <Popover isNonModal={false} placement='bottom'>
             <PopoverDialog className='max-w-[180px] space-y-2.5 bg-background rounded-md'>
@@ -585,8 +584,7 @@ const VirtualizedListSurah = ({ children }: { children: React.ReactNode }) => {
             </PopoverDialog>
           </Popover>
         </PopoverTrigger>
-      </div>
-      {/*<Button onPress={() => scrollToAyat(200)}>OK</Button>*/}
+      </Header>
       <div
         ref={parentRef}
         className='h-[calc(100vh-55px)]'

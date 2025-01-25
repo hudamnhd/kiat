@@ -61,21 +61,45 @@ export default function Index() {
         <Header isIndex={true} redirectTo='/about' title='kiat'>
           <CommandMenu />
         </Header>
-        <div className='text-center pt-3'>
+        <div className='text-center pt-3 mb-1.5'>
           <div className='text-center text-3xl font-bold leading-tight tracking-tighter md:text-4xl lg:leading-[1.1]'>
-            Apps
+            Kiat
           </div>
           <p className='text-muted-foreground mt-1'>
             Here's a list of apps ready to use!
           </p>
         </div>
 
+        {
+          /*<ul className='mt-5 px-2 gap-x-2 gap-y-4 grid grid-cols-4 sm:grid-cols-5  place-items-start'>
+          {data.map((item, i) => (
+            <li
+              key={item.href}
+              className={cn(
+                'animate-roll-reveal [animation-fill-mode:backwards] w-fit mx-auto',
+              )}
+              style={{ animationDelay: `${i * 0.07}s` }}
+            >
+              <a
+                href={item.href}
+                className='grid size-14 place-items-center rounded-2xl ring ring-primary/30 bg-gradient-to-tr from-primary/30 via-muted to-primary/30 transition hover:-rotate-6 hover:bg-accent mx-auto'
+              >
+                <item.icon size={30} className='' />
+              </a>
+
+              <div className='text-center text-sm sm:duration-300 mt-1'>
+                {item.title}
+              </div>
+            </li>
+          ))}
+        </ul>*/
+        }
         <NavigationList data={mainMenu} />
 
         <div className='pb-7'>
           {last_used.length > 0 && (
             <React.Fragment>
-              <div className='px-3 mt-2 text-muted-foreground'>
+              <div className='px-3 mt-1 text-muted-foreground'>
                 Terakhir digunakan
               </div>
               <NavigationList data={last_used} />
