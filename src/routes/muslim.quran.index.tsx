@@ -121,13 +121,13 @@ export function Component() {
     <TooltipTrigger defaultOpen={true} delay={300}>
       <Select
         aria-label='Select Type List'
-        className='text-lg font-semibold min-w-[120px]'
+        className='font-semibold min-w-[120px]'
         placeholder='Daftar Surat'
         selectedKey={version}
         onSelectionChange={(selected) => setVersion(selected as string)}
       >
         <SelectTrigger className='data-focused:outline-hidden data-focused:ring-none data-focused:ring-0 data-focus-visible:outline-hidden data-focus-visible:ring-none data-focus-visible:ring-0 border-none shadow-none p-0 [&_svg]:opacity-80 [&_svg]:size-[14px]'>
-          <SelectValue className='text-lg font-semibold' />
+          <SelectValue className='font-semibold' />
         </SelectTrigger>
         <SelectPopover>
           <SelectListBox>
@@ -177,7 +177,7 @@ export function Component() {
             surat
               .filter((navItem) =>
                 Object.keys(last_read_surah).includes(navItem.number)
-              )
+              ).sort((a, b) => a.created_at - b.created_at)
               .map((item) => {
                 const to = `/muslim/quran/${item.number}`;
 
@@ -210,7 +210,7 @@ export function Component() {
                     </div>
                   </Link>
                 );
-              }).reverse()}
+              })}
         </div>
       </div>
 
@@ -370,7 +370,7 @@ const VirtualizedListSurah: React.FC<
   const rowVirtualizer = useVirtualizer({
     count: items.length, // Jumlah total item
     getScrollElement: () => parentRef.current, // Elemen tempat scrolling
-    estimateSize: () => 56, // Perkiraan tinggi item (70px)
+    estimateSize: () => 62, // Perkiraan tinggi item (70px)
   });
 
   const { scrollYProgress } = useScroll({
@@ -460,29 +460,20 @@ const VirtualizedListSurah: React.FC<
               >
                 <div
                   className={cn(
-                    'px-4 py-3 flex items-center hover:bg-accent',
+                    'px-4 pt-2.5 pb-1.5 flex items-center hover:bg-accent',
                   )}
                 >
                   <Link
                     to={to}
                     className='min-w-0 flex-1 flex items-center justify-between'
                   >
-                    <div className='flex-none truncate -space-y-1.5'>
+                    <div className='truncate -space-y-1.5'>
                       <div className='flex text-sm items-center'>
                         <p className='font-medium'>
                           {item.number}. {item.name_id}
                         </p>
-                        <p className='ml-1 flex-shrink-0 text-muted-foreground'>
-                          ({item.translation_id})
-                        </p>
-                        {is_favorite && (
-                          <Star className='w-4 h-4 text-yellow-500 fill-yellow-500 dark:text-yellow-400 dark:fill-yellow-400 ml-1'>
-                            <title>Surat Favorit</title>
-                          </Star>
-                        )}
-                      </div>
-                      <div className='mt-2 flex'>
-                        <div className='flex items-center text-sm text-muted-foreground gap-x-2'>
+
+                        <div className='ml-1 flex items-center text-sm text-muted-foreground gap-x-2'>
                           {item.revelation_id === 'Makkiyyah'
                             ? (
                               <svg
@@ -509,17 +500,25 @@ const VirtualizedListSurah: React.FC<
                                 <title>{item.revelation_id}</title>
                               </svg>
                             )}
-                          <span>{item.revelation_id}</span>
                         </div>
+                        {is_favorite && (
+                          <Star className='w-4 h-4 text-yellow-500 fill-yellow-500 dark:text-yellow-400 dark:fill-yellow-400 ml-1'>
+                            <title>Surat Favorit</title>
+                          </Star>
+                        )}
+                      </div>
+                      <div className='mt-2 flex truncate'>
+                        <span className='flex-shrink-0 text-muted-foreground text-sm'>
+                          {item.translation_id}
+                        </span>
                         <Dot className='mx-1 w-3 scale-150' />
-                        <div className='flex items-center text-sm text-muted-foreground gap-x-2'>
-                          <Hexagon className='w-4 h-4 fill-muted' />
-                          <span>{item.number_of_verses} ayat</span>
-                        </div>
+                        <span className='flex-shrink-0 text-muted-foreground text-sm'>
+                          {item.number_of_verses} ayat
+                        </span>
                       </div>
 
                       {relativeTime && (
-                        <div className='flex items-center text-sm text-muted-foreground gap-x-1 mt-2.5'>
+                        <div className='flex items-center text-sm text-muted-foreground gap-x-1 mt-1.5'>
                           <History className='w-4 h-4 fill-muted' />
                           <span>Dibuka {relativeTime}</span>
                         </div>
@@ -551,7 +550,7 @@ const VirtualizedListSurah: React.FC<
                       />
                     </Button>*/
                     }
-                    <div className='font-lpmq-2 text-xl sm:text-2xl text-primary text-right'>
+                    <div className='font-indopak-2 text-xl sm:text-2xl text-primary text-right'>
                       {item.name_short}
                     </div>
                   </div>

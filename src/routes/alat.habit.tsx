@@ -159,7 +159,7 @@ const HabitTracker: React.FC = () => {
 	const statistics = getStatistics(habits);
 	return (
 		<>
-			<Header redirectTo="/tools" title="Habit" />
+			<Header redirectTo="/alat" title="Habit" />
 			<div className="grid gap-5 sm:p-4 place-items-start max-w-4xl sm:max-w-full  w-full">
 				<div className="w-full">
 					<h1 className="text-2xl font-bold  mb-4 sm:text-start text-center">

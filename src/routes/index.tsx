@@ -9,6 +9,7 @@ import {
   CommandSeparator,
 } from '#src/components/ui/command';
 
+import Footer from '#src/components/custom/footer';
 import { Header } from '#src/components/custom/header';
 import { NavigationList } from '#src/components/custom/navigation-list.tsx';
 import {
@@ -39,39 +40,37 @@ export default function Index() {
     }
   }, []);
 
+  const muslim_desc = muslimNavigationLink.map((d) => d.title).join(', ');
+  const tools_desc = toolsNavigationLink.map((d) => d.title).join(', ');
   const mainMenu: NavigationLink[] = [
     {
       title: 'Muslim',
       href: '/muslim',
-      description: 'Berisi Al-Quran, Sholawat dan doa sehari-hari',
+      description: 'Berisi ' + muslim_desc,
       icon: BookOpenText,
     },
     {
-      title: 'Tools',
-      href: '/tools',
-      description: 'Berisi calculator, todolist dan lain-lain',
+      title: 'Alat',
+      href: '/alat',
+      description: 'Berisi ' + tools_desc,
       icon: Wrench,
     },
   ];
 
   const date = '__DATE__';
   return (
-    <div className='flex flex-col justify-between border-x h-[calc(100vh)] max-w-xl mx-auto relative'>
-      <div>
-        <Header isIndex={true} redirectTo='/about' title='kiat'>
-          <CommandMenu />
-        </Header>
-        <div className='text-center pt-3 mb-1.5'>
-          <div className='text-center text-3xl font-bold leading-tight tracking-tighter md:text-4xl lg:leading-[1.1]'>
-            Kiat
-          </div>
-          <p className='text-muted-foreground mt-1'>
-            Here's a list of apps ready to use!
-          </p>
+    <div className='border-x min-h-[calc(100vh)] max-w-xl mx-auto relative'>
+      <Header isIndex={true} redirectTo='/about' title='kiat'>
+        <CommandMenu />
+      </Header>
+      <div className='text-center pt-3 mb-1.5'>
+        <div className='text-center text-3xl font-bold leading-tight tracking-tighter md:text-4xl lg:leading-[1.1]'>
+          Kiat
         </div>
+      </div>
 
-        {
-          /*<ul className='mt-5 px-2 gap-x-2 gap-y-4 grid grid-cols-4 sm:grid-cols-5  place-items-start'>
+      {
+        /*<ul className='mt-5 px-2 gap-x-2 gap-y-4 grid grid-cols-4 sm:grid-cols-5  place-items-start'>
           {data.map((item, i) => (
             <li
               key={item.href}
@@ -93,107 +92,21 @@ export default function Index() {
             </li>
           ))}
         </ul>*/
-        }
-        <NavigationList data={mainMenu} />
+      }
+      <NavigationList data={mainMenu} />
 
-        <div className='pb-7'>
-          {last_used.length > 0 && (
-            <React.Fragment>
-              <div className='px-3 mt-1 text-muted-foreground'>
-                Terakhir digunakan
-              </div>
-              <NavigationList data={last_used} />
-            </React.Fragment>
-          )}
-        </div>
+      <div className='pb-7'>
+        {last_used.length > 0 && (
+          <React.Fragment>
+            <div className='px-3 mt-1 text-muted-foreground'>
+              Terakhir digunakan
+            </div>
+            <NavigationList data={last_used} />
+          </React.Fragment>
+        )}
       </div>
-      <div className='flex items-center justify-between'>
-        <div className='Home-built px-4 text-muted-foreground gap-1 text-xs [&_svg]:size-3 mb-1.5'>
-          Built at : {date}
-        </div>
-        <Link
-          className={cn(
-            buttonVariants({ variant: 'link' }),
-            'text-muted-foreground gap-1 uppercase text-xs [&_svg]:size-3 mb-1.5',
-          )}
-          to='/about'
-        >
-          <Copyright /> 2025 Huda
-        </Link>
-      </div>
+      <Footer />
     </div>
-  );
-}
-
-function NavbarMobile() {
-  const navigate = useNavigate();
-  return (
-    <React.Fragment>
-      <DialogTrigger type='modal'>
-        <Button
-          variant='ghost'
-          className='focus-visible:ring-0 outline-hidden md:hidden -ml-2 mr-2 flex h-8 w-8 cursor-pointer items-center justify-center'
-        >
-          <Menu size={20} />
-        </Button>
-        <ModalOverlay
-          isDismissable
-          className={({ isEntering, isExiting }) =>
-            cn(
-              'fixed inset-0 z-50 bg-black/80',
-              isEntering ? 'animate-in fade-in duration-300 ease-out' : '',
-              isExiting ? 'animate-out fade-out duration-300 ease-in' : '',
-            )}
-        >
-          <Modal
-            className={({ isEntering, isExiting }) =>
-              cn(
-                'fixed z-50 w-full bg-background sm:rounded-md inset-x-0 bottom-0 px-2 pb-4 outline-hidden',
-                isEntering
-                  ? 'animate-in slide-in-from-bottom duration-300'
-                  : '',
-                isExiting ? 'animate-out slide-out-to-bottom duration-300' : '',
-              )}
-          >
-            <Dialog role='alertdialog' className='outline-hidden relative'>
-              {({ close }) => (
-                <>
-                  <div className='w-fit mx-auto'>
-                    <Button
-                      onPress={close}
-                      size='sm'
-                      className='mt-4 mb-3 h-2 w-[100px] rounded-full bg-muted'
-                    />
-                  </div>
-                  <nav className='flex flex-col items-start gap-0.5'>
-                    {[...muslimNavigationLink, ...toolsNavigationLink].map(
-                      (item) => (
-                        <NavLink
-                          onClick={() => {
-                            navigate(item.href as string);
-                            close();
-                          }}
-                          key={item.href}
-                          to={item.href}
-                          className={({ isActive }) =>
-                            [
-                              isActive ? 'font-semibold bg-muted' : '',
-                              'font-medium transition-colors hover:text-primary w-full px-4 py-2 rounded-md flex items-center gap-x-2 text-sm',
-                            ].join(' ')}
-                        >
-                          <item.icon size={16} className='flex-none' />
-                          <span>{item.title}</span>
-                        </NavLink>
-                      ),
-                    )}
-                  </nav>
-                </>
-              )}
-            </Dialog>
-          </Modal>
-        </ModalOverlay>
-      </DialogTrigger>
-    </React.Fragment>
   );
 }
 

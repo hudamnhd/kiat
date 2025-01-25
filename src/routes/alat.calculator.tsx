@@ -235,12 +235,12 @@ export const Component = () => {
   return (
     <div
       className={cn(
-        'flex flex-col gap-2 justify-between bg-background w-full sm:max-w-md mx-auto border-x',
+        'flex flex-col gap-2 justify-between bg-background w-full max-w-md mx-auto border-x',
         'h-screen',
       )}
     >
       <div>
-        <Header redirectTo='/tools' title='Calculator'>
+        <Header redirectTo='/alat' title='Kalkulator'>
           <DialogTrigger>
             <Button title='Riwayat' variant='ghost' className='gap-1.5'>
               <History className='w-4 h-4' /> Riwayat
@@ -444,7 +444,7 @@ export const Component = () => {
             <div
               ref={expressionRef}
               className={cn(
-                'max-h-[calc(100vh-100px)] group-data-expanded:max-h-[calc(100vh-350px)] child space-y-1 text-2xl font-semibold  overflow-y-auto px-2.5 sm:px-3 w-full',
+                'max-h-[calc(100vh-105px)] group-data-expanded:max-h-[calc(100vh-430px)] child space-y-1 text-2xl font-semibold  overflow-y-auto px-2.5 sm:px-3 w-full',
                 // "max-h-[calc(100vh-183px)]",
               )}
             >
@@ -541,91 +541,94 @@ export const Component = () => {
             <div className='grid grid-cols-4 gap-2 px-2.5 sm:px-3 pb-2.5 sm:pb-3'>
               <Button
                 size='lg'
-                className='font-normal text-3xl'
+                className='font-semibold text-3xl h-14 bg-slate-600 dark:bg-slate-500'
                 onPress={handleClear}
               >
                 C
               </Button>
               <Button
                 size='lg'
-                className='[&_svg]:size-7 transform transition duration-300 ease-in-out focus:scale-[105%] focus:bg-chart-2'
+                className='[&_svg]:size-9 h-14 bg-slate-600 dark:bg-slate-500'
                 onPress={() => handleOperatorClick('*')}
               >
                 <X strokeWidth={2} />
               </Button>
               <Button
                 size='lg'
-                className='transform transition duration-300 ease-in-out focus:scale-[105%] focus:bg-chart-2'
+                className='[&_svg]:size-9 h-14 bg-slate-600 dark:bg-slate-500'
                 onPress={() => handleOperatorClick('/')}
               >
-                <div className='text-3xl font-medium pb-1'>÷</div>
+                <div className='text-4xl font-medium pb-1'>÷</div>
               </Button>
               <Button
                 size='lg'
                 variant='destructive'
-                className='[&_svg]:size-6 transform transition duration-300 ease-in-out focus:scale-[105%] focus:bg-chart-2'
+                className='[&_svg]:size-9 h-14 bg-red-600 dark:bg-red-500'
                 onPress={handleBackspace}
               >
-                <Delete strokeWidth={2} />
+                <Delete
+                  strokeWidth={2}
+                  className='stroke-white'
+                />
               </Button>
 
               <Button
-                className='font-medium text-3xl transform transition duration-300 ease-in-out focus:scale-[105%] focus:bg-primary/30'
+                className='font-medium text-3xl h-14'
                 size='lg'
-                variant='outline'
+                variant='secondary'
                 onPress={() => handleButtonPress('7')}
               >
                 7
               </Button>
               <Button
-                className='font-medium text-3xl transform transition duration-300 ease-in-out focus:scale-[105%] focus:bg-primary/30'
+                className='font-medium text-3xl h-14'
                 size='lg'
-                variant='outline'
+                variant='secondary'
                 onPress={() => handleButtonPress('8')}
               >
                 8
               </Button>
               <Button
-                className='font-medium text-3xl transform transition duration-300 ease-in-out focus:scale-[105%] focus:bg-primary/30'
+                className='font-medium text-3xl h-14'
                 size='lg'
-                variant='outline'
+                variant='secondary'
                 onPress={() => handleButtonPress('9')}
               >
                 9
               </Button>
               <Button
-                className='[&_svg]:size-7 transform transition duration-300 ease-in-out focus:scale-[105%] focus:bg-chart-2'
+                className='[&_svg]:size-9 h-14 bg-slate-600 dark:bg-slate-500'
                 size='lg'
                 onPress={() => handleOperatorClick('-')}
               >
                 <Minus strokeWidth={2} />
               </Button>
               <Button
-                className='font-medium text-3xl transform transition duration-300 ease-in-out focus:scale-[105%] focus:bg-primary/30'
+                className='font-medium text-3xl h-14'
                 size='lg'
-                variant='outline'
+                variant='secondary'
                 onPress={() => handleButtonPress('4')}
               >
                 4
               </Button>
               <Button
-                className='font-medium text-3xl transform transition duration-300 ease-in-out focus:scale-[105%] focus:bg-primary/30'
+                className='font-medium text-3xl h-14'
                 size='lg'
-                variant='outline'
+                variant='secondary'
                 onPress={() => handleButtonPress('5')}
               >
                 5
               </Button>
               <Button
-                className='font-medium text-3xl transform transition duration-300 ease-in-out focus:scale-[105%] focus:bg-primary/30'
+                className='font-medium text-3xl h-14'
                 size='lg'
-                variant='outline'
+                variant='secondary'
                 onPress={() => handleButtonPress('6')}
               >
                 6
               </Button>
               <Button
-                className='[&_svg]:size-7 transform transition duration-300 ease-in-out focus:scale-[105%] focus:bg-chart-2'
+                className='[&_svg]:size-9 h-14 bg-slate-600 dark:bg-slate-500'
                 size='lg'
                 onPress={() => handleOperatorClick('+')}
               >
@@ -633,64 +636,64 @@ export const Component = () => {
               </Button>
 
               <Button
-                className='font-medium text-3xl transform transition duration-300 ease-in-out focus:scale-[105%] focus:bg-primary/30'
+                className='font-medium text-3xl h-14'
                 size='lg'
-                variant='outline'
+                variant='secondary'
                 onPress={() => handleButtonPress('1')}
               >
                 1
               </Button>
               <Button
-                className='font-medium text-3xl transform transition duration-300 ease-in-out focus:scale-[105%] focus:bg-primary/30'
+                className='font-medium text-3xl h-14'
                 size='lg'
-                variant='outline'
+                variant='secondary'
                 onPress={() => handleButtonPress('2')}
               >
                 2
               </Button>
               <Button
-                className='font-medium text-3xl transform transition duration-300 ease-in-out focus:scale-[105%] focus:bg-primary/30'
+                className='font-medium text-3xl h-14'
                 size='lg'
-                variant='outline'
+                variant='secondary'
                 onPress={() => handleButtonPress('3')}
               >
                 3
               </Button>
               <Button
-                className='[&_svg]:size-7 transform transition duration-300 ease-in-out focus:scale-[105%] focus:bg-chart-2'
+                className='[&_svg]:size-9 h-14 bg-teal-700  dark:bg-teal-600'
                 size='lg'
                 onPress={handleEvaluate}
               >
                 <Equal strokeWidth={2} />
               </Button>
               <Button
-                className='font-medium text-3xl transform transition duration-300 ease-in-out focus:scale-[105%] focus:bg-primary/30'
+                className='font-medium text-3xl h-14'
                 size='lg'
-                variant='outline'
+                variant='secondary'
                 onPress={() => handleButtonPress('0')}
               >
                 0
               </Button>
               <Button
-                className='font-medium text-3xl transform transition duration-300 ease-in-out focus:scale-[105%] focus:bg-primary/30'
+                className='font-medium text-3xl h-14'
                 size='lg'
-                variant='outline'
+                variant='secondary'
                 onPress={() => handleButtonPress('00')}
               >
                 00
               </Button>
               <Button
-                className='font-medium text-3xl transform transition duration-300 ease-in-out focus:scale-[105%] focus:bg-primary/30'
+                className='font-medium text-3xl h-14'
                 size='lg'
-                variant='outline'
+                variant='secondary'
                 onPress={() => handleButtonPress('000')}
               >
                 000
               </Button>
               <Button
-                className='font-medium text-3xl transform transition duration-300 ease-in-out focus:scale-[105%] focus:bg-primary/30'
+                className='font-medium text-3xl h-14'
                 size='lg'
-                variant='outline'
+                variant='secondary'
                 onPress={() => handleButtonPress('.')}
               >
                 .

@@ -79,25 +79,25 @@ const muslimNavigationLink: NavigationLink[] = [
 const toolsNavigationLink: NavigationLink[] = [
 	{
 		title: "Kalkulator",
-		href: "/tools/calculator",
+		href: "/alat/calculator",
 		description: "Simple Kalkulator",
 		icon: Calculator,
 	},
 	{
 		title: "Daily tasks",
-		href: "/tools/daily-tasks",
+		href: "/alat/daily-tasks",
 		description: "Daily tasks with pomodoro",
 		icon: List,
 	},
 	{
 		title: "Pomodoro",
-		href: "/tools/pomodoro",
+		href: "/alat/pomodoro",
 		description: "Simple Pomodoro",
 		icon: Timer,
 	},
 	{
 		title: "Habit",
-		href: "/tools/habit",
+		href: "/alat/habit",
 		description: "Simple Habit tracker",
 		icon: Repeat,
 	},

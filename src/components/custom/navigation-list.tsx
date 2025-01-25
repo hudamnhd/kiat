@@ -7,7 +7,7 @@ import { useNavigate } from 'react-router';
 // <div role="list" className="flex flex-col gap-2 p-2.5 sm:p-3">
 export const NavigationList = ({ data }: { data: NavigationLink[] }) => {
   return (
-    <div role='list' className='grid sm:grid-cols-2 gap-3 px-3 py-1.5'>
+    <div role='list' className='grid sm:grid-cols-2 gap-2 sm:gap-3 px-3 py-1.5'>
       {data.map((item, itemIdx) => (
         <NavigationListItem key={itemIdx} i={itemIdx} item={item} />
       ))}
@@ -27,7 +27,7 @@ export const NavigationListItem = ({
         style={{ animationDelay: `${i * 0.07}s` }}
         onPress={() => navigate(item.href)}
       >
-        <div className='shrink-0 flex items-center justify-center w-14 text-sm font-medium rounded-l-md duration-300 bg-muted'>
+        <div className='shrink-0 h-full flex items-center justify-center w-14 text-sm font-medium rounded-l-md duration-300 bg-muted'>
           <item.icon
             className='h-6 w-6 text-foreground  sm:group-hover:-rotate-45 sm:duration-300'
             aria-hidden='true'

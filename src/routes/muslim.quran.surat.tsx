@@ -8,6 +8,7 @@ import {
   PopoverDialog,
   PopoverTrigger,
 } from '#src/components/ui/popover';
+import { Tooltip, TooltipTrigger } from '#src/components/ui/tooltip';
 import { get_cache, set_cache } from '#src/utils/cache-client.ts';
 import { cn } from '#src/utils/misc';
 import { formatDistanceToNow } from 'date-fns';
@@ -76,6 +77,7 @@ export async function Loader({ params }: LoaderFunctionArgs) {
   const cached_data = await get_cache(CACHE_KEY);
 
   if (cached_data) return cached_data;
+
   const surah_data = await api.get(`${surah_number}.json`).json<Surah>();
 
   const parse = Object.values(surah_data);
@@ -648,8 +650,10 @@ const VirtualizedListSurah = ({ children }: { children: React.ReactNode }) => {
                       <Badge
                         className='rounded-md bg-background w-fit'
                         variant='outline'
+                        title={`${surat.name_latin} - ${key}`}
                       >
-                        Ayat {key}
+                        {/*{surat.name_latin}:{key}*/}
+                        {surat.number}:{key}
                       </Badge>
                     </div>
                     <div className='w-2/4 flex items-center justify-center'>
@@ -755,8 +759,8 @@ const VirtualizedListSurah = ({ children }: { children: React.ReactNode }) => {
                       {surat.text[key]}
                       <span
                         className={cn(
-                          'text-4xl inline-flex mx-1 font-uthmani',
-                          opts?.font_type === 'font-indopak-2' && 'mr-5',
+                          'text-4xl inline-flex mx-1 font-uthmani font-normal',
+                          opts?.font_type === 'font-indopak-2' && 'mr-4',
                         )}
                       >
                         {toArabicNumber(Number(key))}

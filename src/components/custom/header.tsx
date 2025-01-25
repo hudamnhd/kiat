@@ -46,11 +46,11 @@ export function Header(props: HeaderProps) {
         >
           {!props.isIndex
             ? <ArrowLeft />
-            : <span className='pl-2 text-lg font-semibold'>{props.title}</span>}
+            : <span className='pl-2 font-semibold'>{props.title}</span>}
         </Link>
 
         {!props.isIndex && !props.menu && (
-          <span className='text-lg font-semibold'>{props.title}</span>
+          <span className='truncate font-semibold'>{props.title}</span>
         )}
         {props.menu && props.menu}
       </div>

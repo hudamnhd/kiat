@@ -100,7 +100,7 @@ const App: React.FC = () => {
 
 	return (
 		<>
-			<Header redirectTo="/tools" title="Pomodoro" />
+			<Header redirectTo="/alat" title="Pomodoro" />
 			<div className="block text-2xl text-center leading-8 font-extrabold tracking-tight sm:text-3xl pt-3">
 				Pomodoro
 			</div>

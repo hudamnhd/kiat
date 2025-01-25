@@ -27,7 +27,7 @@ export function Layout() {
   return (
     <div
       id='container-main'
-      className='border-x min-h-[calc(100vh)] sm:max-w-xl mx-auto relative'
+      className='border-x min-h-[calc(100vh)] max-w-xl mx-auto relative'
     >
       <Outlet />
     </div>
@@ -54,7 +54,7 @@ const TrackLastRoutes = () => {
     const containerMain = document.getElementById('container-main');
 
     if (
-      currentPath === '/tools/calculator' &&
+      currentPath === '/alat/calculator' &&
       containerMain instanceof HTMLDivElement
     ) {
       containerMain.classList.remove('border-x', 'sm:max-w-xl');
