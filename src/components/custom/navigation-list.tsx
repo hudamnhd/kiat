@@ -7,7 +7,7 @@ import { useNavigate } from 'react-router';
 // <div role="list" className="flex flex-col gap-2 p-2.5 sm:p-3">
 export const NavigationList = ({ data }: { data: NavigationLink[] }) => {
   return (
-    <div role='list' className='grid grid-cols-2 gap-3 px-3 py-1.5'>
+    <div role='list' className='grid sm:grid-cols-2 gap-3 px-3 py-1.5'>
       {data.map((item, itemIdx) => (
         <NavigationListItem key={itemIdx} i={itemIdx} item={item} />
       ))}
