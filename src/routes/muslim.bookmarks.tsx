@@ -184,47 +184,6 @@ export function Component() {
                           }}
                         />
                       )}
-                      {d.tafsir && (
-                        <details className='group [&_summary::-webkit-details-marker]:hidden mt-3'>
-                          <summary className='flex cursor-pointer items-center gap-1.5 outline-none'>
-                            <div className='group-open:animate-slide-left [animation-fill-mode:backwards] group-open:block hidden font-medium text-sm text-indigo-600 dark:text-indigo-400'>
-                              Hide Tafsir
-                            </div>
-                            <div className='animate-slide-left group-open:hidden font-medium text-sm text-indigo-600 dark:text-indigo-400'>
-                              View Tafsir
-                            </div>
-
-                            <svg
-                              className='size-4 shrink-0 transition duration-300 group-open:-rotate-180 text-indigo-600 dark:text-indigo-400 opacity-80'
-                              xmlns='http://www.w3.org/2000/svg'
-                              fill='none'
-                              viewBox='0 0 24 24'
-                              stroke='currentColor'
-                            >
-                              <path
-                                strokeLinecap='round'
-                                strokeLinejoin='round'
-                                strokeWidth='2'
-                                d='M19 9l-7 7-7-7'
-                              />
-                            </svg>
-                          </summary>
-
-                          <div className='group-open:animate-slide-left group-open:[animation-fill-mode:backwards] group-open:transition-all group-open:duration-300'>
-                            <div className='max-w-none prose-lg my-2.5 font-semibold whitespace-pre-wrap text-accent-foreground border-b'>
-                              Tafsir {d.title}
-                            </div>
-                            <p className='max-w-none leading-7 prose prose-base prose-gray dark:prose-invert whitespace-pre-wrap'>
-                              {d.tafsir.text}
-                            </p>
-                            <div className='text-muted-foreground text-xs prose-xs'>
-                              Sumber:
-                              <br />
-                              {d.tafsir.source}
-                            </div>
-                          </div>
-                        </details>
-                      )}
                     </div>
                   </div>
                 );

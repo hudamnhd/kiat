@@ -153,6 +153,7 @@
 	font-display: swap;
 }
 
+
 @font-face {
 	font-family: Cabin;
 	src: local("Cabin-Bold");
@@ -193,8 +194,13 @@ code {
 	font-family: "LPMQ IsepMisbah";
 }
 
+
 .font-indopak-2 {
 	font-family: "IndoPak";
+}
+
+.font-cabin-2 {
+	font-family: "Cabin";
 }
 
 .font-uthmani-2 {

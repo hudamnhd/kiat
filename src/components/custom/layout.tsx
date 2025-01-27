@@ -3,7 +3,7 @@ import {
   muslimNavigationLink,
   toolsNavigationLink,
 } from '#src/constants/nav-link';
-import { cn } from '#src/utils/misc';
+import { lightDarkVar } from '#src/utils/misc';
 import { TimerReset } from 'lucide-react';
 import React from 'react';
 import { Toaster } from 'react-hot-toast';
@@ -14,7 +14,26 @@ import { GlobalPendingIndicator } from './global-pending-indicator';
 export default function ThemeProviderWrapper() {
   return (
     <ThemeProvider>
-      <Toaster />
+      <Toaster
+        toastOptions={{
+          // Define default options
+          style: {
+            background: lightDarkVar('background'),
+            color: lightDarkVar('foreground'),
+          },
+          duration: 5000,
+          removeDelay: 1000,
+
+          // Default options for specific types
+          success: {
+            duration: 3000,
+            iconTheme: {
+              primary: lightDarkVar('chart-2'),
+              secondary: lightDarkVar('background'),
+            },
+          },
+        }}
+      />
       <Outlet />
       <GlobalPendingIndicator />
       <ReloadPrompt />

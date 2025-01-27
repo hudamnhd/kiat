@@ -62,7 +62,6 @@ export function SettingsDisplay() {
   ); // Default ke "Normal"
   let showTranslation = opts?.font_translation === 'on' ? true : false; // Default ke "Normal"
   let showLatin = opts?.font_latin === 'on' ? true : false; // Default ke "Normal"
-  let showTafsir = opts?.font_tafsir === 'on' ? true : false;
 
   const font_size_opts = fontSizeOpt.find((d) => d.label === fontSize);
   return (
@@ -220,22 +219,6 @@ export function SettingsDisplay() {
                           id='latintext'
                           name='font_latin'
                           defaultSelected={showLatin}
-                        />
-                      </div>
-                      <div className='flex items-center justify-between space-x-2'>
-                        <Label
-                          htmlFor='tafsirtext'
-                          className='flex flex-col space-y-0.5'
-                        >
-                          <span>Tampilkan tafsir</span>
-                          <span className='font-normal text-sm leading-snug text-muted-foreground'>
-                            Tampilkan / sembunyikan tafsir.
-                          </span>
-                        </Label>
-                        <Switch
-                          id='tafsirtext'
-                          name='font_tafsir'
-                          defaultSelected={showTafsir}
                         />
                       </div>
                     </div>

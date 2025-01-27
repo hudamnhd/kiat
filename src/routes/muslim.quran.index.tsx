@@ -5,6 +5,7 @@ import { Spinner } from '#src/components/ui/spinner-circle';
 import { Tooltip, TooltipTrigger } from '#src/components/ui/tooltip';
 import { data as daftar_surat } from '#src/constants/daftar-surat.json';
 import { cn } from '#src/utils/misc';
+import { fetchAllSurahs } from '#src/utils/misc.quran.ts';
 import { formatDistanceToNow } from 'date-fns';
 import { id as localeId } from 'date-fns/locale';
 import { motion, useScroll, useSpring } from 'framer-motion';
@@ -30,6 +31,7 @@ const FAVORITESURAH_KEY = 'FAVORITESURAH';
 export async function Loader({ params }: LoaderFunctionArgs) {
   const { id } = params;
 
+  await fetchAllSurahs(); // Angka surah tunggal
   const data = {
     id,
     last_read_ayah: await get_cache(LASTREAD_KEY),
