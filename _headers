@@ -1,0 +1,4 @@
+/muslim/quran/surah_gzip/*.gz
+  Content-Type: application/json
+  Content-Encoding: gzip
+  Cache-Control: max-age=31536000, immutable

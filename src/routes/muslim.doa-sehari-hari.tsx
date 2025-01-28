@@ -102,6 +102,7 @@ export function Component() {
                       <div
                         className={cn(
                           'relative text-right text-primary my-5 font-lpmq',
+                          opts?.font_type,
                         )}
                         style={{
                           fontWeight: opts.font_weight,
@@ -115,7 +116,7 @@ export function Component() {
 
                     {opts?.font_latin === 'on' && (
                       <div
-                        className='latin-text prose dark:prose-invert max-w-none leading-6'
+                        className='latin-text prose dark:prose-invert max-w-none leading-6 pb-1'
                         dangerouslySetInnerHTML={{
                           __html: dt.latin,
                         }}
@@ -124,7 +125,7 @@ export function Component() {
 
                     {opts?.font_translation === 'on' && (
                       <div
-                        className='translation-text mt-3 prose dark:prose-invert max-w-none leading-6 text-primary'
+                        className='translation-text pt-2 prose dark:prose-invert max-w-none leading-6 text-primary border-t'
                         dangerouslySetInnerHTML={{
                           __html: dt.arti,
                         }}
@@ -134,7 +135,7 @@ export function Component() {
                     {dt.footnote && (
                       <div className='note-text mt-3'>
                         <div
-                          className='border-l-2 max-w-none prose dark:prose-invert  ml-1.5 px-2.5 text-sm'
+                          className='max-w-none prose dark:prose-invert text-xs'
                           dangerouslySetInnerHTML={{
                             __html: dt.footnote,
                           }}

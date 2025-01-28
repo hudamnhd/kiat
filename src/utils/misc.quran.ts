@@ -4,7 +4,7 @@ export const fetchSurahWithCache = async (number: number) => {
   const CACHE_KEY = `surah_${number}`;
   const cachedData = await get_cache(CACHE_KEY);
   if (cachedData) {
-    console.log(`Surah ${number} loaded from cache`);
+    // console.log(`Surah ${number} loaded from cache`);
     return cachedData; // Kembalikan data dari cache jika ada
   }
 

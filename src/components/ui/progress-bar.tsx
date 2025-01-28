@@ -1,51 +1,80 @@
-import * as React from 'react'
+import * as React from 'react';
+import {
+  composeRenderProps,
+  ProgressBar as AriaProgressBar,
+  ProgressBarProps as AriaProgressBarProps,
+} from 'react-aria-components';
 
-import * as ReactAria from 'react-aria-components'
+import { cn } from '#src/utils/misc';
+import { Label, labelVariants } from './field';
 
-import { cn } from "#src/utils/misc";
-
-export const ProgressBar = ({
-  className,
-  ...props
-}: ReactAria.ProgressBarProps) => {
-  return (
-    <ReactAria.ProgressBar className={cn('w-full', className)} {...props} />
-  )
+interface ProgressProps extends AriaProgressBarProps {
+  barClassName?: string;
+  fillClassName?: string;
 }
 
-export const ProgressBarTrack = ({
+const Progress = ({
   className,
+  barClassName,
+  fillClassName,
   children,
   ...props
-}: React.HTMLAttributes<HTMLDivElement>) => {
+}: ProgressProps) => (
+  <AriaProgressBar
+    className={composeRenderProps(className, (className) =>
+      cn('w-full', className))}
+    {...props}
+  >
+    {composeRenderProps(children, (children, renderProps) => (
+      <>
+        {children}
+        <div
+          className={cn(
+            'relative h-2 w-full overflow-hidden rounded-full bg-primary/20',
+            barClassName,
+          )}
+        >
+          <div
+            className={cn(
+              'size-full flex-1 bg-primary transition-all',
+              fillClassName,
+            )}
+            style={{
+              transform: `translateX(-${100 - (renderProps.percentage || 0)}%)`,
+            }}
+          />
+        </div>
+      </>
+    ))}
+  </AriaProgressBar>
+);
+
+interface JollyProgressBarProps extends ProgressProps {
+  label?: string;
+  showValue?: boolean;
+}
+
+function JollyProgressBar({
+  label,
+  className,
+  showValue = true,
+  ...props
+}: JollyProgressBarProps) {
   return (
-    <div
-      className={cn(
-        'h-2 w-full overflow-hidden rounded bg-slate-200 dark:bg-slate-700',
-        className,
-      )}
+    <Progress
+      className={composeRenderProps(className, (className) =>
+        cn('group flex flex-col gap-2', className))}
       {...props}
     >
-      {children}
-    </div>
-  )
+      {({ valueText }) => (
+        <div className='flex w-full justify-between'>
+          <Label>{label}</Label>
+          {showValue && <span className={labelVariants()}>{valueText}</span>}
+        </div>
+      )}
+    </Progress>
+  );
 }
 
-export interface ProgressBarFilledTrackProps
-  extends React.HTMLAttributes<HTMLDivElement> {
-  percentage?: number
-}
-
-export const ProgressBarFilledTrack = ({
-  className,
-  percentage = 0,
-  ...props
-}: ProgressBarFilledTrackProps) => {
-  return (
-    <div
-      className={cn('h-full bg-black dark:bg-white', className)}
-      style={{ width: percentage + '%' }}
-      {...props}
-    />
-  )
-}
+export { JollyProgressBar, Progress };
+export type { JollyProgressBarProps, ProgressProps };

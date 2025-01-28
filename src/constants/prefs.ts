@@ -10,6 +10,8 @@ export const fontOptions = [
 ];
 
 export const fontTypeOptions = [
+  { value: 'font-uthmantn', label: 'KFGQPC Hafs' },
+  { value: 'font-uthmantnb', label: 'KFGQPC Hafs Bold' },
   { value: 'font-lpmq-2', label: 'LPMQ' },
   { value: 'font-uthmani-2', label: 'Uthmani' },
   { value: 'font-indopak-2', label: 'Indopak' },
@@ -45,5 +47,29 @@ export const fontSizeOpt = [
     label: 'text-6xl',
     fontSize: '3.75rem',
     lineHeight: '7.5rem',
+  },
+];
+
+export const fontTransSizeOpt = [
+  {
+    label: 'text-xs',
+  },
+  {
+    label: 'text-sm',
+  },
+  {
+    label: 'text-base',
+  },
+  {
+    label: 'text-lg',
+  },
+  {
+    label: 'text-xl',
+  },
+  {
+    label: 'text-2xl',
+  },
+  {
+    label: 'text-3xl',
   },
 ];

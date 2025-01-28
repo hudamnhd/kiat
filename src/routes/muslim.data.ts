@@ -9,7 +9,8 @@ const LASTREAD_KEY = 'LASTREAD';
 const default_value = {
   font_type: 'font-lpmq-2',
   font_weight: '400',
-  font_size: 'text-2xl',
+  font_size: 'text-3xl',
+  font_trans_size: 'text-base',
   font_translation: 'on',
   font_latin: 'on',
   font_tafsir: 'on',

@@ -345,10 +345,6 @@ const processText = (desc) => {
       if (match.startsWith(':') || match.startsWith(';')) {
         return group1 ? `\n ${group1}.` : match; // Cek apakah group1 ada
       } else if (/--/.test(match)) {
-        console.warn(
-          'DEBUGPRINT[5]: muslim.quran.surat.tsx:359: match=',
-          match,
-        );
         return ' '; // Ganti '--' dengan newline
       } else {
         return ' '; // Hapus pola '\d ~ ... ~'
@@ -530,7 +526,7 @@ const VirtualizedListSurah = ({ children }: { children: React.ReactNode }) => {
   return (
     <React.Fragment>
       <motion.div
-        className='z-60 bg-linear-to-r from-fuchsia-500 to-cyan-500 dark:from-fuchsia-400 dark:to-cyan-400 max-w-xl mx-auto'
+        className='z-60 bg-primary max-w-xl mx-auto'
         style={{
           scaleX,
           position: 'fixed',
@@ -743,7 +739,7 @@ const VirtualizedListSurah = ({ children }: { children: React.ReactNode }) => {
                       <div dir='rtl' className='break-normal pr-2.5'>
                         <div
                           className={cn(
-                            'text-primary my-3 font-lpmq',
+                            'text-primary my-3 font-lpmq antialiased',
                             opts?.font_type,
                           )}
                           style={{
@@ -756,21 +752,31 @@ const VirtualizedListSurah = ({ children }: { children: React.ReactNode }) => {
                             ? item.text.replace(/^(([^ ]+ ){4})/u, '')
                             : item.text}
 
-                          <span
+                          <span className='text-right text-3xl font-uthmantn mr-1.5'>
+                            ‎﴿{toArabicNumber(Number(item.index))}﴾‏
+                          </span>
+                          {
+                            /*<span
                             className={cn(
                               'text-4xl inline-flex mx-1 font-uthmani font-normal',
                               opts?.font_type === 'font-indopak-2' && 'mr-4',
                             )}
                           >
                             {toArabicNumber(Number(item.index))}
-                          </span>
+                          </span>*/
+                          }
                           {' '}
                         </div>
                       </div>
 
                       {opts?.font_translation === 'on' && (
-                        <div className='px-2 text-justify max-w-none prose leading-6 dark:prose-invert whitespace-pre-wrap mb-2'>
-                          {processText(item.trans)}
+                        <div
+                          className={cn(
+                            'text-slate-800 dark:text-slate-200 px-2 text-justify max-w-none  whitespace-pre-wrap mb-2',
+                            opts?.font_trans_size,
+                          )}
+                        >
+                          {processText(item.trans)} ({item.index})
                         </div>
                       )}
                     </div>
@@ -826,11 +832,16 @@ const VirtualizedListSurah = ({ children }: { children: React.ReactNode }) => {
                             <span>{surat.ayah.length} Ayat</span>
                             {' '}
                           </div>
-                          <div className='text-justify leading-6 max-w-none prose dark:prose-invert whitespace-pre-line px-2'>
+
+                          <div
+                            className={cn(
+                              'text-slate-800 dark:text-slate-200 text-justify max-w-none  whitespace-pre-wrap mb-2',
+                              opts?.font_trans_size,
+                            )}
+                          >
                             {processText(surat.desc)}
                           </div>
-                          {/*<TafsirText text={surat.tafsir.id.kemenag.text[key]} />*/}
-                          <div className='text-muted-foreground text-xs p-2'>
+                          <div className='text-muted-foreground text-xs py-2'>
                             Sumber:
                             <br />
                             <div className='flex flex-wrap items-center justify-between'>
@@ -840,6 +851,7 @@ const VirtualizedListSurah = ({ children }: { children: React.ReactNode }) => {
                           </div>
                         </div>
                       </details>
+
                       {datas[1]?.bismillah && (
                         <div
                           dir='rtl'
@@ -877,7 +889,7 @@ const VirtualizedListSurah = ({ children }: { children: React.ReactNode }) => {
                 transform: `translateY(${
                   lastItemBottom + (children ? 0 : 0)
                 }px)`, // Tambahkan offset untuk children
-                paddingBottom: '15px',
+                paddingBottom: '0px',
               }}
             >
               {children}

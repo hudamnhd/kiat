@@ -39,23 +39,6 @@ export type GroupedAyat = {
   };
 };
 
-const loadQuranJson = async () => {
-  try {
-    const surah = await import(
-      `../../public/muslim/quran/quran-tanzil.json`
-    );
-    const tafsir = await import(
-      `../../public/muslim/quran/tafsir.json`
-    );
-    console.warn('DEBUGPRINT[1]: muslim.quran-v2.page.tsx:45: tafsir=', tafsir);
-    // return { tafsir: null, surah: surah.default };
-    return surah.default;
-  } catch (error) {
-    console.error('Error loading surah:', error);
-    return null;
-  }
-};
-
 export type QuranJson = {
   quran: {
     sura: {

@@ -131,7 +131,32 @@
 
 @font-face {
 	font-family: "LPMQ IsepMisbah";
-	src: local("LPMQ IsepMisbah"), url("/fonts/LPMQ-IsepMisbah.ttf")
+	src: url("/fonts/LPMQ-IsepMisbah.ttf")
+		format("truetype");
+}
+
+
+@font-face {
+	font-family: "ShadatainVer01";
+	src: url("/fonts/ShadatainVer01.otf")
+		format("opentype");
+}
+
+@font-face {
+	font-family: "Symbols1_Ver02";
+	src: url("/fonts/Symbols1_Ver02.otf")
+		format("opentype");
+}
+
+@font-face {
+	font-family: "UthmanTN_v2-0";
+	src: url("/fonts/UthmanTN_v2-0.ttf")
+		format("truetype");
+}
+
+@font-face {
+	font-family: "UthmanTNB_v2-0";
+	src: url("/fonts/UthmanTNB_v2-0.ttf")
 		format("truetype");
 }
 
@@ -167,6 +192,22 @@
 	font-display: swap;
 }
 
+
+.font-symbols1 {
+	font-family: "Symbols1_Ver02";
+}
+
+.font-shadatain {
+	font-family: "ShadatainVer01";
+}
+
+.font-uthmantn {
+	font-family: "UthmanTN_v2-0";
+}
+
+.font-uthmantnb {
+	font-family: "UthmanTNB_v2-0";
+}
 
 .font-lpmq {
 	font-family: "LPMQ IsepMisbah";

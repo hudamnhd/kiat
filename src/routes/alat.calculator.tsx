@@ -536,26 +536,24 @@ export const Component = () => {
             </div>
           </CollapsibleTrigger>
           <CollapsibleContent className='p-0 m-0'>
-            {/*biome-ignore format: the code should not be formatted*/}
-
             <div className='grid grid-cols-4 gap-2 px-2.5 sm:px-3 pb-2.5 sm:pb-3'>
               <Button
                 size='lg'
-                className='font-semibold text-3xl h-14 bg-slate-600 dark:bg-slate-500'
+                className='font-semibold text-3xl h-14 bg-slate-600 dark:bg-slate-500  data-[pressed]:bg-chart-5 data-[hovered]:bg-chart-5 dark:data-[pressed]:bg-chart-5 dark:data-[hovered]:bg-chart-5'
                 onPress={handleClear}
               >
                 C
               </Button>
               <Button
                 size='lg'
-                className='[&_svg]:size-9 h-14 bg-slate-600 dark:bg-slate-500'
+                className='[&_svg]:size-9 h-14 bg-slate-600 dark:bg-slate-500 data-[pressed]:bg-chart-2 data-[hovered]:bg-chart-2 dark:data-[pressed]:bg-chart-2 dark:data-[hovered]:bg-chart-2'
                 onPress={() => handleOperatorClick('*')}
               >
                 <X strokeWidth={2} />
               </Button>
               <Button
                 size='lg'
-                className='[&_svg]:size-9 h-14 bg-slate-600 dark:bg-slate-500'
+                className='[&_svg]:size-9 h-14 bg-slate-600 dark:bg-slate-500 data-[pressed]:bg-chart-2 data-[hovered]:bg-chart-2 dark:data-[pressed]:bg-chart-2 dark:data-[hovered]:bg-chart-2'
                 onPress={() => handleOperatorClick('/')}
               >
                 <div className='text-4xl font-medium pb-1'>÷</div>
@@ -563,7 +561,7 @@ export const Component = () => {
               <Button
                 size='lg'
                 variant='default'
-                className='[&_svg]:size-9 h-14 bg-slate-600 dark:bg-slate-500'
+                className='[&_svg]:size-9 h-14 bg-slate-600 dark:bg-slate-500 data-[pressed]:bg-chart-2 data-[hovered]:bg-chart-2 dark:data-[pressed]:bg-chart-2 dark:data-[hovered]:bg-chart-2'
                 onPress={handleBackspace}
               >
                 <Delete
@@ -572,7 +570,7 @@ export const Component = () => {
               </Button>
 
               <Button
-                className='font-medium text-3xl h-14'
+                className='font-medium text-3xl h-14 data-[pressed]:bg-chart-2 data-[hovered]:bg-chart-2'
                 size='lg'
                 variant='secondary'
                 onPress={() => handleButtonPress('7')}
@@ -580,7 +578,7 @@ export const Component = () => {
                 7
               </Button>
               <Button
-                className='font-medium text-3xl h-14'
+                className='font-medium text-3xl h-14 data-[pressed]:bg-chart-2 data-[hovered]:bg-chart-2'
                 size='lg'
                 variant='secondary'
                 onPress={() => handleButtonPress('8')}
@@ -588,7 +586,7 @@ export const Component = () => {
                 8
               </Button>
               <Button
-                className='font-medium text-3xl h-14'
+                className='font-medium text-3xl h-14 data-[pressed]:bg-chart-2 data-[hovered]:bg-chart-2'
                 size='lg'
                 variant='secondary'
                 onPress={() => handleButtonPress('9')}
@@ -596,14 +594,14 @@ export const Component = () => {
                 9
               </Button>
               <Button
-                className='[&_svg]:size-9 h-14 bg-slate-600 dark:bg-slate-500'
+                className='[&_svg]:size-9 h-14 bg-slate-600 dark:bg-slate-500 data-[pressed]:bg-chart-2 data-[hovered]:bg-chart-2 dark:data-[pressed]:bg-chart-2 dark:data-[hovered]:bg-chart-2'
                 size='lg'
                 onPress={() => handleOperatorClick('-')}
               >
                 <Minus strokeWidth={2} />
               </Button>
               <Button
-                className='font-medium text-3xl h-14'
+                className='font-medium text-3xl h-14 data-[pressed]:bg-chart-2 data-[hovered]:bg-chart-2'
                 size='lg'
                 variant='secondary'
                 onPress={() => handleButtonPress('4')}
@@ -611,7 +609,7 @@ export const Component = () => {
                 4
               </Button>
               <Button
-                className='font-medium text-3xl h-14'
+                className='font-medium text-3xl h-14 data-[pressed]:bg-chart-2 data-[hovered]:bg-chart-2'
                 size='lg'
                 variant='secondary'
                 onPress={() => handleButtonPress('5')}
@@ -619,7 +617,7 @@ export const Component = () => {
                 5
               </Button>
               <Button
-                className='font-medium text-3xl h-14'
+                className='font-medium text-3xl h-14 data-[pressed]:bg-chart-2 data-[hovered]:bg-chart-2'
                 size='lg'
                 variant='secondary'
                 onPress={() => handleButtonPress('6')}
@@ -627,7 +625,7 @@ export const Component = () => {
                 6
               </Button>
               <Button
-                className='[&_svg]:size-9 h-14 bg-slate-600 dark:bg-slate-500'
+                className='[&_svg]:size-9 h-14 bg-slate-600 dark:bg-slate-500 data-[pressed]:bg-chart-2 data-[hovered]:bg-chart-2 dark:data-[pressed]:bg-chart-2 dark:data-[hovered]:bg-chart-2'
                 size='lg'
                 onPress={() => handleOperatorClick('+')}
               >
@@ -635,7 +633,7 @@ export const Component = () => {
               </Button>
 
               <Button
-                className='font-medium text-3xl h-14'
+                className='font-medium text-3xl h-14 data-[pressed]:bg-chart-2 data-[hovered]:bg-chart-2'
                 size='lg'
                 variant='secondary'
                 onPress={() => handleButtonPress('1')}
@@ -643,7 +641,7 @@ export const Component = () => {
                 1
               </Button>
               <Button
-                className='font-medium text-3xl h-14'
+                className='font-medium text-3xl h-14 data-[pressed]:bg-chart-2 data-[hovered]:bg-chart-2'
                 size='lg'
                 variant='secondary'
                 onPress={() => handleButtonPress('2')}
@@ -651,7 +649,7 @@ export const Component = () => {
                 2
               </Button>
               <Button
-                className='font-medium text-3xl h-14'
+                className='font-medium text-3xl h-14 data-[pressed]:bg-chart-2 data-[hovered]:bg-chart-2'
                 size='lg'
                 variant='secondary'
                 onPress={() => handleButtonPress('3')}
@@ -666,7 +664,7 @@ export const Component = () => {
                 <Equal strokeWidth={2} />
               </Button>
               <Button
-                className='font-medium text-3xl h-14'
+                className='font-medium text-3xl h-14 data-[pressed]:bg-chart-2 data-[hovered]:bg-chart-2'
                 size='lg'
                 variant='secondary'
                 onPress={() => handleButtonPress('0')}
@@ -674,7 +672,7 @@ export const Component = () => {
                 0
               </Button>
               <Button
-                className='font-medium text-3xl h-14'
+                className='font-medium text-3xl h-14 data-[pressed]:bg-chart-2 data-[hovered]:bg-chart-2'
                 size='lg'
                 variant='secondary'
                 onPress={() => handleButtonPress('00')}
@@ -682,7 +680,7 @@ export const Component = () => {
                 00
               </Button>
               <Button
-                className='font-medium text-3xl h-14'
+                className='font-medium text-3xl h-14 data-[pressed]:bg-chart-2 data-[hovered]:bg-chart-2'
                 size='lg'
                 variant='secondary'
                 onPress={() => handleButtonPress('000')}
@@ -690,7 +688,7 @@ export const Component = () => {
                 000
               </Button>
               <Button
-                className='font-medium text-3xl h-14'
+                className='font-medium text-3xl h-14 data-[pressed]:bg-chart-2 data-[hovered]:bg-chart-2'
                 size='lg'
                 variant='secondary'
                 onPress={() => handleButtonPress('.')}

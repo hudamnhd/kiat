@@ -23,8 +23,7 @@ export const NavigationListItem = ({
   return (
     <TooltipTrigger delay={300}>
       <Button
-        className='animate-roll-reveal [animation-fill-mode:backwards] flex shadow-sm rounded-md border group divide-x hover:shadow-primary'
-        style={{ animationDelay: `${i * 0.07}s` }}
+        className='flex shadow-sm rounded-md border group divide-x hover:shadow-primary'
         onPress={() => navigate(item.href)}
       >
         <div className='shrink-0 h-full flex items-center justify-center w-14 text-sm font-medium rounded-l-md duration-300 bg-muted'>
