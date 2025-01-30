@@ -1,7 +1,7 @@
-import { Button } from '#src/components/ui/button';
-import { cn } from '#src/utils/misc';
-import { ArrowUp } from 'lucide-react';
-import React from 'react';
+import { Button } from "#src/components/ui/button";
+import { cn } from "#src/utils/misc";
+import { ArrowUp } from "lucide-react";
+import React from "react";
 
 export const ScrollTopButton = ({
   container,
@@ -18,28 +18,28 @@ export const ScrollTopButton = ({
   };
 
   const handleScrollUp = () => {
-    container?.current?.scrollTo({ left: 0, top: 0, behavior: 'smooth' });
+    container?.current?.scrollTo({ left: 0, top: 0, behavior: "smooth" });
   };
 
   React.useEffect(() => {
     const currentContainer = container?.current;
     if (!currentContainer) return;
 
-    currentContainer.addEventListener('scroll', handleVisibleButton);
+    currentContainer.addEventListener("scroll", handleVisibleButton);
 
     return () => {
-      currentContainer.removeEventListener('scroll', handleVisibleButton);
+      currentContainer.removeEventListener("scroll", handleVisibleButton);
     };
   }, [container, showGoTop]);
 
   return (
     <div
       className={cn(
-        'sticky inset-x-0 ml-auto w-fit -translate-x-3 z-60 bottom-0 -mt-11',
-        !showGoTop && 'hidden',
+        "sticky inset-x-0 ml-auto w-fit -translate-x-3 z-60 bottom-0 -mt-11",
+        !showGoTop && "hidden",
       )}
     >
-      <Button onPress={handleScrollUp} variant='default' size='icon'>
+      <Button onPress={handleScrollUp} variant="default" size="icon">
         <ArrowUp />
       </Button>
     </div>
@@ -74,25 +74,26 @@ export const ScrollToFirstIndex = ({
     const currentContainer = container?.current;
     if (!currentContainer) return;
 
-    currentContainer.addEventListener('scroll', handleVisibleButton);
+    currentContainer.addEventListener("scroll", handleVisibleButton);
 
     return () => {
-      currentContainer.removeEventListener('scroll', handleVisibleButton);
+      currentContainer.removeEventListener("scroll", handleVisibleButton);
     };
   }, [container, showGoTop]);
 
   return (
     <div
       className={cn(
-        'sticky inset-x-0 ml-auto w-fit -translate-x-5 z-60 bottom-0 -mt-11',
-        !showGoTop && 'hidden',
+        "sticky inset-x-0 ml-auto w-fit -translate-x-5 z-60 bottom-0 -mt-11",
+        !showGoTop && "hidden",
         className,
       )}
     >
       <Button
         onPress={handleScrollUp}
-        variant='default'
-        size='icon'
+        variant="default"
+        size="icon"
+        className="bg-chart-2 data-hovered:bg-chart-2/90"
       >
         <ArrowUp />
       </Button>

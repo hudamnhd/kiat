@@ -709,7 +709,7 @@ const PuzzleGame: React.FC<PuzzleProps> = ({
             </span>
           ))}
 
-          <span className='text-right text-3xl font-uthmantn mr-1.5'>
+          <span className='text-right text-3xl font-uthmani-v2-reguler mr-1.5'>
             ‎﴿{toArabicNumber(Number(ayat_number))}﴾‏
           </span>
         </div>
@@ -730,7 +730,7 @@ const PuzzleGame: React.FC<PuzzleProps> = ({
             ))}
 
           {state.slices.length > 0 && (
-            <span className='text-right text-3xl font-uthmantn mr-1.5'>
+            <span className='text-right text-3xl font-uthmani-v2-reguler mr-1.5'>
               ‎﴿{toArabicNumber(Number(ayat_number))}﴾‏
             </span>
           )}
@@ -761,7 +761,7 @@ const PuzzleGame: React.FC<PuzzleProps> = ({
               ))}
 
               {state.slices.length === 0 && (
-                <span className='text-right text-3xl font-uthmantn mr-1.5'>
+                <span className='text-right text-3xl font-uthmani-v2-reguler mr-1.5'>
                   ‎﴿{toArabicNumber(Number(ayat_number))}﴾‏
                 </span>
               )}

@@ -53,7 +53,7 @@ export function SettingsDisplay() {
   const fetcher = useFetcher();
   // Mengelola state untuk font weight
   const [fontType, setFontType] = React.useState<string>(
-    opts?.font_type || 'font-lpmq-2',
+    opts?.font_type || 'font-kemenag',
   ); // Default ke "Normal"
   const [fontWeight, setFontWeight] = React.useState<string>(
     opts?.font_weight || '400',
@@ -97,7 +97,7 @@ export function SettingsDisplay() {
                         <div dir='rtl' className='break-normal pr-2.5'>
                           <div
                             className={cn(
-                              'text-primary my-3 font-lpmq-2 transition-all duration-300',
+                              'text-primary my-3 font-kemenag transition-all duration-300',
                               fontType,
                             )}
                             style={{

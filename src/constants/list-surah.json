@@ -1,0 +1,3764 @@
+[
+  {
+    "index": 1,
+    "name": {
+      "ar": "الفاتحة",
+      "id": "Al-Fatihah",
+      "en": "Al-Faatiha",
+      "tr_id": "Pembukaan",
+      "tr_en": "The Opening"
+    },
+    "revelation": {
+      "ar": "مكة",
+      "id": "Makkiyyah",
+      "en": "Meccan"
+    },
+    "sequence": "5",
+    "tafsir": {
+      "id": "Surat Al Faatihah (Pembukaan) yang diturunkan di Mekah dan terdiri dari 7 ayat adalah surat yang pertama-tama diturunkan dengan lengkap  diantara surat-surat yang ada dalam Al Quran dan termasuk golongan surat Makkiyyah. Surat ini disebut Al Faatihah (Pembukaan), karena dengan surat inilah dibuka dan dimulainya Al Quran. Dinamakan Ummul Quran (induk Al Quran) atau Ummul Kitaab (induk Al Kitaab) karena dia merupakan induk dari semua isi Al Quran, dan karena itu diwajibkan membacanya pada tiap-tiap sembahyang. Dinamakan pula As Sab'ul matsaany (tujuh yang berulang-ulang) karena ayatnya tujuh dan dibaca berulang-ulang dalam sholat."
+    },
+    "meta": {
+      "page": {
+        "start": 1,
+        "end": 1
+      },
+      "juz": {
+        "start": 1,
+        "end": 1
+      },
+      "total_pages": 1,
+      "number_of_verses": "7",
+      "number_of_letters": 142,
+      "number_of_words": 29
+    }
+  },
+  {
+    "index": 2,
+    "name": {
+      "ar": "البقرة",
+      "id": "Al-Baqarah",
+      "en": "Al-Baqara",
+      "tr_id": "Sapi",
+      "tr_en": "The Cow"
+    },
+    "revelation": {
+      "ar": "مدينة",
+      "id": "Madaniyyah",
+      "en": "Medinan"
+    },
+    "sequence": "87",
+    "tafsir": {
+      "id": "Surat Al Baqarah yang 286 ayat itu turun di Madinah yang sebahagian besar diturunkan pada permulaan tahun Hijrah, kecuali ayat 281 diturunkan di Mina pada Hajji wadaa' (hajji Nabi Muhammad s.a.w. yang terakhir). Seluruh ayat dari surat Al Baqarah termasuk golongan Madaniyyah, merupakan surat yang terpanjang di antara surat-surat Al Quran yang di dalamnya terdapat pula ayat yang terpancang (ayat 282). Surat ini dinamai Al Baqarah karena di dalamnya disebutkan kisah penyembelihan sapi betina yang diperintahkan Allah kepada Bani Israil (ayat 67 sampai dengan 74), dimana dijelaskan watak orang Yahudi pada umumnya. Dinamai Fusthaatul-Quran (puncak Al Quran) karena memuat beberapa hukum yang tidak disebutkan dalam surat yang lain. Dinamai juga surat  alif-laam-miim karena surat ini dimulai dengan Alif-laam-miim."
+    },
+    "meta": {
+      "page": {
+        "start": 2,
+        "end": 49
+      },
+      "juz": {
+        "start": 1,
+        "end": 3
+      },
+      "total_pages": 48,
+      "number_of_verses": "286",
+      "number_of_letters": 25500,
+      "number_of_words": 6144
+    }
+  },
+  {
+    "index": 3,
+    "name": {
+      "ar": "آل عمران",
+      "id": "Ali 'Imran",
+      "en": "Aal-i-Imraan",
+      "tr_id": "Keluarga Imran",
+      "tr_en": "The Family of Imraan"
+    },
+    "revelation": {
+      "ar": "مدينة",
+      "id": "Madaniyyah",
+      "en": "Medinan"
+    },
+    "sequence": "89",
+    "tafsir": {
+      "id": "Surat Ali 'Imran yang terdiri dari 200 ayat ini adalah surat Madaniyyah.  Dinamakan Ali 'Imran karena memuat kisah keluarga 'Imran yang di dalam kisah itu disebutkan kelahiran Nabi Isa a.s., persamaan kejadiannya dengan Nabi Adam a. s., kenabian dan beberapa mukjizatnya, serta disebut pula kelahiran Maryam puteri 'Imran, ibu dari Nabi Isa a.s. Surat Al Baqarah dan Ali 'Imran ini dinamakan Az Zahrawaani (dua yang cemerlang), karena kedua surat ini menyingkapkan hal-hal yang disembunyikan oleh para Ahli Kitab, seperti kejadian dan kelahiran Nabi Isa a.s., kedatangan Nabi Muhammad s.a.w. dan sebagainya."
+    },
+    "meta": {
+      "page": {
+        "start": 50,
+        "end": 76
+      },
+      "juz": {
+        "start": 3,
+        "end": 4
+      },
+      "total_pages": 27,
+      "number_of_verses": "200",
+      "number_of_letters": 14525,
+      "number_of_words": 3505
+    }
+  },
+  {
+    "index": 4,
+    "name": {
+      "ar": "النساء",
+      "id": "An-Nisa'",
+      "en": "An-Nisaa",
+      "tr_id": "Wanita",
+      "tr_en": "The Women"
+    },
+    "revelation": {
+      "ar": "مدينة",
+      "id": "Madaniyyah",
+      "en": "Medinan"
+    },
+    "sequence": "92",
+    "tafsir": {
+      "id": "Surat An Nisaa' yang terdiri dari 176 ayat itu, adalah surat Madaniyyah yang terpanjang sesudah surat Al Baqarah. Dinamakan An Nisaa' karena dalam surat ini banyak dibicarakan hal-hal yang berhubungan dengan wanita serta merupakan surat yang paling membicarakan hal itu dibanding dengan surat-surat yang lain. Surat yang lain banyak juga yang membicarakan tentang hal wanita ialah surat Ath Thalaq. Dalam hubungan ini biasa disebut surat An Nisaa' dengan sebutan: Surat An Nisaa' Al Kubraa (surat An Nisaa' yang besar), sedang  surat Ath Thalaq disebut dengan sebutan: Surat An Nisaa' Ash Shughraa (surat An Nisaa' yang kecil)."
+    },
+    "meta": {
+      "page": {
+        "start": 77,
+        "end": 106
+      },
+      "juz": {
+        "start": 4,
+        "end": 6
+      },
+      "total_pages": 30,
+      "number_of_verses": "176",
+      "number_of_letters": 16030,
+      "number_of_words": 3767
+    }
+  },
+  {
+    "index": 5,
+    "name": {
+      "ar": "المائدة",
+      "id": "Al-Ma'idah",
+      "en": "Al-Maaida",
+      "tr_id": "Hidangan",
+      "tr_en": "The Table"
+    },
+    "revelation": {
+      "ar": "مدينة",
+      "id": "Madaniyyah",
+      "en": "Medinan"
+    },
+    "sequence": "112",
+    "tafsir": {
+      "id": "Surat Al Maa'idah terdiri dari 120 ayat; termasuk golongan surat Madaniyyah. Sekalipun ada ayatnya yang turun di Mekah, namun ayat ini diturunkan sesudah Nabi Muhammad s.a.w. hijrah ke Medinah, yaitu di waktu haji wadaa'. Surat ini dinamakan Al Maa'idah (hidangan) karena memuat kisah pengikut-pengikut setia Nabi Isa a.s. meminta kepada Nabi Isa a.s. agar Allah menurunkan untuk mereka Al Maa'idah (hidangan makanan) dari langit (ayat 112). Dan dinamakan Al Uqud (perjanjian), karena kata itu terdapat pada ayat pertama surat ini, dimana Allah menyuruh agar hamba-hamba-Nya memenuhi janji prasetia terhadap Allah dan perjanjian-perjanjian yang mereka buat sesamanya. Dinamakan juga Al Munqidz (yang menyelamatkan), karena akhir surat ini mengandung kisah tentang Nabi Isa a.s. penyelamat pengikut-pengikut setianya dari azab Allah."
+    },
+    "meta": {
+      "page": {
+        "start": 106,
+        "end": 127
+      },
+      "juz": {
+        "start": 6,
+        "end": 7
+      },
+      "total_pages": 22,
+      "number_of_verses": "120",
+      "number_of_letters": 11933,
+      "number_of_words": 2841
+    }
+  },
+  {
+    "index": 6,
+    "name": {
+      "ar": "الأنعام",
+      "id": "Al-An'am",
+      "en": "Al-An'aam",
+      "tr_id": "Binatang Ternak",
+      "tr_en": "The Cattle"
+    },
+    "revelation": {
+      "ar": "مكة",
+      "id": "Makkiyyah",
+      "en": "Meccan"
+    },
+    "sequence": "55",
+    "tafsir": {
+      "id": "Surat Al An'aam (binatang ternak: unta, sapi, biri-biri dan kambing) yang terdiri atas 165 ayat, termasuk golongan surat Makkiyah, karena hampur seluruh ayat-ayat-Nya diturunkan di Mekah dekat sebelum hijrah. Dinamakan Al An'aam karena di dalamnya disebut kata An'aam dalam hubungan dengan adat-istiadat kaum musyrikin, yang menurut mereka binatang-binatang ternak itu dapat dipergunakan untuk mendekatkan diri kepada tuhan mereka. Juga dalam surat ini disebutkan hukum-hukum yang berkenaan dengan binatang ternak itu."
+    },
+    "meta": {
+      "page": {
+        "start": 128,
+        "end": 150
+      },
+      "juz": {
+        "start": 7,
+        "end": 8
+      },
+      "total_pages": 23,
+      "number_of_verses": "165",
+      "number_of_letters": 12254,
+      "number_of_words": 3060
+    }
+  },
+  {
+    "index": 7,
+    "name": {
+      "ar": "الأعراف",
+      "id": "Al-A'raf",
+      "en": "Al-A'raaf",
+      "tr_id": "Tempat Tertinggi",
+      "tr_en": "The Heights"
+    },
+    "revelation": {
+      "ar": "مكة",
+      "id": "Makkiyyah",
+      "en": "Meccan"
+    },
+    "sequence": "39",
+    "tafsir": {
+      "id": "Surat Al A'raaf yang berjumlah 206 ayat termasuk golongan surat Makkiyah, diturunkan sebelum turunnya surat Al An'aam dan termasuk golongan surat Assab 'uththiwaal (tujuh surat yang panjang). Dinamakan Al A'raaf karena perkataan Al A'raaf terdapat dalam ayat 46 yang mengemukakan tentang keadaan orang-orang yang berada di atas Al A'raaf yaitu: tempat yang tertinggi di batas surga dan neraka."
+    },
+    "meta": {
+      "page": {
+        "start": 151,
+        "end": 176
+      },
+      "juz": {
+        "start": 8,
+        "end": 9
+      },
+      "total_pages": 26,
+      "number_of_verses": "206",
+      "number_of_letters": 13877,
+      "number_of_words": 3345
+    }
+  },
+  {
+    "index": 8,
+    "name": {
+      "ar": "الأنفال",
+      "id": "Al-Anfal",
+      "en": "Al-Anfaal",
+      "tr_id": "Rampasan Perang",
+      "tr_en": "The Spoils of War"
+    },
+    "revelation": {
+      "ar": "مدينة",
+      "id": "Madaniyyah",
+      "en": "Medinan"
+    },
+    "sequence": "88",
+    "tafsir": {
+      "id": "Surat Al Anfaal terdiri atas 75 ayat dan termasuk golongan surat-surat Madaniyyah, karena seluruh ayat-ayatnya diturunkan di Madinah. Surat ini dinamakan Al Anfaal yang berarti harta rampasan perang berhubung kata Al Anfaal terdapat pada permulaan surat ini dan juga persoalan yang menonjol dalam surat ini ialah tentang harta rampasan perang, hukum perang dan hal-hal yang berhubungan dengan peperangan pada umumnya. Menurut riwayat Ibnu Abbas r.a. surat ini diturunkan berkenaan dengan perang Badar Kubra yang terjadi pada tahun kedua hijrah. Peperangan ini sangat penting artinya, karena dialah yang menentukan jalan sejarah Perkembangan Islam. Pada waktu itu umat Islam dengan berkekuatan kecil untuk pertama kali dapat mengalahkan kaum musyrikin yang berjumlah besar, dan berperlengkapan yang cukup, dan mereka dalam peperangan ini memperoleh harta rampasan perang yang tidak sedikit. Oleh sebab itu timbullah masalah bagaimana membagi harta-harta rampasan perang itu, maka kemudian Allah menurunkan ayat pertama dari surat ini."
+    },
+    "meta": {
+      "page": {
+        "start": 177,
+        "end": 186
+      },
+      "juz": {
+        "start": 9,
+        "end": 10
+      },
+      "total_pages": 10,
+      "number_of_verses": "75",
+      "number_of_letters": 5080,
+      "number_of_words": 1246
+    }
+  },
+  {
+    "index": 9,
+    "name": {
+      "ar": "التوبة",
+      "id": "At-Taubah",
+      "en": "At-Tawba",
+      "tr_id": "Pengampunan",
+      "tr_en": "The Repentance"
+    },
+    "revelation": {
+      "ar": "مدينة",
+      "id": "Madaniyyah",
+      "en": "Medinan"
+    },
+    "sequence": "113",
+    "tafsir": {
+      "id": "Surat At Taubah terdiri atas 129 ayat termasuk golongan surat-surat Madaniyyah. Surat ini dinamakan At Taubah yang berarti pengampunan berhubung kata At Taubah berulang kali disebut dalam surat ini. Dinamakan juga dengan Baraah yang berarti berlepas diri yang di sini maksudnya pernyataan pemutusan perhubungan, disebabkan kebanyakan pokok pembicaraannya tentang pernyataan pemutusan perjanjian damai dengan kaum musyrikin.  Di samping kedua nama yang masyhur itu ada lagi beberapa nama yang lain yang merupakan sifat dari surat ini.  Berlainan dengan surat-surat yang lain, maka pada permulaan surat ini tidak terdapat basmalah, karena surat ini adalah pernyataan perang dengan arti bahwa segenap kaum muslimin dikerahkan untuk memerangi seluruh kaum musyrikin, sedangkan basmalah bernafaskan perdamaian dan cinta kasih Allah.  Surat ini diturunkan sesudah Nabi Muhammad s.a.w. kembali dari peperangan Tabuk yang terjadi pada tahun 9 H. Pengumuman ini disampaikan oleh Saidina 'Ali r.a. pada musim haji tahun itu juga."
+    },
+    "meta": {
+      "page": {
+        "start": 187,
+        "end": 207
+      },
+      "juz": {
+        "start": 10,
+        "end": 11
+      },
+      "total_pages": 21,
+      "number_of_verses": "129",
+      "number_of_letters": 10488,
+      "number_of_words": 2505
+    }
+  },
+  {
+    "index": 10,
+    "name": {
+      "ar": "يونس",
+      "id": "Yunus",
+      "en": "Yunus",
+      "tr_id": "Yunus",
+      "tr_en": "Jonas"
+    },
+    "revelation": {
+      "ar": "مكة",
+      "id": "Makkiyyah",
+      "en": "Meccan"
+    },
+    "sequence": "51",
+    "tafsir": {
+      "id": "Surat Yunus terdiri atas 109 ayat, termasuk golongan surat-surat Makkiyyah kecuali ayat 40, 94, 95, yang diturunkan pada masa Nabi Muhmmad s.a.w. berada di Madinah. Surat ini dinamai surat Yunus karena dalam surat ini terutama ditampilkan kisah Nabi Yunus a.s. dan pengikut-pengikutnya yang teguh imannya."
+    },
+    "meta": {
+      "page": {
+        "start": 208,
+        "end": 221
+      },
+      "juz": {
+        "start": 11,
+        "end": 11
+      },
+      "total_pages": 14,
+      "number_of_verses": "109",
+      "number_of_letters": 7567,
+      "number_of_words": 1843
+    }
+  },
+  {
+    "index": 11,
+    "name": {
+      "ar": "هود",
+      "id": "Hud",
+      "en": "Hud",
+      "tr_id": "Hud",
+      "tr_en": "Hud"
+    },
+    "revelation": {
+      "ar": "مكة",
+      "id": "Makkiyyah",
+      "en": "Meccan"
+    },
+    "sequence": "52",
+    "tafsir": {
+      "id": "Surat Huud termasuk golongan surat-surat Makkiyyah, terdiri dari 123 ayat diturunkan sesudah surat Yunus. Surat ini dinamai surat Huud karena ada hubungan dengan terdapatnya kisah Nabi Huud a.s. dan kaumnya dalam surat ini terdapat juga kisah-kisah Nabi yang lain, seperti kisah Nuh a.s., Shaleh a.s., Ibrahim a.s., Luth a.s., Syu'aib a.s. dan Musa a.s."
+    },
+    "meta": {
+      "page": {
+        "start": 221,
+        "end": 235
+      },
+      "juz": {
+        "start": 11,
+        "end": 12
+      },
+      "total_pages": 15,
+      "number_of_verses": "123",
+      "number_of_letters": 7513,
+      "number_of_words": 1950
+    }
+  },
+  {
+    "index": 12,
+    "name": {
+      "ar": "يوسف",
+      "id": "Yusuf",
+      "en": "Yusuf",
+      "tr_id": "Yusuf",
+      "tr_en": "Joseph"
+    },
+    "revelation": {
+      "ar": "مكة",
+      "id": "Makkiyyah",
+      "en": "Meccan"
+    },
+    "sequence": "53",
+    "tafsir": {
+      "id": "Surat Yusuf ini terdiri atas 111 ayat, termasuk golongan surat-surat Makkiyyah karena diturunkan di Mekah sebelum hijrah. Surat ini dinamakan surat Yusuf adalah karena titik berat dari isinya mengenai riwayat Nabi Yusuf a.s.  Riwayat tersebut salah satu di antara cerita-cerita ghaib yang diwahyukan kepada Nabi Muhammad s.a.w. sebagai mukjizat bagi beliau, sedang beliau sebelum diturunkan surat ini tidak mengetahuinya.  Menurut riwayat Al Baihaqi dalam kitab Ad Dalail bahwa segolongan orang Yahudi masuk agama Islam sesudah mereka mendengar cerita Yusuf a.s. ini, karena sesuai dengan cerita-cerita yang mereka ketahui. Dari cerita Yusuf a.s. ini, Nabi Muhammad s.a.w. mengambil pelajaran-pelajaran yang banyak dan merupakan penghibur terhadap beliau dalam menjalankan tugasnya."
+    },
+    "meta": {
+      "page": {
+        "start": 235,
+        "end": 248
+      },
+      "juz": {
+        "start": 12,
+        "end": 13
+      },
+      "total_pages": 14,
+      "number_of_verses": "111",
+      "number_of_letters": 7166,
+      "number_of_words": 1799
+    }
+  },
+  {
+    "index": 13,
+    "name": {
+      "ar": "الرعد",
+      "id": "Ar-Ra'd",
+      "en": "Ar-Ra'd",
+      "tr_id": "Guruh",
+      "tr_en": "The Thunder"
+    },
+    "revelation": {
+      "ar": "مدينة",
+      "id": "Madaniyyah",
+      "en": "Medinan"
+    },
+    "sequence": "96",
+    "tafsir": {
+      "id": "Surat Ar Ra'd ini terdiri atas 43 ayat termasuk golongan surat-surat Madaniyyah. Surat ini dinamakan Ar Ra'd yang berarti guruh karena dalam ayat 13 Allah berfirman yang artinya Dan guruh itu bertasbih sambil memuji-Nya, menunjukkan sifat kesucian dan kesempurnaan Allah s.w.t.  Dan lagi sesuai dengan sifat Al Quran yang mengandung ancaman dan harapan, maka demikian pulalah halnya bunyi guruh itu menimbulkan kecemasan dan harapan kepada manusia. Isi yang terpenting dari surat ini ialah bahwa bimbingan Allah kepada makhluk-Nya bertalian erat dengan hukum sebab dan akibat. Bagi Allah s.w.t. tidak ada pilih kasih dalam menetapkan hukuman. Balasan atau hukuman adalah akibat dan ketaatan atau keingkaran terhadap hukum Allah."
+    },
+    "meta": {
+      "page": {
+        "start": 249,
+        "end": 255
+      },
+      "juz": {
+        "start": 13,
+        "end": 13
+      },
+      "total_pages": 7,
+      "number_of_verses": "43",
+      "number_of_letters": 3506,
+      "number_of_words": 857
+    }
+  },
+  {
+    "index": 14,
+    "name": {
+      "ar": "ابراهيم",
+      "id": "Ibrahim",
+      "en": "Ibrahim",
+      "tr_id": "Ibrahim",
+      "tr_en": "Abraham"
+    },
+    "revelation": {
+      "ar": "مكة",
+      "id": "Makkiyyah",
+      "en": "Meccan"
+    },
+    "sequence": "72",
+    "tafsir": {
+      "id": "Surat Ibrahim ini terdiri atas 52 ayat, termasuk golongan surat-surat Makkiyyah karena diturunkan di Mekah sebelum Hijrah. Dinamakan Ibrahim, karena surat ini mengandung doa Nabi Ibrahim a.s. yaitu ayat 35 sampai dengan 41. Do'a ini isinya antara lain: permohonan agar keturunannya mendirikan shalat, dijauhkan dari menyembah berhala-berhala dan agar Mekah dan daerah sekitarnya menjadi daerah yang aman dan makmur. Doa Nabi Ibrahim a.s. ini telah diperkenankan oleh Allah s.w.t. sebagaimana telah terbukti keamanannya sejak dahulu sampai sekarang. Do'a tersebut dipanjatkan beliau ke hadirat Allah s.w.t. sesudah selesai membina Ka'bah bersama puteranya Ismail a.s., di dataran tanah Mekah yang tandus."
+    },
+    "meta": {
+      "page": {
+        "start": 255,
+        "end": 261
+      },
+      "juz": {
+        "start": 13,
+        "end": 13
+      },
+      "total_pages": 7,
+      "number_of_verses": "52",
+      "number_of_letters": 3434,
+      "number_of_words": 834
+    }
+  },
+  {
+    "index": 15,
+    "name": {
+      "ar": "الحجر",
+      "id": "Al-Hijr",
+      "en": "Al-Hijr",
+      "tr_id": "Hijr",
+      "tr_en": "The Rock"
+    },
+    "revelation": {
+      "ar": "مكة",
+      "id": "Makkiyyah",
+      "en": "Meccan"
+    },
+    "sequence": "54",
+    "tafsir": {
+      "id": "Surat ini terdiri atas 99 ayat, termasuk golongan surat-surat Makkiyyah,  karena diturunkan di Mekah sebelum hijrah. Al Hijr  adalah nama  sebuah daerah  pegunungan yang didiami zaman dahulu  oleh kaum  Tsamud terletak  di  pinggir  jalan antara Madinah dan Syam (Syria). Nama surat ini diambil dari nama daerah pegunungan itu, berhubung nasib  penduduknya yaitu  kaum Tsamud  diceritakan pada ayat  80 sampai  dengan 84,  mereka  telah  dimusnahkan Allah  s.w.t.,  karena  mendustakan  Nabi  Shaleh  a.s.  dan berpaling   dari ayat-ayat  Allah. Dalam  surat ini terdapat juga kisah-kisah  kaum yang lain yang telah dibinasakan oleh Allah seperti  kaum Luth  a.s. dan kaum Syu'aib a.s. Dari ke semua kisah-kisah  itu dapat  diambil pelajaran bahwa orang-orang  yang  menentang  ajaran  rasul-rasul  akan  mengalami kehancuran."
+    },
+    "meta": {
+      "page": {
+        "start": 262,
+        "end": 267
+      },
+      "juz": {
+        "start": 14,
+        "end": 14
+      },
+      "total_pages": 6,
+      "number_of_verses": "99",
+      "number_of_letters": 2760,
+      "number_of_words": 661
+    }
+  },
+  {
+    "index": 16,
+    "name": {
+      "ar": "النحل",
+      "id": "An-Nahl",
+      "en": "An-Nahl",
+      "tr_id": "Lebah",
+      "tr_en": "The Bee"
+    },
+    "revelation": {
+      "ar": "مكة",
+      "id": "Makkiyyah",
+      "en": "Meccan"
+    },
+    "sequence": "70",
+    "tafsir": {
+      "id": "Surat ini terdiri atas 128 ayat, termasuk golongan surat-surat Makkiyyah. Surat ini dinamakan An Nahl yang berarti lebah karena di dalamnya, terdapat firman Allah s.w.t. ayat 68 yang artinya : \"Dan Tuhanmu mewahyukan kepada lebah.\" Lebah adalah makhluk Allah yang banyak memberi manfaat  dan kenikmatan kepada manusia. Ada persamaan antara madu yang dihasilkan oleh lebah dengan Al Quranul Karim. Madu berasal dari bermacam-macam sari bunga dan dia menjadi obat bagi bermacam-macam penyakit manusia (lihat ayat 69). Sedang Al Quran mengandung inti sari dari kitab-kitab yang telah diturunkan kepada Nabi-nabi zaman dahulu ditambah dengan ajaran-ajaran yang diperlukan oleh semua bangsa sepanjang masa untuk mencapai kebahagiaan dunia dan akhirat. (Lihat surat (10) Yunus ayat 57 dan surat (17) Al Isra' ayat  82). Surat ini dinamakan pula \"An Ni'am\" artinya nikmat-nikmat, karena di dalamnya Allah menyebutkan pelbagai macam nikmat untuk hamba-hamba-Nya."
+    },
+    "meta": {
+      "page": {
+        "start": 267,
+        "end": 281
+      },
+      "juz": {
+        "start": 14,
+        "end": 14
+      },
+      "total_pages": 15,
+      "number_of_verses": "128",
+      "number_of_letters": 7707,
+      "number_of_words": 1848
+    }
+  },
+  {
+    "index": 17,
+    "name": {
+      "ar": "الإسراء",
+      "id": "Al-Isra'",
+      "en": "Al-Israa",
+      "tr_id": "Memperjalankan Malam Hari",
+      "tr_en": "The Night Journey"
+    },
+    "revelation": {
+      "ar": "مكة",
+      "id": "Makkiyyah",
+      "en": "Meccan"
+    },
+    "sequence": "50",
+    "tafsir": {
+      "id": "Surat ini terdiri atas 111 ayat, termasuk golongan surat-surat Makkiyyah. Dinamakan dengan Al Israa' yang berarti memperjalankan di malam hari, berhubung peristiwa Israa' Nabi Muhammad s.a.w. di Masjidil Haram di Mekah ke Masjidil Aqsha di Baitul Maqdis dicantumkan pada ayat pertama dalam surat ini. Penuturan cerita Israa' pada permulaan surat ini, mengandung isyarat bahwa Nabi Muhammad s.a.w. beserta umatnya kemudian hari akan mencapai martabat yang tinggi dan akan menjadi umat yang besar. Surat ini dinamakan pula dengan Bani Israil artinya keturunan Israil berhubung dengan permulaan surat ini, yakni pada ayat kedua sampai dengan ayat kedelapan dan kemudian dekat akhir surat yakni pada ayat 101 sampai dengan ayat 104, Allah menyebutkan tentang Bani Israil yang setelah menjadi bangsa yang kuat lagi besar lalu menjadi bangsa yang terhina karena menyimpang dari ajaran Allah s.w.t. Dihubungkannya kisah Israa' dengan riwayat Bani Israil pada surat ini, memberikan peringatan bahwa umat Islam akan mengalami keruntuhan, sebagaimana halnya Bani Israil, apabila mereka juga meninggalkan ajaran-ajaran agamanya."
+    },
+    "meta": {
+      "page": {
+        "start": 282,
+        "end": 293
+      },
+      "juz": {
+        "start": 15,
+        "end": 15
+      },
+      "total_pages": 12,
+      "number_of_verses": "111",
+      "number_of_letters": 6460,
+      "number_of_words": 1562
+    }
+  },
+  {
+    "index": 18,
+    "name": {
+      "ar": "الكهف",
+      "id": "Al-Kahf",
+      "en": "Al-Kahf",
+      "tr_id": "Goa",
+      "tr_en": "The Cave"
+    },
+    "revelation": {
+      "ar": "مكة",
+      "id": "Makkiyyah",
+      "en": "Meccan"
+    },
+    "sequence": "69",
+    "tafsir": {
+      "id": "Surat  ini terdiri atas 110 ayat, termasuk  golongan  surat-surat Makkiyyah. Dinamai Al-Kahfi artinya Gua dan Ashhabul Kahfi yang artinya Penghuni-Penghuni Gua. Kedua nama ini diambil dari cerita yang terdapat dalam surat ini pada ayat 9 sampai dengan 26, tentang beberapa orang pemuda yang tidur dalam gua bertahun-tahun lamanya. Selain cerita tersebut, terdapat pula beberapa buah cerita dalam surat ini, yang kesemuanya mengandung i'tibar dan pelajaran-pelajaran yang amat berguna bagi kehidupan manusia. Banyak hadist-hadist Rasulullah s.a.w. yang menyatakan keutamaan membaca surat ini."
+    },
+    "meta": {
+      "page": {
+        "start": 293,
+        "end": 304
+      },
+      "juz": {
+        "start": 15,
+        "end": 16
+      },
+      "total_pages": 12,
+      "number_of_verses": "110",
+      "number_of_letters": 6360,
+      "number_of_words": 1587
+    }
+  },
+  {
+    "index": 19,
+    "name": {
+      "ar": "مريم",
+      "id": "Maryam",
+      "en": "Maryam",
+      "tr_id": "Maryam",
+      "tr_en": "Mary"
+    },
+    "revelation": {
+      "ar": "مكة",
+      "id": "Makkiyyah",
+      "en": "Meccan"
+    },
+    "sequence": "44",
+    "tafsir": {
+      "id": "Surat Maryam terdiri atas 98 ayat, termasuk golongan surat-surat Makkiyyah, karena hampir seluruh ayatnya diturunkan sebelum Nabi Muhammad s.a.w. hijrah ke Madinah, bahkan sebelum sahabat-sahabat beliau hijrah ke negeri Habsyi. Menurut riwayat Ibnu Mas'ud, Ja'far bin Abi Thalib membacakan permulaan surat Maryam ini kepada raja Najasyi dan pengikut-pengikutnya di waktu ia ikut hijrah bersama-sama sahabat-sahabat yang lain ke negeri Habsyi.Surat ini dinamai Maryam, karena surat ini mengandung kisah Maryam, ibu Nabi Isa a.s. yang serba ajaib, yaitu melahirkan puteranya lsa a.s., sedang ia sebelumnya belum pernah dikawini atau dicampuri oleh seorang laki-laki pun. Kelahiran Isa a.s. tanpa bapa, merupakan suatu bukti kekuasaan Allah s.w.t.  Pengutaraan kisah Maryam sebagai kejadian yang luar biasa dan ajaib dalam surat ini, diawali dengan kisah kejadian yang luar biasa dan ajaib pula, yaitu dikabulkannya doa Zakaria a.s. oleh Allah s.w.t., agar beliau dianugerahi seorang putera sebagai pewaris dan pelanjut cita-cita dan kepercayaan beliau, sedang usia beliau sudah sangat tua dan isteri beliau seorang yang mandul yang menurut ukuran ilmu biologi tidak mungkin akan terjadi."
+    },
+    "meta": {
+      "page": {
+        "start": 305,
+        "end": 312
+      },
+      "juz": {
+        "start": 16,
+        "end": 16
+      },
+      "total_pages": 8,
+      "number_of_verses": "98",
+      "number_of_letters": 3802,
+      "number_of_words": 975
+    }
+  },
+  {
+    "index": 20,
+    "name": {
+      "ar": "طه",
+      "id": "Taha",
+      "en": "Taa-Haa",
+      "tr_id": "Taha",
+      "tr_en": "Taa-Haa"
+    },
+    "revelation": {
+      "ar": "مكة",
+      "id": "Makkiyyah",
+      "en": "Meccan"
+    },
+    "sequence": "45",
+    "tafsir": {
+      "id": "Surat Thaahaa terdiri atas 135 ayat, diturunkan sesudah diturunkannya surat Maryam, termasuk golongan surat-surat Makkiyyah. Surat ini dinamai Thaahaa, diambil dari perkataan yang berasal dan ayat pertama surat ini. Sebagaimana yang lazim terdapat pada surat-surat yang memakai huruf-huruf abjad pada permulaannya, di mana huruf tersebut seakan-akan merupakan pemberitahuan Allah kepada orang-orang yang membacanya, bahwa sesudah huruf itu akan dikemukakan hal-hal yang  sangat penting diketahui, maka demikian pula halnya dengan ayat-ayat yang terdapat sesudah huruf thaahaa dalam surat ini. Allah menerangkan bahwa Al Quran merupakan peringatan bagi manusia, wahyu dari Allah, Pencipta semesta alam. Kemudian Allah menerangkan kisah beberapa orang nabi; akibat-akibat yang telah ada akan dialami oleh orang-orang yang percaya kepada Allah dan orang-orang yang mengingkari-Nya, baik di dunia maupun di akhirat. Selain hal-hal tersebut di atas, maka surat ini mengandung pokok-pokok isi sebagai berikut:"
+    },
+    "meta": {
+      "page": {
+        "start": 312,
+        "end": 321
+      },
+      "juz": {
+        "start": 16,
+        "end": 16
+      },
+      "total_pages": 10,
+      "number_of_verses": "135",
+      "number_of_letters": 5242,
+      "number_of_words": 1357
+    }
+  },
+  {
+    "index": 21,
+    "name": {
+      "ar": "الأنبياء",
+      "id": "Al-Anbiya'",
+      "en": "Al-Anbiyaa",
+      "tr_id": "Para Nabi",
+      "tr_en": "The Prophets"
+    },
+    "revelation": {
+      "ar": "مكة",
+      "id": "Makkiyyah",
+      "en": "Meccan"
+    },
+    "sequence": "73",
+    "tafsir": {
+      "id": "Surat Al Anbiyaa' yang terdiri atas 112 ayat, termasuk golongan surat Makkiyyah. Dinamai surat ini dengan al anbiyaa'(nabi-nabi), karena surat ini mengutarakan kisah beberapa orang nabi. Permulaan surat Al Anbiyaa' menegaskan bahwa manusia lalai dalam menghadapi hari berhisab, kemudian berhubung adanya pengingkaran kaum musyrik Mekah terhadap wahyu yang dibawa Nabi Muhammad s.a.w. maka ditegaskan Allah, kendatipun nabi-nabi itu manusia biasa, akan tetapi masing-masing mereka adalah manusia yang membawa wahyu yang pokok ajarannya adalah tauhid, dan keharusan manusia menyembah Allah Tuhan Penciptanya. Orang yang tidak mau mengakui kekuasaan Allah dan mengingkari ajaran yang dibawa oleh nabi-nabi itu, akan diazab Allah didunia dan di akhirat nanti. Kemudian dikemukakan kisah beberapa orang nabi dengan umatnya. Akhirnya surat itu ditutup dengan seruan agar kaum musyrik Mekah percaya kepada ajaran yang dibawa Muhammad s.a.w supaya tidak mengalami apa yang telah dialami oleh umat-umat yang dahulu."
+    },
+    "meta": {
+      "page": {
+        "start": 322,
+        "end": 331
+      },
+      "juz": {
+        "start": 17,
+        "end": 17
+      },
+      "total_pages": 10,
+      "number_of_verses": "112",
+      "number_of_letters": 4890,
+      "number_of_words": 1178
+    }
+  },
+  {
+    "index": 22,
+    "name": {
+      "ar": "الحج",
+      "id": "Al-Hajj",
+      "en": "Al-Hajj",
+      "tr_id": "Haji",
+      "tr_en": "The Pilgrimage"
+    },
+    "revelation": {
+      "ar": "مدينة",
+      "id": "Madaniyyah",
+      "en": "Medinan"
+    },
+    "sequence": "103",
+    "tafsir": {
+      "id": "Surat Al Hajj, termasuk golongan surat-surat Madaniyyah, terdiri atas 78 ayat, sedang menurut pendapat sebahagian ahli tafsir termasuk golongan surat-surat Makkiyah. Sebab perbedaan ini ialah karena sebahagian ayat-ayat surat ini ada yang diturunkan di Mekah dan sebahagian lagi diturunkan di Madinah. Dinamai surat ini Al Hajj, karena surat ini mengemukakan hal-hal yang berhubungan dengan ibadat haji, seperti ihram, thawaf, sa'i, wuquf di Arafah, mencukur rambut, syi'ar-syi'ar Allah, faedah-faedah dan hikmah-hikmah disyari'atkannya haji. Ditegaskan pula bahwa ibadat haji itu telah disyari'atkan di masa Nabi Ibrahim a.s., dan Ka'bah didirikan oleh Nabi Ibrahim a.s. bersama puteranya Ismail a.s.Menurut Al Ghaznawi, surat Al Hajj termasuk di antara surat- surat yang ajaib, diturunkan di malam dan di siang hari, dalam musafir dan dalam keadaan tidak musafir, ada ayat-ayat yang diturunkan di Mekah dan ada pula yang diturunkan di Madinah, isinya ada yang berhubungan dengan peperangan dan ada pula yang berhubungan dengan perdamaian, ada ayat-ayatnya yang muhkam dan ada pula yang mutasyabihaat."
+    },
+    "meta": {
+      "page": {
+        "start": 332,
+        "end": 341
+      },
+      "juz": {
+        "start": 17,
+        "end": 17
+      },
+      "total_pages": 10,
+      "number_of_verses": "78",
+      "number_of_letters": 5070,
+      "number_of_words": 1283
+    }
+  },
+  {
+    "index": 23,
+    "name": {
+      "ar": "المؤمنون",
+      "id": "Al-Mu'minun",
+      "en": "Al-Muminoon",
+      "tr_id": "Orang-Orang Mukmin",
+      "tr_en": "The Believers"
+    },
+    "revelation": {
+      "ar": "مكة",
+      "id": "Makkiyyah",
+      "en": "Meccan"
+    },
+    "sequence": "74",
+    "tafsir": {
+      "id": "Surat Al Mu'minuun terdiri atas 118 ayat, termasuk golongan surat-surat Makkiyyah. Dinamai Al Mu'minuun, karena permulaan ayat ini manerangkan bagaimana seharusnya sifat-sifat orang mukmin yang menyebabkan keberuntungan mereka di akhirat dan ketenteraman jiwa mereka di dunia. Demikian tingginya sifat-sifat itu, hingga ia telah menjadi akhlak bagi Nabi Muhammad s.a.w."
+    },
+    "meta": {
+      "page": {
+        "start": 342,
+        "end": 349
+      },
+      "juz": {
+        "start": 18,
+        "end": 18
+      },
+      "total_pages": 8,
+      "number_of_verses": "118",
+      "number_of_letters": 4802,
+      "number_of_words": 1056
+    }
+  },
+  {
+    "index": 24,
+    "name": {
+      "ar": "النور",
+      "id": "An-Nur",
+      "en": "An-Noor",
+      "tr_id": "Cahaya",
+      "tr_en": "The Light"
+    },
+    "revelation": {
+      "ar": "مدينة",
+      "id": "Madaniyyah",
+      "en": "Medinan"
+    },
+    "sequence": "102",
+    "tafsir": {
+      "id": "Surat An Nuur terdiri atas 64 ayat, dan termasuk golongan surat-surat Madaniyah. Dinamai An Nuur yang berarti Cahaya, diambil dari kata An Nuur yang terdapat pada ayat ke 35. Dalam ayat ini, Allah s.w.t. menjelaskan tentang Nuur Ilahi, yakni Al Quran yang mengandung petunjuk-petunjuk. Petunjuk-petunjuk Allah itu, merupakan cahaya yang terang benderang menerangi alam semesta. Surat ini sebagian besar isinya memuat petunjuk- petunjuk Allah yang berhubungan dengan soal kemasyarakatan dan rumah tangga."
+    },
+    "meta": {
+      "page": {
+        "start": 350,
+        "end": 359
+      },
+      "juz": {
+        "start": 18,
+        "end": 18
+      },
+      "total_pages": 10,
+      "number_of_verses": "64",
+      "number_of_letters": 5680,
+      "number_of_words": 1323
+    }
+  },
+  {
+    "index": 25,
+    "name": {
+      "ar": "الفرقان",
+      "id": "Al-Furqan",
+      "en": "Al-Furqaan",
+      "tr_id": "Pembeda",
+      "tr_en": "The Criterion"
+    },
+    "revelation": {
+      "ar": "مكة",
+      "id": "Makkiyyah",
+      "en": "Meccan"
+    },
+    "sequence": "42",
+    "tafsir": {
+      "id": "Surat ini terdiri atas 77 ayat, termasuk golongan surat-surat Makkiyah. Dinamai Al Furqaan yang artinya pembeda, diambil dari kata Al Furqaan yang terdapat pada ayat pertama surat ini. Yang dimaksud dengan Al Furqaan dalam ayat ini ialah Al Quran. Al Quran dinamakan Al Furqaan karena dia membedakan antara yang haq dengan yang batil. MAka pada surat ini pun terdapat ayat-ayat yang membedakan antara kebenaran ke-esaan Allah s.w.t. dengan kebatilan kepercayaan syirik."
+    },
+    "meta": {
+      "page": {
+        "start": 359,
+        "end": 366
+      },
+      "juz": {
+        "start": 18,
+        "end": 19
+      },
+      "total_pages": 8,
+      "number_of_verses": "77",
+      "number_of_letters": 3733,
+      "number_of_words": 900
+    }
+  },
+  {
+    "index": 26,
+    "name": {
+      "ar": "الشعراء",
+      "id": "Asy-Syu'ara'",
+      "en": "Ash-Shu'araa",
+      "tr_id": "Para Penyair",
+      "tr_en": "The Poets"
+    },
+    "revelation": {
+      "ar": "مكة",
+      "id": "Makkiyyah",
+      "en": "Meccan"
+    },
+    "sequence": "47",
+    "tafsir": {
+      "id": "Surat ini terdiri dari 227 ayat termasuk golongan surat-surat Makkiyyah. Dinamakan Asy Syu'araa' (kata jamak dari Asy Syaa'ir yang berarti penyair) diambil dari kata Asy Syuaraa' yang terdapat pada ayat 224, yaitu pada bagian terakhir surat ini, di kala Allah s.w.t. secara khusus menyebutkan kedudukan penyair- penyair. Para penyair-penyair itu mempunyai sifat-sifat yang jauh berbeda dengan para rasul-rasul; mereka diikuti oleh orang-orang yang sesat dan mereka suka memutar balikkan lidah dan mereka tidak mempunyai pendirian, perbuatan mereka tidak sesuai dengan tidak mempunyai pendirian, perbuatan mereka tidak sesuai dengan apa yang mereka ucapkan. Sifat-sifat yang demikian tidaklah sekali-kali terdapat pada rasul-rasul. Oleh karena demikian tidak patut bila Nabi Muhammad s.a.w. dituduh sebagai penyair, dan Al Quran dituduh sebagai syair, Al Quran adalah wahyu Allah, bukan buatan manusia."
+    },
+    "meta": {
+      "page": {
+        "start": 367,
+        "end": 376
+      },
+      "juz": {
+        "start": 19,
+        "end": 19
+      },
+      "total_pages": 10,
+      "number_of_verses": "227",
+      "number_of_letters": 5522,
+      "number_of_words": 1324
+    }
+  },
+  {
+    "index": 27,
+    "name": {
+      "ar": "النمل",
+      "id": "An-Naml",
+      "en": "An-Naml",
+      "tr_id": "Semut-semut",
+      "tr_en": "The Ant"
+    },
+    "revelation": {
+      "ar": "مكة",
+      "id": "Makkiyyah",
+      "en": "Meccan"
+    },
+    "sequence": "48",
+    "tafsir": {
+      "id": "Surat An Naml terdiri atas 98 ayat, termasuk golongan surat- surat Makkiyyah dan diturunkan sesudah surat Asy Syu'araa'. Dinamai dengan An Naml, karena pada ayat 18 dan 19 terdapat perkataan An Naml (semut), di mana raja semut mengatakan kepada anak buahnya agar masuk sarangnya masing-masing, supaya jangan terpijak oleh Nabi Sulaiman a.s. dan tentaranya yang akan lalu di tempat itu. Mendengar perintah raja semut kepada anak buahnya itu, Nabi Sulaiman tersenyum dan ta'jub atas keteraturan kerajaan semut itu dan beliau mengucapkan syukur kepada Tuhan Yang Maba Kuasa yang telah melimpahkan nikmat kepadanya, berupa kerajaan, kekayaan, memahami ucapan-ucapan binatang, mempunyai tentara yang terdiri atas jin, manusia, burung dan sebagainya. Nabi Sulaiman a.s. yang telah diberi Allah nikmat yang besar itu tidak merasa takabur dan sombong dan sebagai seorang hamba Allah mohon agar Allah memasukkannya ke dalam golongan orang-orang yang saleh. Allah s.w.t. menyebut binatang semut dalam surat ini agar manusia mengambil pelajaran dari kehidupan semut itu. Semut adalah binatang yang hidup berkelompok di dalam tanah, membuat liang dan ruang yang bertingkat-tingkat sebagai rumah dan gudang tempat menyimpan makanan musim dingin. Kerapian dan kedisiplinan yang terdapat dalam kerajaan semut ini, dinyatakan Allah dalam ayat ini dengan bagaimana rakyat semut mencari perlindungan segera agar jangan terpijak oleh Nabi Sulaiman a.s dan tentaranya, setelah menerima peringatan dari rajanya. Secara tidak langsung Allah mengingatkan juga kepada manusia agar dalam berusaha untuk mencukupkan kebutuhan sehari-hari, mementingkan pula kemaslahatan bersama dan sebagainya, rakyat semut mempunyai organisasi dan kerja sama yang baik pula. Dengan mengisahkan kisah Nabi Sulaiman a.s. dalam surat ini Allah mengisyaratkan hari depan dan kebesaran Nabi Muhammad s.a.w. Nabi Sulaiman a.s. sebagai seorang nabi, rasul dan raja yang dianugerahi kekayaan yang melimpah ruah, begitu pula Nabi Muhammad s.a.w. sebagai seorang nabi, rasul dan seoramg kepala negara yang ummi' dan miskin akan berhasil membawa dan memimpin umatnya ke jalan Allah."
+    },
+    "meta": {
+      "page": {
+        "start": 377,
+        "end": 385
+      },
+      "juz": {
+        "start": 19,
+        "end": 20
+      },
+      "total_pages": 9,
+      "number_of_verses": "93",
+      "number_of_letters": 4799,
+      "number_of_words": 1163
+    }
+  },
+  {
+    "index": 28,
+    "name": {
+      "ar": "القصص",
+      "id": "Al-Qasas",
+      "en": "Al-Qasas",
+      "tr_id": "Kisah-Kisah",
+      "tr_en": "The Stories"
+    },
+    "revelation": {
+      "ar": "مكة",
+      "id": "Makkiyyah",
+      "en": "Meccan"
+    },
+    "sequence": "49",
+    "tafsir": {
+      "id": "Surat Al Qashash terdiri atas 88 ayat termasuk golongan surat-surat Makkiyyah. Dinamai dengan Al Qashash, karena pada ayat 25 surat ini terdapat kata Al Qashash yang berarti cerita. Ayat ini menerangkan bahwa setelah Nabi Musa a.s. bertemu dengan Nabi Syua'ib a.s. ia menceritakan cerita yang berhubungan  dengan dirinya sendiri, yakni pengalamannya dengan Fir'aun, sampai waktu ia diburu oleh Fir'aun karena membunuh seseorang dari bangsa Qibthi tanpa disengaja, Syua'ib a.s. menjawab bahwa Musa a.s. telah selamat dari pengejaran  orang-orang zalim. Turunnya ayat 25 surat ini amat besar artinya bagi Nabi Muhammad s.a.w. dan bagi sahabat-sahabat yang melakukan hijrah ke Madinah, yang menambah keyakinan mereka, bahwa akhirnya orang-orang Islamlah yang menang, sebab ayat ini menunjukkan bahwa barangsiapa yang berhijrah dari tempat musuh untuk mempertahankan keimanan, pasti akan berhasil dalam perjuangannya menghadapi musuh-musuh agama. Kepastian kemenangan bagi kaum muslimin itu, ditegaskan pada bagian akhir surat ini yang mengandung bahwa setelah hijrah ke Madinah kaum muslimin akan kembali ke Mekah sebagai pemenang dan penegak agama Allah. Surat Al Qashash ini adalah surat yang paling lengkap memuat cerita Nabi Musa a.s. sehingga menurut suatu riwayat, surat ini dinamai juga dengan surat Musa."
+    },
+    "meta": {
+      "page": {
+        "start": 385,
+        "end": 396
+      },
+      "juz": {
+        "start": 20,
+        "end": 20
+      },
+      "total_pages": 12,
+      "number_of_verses": "88",
+      "number_of_letters": 5800,
+      "number_of_words": 1442
+    }
+  },
+  {
+    "index": 29,
+    "name": {
+      "ar": "العنكبوت",
+      "id": "Al-'Ankabut",
+      "en": "Al-Ankaboot",
+      "tr_id": "Laba-Laba",
+      "tr_en": "The Spider"
+    },
+    "revelation": {
+      "ar": "مكة",
+      "id": "Makkiyyah",
+      "en": "Meccan"
+    },
+    "sequence": "85",
+    "tafsir": {
+      "id": "Surat Al 'Ankabuut terdiri atas 69 ayat, termasuk golongan surat-surrat Makkiyah. Dinamai Al 'Ankabuut berhubung terdapatnya perkataan Al 'Ankabuut yang berarti laba-laba pada ayat 41 surat ini, dimana Allah mengumpamakan penyembah-penyembah berhala-berhala itu, dengan laba-laba yang percaya kepada kekuatan rumahnya sebagai tempat ia berlindung dan tempat ia menjerat mangsanya, padahal kalau dihembus angin atau ditimpa oleh suatu barang yang kecil saja, rumah itu akan hancur. Begitu pula halnya dengan kaum musyrikin yang percaya kepada kekuatan sembahan-sembahan mereka sebagai tempat berlindung dan tempat meminta sesuatu yang mereka ingini, padahal sembahan-sembahan mereka itu tidak mampu sedikit juga menolong mereka dari azab Allah waktu di dunia, seperti yang terjadi pada kaum Nuh, kaum Ibrahim, kaum Luth, kaum Syu'aib, kaum Saleh, dan lain-lain. Apalagi menghadapi azab Allah di akhirat nanti, sembahan-sembahan mereka itu lebih tidak mampu menghindarkan dan melindungi mereka."
+    },
+    "meta": {
+      "page": {
+        "start": 396,
+        "end": 404
+      },
+      "juz": {
+        "start": 20,
+        "end": 21
+      },
+      "total_pages": 9,
+      "number_of_verses": "69",
+      "number_of_letters": 4195,
+      "number_of_words": 982
+    }
+  },
+  {
+    "index": 30,
+    "name": {
+      "ar": "الروم",
+      "id": "Ar-Rum",
+      "en": "Ar-Room",
+      "tr_id": "Romawi",
+      "tr_en": "The Romans"
+    },
+    "revelation": {
+      "ar": "مكة",
+      "id": "Makkiyyah",
+      "en": "Meccan"
+    },
+    "sequence": "84",
+    "tafsir": {
+      "id": "Surat Ar Ruum terdiri atas 60 ayat, termasuk golongan surat-surat Makkiyah diturunkan sesudah ayat Al Insyiqaq. Dinamakan Ar Ruum karena pada permulaan surat ini, yaitu ayat 2, 3 dan 4 terdapat pemberitaan bangsa Rumawi yang pada mulanya dikalahkan oleh bangsa Persia, tetapi setelah beberapa tahun kemudian kerajaan Ruum dapat menuntut balas dan mengalahkan kerajaan Persia kembali. Ini adalah suatu mukjizat Al Quran, yaitu memberitakan hal-hal yang akan terjadi di masa yang akan datang. Dan juga suatu isyarat bahwa kaum muslimin yang demikian lemahnya di waktu itu akan menang dan dapat menghancurkan kaum musyrikin. Isyarat ini terbukti pertama kali pada perang Badar."
+    },
+    "meta": {
+      "page": {
+        "start": 404,
+        "end": 410
+      },
+      "juz": {
+        "start": 21,
+        "end": 21
+      },
+      "total_pages": 7,
+      "number_of_verses": "60",
+      "number_of_letters": 3534,
+      "number_of_words": 821
+    }
+  },
+  {
+    "index": 31,
+    "name": {
+      "ar": "لقمان",
+      "id": "Luqman",
+      "en": "Luqman",
+      "tr_id": "Luqman",
+      "tr_en": "Luqman"
+    },
+    "revelation": {
+      "ar": "مكة",
+      "id": "Makkiyyah",
+      "en": "Meccan"
+    },
+    "sequence": "57",
+    "tafsir": {
+      "id": "Surat  Luqman  terdiri   dari   34   ayat,   termasuk   golongan   surat-surat Makkiyyah, diturunkan sesudah surat Ash Shaffaat. Dinamai Luqman karena pada  ayat  12   disebutkan   bahwa   Luqman   telah diberi   oleh   Allah   nikmat   dan   ilmu   pengetahuan,  oleh sebab itu dia bersyukur kepadaNya atas nikmat yang  diberikan  itu.   Dan   pada   ayat   13 sampai 19 terdapat nasihat-nasihat Luqman kepada anaknya.Ini adalah sebagai  isyarat   daripada   Allah   supaya   setiap   ibu   bapak melaksanakan  pula terhadap anak-anak mereka sebagai yang telah dilakukan oleh Luqman."
+    },
+    "meta": {
+      "page": {
+        "start": 411,
+        "end": 414
+      },
+      "juz": {
+        "start": 21,
+        "end": 21
+      },
+      "total_pages": 4,
+      "number_of_verses": "34",
+      "number_of_letters": 2110,
+      "number_of_words": 554
+    }
+  },
+  {
+    "index": 32,
+    "name": {
+      "ar": "السجدة",
+      "id": "As-Sajdah",
+      "en": "As-Sajda",
+      "tr_id": "Sajdah",
+      "tr_en": "The Prostration"
+    },
+    "revelation": {
+      "ar": "مكة",
+      "id": "Makkiyyah",
+      "en": "Meccan"
+    },
+    "sequence": "75",
+    "tafsir": {
+      "id": "Surat As Sajdah terdiri atas 30 ayat termasuk golongan surat Makkiyah diturunkan sesudah surat Al Mu'minuun. Dinamakan As Sajdah berhubung pada surat ini terdapat ayat sajdah, yaitu ayat yang kelima belas."
+    },
+    "meta": {
+      "page": {
+        "start": 415,
+        "end": 417
+      },
+      "juz": {
+        "start": 21,
+        "end": 21
+      },
+      "total_pages": 3,
+      "number_of_verses": "30",
+      "number_of_letters": 1500,
+      "number_of_words": 376
+    }
+  },
+  {
+    "index": 33,
+    "name": {
+      "ar": "الأحزاب",
+      "id": "Al-Ahzab",
+      "en": "Al-Ahzaab",
+      "tr_id": "Golongan Yang Bersekutu",
+      "tr_en": "The Clans"
+    },
+    "revelation": {
+      "ar": "مدينة",
+      "id": "Madaniyyah",
+      "en": "Medinan"
+    },
+    "sequence": "90",
+    "tafsir": {
+      "id": "Surat Al Ahzab terdiri atas 73 ayat, termasuk golongan surat-surat Madaniyah, diturunkan sesudah surat Ali'Imran. Dinamai Al Ahzab yang berarti golongan-golongan yang bersekutu karena dalam surat ini terdapat beberapa ayat, yaitu ayat 9 sampai dengan ayat 27 yang berhubungan dengan peperangan Al Ahzab, yaitu peperangan yang dilancarkan oleh orang-orang Yahudi, kaum munafik dan orang-orang musyrik terhadap orang-orang mukmin di Medinah. Mereka telah mengepung rapat orang- orang mukmin sehingga sebahagian dari mereka telah berputus asa dan menyangka bahwa mereka akan dihancurkan oleh musuh-musuh mereka itu. Ini adalah suatu ujian yang berat dari Allah untuk menguji sampai dimana teguhnya keimanan mereka. Akhirnya Allah mengirimkan bantuan berupa tentara yang tidak kelihatan dan angin topan, sehingga musuh-musuh itu menjadi kacau balau dan melarikan diri."
+    },
+    "meta": {
+      "page": {
+        "start": 418,
+        "end": 427
+      },
+      "juz": {
+        "start": 21,
+        "end": 22
+      },
+      "total_pages": 10,
+      "number_of_verses": "73",
+      "number_of_letters": 5796,
+      "number_of_words": 1307
+    }
+  },
+  {
+    "index": 34,
+    "name": {
+      "ar": "سبإ",
+      "id": "Saba'",
+      "en": "Saba",
+      "tr_id": "Saba'",
+      "tr_en": "Sheba"
+    },
+    "revelation": {
+      "ar": "مكة",
+      "id": "Makkiyyah",
+      "en": "Meccan"
+    },
+    "sequence": "58",
+    "tafsir": {
+      "id": "Surat Saba' terdiri atas 54 ayat, termasuk golongan surat-surat Makkiyyah, diturunkan sesudah surat Luqman. Dinamakan Saba' karena didalamnya terdapat kisah kaum Saba'. Saba' adalah nama suatu kabilah dari kabilah-kabilah Arab yang tinggal di daerah Yaman sekarang ini. Mereka mendirikan kerajaan yang terkenal dengan nama kerajaan Sabaiyyah, ibukotanya Ma'rib; telah dapat membangun suatu bendungan raksasa, yang bernama Bendungan Ma'rib, sehingga negeri meka subur dan makmur. Kemewahan dan kemakmuran ini menyebabkan kaum Saba' lupa dan ingkar kepada Allah yang telah melimpahkan nikmatnya kepada mereka, serta mereka mengingkari pula seruan para rasul. Karena keingkaran mereka ini, Allah menimpahkan kepada mereka azab berupa sailul 'arim (banjir yang besar) yang ditimbulkan oleh bobolnya bendungan Ma'rib. Setelah bendungan ma'rib bobol negeri Saba' menjadi kering dan kerajaan mereka hancur."
+    },
+    "meta": {
+      "page": {
+        "start": 428,
+        "end": 434
+      },
+      "juz": {
+        "start": 22,
+        "end": 22
+      },
+      "total_pages": 7,
+      "number_of_verses": "54",
+      "number_of_letters": 1512,
+      "number_of_words": 888
+    }
+  },
+  {
+    "index": 35,
+    "name": {
+      "ar": "فاطر",
+      "id": "Fatir",
+      "en": "Faatir",
+      "tr_id": "Maha Pencipta",
+      "tr_en": "The Originator"
+    },
+    "revelation": {
+      "ar": "مكة",
+      "id": "Makkiyyah",
+      "en": "Meccan"
+    },
+    "sequence": "43",
+    "tafsir": {
+      "id": "Surat Faathir terdiri atas 45 ayat, termasuk golongan surat-surat Makkiyyah, diturunkan sesudah surat Al Furqaan dan merupakan surat akhir dari urutan surat-surat dalam Al Quran yang dimulai dengan Alhamdulillah. Dinamakan Faathir (pencipta) ada hubungannya dengan perkataan Faathir yang terdapat pada ayat pertama pada surat ini. Pada ayat tersebut diterangkan bahwa Allah adalah Pencipta langit dan bumi, Pencipta malaikat-malaikat, Pencipta semesta alam yang semuanya itu adalah sebagai bukti atas kekuasaan dan kebesaran-Nya. Surat ini dinamai juga dengan surat Malaikat karena pada ayat pertama disebutkan bahwa Allah telah menjadikan malaikat-malaikat sebagai utusan-Nya  yang mempunyai beberapa sayap."
+    },
+    "meta": {
+      "page": {
+        "start": 434,
+        "end": 440
+      },
+      "juz": {
+        "start": 22,
+        "end": 22
+      },
+      "total_pages": 7,
+      "number_of_verses": "45",
+      "number_of_letters": 3130,
+      "number_of_words": 782
+    }
+  },
+  {
+    "index": 36,
+    "name": {
+      "ar": "يس",
+      "id": "Yasin",
+      "en": "Yaseen",
+      "tr_id": "Yasin",
+      "tr_en": "Yaseen"
+    },
+    "revelation": {
+      "ar": "مكة",
+      "id": "Makkiyyah",
+      "en": "Meccan"
+    },
+    "sequence": "41",
+    "tafsir": {
+      "id": "Surat Yaasiin terdiri atas 83 ayat, termasuk golongan surat-surat Makkiyyah,  diturunkan sesudah surat Jin. Dinamai Yaasiin karena dimulai dengan huruf Yaasiin. Sebagaimana halnya arti huruf-huruf abjad yang terletak pada permulaan beberapa surat Al Quran, maka demikian pula arti Yaasiin yang terdapat pada ayat permulaan surat ini, yaitu Allah mengisyaratkan bahwa sesudah huruf tersebut akan dikemukakan hal-hal yang penting antara lain: Allah bersumpah dengan Al Quran bahwa Muhammad s.a.w. benar-benar seorang rasul yang diutus-Nya kepada kaum yang belum pernah diutus kepada mereka rasul-rasul."
+    },
+    "meta": {
+      "page": {
+        "start": 440,
+        "end": 445
+      },
+      "juz": {
+        "start": 22,
+        "end": 23
+      },
+      "total_pages": 6,
+      "number_of_verses": "83",
+      "number_of_letters": 3000,
+      "number_of_words": 734
+    }
+  },
+  {
+    "index": 37,
+    "name": {
+      "ar": "الصافات",
+      "id": "As-Saffat",
+      "en": "As-Saaffaat",
+      "tr_id": "Barisan-Barisan",
+      "tr_en": "Those drawn up in Ranks"
+    },
+    "revelation": {
+      "ar": "مكة",
+      "id": "Makkiyyah",
+      "en": "Meccan"
+    },
+    "sequence": "56",
+    "tafsir": {
+      "id": "Surat Ash Shaaffaat terdiri atas 182 ayat termasuk golongan surat Makkiyyah diturunkan sesudah surat Al An'aam. Dinamai dengan Ash Shaaffaat (yang bershaf-shaf) ada hubungannya dengan perkataan Ash Shaaffaat yang terletak pada ayat permulaan surat ini yang mengemukakan bagaimana para malaikat yang berbaris di hadapan Tuhannya yang bersih jiwanya, tidak dapat digoda oleh syaitan. Hal ini hendaklah menjadi i'tibar bagi manusia dalam menghambakan dirinya kepada Allah."
+    },
+    "meta": {
+      "page": {
+        "start": 446,
+        "end": 452
+      },
+      "juz": {
+        "start": 23,
+        "end": 23
+      },
+      "total_pages": 7,
+      "number_of_verses": "182",
+      "number_of_letters": 3823,
+      "number_of_words": 869
+    }
+  },
+  {
+    "index": 38,
+    "name": {
+      "ar": "ص",
+      "id": "Sad",
+      "en": "Saad",
+      "tr_id": "Sad",
+      "tr_en": "The letter Saad"
+    },
+    "revelation": {
+      "ar": "مكة",
+      "id": "Makkiyyah",
+      "en": "Meccan"
+    },
+    "sequence": "38",
+    "tafsir": {
+      "id": "Surat Shaad  terdiri atas  88 ayat  termasuk golongan  surat Makkiyyah, diturunkan sesudah surat Al Qamar. Dinamai  dengan  Shaad  karena surat  ini  dimulai  dengan Shaad (selanjutnya lihat no. [10)). Dalam surat  ini Allah  bersumpah dengan  Al Quran,   untuk menunjukkan bahwa Al Quran itu suatu  kitab yang  agung dan bahwa siapa saja yang  mengikutinya  akan mendapat  kebahagiaan  dunia  dan akhirat dan untuk menunjukkan bahwa Al Quran ini adalah mukjizat Nabi Muhammad s.a.w. yang  menyatakan kebenarannya dan ketinggian akhlaknya."
+    },
+    "meta": {
+      "page": {
+        "start": 453,
+        "end": 458
+      },
+      "juz": {
+        "start": 23,
+        "end": 23
+      },
+      "total_pages": 6,
+      "number_of_verses": "88",
+      "number_of_letters": 3029,
+      "number_of_words": 739
+    }
+  },
+  {
+    "index": 39,
+    "name": {
+      "ar": "الزمر",
+      "id": "Az-Zumar",
+      "en": "Az-Zumar",
+      "tr_id": "Rombongan",
+      "tr_en": "The Groups"
+    },
+    "revelation": {
+      "ar": "مكة",
+      "id": "Makkiyyah",
+      "en": "Meccan"
+    },
+    "sequence": "59",
+    "tafsir": {
+      "id": "Surat Az Zumar terdiri ataz 75 ayat, termasuk golongan surat-surat Makkiyyah, diturunkan sesudah surat Saba'. Dinamakan Az Zumar (Rombongan-rombongan) karena perkataan Az Zumar yang terdapat pada ayat 71 dan 73 ini. Dalam ayat-ayat tersebut diterangkan keadaan manusia di hari kiamat setelah mereka dihisab, di waktu itu mereka terbagi atas dua rombongan; satu rombongan dibawa ke neraka dan satu rombongan lagi dibawa ke syurga. Masing- masing rombongan memperoleh balasan dari apa yang mereka kerjakan di dunia dahulu. Surat ini dinamakan juga Al Ghuraf (kamar-kamar) berhubung perkataan ghuraf yang terdapat pada ayat 20, dimana diterangkan keadaan kamar-kamar dalam syurga yang diperoleh orang-orang yang bertakwa."
+    },
+    "meta": {
+      "page": {
+        "start": 458,
+        "end": 467
+      },
+      "juz": {
+        "start": 23,
+        "end": 24
+      },
+      "total_pages": 10,
+      "number_of_verses": "75",
+      "number_of_letters": 4708,
+      "number_of_words": 1181
+    }
+  },
+  {
+    "index": 40,
+    "name": {
+      "ar": "غافر",
+      "id": "Gafir",
+      "en": "Ghafir",
+      "tr_id": "Maha Pengampun",
+      "tr_en": "The Forgiver"
+    },
+    "revelation": {
+      "ar": "مكة",
+      "id": "Makkiyyah",
+      "en": "Meccan"
+    },
+    "sequence": "60",
+    "tafsir": {
+      "id": "Surat Al Mu'min terdiri atas 85 ayat, termasuk golongan surat-surat Makkiyyah, diturunkan sesudah surat Az Zumar. Dinamai Al Mu'min (Orang yang beriman), berhubung dengan perkataan mukmin yang terdapat pada ayat 28 surat ini. Pada ayat 28 diterangkan bahwa salah seorang dari kaum Fir'aun telah beriman kepada Nabi Musa a.s. dengan menyembunyikan imannya kepada kaumnya, setelah mendengar keterangan dan melihat mukjizat yang dikemukakan oleh Nabi Musa a.s. Hati kecil orang ini mencela Fir'aun dan kaumnya yang tidak mau beriman kepada Nabi Musa a.s., sekalipun telah dikemukakan keterangan dan mukjizat yang diminta mereka.Dinamakan pula Ghafir (yang mengampuni), karena ada hubungannya dengan kalimat Ghafir yang terdapat pada ayat 3 surat ini. Ayat ini mengingatkan bahwa Maha Pengampun dan Maha Penerima Taubat adalah sebagian dari sifat-sifat Allah, karena itu hamba-hamba Allah tidak usah khawatir terhadap  perbuatan-perbuatan dosa yang telah terlanjur mereka lakukan, semuanya itu akan diampuni Allah asal benar-benar memohon ampun dan bertaubat kepada-Nya dan berjanji tidak akan mengerjakan  perbuatan-perbuatan dosa itu lagi. Dan surat ini dinamai Dzit Thaul (Yang Mempunyai Kurnia) karena perkataan tersebut terdapat pada ayat 3."
+    },
+    "meta": {
+      "page": {
+        "start": 467,
+        "end": 476
+      },
+      "juz": {
+        "start": 24,
+        "end": 24
+      },
+      "total_pages": 10,
+      "number_of_verses": "85",
+      "number_of_letters": 4960,
+      "number_of_words": 1230
+    }
+  },
+  {
+    "index": 41,
+    "name": {
+      "ar": "فصلت",
+      "id": "Fussilat",
+      "en": "Fussilat",
+      "tr_id": "Yang Dijelaskan",
+      "tr_en": "Explained in detail"
+    },
+    "revelation": {
+      "ar": "مكة",
+      "id": "Makkiyyah",
+      "en": "Meccan"
+    },
+    "sequence": "61",
+    "tafsir": {
+      "id": "Surat Fushshilat terdiri atas 54 ayat, termasuk golongan surat-surat Makkiyyah, diturunkan sesudah surat Al Mu'min. Dinamai Fushshilat (yang dijelaskan) karena ada hubungannya dengan perkataan Fushshilat yang terdapat pada permulaan surat ini yang berarti yang dijelaskan. Maksudnya ayat-ayatnya diperinci dengan jelas tentang hukum-hukum, keimanan, janji dan ancaman, budi pekerti, kisah, dan sebagainya. Dinamai juga dengan Haa Miim dan As Sajdah karena surat ini dimulai dengan Haa Miim dan dalam surat ini terdapat ayat Sajdah."
+    },
+    "meta": {
+      "page": {
+        "start": 477,
+        "end": 482
+      },
+      "juz": {
+        "start": 24,
+        "end": 25
+      },
+      "total_pages": 6,
+      "number_of_verses": "54",
+      "number_of_letters": 3350,
+      "number_of_words": 798
+    }
+  },
+  {
+    "index": 42,
+    "name": {
+      "ar": "الشورى",
+      "id": "Asy-Syura",
+      "en": "Ash-Shura",
+      "tr_id": "Musyawarah",
+      "tr_en": "Consultation"
+    },
+    "revelation": {
+      "ar": "مكة",
+      "id": "Makkiyyah",
+      "en": "Meccan"
+    },
+    "sequence": "62",
+    "tafsir": {
+      "id": "Surat Asy Syuura terdiri atas 53 ayat, termasuk golongan surat-surat Makkiyyah, diturunkan sesudah surat Fushshilat. Dinamai dengan Asy Syuura (musyawarat) diambil dari perkataan Syuura yang terdapat pada ayat 38 surat ini. Dalam ayat tersebut diletakkan salah satu dari dasar-dasar pemerintahan Islam ialah musyawarat. Dinamai juga Haa Miim 'Ain Siin Qaaf karena surat ini dimulai dengan huruf-huruf hijaiyah itu."
+    },
+    "meta": {
+      "page": {
+        "start": 483,
+        "end": 489
+      },
+      "juz": {
+        "start": 25,
+        "end": 25
+      },
+      "total_pages": 7,
+      "number_of_verses": "53",
+      "number_of_letters": 3588,
+      "number_of_words": 864
+    }
+  },
+  {
+    "index": 43,
+    "name": {
+      "ar": "الزخرف",
+      "id": "Az-Zukhruf",
+      "en": "Az-Zukhruf",
+      "tr_id": "Perhiasan",
+      "tr_en": "Ornaments of gold"
+    },
+    "revelation": {
+      "ar": "مكة",
+      "id": "Makkiyyah",
+      "en": "Meccan"
+    },
+    "sequence": "63",
+    "tafsir": {
+      "id": "Surat Az Zukhruf terdiri atas 89 ayat, termasuk golongan  surat-surat Makkiyyah, diturunkan sesudah surat Asy Syuura. Dinamai Az Zukhruf (Perhiasan) diambil dari perkataan Az Zukhruf yang terdapat pada ayat 35 surat ini.  Orang-orang musyrik mengukur tinggi rendahnya derajat seseorang tergantung kepada perhiasan dan harta benda yang ia punyai, karena Muhammad s.a.w. adalah seorang anak yatim lagi miskin, ia tidak pantas diangkat Allah sebagai seorang rasul dan nabi.  Pangkat rasul dan nabi harus diberikan kepada orang yang kaya.  Ayat ini menegaskan bahwa harta tidak dapat dijadikan dasar untuk mengukur tinggi rendahnya derajat seseorang, karena harta itu merupakan hiasan kehidupan duniawi, bukan berarti kesenangan akhirat."
+    },
+    "meta": {
+      "page": {
+        "start": 489,
+        "end": 495
+      },
+      "juz": {
+        "start": 25,
+        "end": 25
+      },
+      "total_pages": 7,
+      "number_of_verses": "89",
+      "number_of_letters": 3400,
+      "number_of_words": 840
+    }
+  },
+  {
+    "index": 44,
+    "name": {
+      "ar": "الدخان",
+      "id": "Ad-Dukhan",
+      "en": "Ad-Dukhaan",
+      "tr_id": "Kabut",
+      "tr_en": "The Smoke"
+    },
+    "revelation": {
+      "ar": "مكة",
+      "id": "Makkiyyah",
+      "en": "Meccan"
+    },
+    "sequence": "64",
+    "tafsir": {
+      "id": "Surat Ad Dukhaan terdiri atas 59 ayat, termasuk golongan surat-surat Makkiyyah, diturunkan sesudah Az Zukhruf. Dinamai Ad Dukhaan (kabut), diambil dari perkataan Dukhaan yang terdapat pada ayat 10 surat ini.Menurut riwayat Bukhari secara ringkas dapat diterangkan sebagai berikut: Orang-orang kafir Mekah dalam menghalang-halangi agama Islam dan menyakiti serta mendurhakai Nabi Muhammad s.a.w. sudah melewati batas, karena itu Nabi mendoa kepada Allah agar diturunkan azab sebagaimana yang telah diturunkan kepada orang-orang yang durhaka kepada Nabi Yusuf yaitu musim kemarau yang panjang.  Do'a Nabi itu dikabulkan Allah sampai orang-orang kafir memakan tulang dan bangkai, karena kelaparan.  Mereka selalu menengadah ke langit mengharap pertolongan Allah.  Tetapi tidak satupun yang mereka lihat kecuali kabut yang menutupi pandangan mereka.Akhirnya mereka datang kepada Nabi agar Nabi memohon kepada Allah supaya hujan diturunkan.  Setelah Allah mengabulkan doa Nabi, dan hujan di turunkan, mereka kembali kafir seperti semula; karena itu Allah menyatakan bahwa nanti mereka akan diazab dengan azab yang pedih."
+    },
+    "meta": {
+      "page": {
+        "start": 496,
+        "end": 498
+      },
+      "juz": {
+        "start": 25,
+        "end": 25
+      },
+      "total_pages": 3,
+      "number_of_verses": "59",
+      "number_of_letters": 1431,
+      "number_of_words": 350
+    }
+  },
+  {
+    "index": 45,
+    "name": {
+      "ar": "الجاثية",
+      "id": "Al-Jasiyah",
+      "en": "Al-Jaathiya",
+      "tr_id": "Berlutut",
+      "tr_en": "Crouching"
+    },
+    "revelation": {
+      "ar": "مكة",
+      "id": "Makkiyyah",
+      "en": "Meccan"
+    },
+    "sequence": "65",
+    "tafsir": {
+      "id": "Surat Al Jaatsiyah terdiri atas 37 ayat, termasuk golongan surat-surat Makkiyyah, diturunkan sesudah surat Ad Dukhaan. Dinamai dengan Al Jaatsiyah (yang berlutut) diambil dari perkataan Jaatsiyah yang terdapat pada ayat 28 surat ini. Ayat tersebut menerangkan tentang keadaan manusia pada hari kiamat, yaitu semua manusia dikumpulkan ke hadapan mahkamah Allah Yang Maha Tinggi yang memberikan keputusan terhadap perbuatan yang telah mereka lakukan di dunia. Pada hari itu semua manusia berlutut di hadapan Allah. Dinamai juga dengan Asy Syari'ah diambil dari perkataan Syari'ah (Syari'at) yang terdapat pada ayat 18 surat ini."
+    },
+    "meta": {
+      "page": {
+        "start": 499,
+        "end": 502
+      },
+      "juz": {
+        "start": 25,
+        "end": 25
+      },
+      "total_pages": 4,
+      "number_of_verses": "37",
+      "number_of_letters": 2191,
+      "number_of_words": 492
+    }
+  },
+  {
+    "index": 46,
+    "name": {
+      "ar": "الأحقاف",
+      "id": "Al-Ahqaf",
+      "en": "Al-Ahqaf",
+      "tr_id": "Bukit Pasir",
+      "tr_en": "The Dunes"
+    },
+    "revelation": {
+      "ar": "مكة",
+      "id": "Makkiyyah",
+      "en": "Meccan"
+    },
+    "sequence": "66",
+    "tafsir": {
+      "id": "Surat Al Ahqaaf terdiri dari 35 ayat termasuk golongan surat-surat Makkiyyah, diturunkan sesudah surat Al Jaatsiyah. Dinamai Al Ahqaaf  (bukit-bukit pasir) dari perkataan Al Ahqaaf yang terdapat pada ayat 21 surat ini.Dalam ayat tersebut dan ayat-ayat sesudahnya diterangkan bahwa Nabi Hud a.s. telah menyampaikan risalahnya kepada kaumnya di Al Ahqaaf yang sekarang dikenal dengan Ar Rab'ul Khaali, tetapi kaumnya tetap ingkar sekalipun mereka telah diberi peringatan pula oleh rasul-rasul yang sebelumnya.  Akhirnya Allah menghancurkan mereka dengan tiupan angin kencang.  Hal ini adalah sebagai isyarat dari Allah kepada kaum musyrikin Quraisy bahwa mereka akan dihancurkan bila mereka tidak mengindahkan seruan Rasul."
+    },
+    "meta": {
+      "page": {
+        "start": 502,
+        "end": 506
+      },
+      "juz": {
+        "start": 26,
+        "end": 26
+      },
+      "total_pages": 5,
+      "number_of_verses": "35",
+      "number_of_letters": 2598,
+      "number_of_words": 649
+    }
+  },
+  {
+    "index": 47,
+    "name": {
+      "ar": "محمد",
+      "id": "Muhammad",
+      "en": "Muhammad",
+      "tr_id": "Muhammad",
+      "tr_en": "Muhammad"
+    },
+    "revelation": {
+      "ar": "مدينة",
+      "id": "Madaniyyah",
+      "en": "Medinan"
+    },
+    "sequence": "95",
+    "tafsir": {
+      "id": "Surat Muhammad terdiri atas 38 ayat, termasuk golongan surat-surat Madaniyyah, diturunkan sesudah surat Al Hadiid. Nama Muhammad sebagai nama surat ini diambil dari perkataan Muhammad yang terdapat pada ayat 2 surat ini. Pada ayat 1, 2, dan 3 surat ini, Allah membandingkan antara hasil yang diperoleh oleh orang-orang yang tidak percaya kepada apa yang diturunkan kepada Nabi Muhammad s.a.w dan hasil yang diperoleh oleh orang-orang yang tidak percaya kepadanya. Orang-orang yang percaya kepada apa yang dibawa oleh Muhammad s.a.w merekalah orang-orang yang beriman dan mengikuti yang hak, diterima Allah semua amalnya, diampuni segala kesalahannya. Adapun orang-orang yang tidak percaya kepada Muhammad s.a.w adalah orang-orang yang mengikuti kebatilan, amalnya tidak diterima, dosa mereka tidak diampuni, kepada mereka dijanjikan azab di dunia dan di akhirat.Dinamai juga dengan Al Qital (peperangan), karena sebahagian besar surat ini mengutarakan tentang peperangan dan pokok-pokok hukumnya, serta bagaimana seharusnya sikap orang-orang mukmin terhadap orang-orang kafir."
+    },
+    "meta": {
+      "page": {
+        "start": 507,
+        "end": 510
+      },
+      "juz": {
+        "start": 26,
+        "end": 26
+      },
+      "total_pages": 4,
+      "number_of_verses": "38",
+      "number_of_letters": 2349,
+      "number_of_words": 546
+    }
+  },
+  {
+    "index": 48,
+    "name": {
+      "ar": "الفتح",
+      "id": "Al-Fath",
+      "en": "Al-Fath",
+      "tr_id": "Kemenangan",
+      "tr_en": "The Victory"
+    },
+    "revelation": {
+      "ar": "مدينة",
+      "id": "Madaniyyah",
+      "en": "Medinan"
+    },
+    "sequence": "111",
+    "tafsir": {
+      "id": "Surat Al Fath terdiri atas 29 ayat, termasuk golongan surat-surat Madaniyyah, diturunkan sesudah surat Al Jum'ah. Dinamakan Al Fath (kemenangan) diambil dari perkataan Fat-han yang terdapat pada ayat pertama surat ini. Sebagian besar dari ayat-ayat surat ini menerangkan hal-hal yang berhubungan dengan kemenangan yang dicapai Nabi Muhammad s.a.w. dalam peperangan-peperangannya. Nabi Muhammad s.a.w. sangat gembira dengan turunnya ayat pertama surat ini. Kegembiraan ini dinyatakan dalam sabda beliau yang diriwayatkan Bukhari; Sesungguhnya telah diturunkan kepadaku satu surat, yang surat itu benar-benar lebih aku cintai dari seluruh apa yang disinari matahari. Kegembiraan Nabi Muhammad s.a.w. itu ialah karena ayat-ayatnya menerangkan tentang kemenangan yang akan diperoleh Muhammad s.a.w. dalam perjuangannya dan tentang kesempurnaan nikmat Allah kepadanya."
+    },
+    "meta": {
+      "page": {
+        "start": 511,
+        "end": 515
+      },
+      "juz": {
+        "start": 26,
+        "end": 26
+      },
+      "total_pages": 5,
+      "number_of_verses": "29",
+      "number_of_letters": 2438,
+      "number_of_words": 564
+    }
+  },
+  {
+    "index": 49,
+    "name": {
+      "ar": "الحجرات",
+      "id": "Al-Hujurat",
+      "en": "Al-Hujuraat",
+      "tr_id": "Kamar-Kamar",
+      "tr_en": "The Inner Apartments"
+    },
+    "revelation": {
+      "ar": "مدينة",
+      "id": "Madaniyyah",
+      "en": "Medinan"
+    },
+    "sequence": "106",
+    "tafsir": {
+      "id": "Surat Al Hujuraat terdiri atas 18 ayat, termasuk golongan surat-surat Madaniyyah, diturunkan sesudah surat Al Mujaadalah. Dinamai Al Hujuraat diambil dari perkataan Al Hujuraat yang terdapat pada ayat 4 surat ini. Ayat tersebut mencela para sahabat yang memanggil Nabi Muhammad SAW yang sedang berada di dalam kamar rumahnya bersama isterinya. Memanggil Nabi Muhammad SAW dengan cara dan dalam keadaan yang demikian menunjukkan sifat kurang hormat kepada beliau dan mengganggu ketenteraman beliau."
+    },
+    "meta": {
+      "page": {
+        "start": 515,
+        "end": 517
+      },
+      "juz": {
+        "start": 26,
+        "end": 26
+      },
+      "total_pages": 3,
+      "number_of_verses": "18",
+      "number_of_letters": 1496,
+      "number_of_words": 357
+    }
+  },
+  {
+    "index": 50,
+    "name": {
+      "ar": "ق",
+      "id": "Qaf",
+      "en": "Qaaf",
+      "tr_id": "Qaf",
+      "tr_en": "The letter Qaaf"
+    },
+    "revelation": {
+      "ar": "مكة",
+      "id": "Makkiyyah",
+      "en": "Meccan"
+    },
+    "sequence": "34",
+    "tafsir": {
+      "id": "Surat Qaaf terdiri atas 45 ayat, termasuk golongan surat-surat Makkiyah diturunkan sesudah surat Al Murssalaat. Dinamai Qaaf karena surat ini dimulai dengan huruf Qaaf. Menurut hadits yang diriwayatkan Imam Muslim, bahwa Rasulullah SAW senang membaca surat ini pada rakaat pertama sembahyang subuh dan pada shalat hari raya. Sedang menurut riwayat Abu Daud, Al Baihaqy dan Ibnu Majah bahwa Rasulullah SAW membaca surat ini pada tiap-tiap membaca Khutbah pada hari Jum'at. Kedua riwayat ini menunjukkan bahwa surat QAAF sering dibaca Nabi Muhammad SAW di tempat-tempat umum, untuk memperingatkan manusia tentang kejadian mereka dan nikmat-nikmat yang diberikan kepadanya, begitu pula tentang hari berbangkit, hari berhisab, syurga, neraka, pahala, dosa, dsb. Surat ini dinamai juga Al Baasiqaat, diambil dari perkataan Al- Baasiqaat yang terdapat pada ayat 10 surat ini."
+    },
+    "meta": {
+      "page": {
+        "start": 518,
+        "end": 520
+      },
+      "juz": {
+        "start": 26,
+        "end": 26
+      },
+      "total_pages": 3,
+      "number_of_verses": "45",
+      "number_of_letters": 1494,
+      "number_of_words": 377
+    }
+  },
+  {
+    "index": 51,
+    "name": {
+      "ar": "الذاريات",
+      "id": "Az-Zariyat",
+      "en": "Adh-Dhaariyat",
+      "tr_id": "Angin yang Menerbangkan",
+      "tr_en": "The Winnowing Winds"
+    },
+    "revelation": {
+      "ar": "مكة",
+      "id": "Makkiyyah",
+      "en": "Meccan"
+    },
+    "sequence": "67",
+    "tafsir": {
+      "id": "Surat Adz Dzaariyaat terdiri atas 60 ayat, termasuk golongan surat-surat Makkiyah, diturunkan sesudah surat Al Ahqaaf. Dinamai Adz Dzaariyaat (angin yang menerbangkan), diambil dari perkataan Adz Dzaariyaat yang terdapat pada ayat pertama surat ini. Allah bersumpah dengan angin, mega, bahtera, dan malaikat yang menjadi sumber kesejahteraan dan pembawa kemakmuran. Hal ini meng- isyaratkan inayat Allah kepada hamba-hamba-Nya."
+    },
+    "meta": {
+      "page": {
+        "start": 520,
+        "end": 523
+      },
+      "juz": {
+        "start": 26,
+        "end": 27
+      },
+      "total_pages": 4,
+      "number_of_verses": "60",
+      "number_of_letters": 1287,
+      "number_of_words": 364
+    }
+  },
+  {
+    "index": 52,
+    "name": {
+      "ar": "الطور",
+      "id": "At-Tur",
+      "en": "At-Tur",
+      "tr_id": "Bukit Tursina",
+      "tr_en": "The Mount"
+    },
+    "revelation": {
+      "ar": "مكة",
+      "id": "Makkiyyah",
+      "en": "Meccan"
+    },
+    "sequence": "76",
+    "tafsir": {
+      "id": "Surat Ath Thuur terdiri atas 49 ayat, termasuk golongan surat-surat Makkiyyah, diturunkan sesudah surat As Sajdah. Dinamai Ath Thuur (Bukit) diambil dari perkataan Ath Thuur yang terdapat pada ayat pertama surat ini. Yang dimaksud dengan bukit di sini ialah bukit Thursina yang terletak di semenanjung Sinai, tempat Nabi Musa menerima wahyu dari Tuhannya."
+    },
+    "meta": {
+      "page": {
+        "start": 523,
+        "end": 525
+      },
+      "juz": {
+        "start": 27,
+        "end": 27
+      },
+      "total_pages": 3,
+      "number_of_verses": "49",
+      "number_of_letters": 1500,
+      "number_of_words": 316
+    }
+  },
+  {
+    "index": 53,
+    "name": {
+      "ar": "النجم",
+      "id": "An-Najm",
+      "en": "An-Najm",
+      "tr_id": "Bintang",
+      "tr_en": "The Star"
+    },
+    "revelation": {
+      "ar": "مكة",
+      "id": "Makkiyyah",
+      "en": "Meccan"
+    },
+    "sequence": "23",
+    "tafsir": {
+      "id": "Surat An Najm terdiri atas 62 ayat, termasuk golongan surat-surat Makkiyyah, diturunkan sesudah surat Al Ikhlash. Nama An Najm (bintang), diambil dari perkataan  An Najm yang terdapat pada ayat pertama surat ini. Allah bersumpah dengan An Najm (bintang) adalah karena bintang-bintang yang timbul dan tenggelam, amat besar manfaatnya bagi manusia, sebagai pedoman bagi manusia dalam melakukan pelayaran di lautan, dalam perjalanan di padang pasir, untuk menentukan peredaran musim dan sebagainya."
+    },
+    "meta": {
+      "page": {
+        "start": 526,
+        "end": 528
+      },
+      "juz": {
+        "start": 27,
+        "end": 27
+      },
+      "total_pages": 3,
+      "number_of_verses": "62",
+      "number_of_letters": 1405,
+      "number_of_words": 364
+    }
+  },
+  {
+    "index": 54,
+    "name": {
+      "ar": "القمر",
+      "id": "Al-Qamar",
+      "en": "Al-Qamar",
+      "tr_id": "Bulan",
+      "tr_en": "The Moon"
+    },
+    "revelation": {
+      "ar": "مكة",
+      "id": "Makkiyyah",
+      "en": "Meccan"
+    },
+    "sequence": "37",
+    "tafsir": {
+      "id": "Surat Al Qamar terdiri atas 55 ayat, termasuk golongan surat-surat Makkiyyah, diturunkan sesedah surat Ath Thaariq. Nama Al Qamar (bulan) diambil dari perkataan Al Qamar yang terdapat pada ayat pertama surat ini. Pada ayat ini diterangkan tentang terbelahnya bulan sebagai mukjizat Nabi Muhammad s.a.w."
+    },
+    "meta": {
+      "page": {
+        "start": 528,
+        "end": 531
+      },
+      "juz": {
+        "start": 27,
+        "end": 27
+      },
+      "total_pages": 4,
+      "number_of_verses": "55",
+      "number_of_letters": 1420,
+      "number_of_words": 346
+    }
+  },
+  {
+    "index": 55,
+    "name": {
+      "ar": "الرحمن",
+      "id": "Ar-Rahman",
+      "en": "Ar-Rahmaan",
+      "tr_id": "Maha Pengasih",
+      "tr_en": "The Beneficent"
+    },
+    "revelation": {
+      "ar": "مدينة",
+      "id": "Madaniyyah",
+      "en": "Medinan"
+    },
+    "sequence": "97",
+    "tafsir": {
+      "id": "Surat Ar Rahmaan terdiri atas 78 ayat, termasuk golongan surat- surat Madaniyyah, diturunkan sesudah surat Ar Ra'du. Dinamai Ar Rahmaan (Yang Maha Pemurah), diambil dari perkataan Ar Rahmaan yang terdapat pada ayat pertama surat ini. Ar Rahmaan adalah salah satu dari nama-nama Allah. Sebagian besar dari surat ini menerangkan kepemurahan Allah s.w.t. kepada hamba-hamba-Nya, yaitu dengan memberikan nikmat-nikmat yang tidak terhingga baik di dunia maupun di akhirat nanti."
+    },
+    "meta": {
+      "page": {
+        "start": 531,
+        "end": 534
+      },
+      "juz": {
+        "start": 27,
+        "end": 27
+      },
+      "total_pages": 4,
+      "number_of_verses": "78",
+      "number_of_letters": 1636,
+      "number_of_words": 356
+    }
+  },
+  {
+    "index": 56,
+    "name": {
+      "ar": "الواقعة",
+      "id": "Al-Waqi'ah",
+      "en": "Al-Waaqia",
+      "tr_id": "Hari Kiamat",
+      "tr_en": "The Inevitable"
+    },
+    "revelation": {
+      "ar": "مكة",
+      "id": "Makkiyyah",
+      "en": "Meccan"
+    },
+    "sequence": "46",
+    "tafsir": {
+      "id": "Surat Al Waaqi'ah terdiri atas 96 ayat, termasuk golongan surat-surat Makkiyah, diturunkan sesudah surat Thaa Haa. \tDinamai dengan Al Waaqi'ah (Hari Kiamat), diambil dari perkataan Al Waaqi'ah yang terdapat pada ayat pertama surat ini."
+    },
+    "meta": {
+      "page": {
+        "start": 534,
+        "end": 537
+      },
+      "juz": {
+        "start": 27,
+        "end": 27
+      },
+      "total_pages": 4,
+      "number_of_verses": "96",
+      "number_of_letters": 1703,
+      "number_of_words": 383
+    }
+  },
+  {
+    "index": 57,
+    "name": {
+      "ar": "الحديد",
+      "id": "Al-Hadid",
+      "en": "Al-Hadid",
+      "tr_id": "Besi",
+      "tr_en": "The Iron"
+    },
+    "revelation": {
+      "ar": "مدينة",
+      "id": "Madaniyyah",
+      "en": "Medinan"
+    },
+    "sequence": "94",
+    "tafsir": {
+      "id": "Surat Al Hadiid terdiri atas 29 ayat, termasuk golongan surat-surat Madaniyyah, diturunkan sesudah surat Az Zalzalah. Dinamai Al Hadiid (Besi), diambil dari perkataan Al Hadiid yang terdapat pada ayat 25 surat ini."
+    },
+    "meta": {
+      "page": {
+        "start": 537,
+        "end": 541
+      },
+      "juz": {
+        "start": 27,
+        "end": 27
+      },
+      "total_pages": 5,
+      "number_of_verses": "29",
+      "number_of_letters": 2476,
+      "number_of_words": 579
+    }
+  },
+  {
+    "index": 58,
+    "name": {
+      "ar": "المجادلة",
+      "id": "Al-Mujadalah",
+      "en": "Al-Mujaadila",
+      "tr_id": "Gugatan",
+      "tr_en": "The Pleading Woman"
+    },
+    "revelation": {
+      "ar": "مدينة",
+      "id": "Madaniyyah",
+      "en": "Medinan"
+    },
+    "sequence": "105",
+    "tafsir": {
+      "id": "Surat Al Mujaadilah terdiri atas 22 ayat, termasuk golongan surat Madaniyyah, diturunkan sesudah surat Al Munaafiquun. Surat ini dinamai dengan Al Mujaadilah (wanita yang mengajukan gugatan) karena pada awal surat ini disebutkan bantahan seorang perempuan, menurut riwayat bernama Khaulah binti Tsa'labah terhadap sikap suaminya yang telah menzhiharnya. Hal ini diadukan kepada Rasulullah s.a.w. dan ia menuntut supaya beliau memberikan putusan yang adil dalam persoalan itu. Dinamai juga Al Mujaadalah yang berarti perbantahan."
+    },
+    "meta": {
+      "page": {
+        "start": 542,
+        "end": 545
+      },
+      "juz": {
+        "start": 28,
+        "end": 28
+      },
+      "total_pages": 4,
+      "number_of_verses": "22",
+      "number_of_letters": 1792,
+      "number_of_words": 479
+    }
+  },
+  {
+    "index": 59,
+    "name": {
+      "ar": "الحشر",
+      "id": "Al-Hasyr",
+      "en": "Al-Hashr",
+      "tr_id": "Pengusiran",
+      "tr_en": "The Exile"
+    },
+    "revelation": {
+      "ar": "مدينة",
+      "id": "Madaniyyah",
+      "en": "Medinan"
+    },
+    "sequence": "101",
+    "tafsir": {
+      "id": "Surat Al Hasyr terdiri atas 24 ayat, termasuk golongan surat-surat Madaniyyah, diturunkan sesudah surat Al Bayyinah. \tDinamai surat Al Hasyr (pengusiran) diambil dari perkataan Al-Hasyr yang terdapat pada ayat 2 surat ini. Di dalam surat ini disebutkan  kisah pengusiran suatu suku Yahudi yang bernama Bani Nadhir yang berdiam  di sekitar kota Madinah."
+    },
+    "meta": {
+      "page": {
+        "start": 545,
+        "end": 548
+      },
+      "juz": {
+        "start": 28,
+        "end": 28
+      },
+      "total_pages": 4,
+      "number_of_verses": "24",
+      "number_of_letters": 1913,
+      "number_of_words": 451
+    }
+  },
+  {
+    "index": 60,
+    "name": {
+      "ar": "الممتحنة",
+      "id": "Al-Mumtahanah",
+      "en": "Al-Mumtahana",
+      "tr_id": "Wanita Yang Diuji",
+      "tr_en": "She that is to be examined"
+    },
+    "revelation": {
+      "ar": "مدينة",
+      "id": "Madaniyyah",
+      "en": "Medinan"
+    },
+    "sequence": "91",
+    "tafsir": {
+      "id": "Surat Al Mumtahanah terdiri atas 13 ayat, termasuk golongan surat-surat Madaniyyah, diturunkan sesudah surat Al Ahzab. Dinamai Al Mumtahanah (wanita yang diuji), diambil dari kata \"Famtahinuuhunna\" yang berarti maka ujilah mereka, yang terdapat pada ayat 10 surat ini."
+    },
+    "meta": {
+      "page": {
+        "start": 549,
+        "end": 551
+      },
+      "juz": {
+        "start": 28,
+        "end": 28
+      },
+      "total_pages": 3,
+      "number_of_verses": "13",
+      "number_of_letters": 1510,
+      "number_of_words": 356
+    }
+  },
+  {
+    "index": 61,
+    "name": {
+      "ar": "الصف",
+      "id": "As-Saff",
+      "en": "As-Saff",
+      "tr_id": "Barisan",
+      "tr_en": "The Ranks"
+    },
+    "revelation": {
+      "ar": "مدينة",
+      "id": "Madaniyyah",
+      "en": "Medinan"
+    },
+    "sequence": "109",
+    "tafsir": {
+      "id": "Surat Ash Shaff terdiri atas 14 ayat termasuk golongan surat-surat Madaniyyah. Dinamai dengan Ash Shaff, karena pada ayat 4 surat ini terdapat kata Shaffan yang berarti satu barisan. Ayat ini menerangkan apa yang diridhai Allah sesudah menerangkan apa yang dimurkai-Nya. Pada ayat 3 diterangkan bahwa Allah murka kepada orang yang hanya pandai berkata saja tetapi tidak melaksanakan apa yang diucapkannya. Dan pada ayat 4 diterangkan bahwa Allah menyukai orang yang mempraktekkan apa yang diucapkannya yaitu orang-orang yang berperang pada jalan Allah dalam satu barisan."
+    },
+    "meta": {
+      "page": {
+        "start": 551,
+        "end": 552
+      },
+      "juz": {
+        "start": 28,
+        "end": 28
+      },
+      "total_pages": 2,
+      "number_of_verses": "14",
+      "number_of_letters": 900,
+      "number_of_words": 230
+    }
+  },
+  {
+    "index": 62,
+    "name": {
+      "ar": "الجمعة",
+      "id": "Al-Jumu'ah",
+      "en": "Al-Jumu'a",
+      "tr_id": "Jumat",
+      "tr_en": "Friday"
+    },
+    "revelation": {
+      "ar": "مدينة",
+      "id": "Madaniyyah",
+      "en": "Medinan"
+    },
+    "sequence": "110",
+    "tafsir": {
+      "id": "Surat Al Jumu'ah ini terdiri atas 11 ayat, termasuk golongan-golongan surat-surat Madaniyyah dan diturunkan sesudah surat Ash Shaf. Nama surat Al Jumu'ah diambil dari kata Al Jumu'ah yang terdapat pada ayat 9 surat ini yang artinya: hari Jum'at."
+    },
+    "meta": {
+      "page": {
+        "start": 553,
+        "end": 554
+      },
+      "juz": {
+        "start": 28,
+        "end": 28
+      },
+      "total_pages": 2,
+      "number_of_verses": "11",
+      "number_of_letters": 720,
+      "number_of_words": 181
+    }
+  },
+  {
+    "index": 63,
+    "name": {
+      "ar": "المنافقون",
+      "id": "Al-Munafiqun",
+      "en": "Al-Munaafiqoon",
+      "tr_id": "Orang-Orang Munafik",
+      "tr_en": "The Hypocrites"
+    },
+    "revelation": {
+      "ar": "مدينة",
+      "id": "Madaniyyah",
+      "en": "Medinan"
+    },
+    "sequence": "104",
+    "tafsir": {
+      "id": "Surat ini terdiri atas 11 ayat, termasuk golongan surat-surat Madaniyyah, diturunkan sesudah surat Al Hajj. Surat ini dinamai Al-Munaafiquun  yang artinya orang-orang munafik, karena surat ini mengungkapkan  sifat-sifat orang-orang munafik."
+    },
+    "meta": {
+      "page": {
+        "start": 554,
+        "end": 555
+      },
+      "juz": {
+        "start": 28,
+        "end": 28
+      },
+      "total_pages": 2,
+      "number_of_verses": "11",
+      "number_of_letters": 776,
+      "number_of_words": 185
+    }
+  },
+  {
+    "index": 64,
+    "name": {
+      "ar": "التغابن",
+      "id": "At-Tagabun",
+      "en": "At-Taghaabun",
+      "tr_id": "Pengungkapan Kesalahan",
+      "tr_en": "Mutual Disillusion"
+    },
+    "revelation": {
+      "ar": "مدينة",
+      "id": "Madaniyyah",
+      "en": "Medinan"
+    },
+    "sequence": "108",
+    "tafsir": {
+      "id": "Surat ini terdiri atas 18 ayat, termasuk golongan surat-surat Madaniyyah dan diturunkan sesudah surat At Tahrim. Nama At Taghaabun diambil dari kata At Taghaabun yang terdapat pada ayat ke 9 yang artinya hari dinampakkan kesalahan-kesalahan."
+    },
+    "meta": {
+      "page": {
+        "start": 556,
+        "end": 557
+      },
+      "juz": {
+        "start": 28,
+        "end": 28
+      },
+      "total_pages": 2,
+      "number_of_verses": "18",
+      "number_of_letters": 1070,
+      "number_of_words": 246
+    }
+  },
+  {
+    "index": 65,
+    "name": {
+      "ar": "الطلاق",
+      "id": "At-Talaq",
+      "en": "At-Talaaq",
+      "tr_id": "Talak",
+      "tr_en": "Divorce"
+    },
+    "revelation": {
+      "ar": "مدينة",
+      "id": "Madaniyyah",
+      "en": "Medinan"
+    },
+    "sequence": "99",
+    "tafsir": {
+      "id": "Surat ini terdiri atas 12 ayat, termasuk golongan surat-surat Madaniyyah, diturunkan sesudah surat Al Insaan. Dinamai surat Ath Thalaaq karena kebanyakan ayat-ayatnya mengenai masalah talak dan yang berhubungan dengan masalah itu."
+    },
+    "meta": {
+      "page": {
+        "start": 558,
+        "end": 559
+      },
+      "juz": {
+        "start": 28,
+        "end": 28
+      },
+      "total_pages": 2,
+      "number_of_verses": "12",
+      "number_of_letters": 1060,
+      "number_of_words": 293
+    }
+  },
+  {
+    "index": 66,
+    "name": {
+      "ar": "التحريم",
+      "id": "At-Tahrim",
+      "en": "At-Tahrim",
+      "tr_id": "Pengharaman",
+      "tr_en": "The Prohibition"
+    },
+    "revelation": {
+      "ar": "مدينة",
+      "id": "Madaniyyah",
+      "en": "Medinan"
+    },
+    "sequence": "107",
+    "tafsir": {
+      "id": "Surat ini terdiri atas 12 ayat, termasuk golongan surat-surat Madaniyyah, diturunkan sesudah surat Al Hujuraat. Dinamai surat At Tahrim karena pada awal surat ini terdapat kata tuharrim yang kata asalnya adalah Attahrim yang berarti mengharamkan."
+    },
+    "meta": {
+      "page": {
+        "start": 560,
+        "end": 561
+      },
+      "juz": {
+        "start": 28,
+        "end": 28
+      },
+      "total_pages": 2,
+      "number_of_verses": "12",
+      "number_of_letters": 1160,
+      "number_of_words": 258
+    }
+  },
+  {
+    "index": 67,
+    "name": {
+      "ar": "الملك",
+      "id": "Al-Mulk",
+      "en": "Al-Mulk",
+      "tr_id": "Kerajaan",
+      "tr_en": "The Sovereignty"
+    },
+    "revelation": {
+      "ar": "مكة",
+      "id": "Makkiyyah",
+      "en": "Meccan"
+    },
+    "sequence": "77",
+    "tafsir": {
+      "id": "Surat ini terdiri atas 30 ayat, termasuk golongan surat-surat  Makkiyah, diturunkan sesudah Ath Thuur. Nama Al Mulk diambil dari kata Al Mulk yang terdapat pada ayat pertama surat ini yang artinya kerajaan atau kekuasaan. Dinamai pula surat ini dengan At Tabaarak (Maha Suci)."
+    },
+    "meta": {
+      "page": {
+        "start": 562,
+        "end": 564
+      },
+      "juz": {
+        "start": 29,
+        "end": 29
+      },
+      "total_pages": 3,
+      "number_of_verses": "30",
+      "number_of_letters": 1300,
+      "number_of_words": 337
+    }
+  },
+  {
+    "index": 68,
+    "name": {
+      "ar": "القلم",
+      "id": "Al-Qalam",
+      "en": "Al-Qalam",
+      "tr_id": "Pena",
+      "tr_en": "The Pen"
+    },
+    "revelation": {
+      "ar": "مكة",
+      "id": "Makkiyyah",
+      "en": "Meccan"
+    },
+    "sequence": "2",
+    "tafsir": {
+      "id": "Surat ini terdiri atas 52 ayat,termasuk golongan surat-surat Makkiyah,diturunkan sesudah surat Al Alaq. Nama Al Qalam diambil dari kata Al Qalam yang terdapat pada ayat pertama surat iniyang artinya pena. Surat ini dinamai pula dengan surat Nun (huruf nun)."
+    },
+    "meta": {
+      "page": {
+        "start": 564,
+        "end": 566
+      },
+      "juz": {
+        "start": 29,
+        "end": 29
+      },
+      "total_pages": 3,
+      "number_of_verses": "52",
+      "number_of_letters": 1256,
+      "number_of_words": 305
+    }
+  },
+  {
+    "index": 69,
+    "name": {
+      "ar": "الحاقة",
+      "id": "Al-Haqqah",
+      "en": "Al-Haaqqa",
+      "tr_id": "Hari Kiamat",
+      "tr_en": "The Reality"
+    },
+    "revelation": {
+      "ar": "مكة",
+      "id": "Makkiyyah",
+      "en": "Meccan"
+    },
+    "sequence": "78",
+    "tafsir": {
+      "id": "Surat ini terdiri atas 52 ayat,termasuk golongan surat-surat Makkiyah,diturunkan sesudah surat Al Mulk.  Nama Al Haaqqah diambil dari kata Al Haaqqah yang terdapat pada ayat pertama surat ini yang artinya hari kiamat"
+    },
+    "meta": {
+      "page": {
+        "start": 566,
+        "end": 568
+      },
+      "juz": {
+        "start": 29,
+        "end": 29
+      },
+      "total_pages": 3,
+      "number_of_verses": "52",
+      "number_of_letters": 1084,
+      "number_of_words": 264
+    }
+  },
+  {
+    "index": 70,
+    "name": {
+      "ar": "المعارج",
+      "id": "Al-Ma'arij",
+      "en": "Al-Ma'aarij",
+      "tr_id": "Tempat Naik",
+      "tr_en": "The Ascending Stairways"
+    },
+    "revelation": {
+      "ar": "مكة",
+      "id": "Makkiyyah",
+      "en": "Meccan"
+    },
+    "sequence": "79",
+    "tafsir": {
+      "id": "Surat ini terdiri atas 44 ayat, termasuk golongan surat-surat Makkiyyah, diturunkan sesudah surat Al Haaqqah.Perkataan Al Ma'arij yang menjadi nama bagi surat ini adalah kata jamak dari Mi'raj, diambil dari perkataan Al Ma'arij yang terdapat pada ayat 3, yang artinya menurut bahasa tempat naik. Sedang para ahli  tafsir memberi arti bermacam-macam, di antaranya langit, nikmat karunia dan derajat atau tingkatan yang diberikan Allah s.w.t kepada ahli surga."
+    },
+    "meta": {
+      "page": {
+        "start": 568,
+        "end": 570
+      },
+      "juz": {
+        "start": 29,
+        "end": 29
+      },
+      "total_pages": 3,
+      "number_of_verses": "44",
+      "number_of_letters": 1061,
+      "number_of_words": 221
+    }
+  },
+  {
+    "index": 71,
+    "name": {
+      "ar": "نوح",
+      "id": "Nuh",
+      "en": "Nooh",
+      "tr_id": "Nuh",
+      "tr_en": "Noah"
+    },
+    "revelation": {
+      "ar": "مكة",
+      "id": "Makkiyyah",
+      "en": "Meccan"
+    },
+    "sequence": "71",
+    "tafsir": {
+      "id": "Surat ini terdiri atas 28 ayat, termasuk golongan surat-surat Makkiyah, diturunkan sesudah surat An Nahl. Dinamakan dengan surat Nuh karena surat ini seluruhnya menjelaskan da'wah dan doa Nabi Nuh a.s."
+    },
+    "meta": {
+      "page": {
+        "start": 570,
+        "end": 571
+      },
+      "juz": {
+        "start": 29,
+        "end": 29
+      },
+      "total_pages": 2,
+      "number_of_verses": "28",
+      "number_of_letters": 929,
+      "number_of_words": 231
+    }
+  },
+  {
+    "index": 72,
+    "name": {
+      "ar": "الجن",
+      "id": "Al-Jinn",
+      "en": "Al-Jinn",
+      "tr_id": "Jin",
+      "tr_en": "The Jinn"
+    },
+    "revelation": {
+      "ar": "مكة",
+      "id": "Makkiyyah",
+      "en": "Meccan"
+    },
+    "sequence": "40",
+    "tafsir": {
+      "id": "Surat Al Jin terdiri atas 28 ayat, termasuk golongan surat-surat Makkiyyah, diturunkan sesudah surat Al A'raaf. Dinamai Al Jin diambil dari perkataan Al Jin yang terdapat  pada ayat pertama surat ini. Pada ayat tersebut dan ayat-ayat berikutnya  diterangkan bahwa Jin sebagai makhluk halus telah mendengar pembacaan  Al Quran dan mereka mengikuti ajaran Al Quran tersebut."
+    },
+    "meta": {
+      "page": {
+        "start": 572,
+        "end": 573
+      },
+      "juz": {
+        "start": 29,
+        "end": 29
+      },
+      "total_pages": 2,
+      "number_of_verses": "28",
+      "number_of_letters": 870,
+      "number_of_words": 290
+    }
+  },
+  {
+    "index": 73,
+    "name": {
+      "ar": "المزمل",
+      "id": "Al-Muzzammil",
+      "en": "Al-Muzzammil",
+      "tr_id": "Orang Yang Berselimut",
+      "tr_en": "The Enshrouded One"
+    },
+    "revelation": {
+      "ar": "مكة",
+      "id": "Makkiyyah",
+      "en": "Meccan"
+    },
+    "sequence": "3",
+    "tafsir": {
+      "id": "Surat Al Muzzammil terdiri atas 20 ayat, termasuk golongan surat-surat Makkiyah, diturunkan sesudah surat Al Qalam.Dinamai Al Muzzammil (orang yang berselimut) diambil dari perkataan Al Muzzammil yang terdapat pada ayat pertama surat ini. Yang dimaksud dengan orang yang berkemul ialah Nabi Muhammad s.a.w."
+    },
+    "meta": {
+      "page": {
+        "start": 574,
+        "end": 575
+      },
+      "juz": {
+        "start": 29,
+        "end": 29
+      },
+      "total_pages": 2,
+      "number_of_verses": "20",
+      "number_of_letters": 838,
+      "number_of_words": 204
+    }
+  },
+  {
+    "index": 74,
+    "name": {
+      "ar": "المدثر",
+      "id": "Al-Muddassir",
+      "en": "Al-Muddaththir",
+      "tr_id": "Orang Yang Berkemul",
+      "tr_en": "The Cloaked One"
+    },
+    "revelation": {
+      "ar": "مكة",
+      "id": "Makkiyyah",
+      "en": "Meccan"
+    },
+    "sequence": "4",
+    "tafsir": {
+      "id": "Surat Al Muddatstsir terdiri atas 56 ayat, termasuk golongan  surat-surat Makkiyah, diturunkan sesudah surat Al Muzzammil. \tDinamai Al Muddatstsir (orang yang berkemul) diambil dari perkataan Al Muddatstsir yang terdapat pada ayat pertama surat ini."
+    },
+    "meta": {
+      "page": {
+        "start": 575,
+        "end": 577
+      },
+      "juz": {
+        "start": 29,
+        "end": 29
+      },
+      "total_pages": 3,
+      "number_of_verses": "56",
+      "number_of_letters": 1010,
+      "number_of_words": 260
+    }
+  },
+  {
+    "index": 75,
+    "name": {
+      "ar": "القيامة",
+      "id": "Al-Qiyamah",
+      "en": "Al-Qiyaama",
+      "tr_id": "Hari Kiamat",
+      "tr_en": "The Resurrection"
+    },
+    "revelation": {
+      "ar": "مكة",
+      "id": "Makkiyyah",
+      "en": "Meccan"
+    },
+    "sequence": "31",
+    "tafsir": {
+      "id": "Surat Al Qiyaamah terdiri atas 40 ayat, termasuk golongan surat-surat Makkiyah, diturunkan sesudah surat Al Qaari'ah. Dinamai Al Qiyaamah (hari kiamat) diambil dari perkataan Al Qiyaamah yang terdapat pada ayat pertama surat ini."
+    },
+    "meta": {
+      "page": {
+        "start": 577,
+        "end": 578
+      },
+      "juz": {
+        "start": 29,
+        "end": 29
+      },
+      "total_pages": 2,
+      "number_of_verses": "40",
+      "number_of_letters": 652,
+      "number_of_words": 168
+    }
+  },
+  {
+    "index": 76,
+    "name": {
+      "ar": "الانسان",
+      "id": "Al-Insan",
+      "en": "Al-Insaan",
+      "tr_id": "Manusia",
+      "tr_en": "Man"
+    },
+    "revelation": {
+      "ar": "مدينة",
+      "id": "Madaniyyah",
+      "en": "Medinan"
+    },
+    "sequence": "98",
+    "tafsir": {
+      "id": "Surat Al Insaan terdiri atas 31 ayat, termasuk golongan surat-surat Madaniyyah, diturunkan sesudah surat Ar Rahmaan. Dinamai al Insaan (manusia) diambil dari perkataan Al Insaan yang terdapat pada ayat pertama surat ini."
+    },
+    "meta": {
+      "page": {
+        "start": 578,
+        "end": 580
+      },
+      "juz": {
+        "start": 29,
+        "end": 29
+      },
+      "total_pages": 3,
+      "number_of_verses": "31",
+      "number_of_letters": 1054,
+      "number_of_words": 247
+    }
+  },
+  {
+    "index": 77,
+    "name": {
+      "ar": "المرسلات",
+      "id": "Al-Mursalat",
+      "en": "Al-Mursalaat",
+      "tr_id": "Malaikat Yang Diutus",
+      "tr_en": "The Emissaries"
+    },
+    "revelation": {
+      "ar": "مكة",
+      "id": "Makkiyyah",
+      "en": "Meccan"
+    },
+    "sequence": "33",
+    "tafsir": {
+      "id": "Surat Al Mursalaat terdiri atas 50 ayat, termasuk golongan surat-surat Makkiyah, diturunkan sesudah surat Al Humazah. Dinamai Al Mursalaat (Malaikat-Malaikat yang diutus), diambil dari perkataan Al Mursalaat yang terdapat pada ayat pertama surat ini. Dinamai juga Amma yatasaa aluun diambil dari perkataan Amma yatasaa aluun yang terdapat pada ayat 1 surat ini."
+    },
+    "meta": {
+      "page": {
+        "start": 580,
+        "end": 581
+      },
+      "juz": {
+        "start": 29,
+        "end": 29
+      },
+      "total_pages": 2,
+      "number_of_verses": "50",
+      "number_of_letters": 816,
+      "number_of_words": 185
+    }
+  },
+  {
+    "index": 78,
+    "name": {
+      "ar": "النبإ",
+      "id": "An-Naba'",
+      "en": "An-Naba",
+      "tr_id": "Berita Besar",
+      "tr_en": "The Announcement"
+    },
+    "revelation": {
+      "ar": "مكة",
+      "id": "Makkiyyah",
+      "en": "Meccan"
+    },
+    "sequence": "80",
+    "tafsir": {
+      "id": "Surat An Naba´ terdiri atas 40 ayat, termasuk golongan surat-surat Makkiyah, diturunkan sesudah surat Al Ma´aarij. Dinamai An Naba´ (berita besar) diambil dari perkataan An Naba´ yang terdapat pada ayat 2 surat ini. Dinamai juga Amma yatasaa aluun diambil dari perkataan Amma yatasaa aluun yang terdapat pada ayat 1 surat ini."
+    },
+    "meta": {
+      "page": {
+        "start": 582,
+        "end": 583
+      },
+      "juz": {
+        "start": 30,
+        "end": 30
+      },
+      "total_pages": 2,
+      "number_of_verses": "40",
+      "number_of_letters": 770,
+      "number_of_words": 178
+    }
+  },
+  {
+    "index": 79,
+    "name": {
+      "ar": "النازعات",
+      "id": "An-Nazi'at",
+      "en": "An-Naazi'aat",
+      "tr_id": "Malaikat Yang Mencabut",
+      "tr_en": "Those who drag forth"
+    },
+    "revelation": {
+      "ar": "مكة",
+      "id": "Makkiyyah",
+      "en": "Meccan"
+    },
+    "sequence": "81",
+    "tafsir": {
+      "id": "Surat An Naazi´aat terdiri atas 46 ayat, termasuk golongan surat-surat Makkiyah, diturunkan sesudah surat An Naba´. Dinamai An Naazi´aat diambil dari perkataan An Naazi´aat yang terdapat pada ayat pertama surat ini. Dinamai pula as Saahirah yang diambil dari ayat 14, dinamai juga Ath Thaammah diambil dari ayat 34."
+    },
+    "meta": {
+      "page": {
+        "start": 583,
+        "end": 584
+      },
+      "juz": {
+        "start": 30,
+        "end": 30
+      },
+      "total_pages": 2,
+      "number_of_verses": "46",
+      "number_of_letters": 753,
+      "number_of_words": 183
+    }
+  },
+  {
+    "index": 80,
+    "name": {
+      "ar": "عبس",
+      "id": "'Abasa",
+      "en": "Abasa",
+      "tr_id": "Bermuka Masam",
+      "tr_en": "He frowned"
+    },
+    "revelation": {
+      "ar": "مكة",
+      "id": "Makkiyyah",
+      "en": "Meccan"
+    },
+    "sequence": "24",
+    "tafsir": {
+      "id": "Surat 'Abasa terdiri atas 42 ayat, termasuk golongan surat-surat Makkiyah, diturunkan sesudah surat An Najm. Dinamai 'Abasa  diambil dari perkataan 'Abasa yang terdapat pada ayat pertama surat ini. Menurut riwayat, pada suatu ketika Rasulullah s.a.w. menerima dan berbicara dengan pemuka-pemuka Quraisy yang beliau harapkan agar mereka masuk Islam. Dalam pada itu datanglah Ibnu Ummi Maktum, seorang sahabat yang buta yang mengharap agar Rasulullah s.a.w. membacakan kepadanya ayat- ayat Al Quran yang telah diturunkan Allah. tetapi Rasulullah s.a.w. bermuka masam dan memalingkan muka dari Ibnu Ummi Maktum yang buta itu, lalu Allah menurunkan surat ini sebagai teguran atas sikap Rasulullah terhadap ibnu Ummi Maktum itu."
+    },
+    "meta": {
+      "page": {
+        "start": 585,
+        "end": 585
+      },
+      "juz": {
+        "start": 30,
+        "end": 30
+      },
+      "total_pages": 1,
+      "number_of_verses": "42",
+      "number_of_letters": 533,
+      "number_of_words": 137
+    }
+  },
+  {
+    "index": 81,
+    "name": {
+      "ar": "التكوير",
+      "id": "At-Takwir",
+      "en": "At-Takwir",
+      "tr_id": "Penggulungan",
+      "tr_en": "The Overthrowing"
+    },
+    "revelation": {
+      "ar": "مكة",
+      "id": "Makkiyyah",
+      "en": "Meccan"
+    },
+    "sequence": "7",
+    "tafsir": {
+      "id": "Surat At Takwir terdiri atas 29 ayat dan termasuk golongan surat-surat Makkiyah, diturunkan sesudah surat Al Masadd. Kata At Takwir (terbelah) yang menjadi nama bagi surat ini adalah dari kata asal (mashdar) dari kata kerja kuwwirat (digulung) yang terdapat pada ayat pertama surat ini."
+    },
+    "meta": {
+      "page": {
+        "start": 586,
+        "end": 586
+      },
+      "juz": {
+        "start": 30,
+        "end": 30
+      },
+      "total_pages": 1,
+      "number_of_verses": "29",
+      "number_of_letters": 533,
+      "number_of_words": 108
+    }
+  },
+  {
+    "index": 82,
+    "name": {
+      "ar": "الإنفطار",
+      "id": "Al-Infitar",
+      "en": "Al-Infitaar",
+      "tr_id": "Terbelah",
+      "tr_en": "The Cleaving"
+    },
+    "revelation": {
+      "ar": "مكة",
+      "id": "Makkiyyah",
+      "en": "Meccan"
+    },
+    "sequence": "82",
+    "tafsir": {
+      "id": "Surat ini terdiri atas 19 ayat, termasuk golongan surat-surat Makkiyah dan diturunkan sesudah surat An Naazi'aat. Al Infithaar yang dijadikan  nama untuk surat ini adalah kata asal dari kata Infatharat (terbelah)  yang terdapat pada ayat pertama."
+    },
+    "meta": {
+      "page": {
+        "start": 587,
+        "end": 587
+      },
+      "juz": {
+        "start": 30,
+        "end": 30
+      },
+      "total_pages": 1,
+      "number_of_verses": "19",
+      "number_of_letters": 327,
+      "number_of_words": 85
+    }
+  },
+  {
+    "index": 83,
+    "name": {
+      "ar": "المطففين",
+      "id": "Al-Mutaffifin",
+      "en": "Al-Mutaffifin",
+      "tr_id": "Orang-Orang Curang",
+      "tr_en": "Defrauding"
+    },
+    "revelation": {
+      "ar": "مكة",
+      "id": "Makkiyyah",
+      "en": "Meccan"
+    },
+    "sequence": "86",
+    "tafsir": {
+      "id": "Surat ini terdiri atas 36 ayat, termasuk golongan surat-surat Makkiyyah, diturunkan sesudah surat Al 'Ankabuut dan merupakan  surat yang terakhir di Mekkah sebelum hijrah. Al Muthaffifiin  yang dijadikan nama bagi surat ini diambil dari kata  Al Muthaffifiin yang terdapat pada ayat pertama."
+    },
+    "meta": {
+      "page": {
+        "start": 587,
+        "end": 589
+      },
+      "juz": {
+        "start": 30,
+        "end": 30
+      },
+      "total_pages": 3,
+      "number_of_verses": "36",
+      "number_of_letters": 830,
+      "number_of_words": 173
+    }
+  },
+  {
+    "index": 84,
+    "name": {
+      "ar": "الإنشقاق",
+      "id": "Al-Insyiqaq",
+      "en": "Al-Inshiqaaq",
+      "tr_id": "Terbelah",
+      "tr_en": "The Splitting Open"
+    },
+    "revelation": {
+      "ar": "مكة",
+      "id": "Makkiyyah",
+      "en": "Meccan"
+    },
+    "sequence": "83",
+    "tafsir": {
+      "id": "Surat Al Insyiqaaq, terdiri atas 25 ayat, termasuk golongan surat-surat Makkiyah, diturunkan sesudah surat Al Infithaarr. Dinamai Al Insyiqaaq (terbelah), diambil dari perkataan Insyaqqat yang terdapat pada permulaan surat ini, yang pokok katanya ialah insyiqaaq."
+    },
+    "meta": {
+      "page": {
+        "start": 589,
+        "end": 589
+      },
+      "juz": {
+        "start": 30,
+        "end": 30
+      },
+      "total_pages": 1,
+      "number_of_verses": "25",
+      "number_of_letters": 430,
+      "number_of_words": 112
+    }
+  },
+  {
+    "index": 85,
+    "name": {
+      "ar": "البروج",
+      "id": "Al-Buruj",
+      "en": "Al-Burooj",
+      "tr_id": "Gugusan Bintang",
+      "tr_en": "The Constellations"
+    },
+    "revelation": {
+      "ar": "مكة",
+      "id": "Makkiyyah",
+      "en": "Meccan"
+    },
+    "sequence": "27",
+    "tafsir": {
+      "id": "Surat Al Buruuj terdiri atas 22 ayat, termasuk golongan surat-surat Makkiyyah diturunkan sesudah surat Asy-Syams.Dinamai Al Buruuj (gugusan bintang) diambil dari perkataan Al Buruuj yang terdapat pada ayat 1 surat ini."
+    },
+    "meta": {
+      "page": {
+        "start": 590,
+        "end": 590
+      },
+      "juz": {
+        "start": 30,
+        "end": 30
+      },
+      "total_pages": 1,
+      "number_of_verses": "22",
+      "number_of_letters": 458,
+      "number_of_words": 113
+    }
+  },
+  {
+    "index": 86,
+    "name": {
+      "ar": "الطارق",
+      "id": "At-Tariq",
+      "en": "At-Taariq",
+      "tr_id": "Yang Datang Di Malam Hari",
+      "tr_en": "The Morning Star"
+    },
+    "revelation": {
+      "ar": "مكة",
+      "id": "Makkiyyah",
+      "en": "Meccan"
+    },
+    "sequence": "36",
+    "tafsir": {
+      "id": "Surat Ath Thaariq terdiri atas 17 ayat, termasuk golongan surat-surat Makkiyah,  diturunkan sesudah surat Al Balad.  Dinamai Ath Thaariq (yang datang di malam hari) diambil dari  perkataan Ath Thaariq yang terdapat pada ayat 1 surat ini."
+    },
+    "meta": {
+      "page": {
+        "start": 591,
+        "end": 591
+      },
+      "juz": {
+        "start": 30,
+        "end": 30
+      },
+      "total_pages": 1,
+      "number_of_verses": "17",
+      "number_of_letters": 245,
+      "number_of_words": 65
+    }
+  },
+  {
+    "index": 87,
+    "name": {
+      "ar": "الأعلى",
+      "id": "Al-A'la",
+      "en": "Al-A'laa",
+      "tr_id": "Maha Tinggi",
+      "tr_en": "The Most High"
+    },
+    "revelation": {
+      "ar": "مكة",
+      "id": "Makkiyyah",
+      "en": "Meccan"
+    },
+    "sequence": "8",
+    "tafsir": {
+      "id": "Surat ini terdiri atas 19 ayat, termasuk golongan surat-surat Makkiyyah, dan diturunkan sesudah surat At Takwiir. Nama Al A´laa diambil dari kata Al A´laa yang terdapat pada ayat pertama, berarti Yang Paling Tinggi. Muslim meriwayatkan dalam kitab Al Jumu'ah, dan diriwayatkan pula oleh Ashhaabus Sunan, dari Nu'man ibnu Basyir bahwa Rasulullah s.a.w. pada shalat dua hari Raya (Fitri dan Adha) dan shalat Jum'at membaca surat Al A´laa pada rakaat pertama, dan surat Al Ghaasyiyah pada rakaat kedua."
+    },
+    "meta": {
+      "page": {
+        "start": 591,
+        "end": 592
+      },
+      "juz": {
+        "start": 30,
+        "end": 30
+      },
+      "total_pages": 2,
+      "number_of_verses": "19",
+      "number_of_letters": 270,
+      "number_of_words": 76
+    }
+  },
+  {
+    "index": 88,
+    "name": {
+      "ar": "الغاشية",
+      "id": "Al-Gasyiyah",
+      "en": "Al-Ghaashiya",
+      "tr_id": "Hari Kiamat",
+      "tr_en": "The Overwhelming"
+    },
+    "revelation": {
+      "ar": "مكة",
+      "id": "Makkiyyah",
+      "en": "Meccan"
+    },
+    "sequence": "68",
+    "tafsir": {
+      "id": "Surat ini terdiri atas 26 ayat, termasuk surat-surat Makkiyah, diturunkan sesudah surat Adz Dzaariat. Nama Ghaasyiyah diambil dari kata Al Ghaasyiyah yang terdapat pada ayat pertama surat ini yang  artinya peristiwa yang dahsyat, tapi yang dimaksud adalah hari kiamat. Surat ini adalah surat yang kerap kali dibaca Nabi pada rakaat kedua  pada shalat hari-hari Raya dan shalat Jum'at"
+    },
+    "meta": {
+      "page": {
+        "start": 592,
+        "end": 592
+      },
+      "juz": {
+        "start": 30,
+        "end": 30
+      },
+      "total_pages": 1,
+      "number_of_verses": "26",
+      "number_of_letters": 330,
+      "number_of_words": 96
+    }
+  },
+  {
+    "index": 89,
+    "name": {
+      "ar": "الفجر",
+      "id": "Al-Fajr",
+      "en": "Al-Fajr",
+      "tr_id": "Fajar",
+      "tr_en": "The Dawn"
+    },
+    "revelation": {
+      "ar": "مكة",
+      "id": "Makkiyyah",
+      "en": "Meccan"
+    },
+    "sequence": "10",
+    "tafsir": {
+      "id": "Surat ini terdiri atas 30 ayat, termasuk golongan surat-surat Makkiyyah, diturunkan sesudah surat Al Lail. Nama Al Fajr diambil dari kata Al Fajr yang terdapat pada ayat pertama surat ini yang artinya fajar."
+    },
+    "meta": {
+      "page": {
+        "start": 593,
+        "end": 594
+      },
+      "juz": {
+        "start": 30,
+        "end": 30
+      },
+      "total_pages": 2,
+      "number_of_verses": "30",
+      "number_of_letters": 577,
+      "number_of_words": 143
+    }
+  },
+  {
+    "index": 90,
+    "name": {
+      "ar": "البلد",
+      "id": "Al-Balad",
+      "en": "Al-Balad",
+      "tr_id": "Negeri",
+      "tr_en": "The City"
+    },
+    "revelation": {
+      "ar": "مكة",
+      "id": "Makkiyyah",
+      "en": "Meccan"
+    },
+    "sequence": "35",
+    "tafsir": {
+      "id": "Surat Al Balad terdiri atas 20 ayat, termasuk golongan surat-surat Makkiyyah, diturunkan sesudah surat Qaaf. Dinamai Al Balad, diambil dari perkataan Al Balad yang terdapat  pada ayat pertama surat ini. Yang dimaksud dengan kota di sini ialah kota Mekah."
+    },
+    "meta": {
+      "page": {
+        "start": 594,
+        "end": 594
+      },
+      "juz": {
+        "start": 30,
+        "end": 30
+      },
+      "total_pages": 1,
+      "number_of_verses": "20",
+      "number_of_letters": 330,
+      "number_of_words": 86
+    }
+  },
+  {
+    "index": 91,
+    "name": {
+      "ar": "الشمس",
+      "id": "Asy-Syams",
+      "en": "Ash-Shams",
+      "tr_id": "Matahari",
+      "tr_en": "The Sun"
+    },
+    "revelation": {
+      "ar": "مكة",
+      "id": "Makkiyyah",
+      "en": "Meccan"
+    },
+    "sequence": "26",
+    "tafsir": {
+      "id": "Surat Asy Syams terdiri atas 15 ayat, termasuk golongan surat-surat Makkiyyah, diturunkan sesudah surat Al Qadar.  Dinamai Asy Syams (matahari) diambil dari perkataan Asy Syams yang terdapat pada ayat permulaan surat ini."
+    },
+    "meta": {
+      "page": {
+        "start": 595,
+        "end": 595
+      },
+      "juz": {
+        "start": 30,
+        "end": 30
+      },
+      "total_pages": 1,
+      "number_of_verses": "15",
+      "number_of_letters": 247,
+      "number_of_words": 58
+    }
+  },
+  {
+    "index": 92,
+    "name": {
+      "ar": "الليل",
+      "id": "Al-Lail",
+      "en": "Al-Lail",
+      "tr_id": "Malam",
+      "tr_en": "The Night"
+    },
+    "revelation": {
+      "ar": "مكة",
+      "id": "Makkiyyah",
+      "en": "Meccan"
+    },
+    "sequence": "9",
+    "tafsir": {
+      "id": "Surat ini terdiri atas 21 ayat, termasuk golongan surat-surat Makkiyah, diturunkan sesudah surat Al A'laa. Surat ini dinamai Al Lail (malam), diambil dari perkataan Al Lail yang terdapat pada ayat pertama surat ini"
+    },
+    "meta": {
+      "page": {
+        "start": 595,
+        "end": 596
+      },
+      "juz": {
+        "start": 30,
+        "end": 30
+      },
+      "total_pages": 2,
+      "number_of_verses": "21",
+      "number_of_letters": 302,
+      "number_of_words": 75
+    }
+  },
+  {
+    "index": 93,
+    "name": {
+      "ar": "الضحى",
+      "id": "Ad-Duha",
+      "en": "Ad-Dhuhaa",
+      "tr_id": "Duha",
+      "tr_en": "The Morning Hours"
+    },
+    "revelation": {
+      "ar": "مكة",
+      "id": "Makkiyyah",
+      "en": "Meccan"
+    },
+    "sequence": "11",
+    "tafsir": {
+      "id": "Surat ini terdiri atas 11 ayat, termasuk golongan surat Makiyyah dan diturunkan sesudah surat Al Fajr. Nama Adh Dhuhaa diambil dari kata yang terdapat pada ayat pertama, artinya : waktu matahari sepenggalahan naik."
+    },
+    "meta": {
+      "page": {
+        "start": 596,
+        "end": 596
+      },
+      "juz": {
+        "start": 30,
+        "end": 30
+      },
+      "total_pages": 1,
+      "number_of_verses": "11",
+      "number_of_letters": 192,
+      "number_of_words": 44
+    }
+  },
+  {
+    "index": 94,
+    "name": {
+      "ar": "الشرح",
+      "id": "Asy-Syarh",
+      "en": "Ash-Sharh",
+      "tr_id": "Lapang",
+      "tr_en": "The Consolation"
+    },
+    "revelation": {
+      "ar": "مكة",
+      "id": "Makkiyyah",
+      "en": "Meccan"
+    },
+    "sequence": "12",
+    "tafsir": {
+      "id": "Surat ini terdiri atas 8 ayat, termasuk golongan surat-surat Makkiyah dan diturunkan sesudah surat Adh Dhuhaa. Nama Alam Nasyrah diambil dari kata Alam Nasyrah yang terdapat pada ayat pertama, yang berarti: bukankah Kami telah melapangkan."
+    },
+    "meta": {
+      "page": {
+        "start": 596,
+        "end": 596
+      },
+      "juz": {
+        "start": 30,
+        "end": 30
+      },
+      "total_pages": 1,
+      "number_of_verses": "8",
+      "number_of_letters": 103,
+      "number_of_words": 31
+    }
+  },
+  {
+    "index": 95,
+    "name": {
+      "ar": "التين",
+      "id": "At-Tin",
+      "en": "At-Tin",
+      "tr_id": "Buah Tin",
+      "tr_en": "The Fig"
+    },
+    "revelation": {
+      "ar": "مكة",
+      "id": "Makkiyyah",
+      "en": "Meccan"
+    },
+    "sequence": "28",
+    "tafsir": {
+      "id": "Surat ini terdiri atas 8 ayat, termasuk golongan surat-surat Makkiyah, diturunkan sesudah surat Al Buruuj. Nama At Tiin diambil dari kata At Tiin yang terdapat pada ayat pertama surat ini yang artinya buah Tin."
+    },
+    "meta": {
+      "page": {
+        "start": 597,
+        "end": 597
+      },
+      "juz": {
+        "start": 30,
+        "end": 30
+      },
+      "total_pages": 1,
+      "number_of_verses": "8",
+      "number_of_letters": 150,
+      "number_of_words": 38
+    }
+  },
+  {
+    "index": 96,
+    "name": {
+      "ar": "العلق",
+      "id": "Al-'Alaq",
+      "en": "Al-Alaq",
+      "tr_id": "Segumpal Darah",
+      "tr_en": "The Clot"
+    },
+    "revelation": {
+      "ar": "مكة",
+      "id": "Makkiyyah",
+      "en": "Meccan"
+    },
+    "sequence": "1",
+    "tafsir": {
+      "id": "Surat Al 'Alaq terdiri atas 19 ayat, termasuk golongan surat-surat Makkiyah. Ayat 1 sampai dengan 5 dari surat ini adalah ayat-ayat Al Quran yang pertama sekali diturunkan, yaitu di waktu Nabi Muhammad s.a.w. berkhalwat di gua Hira'. Surat ini dinamai Al 'Alaq (segumpal darah), diambil dari perkataan Alaq yang terdapat pada ayat 2 surat ini. Surat ini dinamai juga dengan Iqra atau Al Qalam."
+    },
+    "meta": {
+      "page": {
+        "start": 597,
+        "end": 597
+      },
+      "juz": {
+        "start": 30,
+        "end": 30
+      },
+      "total_pages": 1,
+      "number_of_verses": "19",
+      "number_of_letters": 280,
+      "number_of_words": 76
+    }
+  },
+  {
+    "index": 97,
+    "name": {
+      "ar": "القدر",
+      "id": "Al-Qadr",
+      "en": "Al-Qadr",
+      "tr_id": "Kemuliaan",
+      "tr_en": "The Power, Fate"
+    },
+    "revelation": {
+      "ar": "مكة",
+      "id": "Makkiyyah",
+      "en": "Meccan"
+    },
+    "sequence": "25",
+    "tafsir": {
+      "id": "Surat Al Qadr terdiri atas 5 ayat, termasuk golongan surat-surat Makkiyah, diturunkan sesudah surat 'Abasa. Surat ini dinamai Al Qadr (kemuliaan), diambil dari perkataan Al Qadr yang terdapat pada ayat pertama surat ini."
+    },
+    "meta": {
+      "page": {
+        "start": 598,
+        "end": 598
+      },
+      "juz": {
+        "start": 30,
+        "end": 30
+      },
+      "total_pages": 1,
+      "number_of_verses": "5",
+      "number_of_letters": 112,
+      "number_of_words": 34
+    }
+  },
+  {
+    "index": 98,
+    "name": {
+      "ar": "البينة",
+      "id": "Al-Bayyinah",
+      "en": "Al-Bayyina",
+      "tr_id": "Bukti Nyata",
+      "tr_en": "The Evidence"
+    },
+    "revelation": {
+      "ar": "مدينة",
+      "id": "Madaniyyah",
+      "en": "Medinan"
+    },
+    "sequence": "100",
+    "tafsir": {
+      "id": "Surat Al Bayyinah terdiri atas 8 ayat, termasuk golongan surat-surat Madaniyyah, diturunkan sesudah surat Ath Thalaq. Dinamai Al Bayyinah (bukti yang nyata) diambil dari perkataan Al Bayyinah yang terdapat pada ayat pertama surat ini."
+    },
+    "meta": {
+      "page": {
+        "start": 598,
+        "end": 599
+      },
+      "juz": {
+        "start": 30,
+        "end": 30
+      },
+      "total_pages": 2,
+      "number_of_verses": "8",
+      "number_of_letters": 392,
+      "number_of_words": 98
+    }
+  },
+  {
+    "index": 99,
+    "name": {
+      "ar": "الزلزلة",
+      "id": "Az-Zalzalah",
+      "en": "Az-Zalzala",
+      "tr_id": "Guncangan",
+      "tr_en": "The Earthquake"
+    },
+    "revelation": {
+      "ar": "مدينة",
+      "id": "Madaniyyah",
+      "en": "Medinan"
+    },
+    "sequence": "93",
+    "tafsir": {
+      "id": "Surat ini terdiri atas 8 ayat, termasuk golongan surat-surat Madaniyyah diturunkan sesudah surat An Nisaa'. Nama Al Zalzalah diambil dari kata: Zilzaal yang terdapat pada ayat pertama surat ini yang berarti goncangan."
+    },
+    "meta": {
+      "page": {
+        "start": 599,
+        "end": 599
+      },
+      "juz": {
+        "start": 30,
+        "end": 30
+      },
+      "total_pages": 1,
+      "number_of_verses": "8",
+      "number_of_letters": 149,
+      "number_of_words": 40
+    }
+  },
+  {
+    "index": 100,
+    "name": {
+      "ar": "العاديات",
+      "id": "Al-'Adiyat",
+      "en": "Al-Aadiyaat",
+      "tr_id": "Kuda Yang Berlari Kencang",
+      "tr_en": "The Chargers"
+    },
+    "revelation": {
+      "ar": "مكة",
+      "id": "Makkiyyah",
+      "en": "Meccan"
+    },
+    "sequence": "14",
+    "tafsir": {
+      "id": "Surat ini terdiri atas 11 ayat, termasuk golongan surat-surat Makkiyyah, diturunkan sesudah surat Al'Ashr. Nama Al 'Aadiyaat diambil dari kata Al 'Aadiyaat yang terdapat pada ayat pertama surat ini, artinya yang berlari kencang."
+    },
+    "meta": {
+      "page": {
+        "start": 599,
+        "end": 600
+      },
+      "juz": {
+        "start": 30,
+        "end": 30
+      },
+      "total_pages": 2,
+      "number_of_verses": "11",
+      "number_of_letters": 163,
+      "number_of_words": 44
+    }
+  },
+  {
+    "index": 101,
+    "name": {
+      "ar": "القارعة",
+      "id": "Al-Qari'ah",
+      "en": "Al-Qaari'a",
+      "tr_id": "Hari Kiamat",
+      "tr_en": "The Calamity"
+    },
+    "revelation": {
+      "ar": "مكة",
+      "id": "Makkiyyah",
+      "en": "Meccan"
+    },
+    "sequence": "30",
+    "tafsir": {
+      "id": "Surat ini terdiri atas 11 ayat, termasuk golongan surat-surat Makkiyyah, diturunkan sesudah surat Quraisy. Nama Al Qaari'ah diambil dari kata Al Qaari'ah yang terdapat pada ayat pertama, artinya mengetok dengan keras, kemudian kata ini dipakai untuk nama hari kiamat."
+    },
+    "meta": {
+      "page": {
+        "start": 600,
+        "end": 600
+      },
+      "juz": {
+        "start": 30,
+        "end": 30
+      },
+      "total_pages": 1,
+      "number_of_verses": "11",
+      "number_of_letters": 150,
+      "number_of_words": 40
+    }
+  },
+  {
+    "index": 102,
+    "name": {
+      "ar": "التكاثر",
+      "id": "At-Takasur",
+      "en": "At-Takaathur",
+      "tr_id": "Bermegah-Megahan",
+      "tr_en": "Competition"
+    },
+    "revelation": {
+      "ar": "مكة",
+      "id": "Makkiyyah",
+      "en": "Meccan"
+    },
+    "sequence": "16",
+    "tafsir": {
+      "id": "Surat At Takaatsur terdiri atas 8 ayat, termasuk golongan surat-surat Makkiyyah, diturunkan sesudah surat Al Kautsar. Dinamai At Takaatsur (bermegah-megahan) diambil dari perkataan At Takaatsur yang terdapat pada ayat pertama surat ini."
+    },
+    "meta": {
+      "page": {
+        "start": 600,
+        "end": 600
+      },
+      "juz": {
+        "start": 30,
+        "end": 30
+      },
+      "total_pages": 1,
+      "number_of_verses": "8",
+      "number_of_letters": 120,
+      "number_of_words": 32
+    }
+  },
+  {
+    "index": 103,
+    "name": {
+      "ar": "العصر",
+      "id": "Al-'Asr",
+      "en": "Al-Asr",
+      "tr_id": "Asar",
+      "tr_en": "The Declining Day, Epoch"
+    },
+    "revelation": {
+      "ar": "مكة",
+      "id": "Makkiyyah",
+      "en": "Meccan"
+    },
+    "sequence": "13",
+    "tafsir": {
+      "id": "Surat Al 'Ashr terdiri atas 3 ayat, termasuk golongan surat-surat Makkiyyah, diturunkan sesudah surat Alam Nasyrah. Dinamai Al 'Ashr (masa) diambil dari perkataan Al 'Ashr yang terdapat pada ayat pertama surat ini."
+    },
+    "meta": {
+      "page": {
+        "start": 601,
+        "end": 601
+      },
+      "juz": {
+        "start": 30,
+        "end": 30
+      },
+      "total_pages": 1,
+      "number_of_verses": "3",
+      "number_of_letters": 68,
+      "number_of_words": 18
+    }
+  },
+  {
+    "index": 104,
+    "name": {
+      "ar": "الهمزة",
+      "id": "Al-Humazah",
+      "en": "Al-Humaza",
+      "tr_id": "Pengumpat",
+      "tr_en": "The Traducer"
+    },
+    "revelation": {
+      "ar": "مكة",
+      "id": "Makkiyyah",
+      "en": "Meccan"
+    },
+    "sequence": "32",
+    "tafsir": {
+      "id": "Surat Al Humazah terdiri atas 9 ayat, termasuk golongan surat-surat Makkiyyah, diturunkan sesudah surat Al Qiyaamah. Dinamai Al Humazah (pengumpat) diambil dari perkataan Humazah yang terdapat pada ayat pertama surat ini."
+    },
+    "meta": {
+      "page": {
+        "start": 601,
+        "end": 601
+      },
+      "juz": {
+        "start": 30,
+        "end": 30
+      },
+      "total_pages": 1,
+      "number_of_verses": "9",
+      "number_of_letters": 130,
+      "number_of_words": 37
+    }
+  },
+  {
+    "index": 105,
+    "name": {
+      "ar": "الفيل",
+      "id": "Al-Fil",
+      "en": "Al-Fil",
+      "tr_id": "Gajah",
+      "tr_en": "The Elephant"
+    },
+    "revelation": {
+      "ar": "مكة",
+      "id": "Makkiyyah",
+      "en": "Meccan"
+    },
+    "sequence": "19",
+    "tafsir": {
+      "id": "Surat ini terdiri atas 5 ayat, termasuk golongan surat-surat Makkiyyah, diturunkan sesudah surat Al Kaafirun. Nama Al Fiil diambil dari kata Al Fiil yang terdapat pada ayat pertama surat ini, artinya gajah. Surat Al Fiil mengemukakan cerita pasukan bergajah dari Yaman yang dipimpin oleh Abrahah yang ingin meruntuhkan Ka'bah di Mekah. Peristiwa ini terjadi pada tahun Nabi Muhammad s.a.w. dilahirkan."
+    },
+    "meta": {
+      "page": {
+        "start": 601,
+        "end": 601
+      },
+      "juz": {
+        "start": 30,
+        "end": 30
+      },
+      "total_pages": 1,
+      "number_of_verses": "5",
+      "number_of_letters": 96,
+      "number_of_words": 27
+    }
+  },
+  {
+    "index": 106,
+    "name": {
+      "ar": "قريش",
+      "id": "Quraisy",
+      "en": "Quraish",
+      "tr_id": "Quraisy",
+      "tr_en": "Quraysh"
+    },
+    "revelation": {
+      "ar": "مكة",
+      "id": "Makkiyyah",
+      "en": "Meccan"
+    },
+    "sequence": "29",
+    "tafsir": {
+      "id": "Surat ini terdiri atas 4 ayat, termasuk golongan surat-surat Makkiyyah dan diturunkan sesudah surat At Tiin. Nama Quraisy diambil dari kata Quraisy yang terdapat pada ayat pertama, artinya suku Quraisy. Suku Quraisy adalah suku yang mendapat  kehormatan untuk memelihara Ka'bah."
+    },
+    "meta": {
+      "page": {
+        "start": 602,
+        "end": 602
+      },
+      "juz": {
+        "start": 30,
+        "end": 30
+      },
+      "total_pages": 1,
+      "number_of_verses": "4",
+      "number_of_letters": 93,
+      "number_of_words": 21
+    }
+  },
+  {
+    "index": 107,
+    "name": {
+      "ar": "الماعون",
+      "id": "Al-Ma'un",
+      "en": "Al-Maa'un",
+      "tr_id": "Barang Yang Berguna",
+      "tr_en": "Almsgiving"
+    },
+    "revelation": {
+      "ar": "مكة",
+      "id": "Makkiyyah",
+      "en": "Meccan"
+    },
+    "sequence": "17",
+    "tafsir": {
+      "id": "Surat ini terdiri atas 7 ayat, termasuk golongan surat-surat Makkiyyah, diturunkan sesudah surat At Taakatsur. Nama Al Maa'uun diambil dari kata Al Maa'uun yang terdapat pada ayat 7, artinya barang-barang yang berguna."
+    },
+    "meta": {
+      "page": {
+        "start": 602,
+        "end": 602
+      },
+      "juz": {
+        "start": 30,
+        "end": 30
+      },
+      "total_pages": 1,
+      "number_of_verses": "7",
+      "number_of_letters": 125,
+      "number_of_words": 29
+    }
+  },
+  {
+    "index": 108,
+    "name": {
+      "ar": "الكوثر",
+      "id": "Al-Kausar",
+      "en": "Al-Kawthar",
+      "tr_id": "Pemberian Yang Banyak",
+      "tr_en": "Abundance"
+    },
+    "revelation": {
+      "ar": "مكة",
+      "id": "Makkiyyah",
+      "en": "Meccan"
+    },
+    "sequence": "15",
+    "tafsir": {
+      "id": "Surat Al Kautsar terdiri atas 3 ayat, termasuk golongan surat-surat  Makkiyyah diturunkan sesudah surat Al 'Aadiyaat. Dinamai Al Kautsar (nikmat yang banyak) diambil dari perkataan Al Kautsar yang terdapat pada ayat pertama surat ini.Surat ini sebagai penghibur hati Nabi Muhammad s.a.w."
+    },
+    "meta": {
+      "page": {
+        "start": 602,
+        "end": 602
+      },
+      "juz": {
+        "start": 30,
+        "end": 30
+      },
+      "total_pages": 1,
+      "number_of_verses": "3",
+      "number_of_letters": 42,
+      "number_of_words": 14
+    }
+  },
+  {
+    "index": 109,
+    "name": {
+      "ar": "الكافرون",
+      "id": "Al-Kafirun",
+      "en": "Al-Kaafiroon",
+      "tr_id": "Orang-Orang kafir",
+      "tr_en": "The Disbelievers"
+    },
+    "revelation": {
+      "ar": "مكة",
+      "id": "Makkiyyah",
+      "en": "Meccan"
+    },
+    "sequence": "18",
+    "tafsir": {
+      "id": "Surat Al Kaafiruun terdiri atas 6 ayat, termasuk golongan surat-surat  Makkiyyah, diturunkan sesudah surat Al Maa'uun. Dinamai Al Kaafiruun (orang-orang kafir), diambil dari perkataan  Al Kaafiruun yang terdapat pada ayat pertama surat ini."
+    },
+    "meta": {
+      "page": {
+        "start": 603,
+        "end": 603
+      },
+      "juz": {
+        "start": 30,
+        "end": 30
+      },
+      "total_pages": 1,
+      "number_of_verses": "6",
+      "number_of_letters": 94,
+      "number_of_words": 31
+    }
+  },
+  {
+    "index": 110,
+    "name": {
+      "ar": "النصر",
+      "id": "An-Nasr",
+      "en": "An-Nasr",
+      "tr_id": "Pertolongan",
+      "tr_en": "Divine Support"
+    },
+    "revelation": {
+      "ar": "مدينة",
+      "id": "Madaniyyah",
+      "en": "Medinan"
+    },
+    "sequence": "114",
+    "tafsir": {
+      "id": "Surat An Nashr terdiri atas 3 ayat, termasuk golongan surat-surat  Madaniyyah yang diturunkan di Mekah sesudah surat At Taubah.  Dinamai An Nashr (pertolongan) diambil dari perkataan Nashr yang  terdapat pada ayat pertama surat ini."
+    },
+    "meta": {
+      "page": {
+        "start": 603,
+        "end": 603
+      },
+      "juz": {
+        "start": 30,
+        "end": 30
+      },
+      "total_pages": 1,
+      "number_of_verses": "3",
+      "number_of_letters": 77,
+      "number_of_words": 23
+    }
+  },
+  {
+    "index": 111,
+    "name": {
+      "ar": "المسد",
+      "id": "Al-Lahab",
+      "en": "Al-Masad",
+      "tr_id": "Api Yang Bergejolak",
+      "tr_en": "The Palm Fibre"
+    },
+    "revelation": {
+      "ar": "مكة",
+      "id": "Makkiyyah",
+      "en": "Meccan"
+    },
+    "sequence": "6",
+    "tafsir": {
+      "id": "Surat ini terdiri atas 5 ayat, termasuk golongan surat-surat Makkiyyah,  diturunkan sesudah surat Al Fath. Nama Al Lahab diambil dari kata  Al Lahab yang terdapat pada ayat ketiga surat ini yang artinya gejolak  api. Surat ini juga dinamakan surat Al Masad."
+    },
+    "meta": {
+      "page": {
+        "start": 603,
+        "end": 603
+      },
+      "juz": {
+        "start": 30,
+        "end": 30
+      },
+      "total_pages": 1,
+      "number_of_verses": "5",
+      "number_of_letters": 77,
+      "number_of_words": 27
+    }
+  },
+  {
+    "index": 112,
+    "name": {
+      "ar": "الإخلاص",
+      "id": "Al-Ikhlas",
+      "en": "Al-Ikhlaas",
+      "tr_id": "Ikhlas",
+      "tr_en": "Sincerity"
+    },
+    "revelation": {
+      "ar": "مكة",
+      "id": "Makkiyyah",
+      "en": "Meccan"
+    },
+    "sequence": "22",
+    "tafsir": {
+      "id": "Surat ini terdiri atas 4 ayat, termasuk golongan surat-surat  Makkiyyah, diturunkan sesudah sesudah surat An Naas. Dinamakan Al Ikhlas karena surat ini sepenuhnya menegaskan kemurnian keesaan Allah s.w.t."
+    },
+    "meta": {
+      "page": {
+        "start": 604,
+        "end": 604
+      },
+      "juz": {
+        "start": 30,
+        "end": 30
+      },
+      "total_pages": 1,
+      "number_of_verses": "4",
+      "number_of_letters": 47,
+      "number_of_words": 19
+    }
+  },
+  {
+    "index": 113,
+    "name": {
+      "ar": "الفلق",
+      "id": "Al-Falaq",
+      "en": "Al-Falaq",
+      "tr_id": "Subuh",
+      "tr_en": "The Dawn"
+    },
+    "revelation": {
+      "ar": "مكة",
+      "id": "Makkiyyah",
+      "en": "Meccan"
+    },
+    "sequence": "20",
+    "tafsir": {
+      "id": "Surat ini terdiri atas 5 ayat, termasuk golongan surat-surat Makkiyah, diturunkan sesudah surat Al Fiil. Nama Al Falaq diambil dari kata Al Falaq yang terdapat pada ayat pertama surat ini yang artinya waktu subuh. Diriwayatkan oleh Abu Daud, At Tirmizi dan An Nasa-i dari 'Uqbah bin 'Aamir bahwa Rasulullah s.a.w. bersembahyang dengan membaca surat Al Falaq  dan surat An Naas dalam perjalanan."
+    },
+    "meta": {
+      "page": {
+        "start": 604,
+        "end": 604
+      },
+      "juz": {
+        "start": 30,
+        "end": 30
+      },
+      "total_pages": 1,
+      "number_of_verses": "5",
+      "number_of_letters": 74,
+      "number_of_words": 27
+    }
+  },
+  {
+    "index": 114,
+    "name": {
+      "ar": "الناس",
+      "id": "An-Nas",
+      "en": "An-Naas",
+      "tr_id": "Manusia",
+      "tr_en": "Mankind"
+    },
+    "revelation": {
+      "ar": "مكة",
+      "id": "Makkiyyah",
+      "en": "Meccan"
+    },
+    "sequence": "21",
+    "tafsir": {
+      "id": "Surat ini terdiri atas 6 ayat, termasuk golongan surat-surat Makkiyah,  diturunkan sesudah surat Al Falaq. Nama An Naas diambil dari An Naas yang berulang kali disebut dalam surat ini yang artinya manusia."
+    },
+    "meta": {
+      "page": {
+        "start": 604,
+        "end": 604
+      },
+      "juz": {
+        "start": 30,
+        "end": 30
+      },
+      "total_pages": 1,
+      "number_of_verses": "6",
+      "number_of_letters": 79,
+      "number_of_words": 24
+    }
+  }
+]

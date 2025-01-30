@@ -7,7 +7,7 @@ const BOOKMARK_KEY = 'BOOKMARK';
 const LASTREAD_KEY = 'LASTREAD';
 
 const default_value = {
-  font_type: 'font-lpmq-2',
+  font_type: 'font-kemenag',
   font_weight: '400',
   font_size: 'text-3xl',
   font_trans_size: 'text-base',

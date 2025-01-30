@@ -1,8 +1,8 @@
 {
- "lineWidth": 80,
+  "lineWidth": 80,
   "typescript": {
     // This applies to both JavaScript & TypeScript
-    "quoteStyle": "preferSingle",
+    "quoteStyle": "preferDouble",
     "binaryExpression.operatorPosition": "sameLine"
   },
   "json": {

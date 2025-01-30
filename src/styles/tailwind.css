@@ -179,19 +179,6 @@
 }
 
 
-@font-face {
-	font-family: Cabin;
-	src: local("Cabin-Bold");
-	src: url("/fonts/Cabin-Bold.eot");
-	src: url("/fonts/Cabin-Bold.eot?#iefix") format("embedded-opentype"),
-		url("/fonts/Cabin-Bold.woff2") format("woff2"),
-		url("/fonts/Cabin-Bold.woff") format("woff"), url("/fonts/Cabin-Bold.ttf")
-		format("truetype");
-	font-weight: 700;
-	font-style: normal;
-	font-display: swap;
-}
-
 
 .font-symbols1 {
 	font-family: "Symbols1_Ver02";
@@ -201,11 +188,11 @@
 	font-family: "ShadatainVer01";
 }
 
-.font-uthmantn {
+.font-uthmani-v2-reguler {
 	font-family: "UthmanTN_v2-0";
 }
 
-.font-uthmantnb {
+.font-uthmani-v2-bold {
 	font-family: "UthmanTNB_v2-0";
 }
 
@@ -217,11 +204,9 @@
 
 .font-indopak {
 	font-family: "IndoPak";
-	font-size: 1.875rem; /* 30px */
-	line-height: 4rem; /* 36px */
 }
 
-.font-uthmani {
+.font-uthmani-hafs {
 	font-family: "Uthmani-Hafs";
 	font-size: 40px; /* 30px */
 	line-height: 4rem; /* 36px */
@@ -231,21 +216,8 @@ code {
 	font-family: "monospace";
 }
 
-.font-lpmq-2 {
+.font-kemenag {
 	font-family: "LPMQ IsepMisbah";
-}
-
-
-.font-indopak-2 {
-	font-family: "IndoPak";
-}
-
-.font-cabin-2 {
-	font-family: "Cabin";
-}
-
-.font-uthmani-2 {
-	font-family: "Uthmani-Hafs";
 }
 
 .font-arabic {
