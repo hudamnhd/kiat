@@ -84,16 +84,15 @@ export const ScrollToFirstIndex = ({
   return (
     <div
       className={cn(
-        "sticky inset-x-0 ml-auto w-fit -translate-x-5 z-60 bottom-0 -mt-11",
+        "sticky inset-x-0 ml-auto w-fit -translate-x-5 z-10 bottom-0 -mt-11",
         !showGoTop && "hidden",
         className,
       )}
     >
       <Button
         onPress={handleScrollUp}
-        variant="default"
         size="icon"
-        className="bg-chart-2 data-hovered:bg-chart-2/90"
+        className="bg-slate-600 dark:bg-slate-400"
       >
         <ArrowUp />
       </Button>

@@ -2,6 +2,7 @@ import listSurah from "#/src/constants/list-surah.json";
 import { pageAyahs } from "#/src/constants/quran-metadata.ts";
 import { get_cache, set_cache } from "#src/utils/cache-client.ts";
 import ky from "ky";
+import toast from "react-hot-toast";
 
 export const fetchSurahWithCache = async (number: number) => {
   const CACHE_KEY = `surah_${number}`;
@@ -41,6 +42,19 @@ type Ayah = {
   d?: string;
 };
 
+const getStyleTextArabic = async (style: string) => {
+  const response = await toast.promise(
+    ky.get(`/muslim/quran/gz/${style}_style.json.gz`).json<Ayah[]>(),
+    {
+      loading: "Loading data surah...",
+      success: "Berhasil memuat data surah",
+      error: "Gagal memuat data surah",
+    },
+  );
+
+  return response;
+};
+
 async function getDataStyle(style: string) {
   const cachedDataKey = `data-${style}`;
   const cachedData = await get_cache(cachedDataKey) as Ayah[] | null;
@@ -51,8 +65,9 @@ async function getDataStyle(style: string) {
   }
 
   console.log(`❌ Cache miss: Fetching ${cachedDataKey} from API...`);
-  const fetchedData = await ky.get(`/muslim/quran/gz/${style}_style.json.gz`)
-    .json<Ayah[]>();
+  const fetchedData = await getStyleTextArabic(style);
+  // const fetchedData = await ky.get(`/muslim/quran/gz/${style}_style.json.gz`)
+  //   .json<Ayah[]>();
 
   // Simpan ke cache
   await set_cache(cachedDataKey, fetchedData);
@@ -138,3 +153,52 @@ export const getSurahByPage = async (
     surah: surahData,
   };
 };
+
+// groupJuzData
+
+function groupJuzData(data) {
+  const juzMap: { [key: string]: Surah[] } = {};
+
+  // Inisialisasi semua juz dari 1 sampai 30 sebagai array kosong
+  for (let i = 1; i <= 30; i++) {
+    juzMap[i] = [];
+  }
+
+  // Mengelompokkan surah berdasarkan start-end juz menggunakan for...of
+
+  let fisrtIndex = 0;
+  let JuzIndex = 0;
+  for (const d of data) {
+    for (let i = d.meta.juz.start; i <= d.meta.juz.end; i++) {
+      const shouldShow = d.index !== fisrtIndex;
+      const shouldShowJuz = i !== JuzIndex;
+      const surah = shouldShow
+        ? {
+          s: { // s = surah
+            i: d.index, // index
+            n: d.name.id, // nama surah
+            t: d.name.tr_id, // nama terjemahan surah
+            v: d.meta.number_of_verses, // jumlah ayat
+            p: d.meta.page.start, // halaman awal surah
+            r: d.revelation.id, // revelation
+          },
+        }
+        : {};
+      const juz = shouldShowJuz
+        ? {
+          j: { // j = juz
+            i, // index
+            s: d.index, // surah index
+            n: `Juz' ${i}`, // nama juz
+            p: juzPages[i - 1].s, // halaman awal juz
+          },
+        }
+        : {};
+      juzMap[i].push({ ...surah, ...juz });
+      fisrtIndex = d.index;
+      JuzIndex = i;
+    }
+  }
+
+  return juzMap;
+}

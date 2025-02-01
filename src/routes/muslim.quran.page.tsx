@@ -1,13 +1,9 @@
 import { Header } from "#src/components/custom/header";
 import { ScrollToFirstIndex } from "#src/components/custom/scroll-to-top.tsx";
-import { Badge } from "#src/components/ui/badge";
+import { Badge, badgeVariants } from "#src/components/ui/badge";
 import { Button, buttonVariants } from "#src/components/ui/button";
 import { Label } from "#src/components/ui/label";
-import {
-  Popover,
-  PopoverDialog,
-  PopoverTrigger,
-} from "#src/components/ui/popover";
+import { Popover } from "#src/components/ui/popover";
 import { get_cache, set_cache } from "#src/utils/cache-client.ts";
 import { cn } from "#src/utils/misc";
 import { getSurahByPage } from "#src/utils/misc.quran.ts";
@@ -15,12 +11,14 @@ import { formatDistanceToNow } from "date-fns";
 import { id } from "date-fns/locale";
 import React from "react";
 import type { SliderProps } from "react-aria-components";
+import { Button as ButtonRAC } from "react-aria-components";
 import {
   Slider,
   SliderOutput,
   SliderThumb,
   SliderTrack,
 } from "react-aria-components";
+import toast from "react-hot-toast";
 import type { LoaderFunctionArgs } from "react-router";
 import {
   Link,
@@ -45,7 +43,7 @@ const preBismillah = {
   },
 };
 function sleep(ms: number) {
-  return new Promise((resolve) => setTimeout(resolve, 0));
+  return new Promise((resolve) => setTimeout(resolve, ms));
 }
 
 const SETTING_PREFS_KEY = "SETTING_PREFS_KEY";
@@ -55,7 +53,14 @@ export async function Loader({ params, request }: LoaderFunctionArgs) {
   const ayah = url.searchParams.get("ayah");
   const surah = url.searchParams.get("surah");
   const { id } = params;
-
+  // toast.promise(
+  //   sleep(500).then(() => console.log(id)),
+  //   {
+  //     loading: "Saving...",
+  //     success: <b>Settings saved!</b>,
+  //     error: <b>Could not save.</b>,
+  //   },
+  // );
   const prefs = await get_cache(SETTING_PREFS_KEY);
   let style = "indopak" as "indopak" | "kemenag" | "uthmani" | "imlaei";
   let translation = prefs?.font_translation == "on" ? true : false;
@@ -75,9 +80,6 @@ export async function Loader({ params, request }: LoaderFunctionArgs) {
       break;
     case "font-uthmani-hafs":
       style = "uthmani";
-      break;
-    case "font-indopak":
-      style = "indopak";
       break;
     default:
       style = "kemenag";
@@ -148,8 +150,10 @@ import {
   Bookmark,
   ChevronLeft,
   ChevronRight,
+  Circle,
   Dot,
   Ellipsis,
+  EllipsisVertical,
   Star,
 } from "lucide-react";
 
@@ -241,7 +245,7 @@ function ButtonStar({ index }: { index: number }) {
       <Star
         className={cn(
           isFavorite
-            ? "text-yellow-500 fill-yellow-500 dark:text-yellow-400 dark:fill-yellow-400"
+            ? "text-orange-500 fill-orange-500 dark:text-orange-400 dark:fill-orange-400"
             : "",
         )}
       >
@@ -296,76 +300,6 @@ export function Component() {
 
 import { motion, useScroll, useSpring } from "framer-motion";
 
-const fixTypography = (text: string): string => {
-  return text
-    // Tambahkan paragraf baru setelah titik, tanda tanya, atau tanda seru diikuti oleh teks baru
-    .replace(/([.!?])\s*(\w)/g, (_, p1, p2) => `${p1}\n\n${p2.toUpperCase()}`)
-    // Tambahkan break line untuk pola list (1., -, atau *)
-    .replace(/(?:^|\n)(\d+\.\s|\-\s|\*\s)(.+)/g, (_, p1, p2) => `\n${p1}${p2}`)
-    // Hapus spasi berlebihan
-    .replace(/\s{2,}/g, " ")
-    // Hapus newline berlebih (jika ada banyak \n berturut-turut)
-    .replace(/\n{3,}/g, "\n\n")
-    // Hilangkan spasi sebelum tanda baca
-    .replace(/\s+([.,!?])/g, "$1")
-    // Uppercase huruf pertama di paragraf
-    .replace(/(^|\n)(\w)/g, (_, p1, p2) => `${p1}${p2.toUpperCase()}`);
-};
-
-const formatTranslationText = (text: string): string => {
-  return text
-    // Tambahkan paragraf baru setelah kata-kata transisi/topik baru
-    .replace(
-      /\b(kemudian|selanjutnya|sebagai khatimah|di sela-sela|disebut pula)\b/gi,
-      "\n\n$1",
-    )
-    // Tambahkan newline setelah nama tokoh atau peristiwa penting
-    .replace(
-      /\b(Mûsâ a\.s\.|Banû Isrâ'îl|Ibrâhîm a\.s\.|Ismâ'îl a\.s\.|Yahudi|Nasrani|Ahl al-Qur'ân)\b/gi,
-      "\n$1",
-    )
-    // Pisahkan daftar dengan newline (untuk kata seperti "seperti" dan "antara lain")
-    .replace(/\b(seperti|antara lain)\b/gi, "\n$1")
-    // Tambahkan newline jika kalimat terlalu panjang (>120 karakter)
-    .replace(/(.{120,}?[\.\!\?])\s+/g, "$1\n\n")
-    // Hapus spasi berlebihan sebelum tanda baca
-    .replace(/\s+([.,!?])/g, "$1")
-    // Trim spasi di awal dan akhir setiap paragraf
-    .replace(/^\s+|\s+$/gm, "");
-};
-
-const processText = (desc) => {
-  return desc
-    // Ganti pola '--', ': a.', '; a.', atau '\d ~ ... ~'
-    .replace(/--|\d ~ .*? ~|[:;] (\w|\d)\./g, (match, group1) => {
-      if (match.startsWith(":") || match.startsWith(";")) {
-        return group1 ? `\n ${group1}.` : match; // Cek apakah group1 ada
-      } else if (/--/.test(match)) {
-        return " "; // Ganti '--' dengan newline
-      } else {
-        return " "; // Hapus pola '\d ~ ... ~'
-      }
-    })
-    .replace(
-      /(?<!\b\w{1,10}\s)(?<!\b\w\.)\s(.{120,}?[\.\!\?])(?!\s?[a-zA-Z]\.|a\.s\.)\s+/g,
-      " \$1\n\n",
-    ).replace(/([a-z])\.([A-Z])/g, "$1. $2");
-  // Tambahkan spasi setelah tanda baca jika hilang
-};
-
-function fixDescription(text: string): string {
-  // 🔹 1. Hapus hanya `[[` dan `]]`, tetapi pertahankan isinya
-  text = text.replace(/\[\[(.*?)\]\]/g, "$1");
-
-  // 🔹 2. Ganti "XXX ~ Kalimat ~" dengan "XXX. Kalimat."
-  text = text.replace(/(\d+)\s*~\s*(.*?)\s*~/g, "$1. $2.");
-
-  // 🔹 3. Ganti pola ":" dengan new line
-  text = text.replace(/(\S+)\s*:/g, "\n\n$1:\n");
-
-  // 🔹 4. Trim whitespace ekstra
-  return text.trim();
-}
 const VirtualizedListSurah = ({ children }: { children: React.ReactNode }) => {
   const { surah, ayah: items, page, query } = useLoaderData();
   const surat = surah[0];
@@ -488,7 +422,7 @@ const VirtualizedListSurah = ({ children }: { children: React.ReactNode }) => {
 
   const scrollToFirstAyat = () => {
     rowVirtualizer.scrollToIndex(0, {
-      align: "center",
+      align: "start",
     });
   };
 
@@ -574,14 +508,14 @@ const VirtualizedListSurah = ({ children }: { children: React.ReactNode }) => {
     <React.Fragment>
       <TrackAyah currentSurah={currentSurah} />
       <motion.div
-        className="z-60 bg-chart-2 max-w-xl mx-auto"
+        className="z-20 bg-primary max-w-xl mx-auto"
         style={{
           scaleX,
           position: "fixed",
           top: 52,
           left: 0,
           right: 0,
-          height: 5,
+          height: 3,
           originX: 0,
         }}
       />
@@ -642,23 +576,20 @@ const VirtualizedListSurah = ({ children }: { children: React.ReactNode }) => {
                   transform: `translateY(${virtualRow.start + 0}px)`, // Tambahkan offset untuk children
                 }}
               >
-                {key === 1 && (
+                {key === 1 && opts?.font_translation === "on" && (
                   <React.Fragment>
                     <details
                       className={cn(
-                        "group [&_summary::-webkit-details-marker]:hidden px-4 py-2",
-                        surat?.index !== 1 && surat.index !== 9
-                          ? "border-b"
-                          : "",
+                        "group [&_summary::-webkit-details-marker]:hidden px-4 py-2 border-b",
                       )}
                     >
                       <summary className="flex cursor-pointer items-center gap-1.5 outline-hidden w-full justify-start">
-                        <div className="font-medium text-sm text-indigo-600 dark:text-indigo-400">
+                        <div className="font-medium text-sm">
                           Tentang {surah_name}
                         </div>
 
                         <svg
-                          className="size-4 shrink-0 transition duration-300 group-open:-rotate-180 text-indigo-600 dark:text-indigo-400 opacity-80"
+                          className="size-4 shrink-0 transition duration-300 group-open:-rotate-180 opacity-80"
                           xmlns="http://www.w3.org/2000/svg"
                           fill="none"
                           viewBox="0 0 24 24"
@@ -684,12 +615,12 @@ const VirtualizedListSurah = ({ children }: { children: React.ReactNode }) => {
 
                         <div
                           className={cn(
-                            "text-slate-800 dark:text-slate-200 text-justify max-w-none  whitespace-pre-wrap mb-2",
+                            "prose prose-zinc dark:prose-invert max-w-none whitespace-pre-wrap mb-2 text-justify",
                             opts?.font_trans_size,
                           )}
                         >
                           {item?.td
-                            ? fixDescription(item.td)
+                            ? item.td
                             : "Tidak ada deskripsi surat ini"}
                         </div>
                         <div className="text-muted-foreground text-xs py-2">
@@ -710,7 +641,7 @@ const VirtualizedListSurah = ({ children }: { children: React.ReactNode }) => {
                       >
                         <div
                           className={cn(
-                            "text-primary font-bismillah text-center",
+                            "font-bismillah text-center",
                             opts?.font_type,
                           )}
                           style={{
@@ -731,6 +662,8 @@ const VirtualizedListSurah = ({ children }: { children: React.ReactNode }) => {
                   key={key}
                   className={cn(
                     "group relative p-2",
+                    isFavorite &&
+                      "bg-gradient-to-r from-background via-background to-muted/50",
                   )}
                 >
                   <div
@@ -738,23 +671,15 @@ const VirtualizedListSurah = ({ children }: { children: React.ReactNode }) => {
                       " flex justify-start gap-1.5 w-full items-center",
                     )}
                   >
-                    <Badge
-                      className="rounded-md w-auto h-8 px-2"
-                      variant="outline"
-                      title={`${surah_name} - ${ayah_index}`}
-                    >
-                      {item.vk}
-                    </Badge>
-
                     <MenuTrigger>
                       <Button
+                        variant="secondary"
                         aria-label="Menu"
-                        variant="outline"
-                        size="icon"
-                        className={cn("h-8 w-8")}
+                        size="sm"
                         title={`Menu ayat ${key}`}
+                        className="h-8 gap-1 tracking-wide font-bold"
                       >
-                        <Ellipsis />
+                        {item.vk}
                       </Button>
                       <Popover
                         placement="bottom"
@@ -797,14 +722,14 @@ const VirtualizedListSurah = ({ children }: { children: React.ReactNode }) => {
                       <Button
                         onPress={() => toggleBookmark(bookmark_data)}
                         aria-label="Menu"
-                        variant="outline"
+                        variant="secondary"
                         size="icon"
                         className={cn("h-8 w-8")}
                         title="Hapus bookmark"
                       >
                         <Star
                           className={cn(
-                            "fill-orange-500 text-orange-500 dark:text-orange-400 dark:fill-orange-400",
+                            "fill-slate-600 text-slate-600 dark:fill-slate-400 dark:text-slate-400",
                           )}
                         />
                       </Button>
@@ -813,16 +738,16 @@ const VirtualizedListSurah = ({ children }: { children: React.ReactNode }) => {
                       ? (
                         <div
                           className={cn(
-                            buttonVariants({ variant: "outline" }),
+                            buttonVariants({ variant: "secondary" }),
                             "h-8 px-2 text-xs gap-1",
                           )}
                         >
                           <Bookmark
                             className={cn(
-                              "fill-blue-500 text-blue-500 dark:text-blue-400 dark:fill-blue-400",
+                              "fill-slate-600 text-slate-600 dark:fill-slate-400 dark:text-slate-400",
                             )}
                           />
-                          <span className="truncate max-w-[135px]">
+                          <span className="truncate max-w-[150px]">
                             {relativeTime}
                           </span>
                         </div>
@@ -833,7 +758,7 @@ const VirtualizedListSurah = ({ children }: { children: React.ReactNode }) => {
                   <div dir="rtl" className="break-normal pr-2.5">
                     <div
                       className={cn(
-                        "text-primary my-3 font-lpmq antialiased",
+                        "my-3 font-lpmq antialiased",
                         opts?.font_type,
                       )}
                       style={{
@@ -850,14 +775,14 @@ const VirtualizedListSurah = ({ children }: { children: React.ReactNode }) => {
                     </div>
                   </div>
 
-                  {opts?.font_translation === "on" && (
+                  {item?.tt && opts?.font_translation === "on" && (
                     <div
                       className={cn(
                         "text-slate-800 dark:text-slate-200 px-2 text-justify max-w-none  whitespace-pre-wrap mb-2",
                         opts?.font_trans_size,
                       )}
                     >
-                      {processText(item.tt)} ({item.vk.split(":")[1]})
+                      {item.tt} ({item.vk.split(":")[1]})
                     </div>
                   )}
                 </div>

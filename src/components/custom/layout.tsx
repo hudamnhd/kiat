@@ -1,15 +1,15 @@
-import { ThemeProvider } from '#src/components/custom/theme-provider.tsx';
+import { ThemeProvider } from "#src/components/custom/theme-provider.tsx";
 import {
   muslimNavigationLink,
   toolsNavigationLink,
-} from '#src/constants/nav-link';
-import { lightDarkVar } from '#src/utils/misc';
-import { TimerReset } from 'lucide-react';
-import React from 'react';
-import { Toaster } from 'react-hot-toast';
-import { Outlet, useLocation } from 'react-router';
-import ReloadPrompt from '../pwa/reload-prompt';
-import { GlobalPendingIndicator } from './global-pending-indicator';
+} from "#src/constants/nav-link";
+import { lightDarkVar } from "#src/utils/misc";
+import { TimerReset } from "lucide-react";
+import React from "react";
+import { Toaster } from "react-hot-toast";
+import { Outlet, useLocation } from "react-router";
+import ReloadPrompt from "../pwa/reload-prompt";
+import { GlobalPendingIndicator } from "./global-pending-indicator";
 
 export default function ThemeProviderWrapper() {
   return (
@@ -18,8 +18,8 @@ export default function ThemeProviderWrapper() {
         toastOptions={{
           // Define default options
           style: {
-            background: lightDarkVar('background'),
-            color: lightDarkVar('foreground'),
+            background: lightDarkVar("background"),
+            color: lightDarkVar("foreground"),
           },
           duration: 5000,
           removeDelay: 1000,
@@ -28,8 +28,8 @@ export default function ThemeProviderWrapper() {
           success: {
             duration: 3000,
             iconTheme: {
-              primary: lightDarkVar('chart-2'),
-              secondary: lightDarkVar('background'),
+              primary: lightDarkVar("chart-2"),
+              secondary: lightDarkVar("background"),
             },
           },
         }}
@@ -45,8 +45,8 @@ export default function ThemeProviderWrapper() {
 export function Layout() {
   return (
     <div
-      id='container-main'
-      className='border-x min-h-[calc(100vh)] max-w-xl mx-auto relative'
+      id="container-main"
+      className="bg-gradient-to-b from-background via-background to-muted/50 border-x min-h-[calc(100vh)] max-w-xl mx-auto relative"
     >
       <Outlet />
     </div>
@@ -57,9 +57,9 @@ const navigate_link = [
   ...muslimNavigationLink,
   ...toolsNavigationLink,
   {
-    title: 'Reset data',
-    href: '/resources/reset',
-    description: 'Reset data local',
+    title: "Reset data",
+    href: "/resources/reset",
+    description: "Reset data local",
     icon: TimerReset,
   },
 ];
@@ -70,20 +70,20 @@ const TrackLastRoutes = () => {
   React.useEffect(() => {
     const currentPath = location.pathname;
 
-    const containerMain = document.getElementById('container-main');
+    const containerMain = document.getElementById("container-main");
 
     if (
-      currentPath === '/alat/calculator' &&
+      currentPath === "/alat/calculator" &&
       containerMain instanceof HTMLDivElement
     ) {
-      containerMain.classList.remove('border-x', 'sm:max-w-xl');
+      containerMain.classList.remove("border-x", "sm:max-w-xl");
     } else {
-      if (!containerMain?.classList.contains('border-x')) {
-        containerMain?.classList.add('border-x');
+      if (!containerMain?.classList.contains("border-x")) {
+        containerMain?.classList.add("border-x");
       }
 
-      if (!containerMain?.classList.contains('sm:max-w-xl')) {
-        containerMain?.classList.add('sm:max-w-xl');
+      if (!containerMain?.classList.contains("sm:max-w-xl")) {
+        containerMain?.classList.add("sm:max-w-xl");
       }
     }
     // Cek apakah currentPath cocok dengan salah satu href di muslimLinks.
@@ -92,7 +92,7 @@ const TrackLastRoutes = () => {
     if (matchedLink) {
       // Ambil daftar route terakhir dari localStorage.
       const lastRoutes = JSON.parse(
-        localStorage.getItem('lastUsedRoutes') || '[]',
+        localStorage.getItem("lastUsedRoutes") || "[]",
       );
 
       // Jika route sudah ada, hapus agar tidak ada duplikasi.
@@ -107,7 +107,7 @@ const TrackLastRoutes = () => {
       const limitedRoutes = updatedRoutes.slice(0, 12);
 
       // Simpan ke localStorage.
-      localStorage.setItem('lastUsedRoutes', JSON.stringify(limitedRoutes));
+      localStorage.setItem("lastUsedRoutes", JSON.stringify(limitedRoutes));
     }
   }, [location.pathname]);
 

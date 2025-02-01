@@ -1,176 +1,265 @@
-import { Header } from '#src/components/custom/header';
-import { Link } from 'react-router';
+import { Header } from "#src/components/custom/header";
+import { Tooltip, TooltipTrigger } from "#src/components/ui/tooltip";
+import { Button } from "react-aria-components";
+import { Link } from "react-router";
+
+const sources = {
+  content: [
+    {
+      title: "Quran text",
+      desc: "indopak, uthmani, imlaei",
+      href: "https://api-docs.quran.com",
+    },
+    {
+      title: "Quran text",
+      desc: "kemenag",
+      href: "https://github.com/rioastamal/quran-single-file",
+    },
+    {
+      title: "Quran text",
+      desc: "Indopak, Uthmani, Imlaei",
+      href: "https://api-docs.quran.com",
+    },
+    {
+      title: "Quran terjemahan",
+      desc: "Muhammad Quraish Shihab et al",
+      href: "https://tanzil.net/download",
+    },
+    {
+      title: "Quran metadata",
+      desc: "daftar surat, halaman, jus, dll",
+      href: "https://www.jsdelivr.com/package/npm/@kmaslesa/quran-metadata",
+    },
+    {
+      title: "Doa berbagai sumber",
+      desc: "Rest API dari myquran.com",
+      href: "https://api.myquran.com/v2/doa",
+    },
+    {
+      title: "Sholawat",
+      desc: "dari repositori Islamic Bit",
+      href:
+        "https://github.com/wahyall/islamic-bit/blob/main/sholawat/sholawat.json",
+    },
+    {
+      title: "Dzikir",
+      desc: "dari repositori Islamic Bit",
+      href:
+        "https://github.com/wahyall/islamic-bit/blob/main/sholawat/sholawat.json",
+    },
+    {
+      title: "Tahlil",
+      desc: "dari Islamic Api Zhirrr",
+      href: "https://islamic-api-zhirrr.vercel.app/api/tahlil",
+    },
+  ],
+  font: [
+    {
+      title: "LPMQ Isep Misbah",
+      desc: "dari web Kemenag RI",
+      href: "https://api-docs.quran.com",
+    },
+    {
+      title: "Indopak",
+      desc: "dari repositori Quran WBW",
+      href: "https://github.com/qazasaz/quranwbw/tree/master/assets/fonts",
+    },
+    {
+      title: "Uthmani",
+      desc: "dari Repositori Quran WBW",
+      href: "https://github.com/qazasaz/quranwbw/tree/master/assets/fonts",
+    },
+    {
+      title: "KFGQPC Hafs Uthmanic",
+      desc: "dari web Qurancomplex",
+      href: "https://fonts.qurancomplex.gov.sa",
+    },
+  ],
+  stack: [
+    {
+      title: "React.js",
+      desc: "Library",
+      href: "https://react.dev",
+    },
+    {
+      title: "React Router",
+      desc: "Dependesi untuk mengatur routing dan juga fetching data",
+      href: "https://developer.chrome.com/docs/workbox",
+    },
+    {
+      title: "Tailwind",
+      desc: "Framework CSS",
+      href: "https://tailwindcss.com",
+    },
+    {
+      title: "React Aria Components",
+      desc: "Library komponent",
+      href: "https://react-spectrum.adobe.com/react-aria/index.html",
+    },
+    {
+      title: "Vite",
+      desc: "Dependesi alat pengembang",
+      href: "https://vite.dev",
+    },
+    {
+      title: "Vite PWA",
+      desc: "Dependesi untuk mendukung fitur PWA",
+      href: "https://vite-pwa-org.netlify.app",
+    },
+    {
+      title: "Workbox",
+      desc: "Dependesi untuk mendukung fitur PWA",
+      href: "https://developer.chrome.com/docs/workbox",
+    },
+    {
+      title: "React Virtual",
+      desc: "Dependesi untuk virtualisasi element",
+      href: "https://tanstack.com/virtual/latest",
+    },
+    {
+      title: "Lucide React",
+      desc: "Dependesi kumpulan icon svg",
+      href: "https://lucide.dev",
+    },
+    {
+      title: "Redux",
+      desc: "Dependesi manajement state",
+      href: "https://redux.js.org",
+    },
+    {
+      title: "Motion",
+      desc: "Dependesi animasi",
+      href: "https://motion.dev",
+    },
+    {
+      title: "Local forage",
+      desc: "Dependesi penyimpanan local",
+      href: "https://github.com/localForage/localForage",
+    },
+    {
+      title: "Fzy.js",
+      desc: "Dependesi fuzzy",
+      href: "https://github.com/jhawthorn/fzy.js",
+    },
+    {
+      title: "Jolly UI",
+      desc: "Referensi komponent React Aria",
+      href: "https://www.jollyui.dev",
+    },
+    {
+      title: "Shadcn UI",
+      desc: "Referensi tema dan komponent",
+      href: "https://ui.shadcn.com",
+    },
+    {
+      title: "Ky",
+      desc: "Alternatif Fetch",
+      href: "https://github.com/sindresorhus/ky",
+    },
+  ],
+  deploy: [
+    {
+      title: "Netlify",
+      desc: "Platform hosting gratis",
+      href: "https://netlify.com",
+    },
+  ],
+};
 
 export function Component() {
   return (
-    <div className='prose-base dark:prose-invert w-full max-w-xl mx-auto border-x'>
-      <Header redirectTo='/' title='About' />
+    <div className="prose-base dark:prose-invert w-full max-w-xl mx-auto border-x">
+      <Header redirectTo="/" title="Informasi" />
 
-      <div className='text-center text-3xl font-bold leading-tight tracking-tighter md:text-4xl lg:leading-[1.1] capitalize py-3'>
-        About
+      <div className="text-center text-3xl font-bold leading-tight tracking-tighter md:text-4xl lg:leading-[1.1] capitalize py-3">
+        Informasi
       </div>
 
-      <dl className='divide-y border-t -mt-1'>
-        <div className='px-4 py-3'>
-          <dt className='text-sm font-medium text-muted-foreground'>
+      <dl className="divide-y border-t -mt-1">
+        <div className="px-4 py-3">
+          <dt className="text-sm font-medium text-muted-foreground">
             Developer
           </dt>
-          <dd className='mt-1 pl-5 text-sm text-foreground'>
-            <Link to='https://www.linkedin.com/in/hudamnhd/'>Huda</Link>
+          <dd className="mt-1 pl-5 text-sm text-foreground">
+            <Link to="https://www.linkedin.com/in/hudamnhd">Huda</Link>
           </dd>
         </div>
-        <div className='px-4 py-3'>
-          <dt className='text-sm font-medium text-muted-foreground'>Nama</dt>
-          <dd className='mt-1 pl-5 text-sm text-foreground'>Kiat</dd>
+        <div className="px-4 py-3">
+          <dt className="text-sm font-medium text-muted-foreground">Nama</dt>
+          <dd className="mt-1 pl-5 text-sm text-foreground">Kiat</dd>
         </div>
-        <div className='px-4 py-3'>
-          <dt className='text-sm font-medium text-muted-foreground'>
+        <div className="px-4 py-3">
+          <dt className="text-sm font-medium text-muted-foreground">
             Deskripsi
           </dt>
-          <dd className='mt-1 pl-5 text-sm text-foreground'>
+          <dd className="mt-1 pl-5 text-sm text-foreground">
             Aplikasi sederhana untuk sehari-hari
           </dd>
         </div>
-        <div className='px-4 py-3'>
-          <dt className='text-sm font-medium text-muted-foreground'>
-            Sumber API
+        <div className="px-4 py-3">
+          <dt className="text-sm font-medium text-muted-foreground">
+            Sumber Konten
           </dt>
-          <dd className='text-sm text-foreground'>
-            <ul className='marker:text-muted-foreground pl-5 list-disc list-inside'>
-              <li className='break-all line-clam-1'>
-                <Link to='https://tanzil.net/download'>
-                  Al Quran per surah
-                </Link>
-              </li>
-              <li className='break-all line-clam-1'>
-                <Link to='https://api.myquran.com/v2/quran'>
-                  Al Quran per halaman
-                </Link>
-              </li>
-              <li className='break-all line-clam-1'>
-                <Link to='https://api.myquran.com/v2/doa'>
-                  Kumpulan doa berbagai sumber
-                </Link>
-              </li>
-              <li className='break-all line-clam-1'>
-                <Link to='https://gist.github.com/autotrof/172eb06313bebaefbc88ec1b04da4fef'>
-                  Doa Sehari-hari
-                </Link>
-              </li>
-              <li className='break-all line-clam-1'>
-                <Link to='https://github.com/wahyall/islamic-bit/blob/main/sholawat/sholawat.json'>
-                  Sholawat
-                </Link>
-              </li>
-              <li className='break-all line-clam-1'>
-                <Link to='https://github.com/wahyall/islamic-bit/blob/main/sholawat/dzikir.json'>
-                  Dzikir
-                </Link>
-              </li>
-              <li className='break-all line-clam-1'>
-                <Link to='https://islamic-api-zhirrr.vercel.app/api/tahlil'>
-                  Tahlil
-                </Link>
-              </li>
-            </ul>
+          <dd className="text-sm text-foreground">
+            <List data={sources.content} />
           </dd>
         </div>
-        <div className='px-4 py-3'>
-          <dt className='text-sm font-medium text-muted-foreground'>
+        <div className="px-4 py-3">
+          <dt className="text-sm font-medium text-muted-foreground">
             Huruf Arab
           </dt>
-          <dd className='mt-1 text-sm text-foreground'>
-            <ul className='marker:text-muted-foreground pl-5 list-disc list-inside'>
-              <li className='break-all line-clam-1'>
-                <Link to='https://lajnah.kemenag.go.id/unduhan.html'>
-                  Kemenag (LPMQ)
-                </Link>
-              </li>
-              <li className='break-all line-clam-1'>
-                <Link to='https://github.com/marwan/quranwbw/tree/main/static/fonts/indopak'>
-                  Indopak
-                </Link>
-              </li>
-              <li className='break-all line-clam-1'>
-                <Link to='https://github.com/marwan/quranwbw/tree/main/static/fonts/hafs'>
-                  Uthmani
-                </Link>
-              </li>
-            </ul>
+          <dd className="mt-1 text-sm text-foreground">
+            <List data={sources.font} />
           </dd>
         </div>
-        <div className='px-4 py-3'>
-          <dt className='text-sm font-medium text-muted-foreground'>Stack</dt>
-          <dd className='text-sm text-foreground'>
-            <ul className='marker:text-muted-foreground pl-5 list-disc list-inside'>
-              <li>
-                <Link to='https://react.dev/'>React</Link>
-              </li>
-              <li>
-                <Link to='https://remix.run'>React Router</Link>
-              </li>
-              <li>
-                <Link to='https://vite.dev/'>Vite</Link>
-              </li>
-            </ul>
-          </dd>
-        </div>
-        <div className='px-4 py-3'>
-          <dt className='text-sm font-medium text-muted-foreground'>
-            Dependencies
+        <div className="px-4 py-3">
+          <dt className="text-sm font-medium text-muted-foreground">
+            Stack dan Dependesi
           </dt>
-
-          <dd className='text-sm text-foreground'>
-            <ul className='marker:text-muted-foreground pl-5 list-disc list-inside'>
-              <li>
-                <Link to='https://tailwindcss.com/'>Tailwind CSS</Link>
-              </li>
-              <li>
-                <Link to='https://www.radix-ui.com/primitives'>Radix UI</Link>
-              </li>
-              <li>
-                <Link to='https://ui.shadcn.com/'>Shadcn UI</Link>
-              </li>
-              <li>
-                <Link to='https://react-spectrum.adobe.com/react-aria/index.html'>
-                  React Aria Components
-                </Link>
-              </li>
-              <li>
-                <Link to='https://tanstack.com/virtual/latest'>
-                  Tanstack Virtual
-                </Link>
-              </li>
-              <li>
-                <Link to='https://github.com/sindresorhus/ky'>Ky</Link>
-              </li>
-              <li>
-                <Link to='https://lucide.dev/'>Lucide React</Link>
-              </li>
-              <li>
-                <Link to='https://redux.js.org/'>Redux.js</Link>
-              </li>
-              <li>
-                <Link to='https://motion.dev/'>Motion</Link>
-              </li>
-            </ul>
+          <dd className="text-sm text-foreground">
+            <List data={sources.stack} />
           </dd>
         </div>
-        <div className='px-4 py-3'>
-          <dt className='text-sm font-medium text-muted-foreground'>Deploy</dt>
-          <dd className='mt-1 text-sm pl-5'>
-            <Link to='https://netlify.com/'>Netlify</Link>
+        <div className="px-4 py-3">
+          <dt className="text-sm font-medium text-muted-foreground">Deploy</dt>
+          <dd className="mt-1 text-sm pl-5">
+            <List data={sources.deploy} />
           </dd>
         </div>
-        <div className='px-4 py-3'>
-          <dt className='text-sm font-medium text-muted-foreground'>
+        <div className="px-4 py-3">
+          <dt className="text-sm font-medium text-muted-foreground">
             Components
           </dt>
-          <dd className='mt-1 text-sm pl-5'>
-            <Link to='/components'>Demo</Link>
+          <dd className="mt-1 text-sm pl-5">
+            <Link to="/components">Demo</Link>
           </dd>
         </div>
       </dl>
     </div>
   );
 }
+
+const List = ({ data }) => {
+  return (
+    <ul className="marker:text-muted-foreground list-disc list-inside">
+      {data.map((d, index) => (
+        <li key={index} className="break-all line-clam-1">
+          <TooltipTrigger delay={300}>
+            <Button>
+              <Link to={d.href} className="font-semibold">
+                {d.title}
+                {" "}
+              </Link>
+              <span>
+                {d.desc}.
+              </span>
+            </Button>
+            <Tooltip placement="bottom">
+              <p>{d.href}</p>
+            </Tooltip>
+          </TooltipTrigger>
+        </li>
+      ))}
+    </ul>
+  );
+};
