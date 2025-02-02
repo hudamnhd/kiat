@@ -1,48 +1,46 @@
 import listSurahWithJuz from "#/src/constants/daftar-surah-with-juz.json";
-import daftarSurat from "#/src/constants/list-surah.json";
-import { juzPages } from "#/src/constants/quran-metadata.ts";
 import { Header } from "#src/components/custom/header";
 import { Badge } from "#src/components/ui/badge";
 import { Button, buttonVariants } from "#src/components/ui/button";
-import { Input } from "#src/components/ui/input";
 import { Label } from "#src/components/ui/label";
 import { Tooltip, TooltipTrigger } from "#src/components/ui/tooltip";
 import { get_cache, set_cache } from "#src/utils/cache-client.ts";
 import { cn } from "#src/utils/misc";
-import { fetchAllSurahs } from "#src/utils/misc.quran.ts";
-import { formatDistanceToNow } from "date-fns";
+import { generateQuranReadingPlan } from "#src/utils/misc.quran.ts";
+import type { QuranReadingPlan } from "#src/utils/misc.quran.ts";
+import {
+  addMonths,
+  eachDayOfInterval,
+  endOfMonth,
+  format,
+  getDay,
+  isToday,
+  startOfMonth,
+  subMonths,
+} from "date-fns";
 import { id as localeId } from "date-fns/locale";
 import { motion, useScroll, useSpring } from "framer-motion";
-import { hasMatch, positions, score } from "fzy.js";
+import { hasMatch } from "fzy.js";
 import lodash from "lodash";
 import {
-  ArrowDownAZ,
   ArrowRight,
-  ArrowUpAZ,
-  Calendar,
   ChevronLeft,
   ChevronRight,
   Circle,
   CircleCheckBig,
   Crosshair,
-  Dot,
-  History,
   Minus,
   MoveRight,
   Puzzle,
   Rocket,
   Search as SearchIcon,
-  Star,
 } from "lucide-react";
 import React, { JSX, useMemo, useState } from "react";
 import toast from "react-hot-toast";
-import type { LoaderFunctionArgs } from "react-router";
-import { Link, useLoaderData } from "react-router";
-
-type Surah = (typeof daftarSurat)[number];
+import type { ActionFunctionArgs, LoaderFunctionArgs } from "react-router";
+import { Link, useFetcher, useLoaderData } from "react-router";
 
 import {
-  BOOKMARK_KEY,
   FAVORITESURAH_KEY,
   LASTREAD_KEY,
   LASTREADSURAH_KEY,
@@ -80,6 +78,7 @@ export async function Loader({ params }: LoaderFunctionArgs) {
   const data = {
     id,
     last_read_ayah_mark: await get_cache(LASTREAD_KEY),
+    plan_read: await get_cache(PLANREAD_KEY) || [],
     favorite_surah: await get_cache(FAVORITESURAH_KEY) || [],
     last_read_surah: await get_cache(LASTREADSURAH_KEY) || {},
     surat: Object.values(listSurahWithJuz).flat(),
@@ -87,6 +86,19 @@ export async function Loader({ params }: LoaderFunctionArgs) {
   };
 
   return data;
+}
+export async function Action({ request }: ActionFunctionArgs) {
+  const formData = await request.formData();
+  const _days = formData.get("days");
+  // const data = Object.fromEntries(formData);
+  if (_days) {
+    const days = Number(_days);
+    const readingPlan = generateQuranReadingPlan(604, 114, days, "page"); // Target khatam dalam 30 hari, baca per halaman
+    await saveTarget(readingPlan);
+    return { success: true };
+  }
+
+  return { success: false };
 }
 
 interface SearchProps<T> {
@@ -137,18 +149,7 @@ import {
 export function Component() {
   return (
     <React.Fragment>
-      <Header redirectTo="/muslim" title="Al Qur'an">
-        <Link
-          className={cn(
-            buttonVariants({ size: "icon", variant: "ghost" }),
-            "prose-none [&_svg]:size-6 mr-0.5",
-          )}
-          to="/muslim/quran-v2/1"
-          title="Al-Quran Per halaman"
-        >
-          V2
-        </Link>
-      </Header>
+      <Header redirectTo="/muslim" title="Al Qur'an" />
       <React.Fragment>
         <Tabs className="w-full">
           <TabList
@@ -176,7 +177,7 @@ export function Component() {
 }
 
 function SurahView() {
-  const { last_read_surah, favorite_surah, surat, juz_amma } = useLoaderData<
+  const { favorite_surah, surat, juz_amma } = useLoaderData<
     typeof Loader
   >();
   const [input, setInput] = useState("");
@@ -201,89 +202,9 @@ function SurahView() {
     handleSearch(e.target.value);
   };
 
-  let [version, setVersion] = React.useState("all");
-  const data_surat = version === "all" ? surat : juz_amma;
-  const data_placeholder = version === "all"
-    ? "Cari Surat.."
-    : "Cari Surat Juz Amma..";
+  const data_surat = surat;
+  const data_placeholder = "Cari Surat..";
 
-  const [selectedIds, setSelectedIds] = useState<string[]>(favorite_surah);
-
-  const menu = (
-    <TooltipTrigger defaultOpen={true} delay={300}>
-      <Select
-        aria-label="Select Type List"
-        className="font-semibold min-w-[120px]"
-        placeholder="Daftar Surat"
-        selectedKey={version}
-        onSelectionChange={(selected) => setVersion(selected as string)}
-      >
-        <SelectTrigger className="data-focused:outline-hidden data-focused:ring-none data-focused:ring-0 data-focus-visible:outline-hidden data-focus-visible:ring-none data-focus-visible:ring-0 border-none shadow-none p-0 [&_svg]:opacity-80 [&_svg]:size-[14px]">
-          <SelectValue className="font-semibold" />
-        </SelectTrigger>
-        <SelectPopover>
-          <SelectListBox>
-            <SelectItem id="all" textValue="Al-Quran">
-              Al-Quran
-            </SelectItem>
-            <SelectItem id="j30" textValue="Jus Amma">
-              Jus Amma
-            </SelectItem>
-          </SelectListBox>
-        </SelectPopover>
-      </Select>
-      <Tooltip placement="end">
-        <p>Juz Amma / Semua Juz</p>
-      </Tooltip>
-    </TooltipTrigger>
-  );
-
-  // function groupJuzData(data) {
-  //   const juzMap: { [key: string]: Surah[] } = {};
-  //
-  //   // Inisialisasi semua juz dari 1 sampai 30 sebagai array kosong
-  //   for (let i = 1; i <= 30; i++) {
-  //     juzMap[i] = [];
-  //   }
-  //
-  //   // Mengelompokkan surah berdasarkan start-end juz menggunakan for...of
-  //
-  //   let fisrtIndex = 0;
-  //   let JuzIndex = 0;
-  //   for (const d of data) {
-  //     for (let i = d.meta.juz.start; i <= d.meta.juz.end; i++) {
-  //       const shouldShow = d.index !== fisrtIndex;
-  //       const shouldShowJuz = i !== JuzIndex;
-  //       const surah = shouldShow
-  //         ? {
-  //           s: { // s = surah
-  //             i: d.index, // index
-  //             n: d.name.id, // nama surah
-  //             t: d.name.tr_id, // nama terjemahan surah
-  //             v: d.meta.number_of_verses, // jumlah ayat
-  //             p: d.meta.page.start, // halaman awal surah
-  //             r: d.revelation.id, // revelation
-  //           },
-  //         }
-  //         : {};
-  //       const juz = shouldShowJuz
-  //         ? {
-  //           j: { // j = juz
-  //             i, // index
-  //             s: d.index, // surah index
-  //             n: `Juz' ${i}`, // nama juz
-  //             p: juzPages[i - 1].s, // halaman awal juz
-  //           },
-  //         }
-  //         : {};
-  //       juzMap[i].push({ ...surah, ...juz });
-  //       fisrtIndex = d.index;
-  //       JuzIndex = i;
-  //     }
-  //   }
-  //
-  //   return juzMap;
-  // }
   //
   // const groupedJuz = groupJuzData(surat);
 
@@ -335,101 +256,7 @@ function SurahView() {
 
   return (
     <>
-      {/*<pre className="text-sm">{JSON.stringify(Object.values(groupedJuz).flat(), null, 2)}</pre>*/}
-      {/*45px*/}
       <LastRead />
-
-      {
-        /*<div className="surah-index px-3 border-b py-1.5">
-        {Object.keys(last_read_surah).length > 0 && (
-          <div className="text-muted-foreground text-xs font-medium uppercase tracking-wide">
-            Terakhir dibuka
-          </div>
-        )}
-
-        <div className="flex max-w-xl overflow-x-auto gap-1.5 py-2">
-          {Object.keys(last_read_surah).length > 0 &&
-            surat
-              .filter((navItem) =>
-                Object.keys(last_read_surah).includes(navItem.index)
-              ).sort((a, b) => a.created_at - b.created_at)
-              .map((item) => {
-                const to = `/muslim/quran/${item.number}`;
-
-                const is_last_read = last_read_surah[item.number];
-                const relativeTime = is_last_read
-                  ? formatDistanceToNow(new Date(is_last_read.created_at), {
-                    addSuffix: true,
-                    includeSeconds: true,
-                    locale: localeId,
-                  })
-                  : null;
-                return (
-                  <Link
-                    key={item.number}
-                    to={to}
-                    className="col-span-1 flex shadow-xs rounded-md hover:bg-accent"
-                  >
-                    <div className="flex-1 flex items-center justify-between border  rounded-md truncate">
-                      <div className="flex-1 px-2.5 py-2 text-sm truncate">
-                        <div className="font-semibold cursor-pointer">
-                          <span className="font-semibold">
-                            {item.number}. {item.name_id}
-                          </span>
-                          {" "}
-                        </div>
-                        <div className="flex items-center text-xs text-muted-foreground gap-x-1 mt-1">
-                          <span>{relativeTime}</span>
-                        </div>
-                      </div>
-                    </div>
-                  </Link>
-                );
-              })}
-        </div>
-      </div>*/
-      }
-
-      {/*103px*/}
-      {
-        /*{selectedIds.length > 0 && (
-        <div className="surah-index px-3 border-b py-1.5">
-          <div className="text-muted-foreground text-xs font-medium uppercase tracking-wide">
-            Surat Favorit
-          </div>
-
-          <div className="flex max-w-xl overflow-x-auto gap-1.5 py-2">
-            {selectedIds.length > 0 &&
-              surat
-                .filter((navItem) => selectedIds.includes(navItem.number))
-                .map((item) => {
-                  const to = `/muslim/quran/${item.number}`;
-                  return (
-                    <Link
-                      key={item.number}
-                      to={to}
-                      className="col-span-1 flex shadow-xs rounded-md hover:bg-accent"
-                    >
-                      <div className="flex-1 flex items-center justify-between border  rounded-md truncate">
-                        <div className="flex-1 px-2.5 py-2 text-sm truncate">
-                          <div className="font-semibold cursor-pointer">
-                            <span className="font-semibold">
-                              {item.number}. {item.name_id}
-                            </span>
-                            {" "}
-                          </div>
-                          <p className="text-muted-foreground line-clamp-1">
-                            {item.translation_id}
-                          </p>
-                        </div>
-                      </div>
-                    </Link>
-                  );
-                })}
-          </div>
-        </div>
-      )}*/
-      }
 
       <div className="surah-index relative pb-1">
         <input
@@ -464,22 +291,6 @@ function SurahView() {
           />
         </svg>
       </div>
-      {
-        /*<VirtualizedListSurahJuz
-        selectedIds={selectedIds}
-        setSelectedIds={setSelectedIds}
-        items={Object.values(groupedJuz).flat()}
-        lastSurah={last_read_surah}
-      />*/
-      }
-      {
-        /*<VirtualizedListSurah
-      selectedIds={selectedIds}
-      setSelectedIds={setSelectedIds}
-      items={filteredData}
-      lastSurah={last_read_surah}
-      />*/
-      }
       <SearchHandler
         data={data_surat}
         searchKey={["s.i", "s.n"]}
@@ -488,10 +299,7 @@ function SurahView() {
           if (filteredData.length > 0) {
             return (
               <VirtualizedListSurahJuz
-                selectedIds={selectedIds}
-                setSelectedIds={setSelectedIds}
                 items={filteredData}
-                lastSurah={last_read_surah}
               />
             );
           } else {
@@ -540,315 +348,14 @@ function getTotalHeight() {
   return totalHeight + 55;
 }
 
-const VirtualizedListSurah: React.FC<
-  {
-    items: any[];
-    selectedIds: string[];
-    setSelectedIds: React.Dispatch<React.SetStateAction<string[]>>;
-    lastSurah: {
-      [x: string]: {
-        created_at: string;
-      };
-    };
-  }
-> = (
-  { items, selectedIds, setSelectedIds, lastSurah },
-) => {
-  const parentRef = React.useRef<HTMLDivElement>(null);
-  const { last_read_surah, favorite_surah, last_read_ayah_mark } =
-    useLoaderData<
-      typeof Loader
-    >();
-  // const calculate_height =
-  // Gunakan useVirtualizer
-  const rowVirtualizer = useVirtualizer({
-    count: items.length, // Jumlah total item
-    getScrollElement: () => parentRef.current, // Elemen tempat scrolling
-    estimateSize: () => 62, // Perkiraan tinggi item (70px)
-  });
-
-  const { scrollYProgress } = useScroll({
-    container: parentRef,
-  });
-
-  const scaleX = useSpring(scrollYProgress, {
-    stiffness: 100,
-    damping: 30,
-    restDelta: 0.001,
-  });
-
-  return (
-    <React.Fragment>
-      <motion.div
-        className="z-60 bg-primary  max-w-xl mx-auto"
-        style={{
-          scaleX,
-          position: "fixed",
-          top: getTotalHeight() - 50,
-          left: 0,
-          right: 0,
-          height: 2.5,
-          originX: 0,
-        }}
-      />
-      <div
-        ref={parentRef}
-        className="border-b"
-        style={{
-          height: `calc(100vh - ${getTotalHeight()}px)`,
-          overflow: "auto",
-        }}
-      >
-        <div
-          className="divide-y"
-          style={{
-            height: `${rowVirtualizer.getTotalSize()}px`,
-            position: "relative",
-          }}
-        >
-          {rowVirtualizer.getVirtualItems().map((virtualRow) => {
-            // const item = items[virtualRow.index].item;
-            const item = items[virtualRow.index];
-            const is_favorite = selectedIds.includes(item.number);
-            const is_last_read = lastSurah[item.number];
-
-            const relativeTime = is_last_read
-              ? formatDistanceToNow(new Date(is_last_read.created_at), {
-                addSuffix: true,
-                includeSeconds: true,
-                locale: localeId,
-              })
-              : null;
-
-            const to =
-              `/muslim/quran/${item.meta.page.start}?surah=${item.index}&ayah=1`;
-            return (
-              <div
-                key={virtualRow.key}
-                data-index={virtualRow.index}
-                ref={rowVirtualizer.measureElement}
-                className="first:border-t group"
-                style={{
-                  position: "absolute",
-                  top: 0,
-                  left: 0,
-                  width: "100%",
-                  transform: `translateY(${virtualRow.start}px)`,
-                }}
-              >
-                <div
-                  className={cn(
-                    "px-4 pt-2.5 pb-1.5 flex items-center hover:bg-accent",
-                  )}
-                >
-                  <Link
-                    to={to}
-                    className="min-w-0 flex-1 flex items-center justify-between"
-                  >
-                    <div className="truncate -space-y-1.5">
-                      <div className="flex text-sm items-center">
-                        <p className="font-medium">
-                          {item.index}. {item.name.id}
-                        </p>
-
-                        <div className="ml-1 flex items-center text-sm text-muted-foreground gap-x-2">
-                          {item.revelation.id === "Makkiyyah"
-                            ? (
-                              <svg
-                                className="w-4 h-4"
-                                viewBox="0 0 100 100"
-                                fill="currentColor"
-                                x="0px"
-                                y="0px"
-                              >
-                                <path d="M4.53,81.42l45,15s0,0,0,0c.15,.05,.31,.08,.47,.08s.32-.03,.47-.08c0,0,0,0,0,0l45-15c.61-.2,1.03-.78,1.03-1.42V20c0-.14-.03-.28-.07-.42-.01-.04-.03-.08-.04-.12-.04-.09-.08-.18-.14-.27-.02-.04-.04-.07-.07-.11-.07-.1-.16-.18-.25-.26-.02-.01-.03-.03-.04-.04,0,0,0,0,0,0-.11-.08-.24-.14-.37-.19-.01,0-.02-.01-.03-.02L50.47,3.58c-.31-.1-.64-.1-.95,0L4.53,18.58s-.02,.01-.03,.02c-.13,.05-.25,.11-.37,.19,0,0,0,0,0,0-.02,.01-.03,.03-.04,.04-.1,.08-.18,.16-.25,.26-.03,.03-.05,.07-.07,.11-.06,.09-.1,.17-.14,.27-.02,.04-.03,.08-.04,.12-.04,.14-.07,.28-.07,.42v60c0,.65,.41,1.22,1.03,1.42Zm35.96,8.82l-11.49-3.84v-25.17l11.49,3.84v25.17Zm8.01-40.41v4.34L6.5,40.17v-4.34l42,14Zm45-9.66l-42,14v-4.34l42-14v4.34Zm-43.5-6.75L9.74,20,50,6.58l40.26,13.42-40.26,13.42Z">
-                                </path>
-                                <title>{item.revelation_id}</title>
-                              </svg>
-                            )
-                            : (
-                              <svg
-                                fill="currentColor"
-                                className="w-4 h-4 scale-[120%] -translate-y-[2px]"
-                                version="1.1"
-                                viewBox="-5.0 -10.0 110.0 110.0"
-                              >
-                                <path d="m80.699 69.102c0-14.699-22.898-30.699-29.199-34.699v-5.6992-0.10156c3.6016-0.39844 6.5-2.8008 7.8008-6-1.1016 0.39844-2.3008 0.69922-3.6016 0.69922-5.3008 0-9.6992-4.3984-9.6992-9.6992 0-1.3008 0.19922-2.5 0.69922-3.6016-3.6016 1.3984-6.1016 4.8984-6.1016 9 0 4.6992 3.3984 8.6016 7.8984 9.5v0.19922 5.6992c-6.1992 4.1016-29.199 20.102-29.199 34.699 0 3.8008 0.69922 7.5 2 10.898h-8.6016l0.003907 10.004h74.602v-10.102h-8.6016c1.3008-3.2969 2-7 2-10.797z">
-                                </path>
-                                <title>{item.revelation.id}</title>
-                              </svg>
-                            )}
-                        </div>
-                        {is_favorite && (
-                          <Star className="w-4 h-4 text-yellow-500 fill-yellow-500 dark:text-yellow-400 dark:fill-yellow-400 ml-1">
-                            <title>Surat Favorit</title>
-                          </Star>
-                        )}
-                      </div>
-                      <div className="mt-2 flex truncate">
-                        <span className="flex-shrink-0 text-muted-foreground text-sm">
-                          {item.name.tr_id}
-                        </span>
-                        <Dot className="mx-1 w-3 scale-150" />
-                        <span className="flex-shrink-0 text-muted-foreground text-sm">
-                          {item.meta.number_of_verses} ayat
-                        </span>
-                      </div>
-
-                      {relativeTime && (
-                        <div className="flex items-center text-sm text-muted-foreground gap-x-1 mt-1.5">
-                          <History className="w-4 h-4 fill-muted" />
-                          <span>Dibuka {relativeTime}</span>
-                        </div>
-                      )}
-                    </div>
-                  </Link>
-                  <div className="flex-shrink-0 flex gap-2 items-center">
-                    {
-                      /*<Button
-                      onPress={() =>
-                        is_favorite
-                          ? removeId(item.number)
-                          : addId(item.number)}
-                      size='icon'
-                      variant='link'
-                      title={is_favorite
-                        ? 'Hapus dari daftar favorit'
-                        : 'Tambahkan ke daftar favorit'}
-                      className={cn(
-                        'mr-1 [&_svg]:size-5 text-base',
-                      )}
-                    >
-                      <Star
-                        className={cn(
-                          '',
-                          is_favorite &&
-                            'text-yellow-500 fill-yellow-500 dark:text-yellow-400 dark:fill-yellow-400',
-                        )}
-                      />
-                    </Button>*/
-                    }
-                    <div className="font-indopak text-xl sm:text-2xl text-primary text-right">
-                      {item.name.ar}
-                    </div>
-                  </div>
-                </div>
-                {
-                  /*<div
-                  className={cn(
-                    'relative flex cursor-pointer select-none items-start px-3 py-2 outline-hidden hover:bg-accent hover:text-accent-foreground text-sm',
-                    is_favorite &&
-                      'hover:bg-yellow-50 dark:hover:bg-yellow-950',
-                  )}
-                >
-                  <Button
-                    onPress={() =>
-                      is_favorite ? removeId(item.number) : addId(item.number)}
-                    size='icon'
-                    variant={is_favorite ? 'default' : 'outline'}
-                    title={is_favorite
-                      ? 'Hapus dari daftar favorit'
-                      : 'Tambahkan ke daftar favorit'}
-                    className={cn(
-                      'mr-1 [&_svg]:size-5 text-base',
-                      is_favorite &&
-                        'group-hover:bg-yellow-200 dark:group-hover:bg-yellow-800 ',
-                    )}
-                  >
-                    <Star
-                      className={cn(
-                        'group-hover:animate-slide-top group-hover:[animation-fill-mode:backwards] group-hover:inline hidden transition-all duration-100',
-                        is_favorite &&
-                          'text-yellow-500 fill-yellow-500 dark:text-yellow-400 dark:fill-yellow-400',
-                      )}
-                    />
-                    <span className='group-hover:animate-slide-top group-hover:[animation-fill-mode:backwards] group-hover:hidden inline transition-all duration-100'>
-                      {item.number}
-                    </span>
-                  </Button>
-                  <Link
-                    to={to}
-                    className='w-full flex items-center justify-between'
-                  >
-                    <div className='w-full'>
-                      <div className='flex items-center gap-1'>
-                        <span className='font-semibold ml-1'>
-                          {item.name_id}
-                        </span>{' '}
-                        <span className='opacity-80'>
-                          ({item.translation_id})
-                        </span>
-
-                        {is_favorite && (
-                          <Star className='w-4 h-4 text-yellow-500 fill-yellow-500 dark:text-yellow-400 dark:fill-yellow-400'>
-                            <title>Surat Favorit</title>
-                          </Star>
-                        )}
-                      </div>
-                      <div className='ml-1 flex flex-col text-muted-foreground gap-1 sm:text-sm text-xs -space-y-1'>
-                        <span>{item.number_of_verses} ayat</span>
-                      </div>
-                    </div>
-                    <div className='sm:block hidden ml-auto font-kemenag text-xl text-primary text-right my-auto flex-none'>
-                      {item.name_short}
-                    </div>
-
-                    {item.revelation_id === 'Makkiyyah'
-                      ? (
-                        <svg
-                          className='w-4 h-4'
-                          viewBox='0 0 100 100'
-                          x='0px'
-                          y='0px'
-                        >
-                          <path d='M4.53,81.42l45,15s0,0,0,0c.15,.05,.31,.08,.47,.08s.32-.03,.47-.08c0,0,0,0,0,0l45-15c.61-.2,1.03-.78,1.03-1.42V20c0-.14-.03-.28-.07-.42-.01-.04-.03-.08-.04-.12-.04-.09-.08-.18-.14-.27-.02-.04-.04-.07-.07-.11-.07-.1-.16-.18-.25-.26-.02-.01-.03-.03-.04-.04,0,0,0,0,0,0-.11-.08-.24-.14-.37-.19-.01,0-.02-.01-.03-.02L50.47,3.58c-.31-.1-.64-.1-.95,0L4.53,18.58s-.02,.01-.03,.02c-.13,.05-.25,.11-.37,.19,0,0,0,0,0,0-.02,.01-.03,.03-.04,.04-.1,.08-.18,.16-.25,.26-.03,.03-.05,.07-.07,.11-.06,.09-.1,.17-.14,.27-.02,.04-.03,.08-.04,.12-.04,.14-.07,.28-.07,.42v60c0,.65,.41,1.22,1.03,1.42Zm35.96,8.82l-11.49-3.84v-25.17l11.49,3.84v25.17Zm8.01-40.41v4.34L6.5,40.17v-4.34l42,14Zm45-9.66l-42,14v-4.34l42-14v4.34Zm-43.5-6.75L9.74,20,50,6.58l40.26,13.42-40.26,13.42Z'>
-                          </path>
-                          <title>{item.revelation_id}</title>
-                        </svg>
-                      )
-                      : (
-                        <svg
-                          className='w-4 h-4 scale-[120%]'
-                          version='1.1'
-                          viewBox='-5.0 -10.0 110.0 110.0'
-                        >
-                          <path d='m80.699 69.102c0-14.699-22.898-30.699-29.199-34.699v-5.6992-0.10156c3.6016-0.39844 6.5-2.8008 7.8008-6-1.1016 0.39844-2.3008 0.69922-3.6016 0.69922-5.3008 0-9.6992-4.3984-9.6992-9.6992 0-1.3008 0.19922-2.5 0.69922-3.6016-3.6016 1.3984-6.1016 4.8984-6.1016 9 0 4.6992 3.3984 8.6016 7.8984 9.5v0.19922 5.6992c-6.1992 4.1016-29.199 20.102-29.199 34.699 0 3.8008 0.69922 7.5 2 10.898h-8.6016l0.003907 10.004h74.602v-10.102h-8.6016c1.3008-3.2969 2-7 2-10.797z'>
-                          </path>
-                          <title>{item.revelation_id}</title>
-                        </svg>
-                      )}
-                    <span>{item.revelation_id}</span>
-                  </Link>
-                </div>*/
-                }
-              </div>
-            );
-          })}
-        </div>
-      </div>
-    </React.Fragment>
-  );
-};
-
 const VirtualizedListSurahJuz: React.FC<
   {
     items: any[];
-    selectedIds: string[];
-    setSelectedIds: React.Dispatch<React.SetStateAction<string[]>>;
-    lastSurah: {
-      [x: string]: {
-        created_at: string;
-      };
-    };
   }
 > = (
-  { items, selectedIds, setSelectedIds, lastSurah },
+  { items },
 ) => {
   const parentRef = React.useRef<HTMLDivElement>(null);
-  const { last_read_surah, favorite_surah, last_read_ayah_mark } =
-    useLoaderData<
-      typeof Loader
-    >();
   // const calculate_height =
   // Gunakan useVirtualizer
   const rowVirtualizer = useVirtualizer({
@@ -900,7 +407,6 @@ const VirtualizedListSurahJuz: React.FC<
             const item = items[virtualRow.index];
             const s = item?.s;
             const j = item?.j;
-            const to = `/`;
             return (
               <div
                 key={virtualRow.key}
@@ -982,26 +488,10 @@ const VirtualizedListRecent: React.FC<
   { items },
 ) => {
   const parentRef = React.useRef<HTMLDivElement>(null);
-  const { last_read_surah, favorite_surah, last_read_ayah_mark } =
-    useLoaderData<
-      typeof Loader
-    >();
-  // const calculate_height =
-  // Gunakan useVirtualizer
   const rowVirtualizer = useVirtualizer({
     count: items.length, // Jumlah total item
     getScrollElement: () => parentRef.current, // Elemen tempat scrolling
     estimateSize: () => 62, // Perkiraan tinggi item (70px)
-  });
-
-  const { scrollYProgress } = useScroll({
-    container: parentRef,
-  });
-
-  const scaleX = useSpring(scrollYProgress, {
-    stiffness: 100,
-    damping: 30,
-    restDelta: 0.001,
   });
 
   return (
@@ -1126,131 +616,7 @@ const LastReadAyah = () => {
   );
 };
 
-interface QuranReadingPlan {
-  day: number;
-  date: string; // Format tanggal
-  pages?: number[]; // Jika membaca berdasarkan halaman
-  surahs?: number[]; // Jika membaca berdasarkan surah
-  completed: boolean;
-  progress?: number[]; // Halaman atau surah yang sudah dibaca di hari tersebut
-}
-
-/**
- * Generate target baca Quran berdasarkan jumlah hari & metode baca (per halaman atau per surah)
- * @param totalPages Total halaman Quran (misal: 604)
- * @param totalSurahs Total jumlah surah dalam Quran (114)
- * @param days Jumlah hari untuk khatam
- * @param method Metode baca: "page" untuk per halaman, "surah" untuk per surah
- * @param startToday Jika `true`, target mulai hari ini; jika `false`, mulai besok
- * @returns Array jadwal baca per hari
- */
-function generateQuranReadingPlan(
-  totalPages: number = 604,
-  totalSurahs: number = 114,
-  days: number,
-  method: "page" | "surah",
-  startToday: boolean = true,
-): QuranReadingPlan[] {
-  const plan: QuranReadingPlan[] = [];
-  const startDate = startToday ? new Date() : addDays(new Date(), 1); // Mulai hari ini atau besok
-
-  if (method === "page") {
-    const pagesPerDay = Math.ceil(totalPages / days);
-    let currentPage = 1;
-
-    for (let day = 1; day <= days; day++) {
-      let pages: number[] = [];
-      for (let i = 0; i < pagesPerDay; i++) {
-        if (currentPage > totalPages) break;
-        pages.push(currentPage);
-        currentPage++;
-      }
-      plan.push({
-        day,
-        date: format(addDays(startDate, day - 1), "yyyy-MM-dd"),
-        pages,
-        completed: false,
-        progress: [],
-      });
-    }
-  } else if (method === "surah") {
-    const surahsPerDay = Math.ceil(totalSurahs / days);
-    let currentSurah = 1;
-
-    for (let day = 1; day <= days; day++) {
-      let surahs: number[] = [];
-      for (let i = 0; i < surahsPerDay; i++) {
-        if (currentSurah > totalSurahs) break;
-        surahs.push(currentSurah);
-        currentSurah++;
-      }
-      plan.push({
-        day,
-        date: format(addDays(startDate, day - 1), "yyyy-MM-dd"),
-        surahs,
-        completed: false,
-        progress: [],
-      });
-    }
-  }
-
-  return plan;
-}
-
-// 🔥 Contoh Penggunaan
-// const readingPlanToday = generateQuranReadingPlan(604, 114, 30, "page", true); // Mulai hari ini
-// console.log("📖 Target Mulai Hari Ini:", readingPlanToday);
-//
-// const readingPlanTomorrow = generateQuranReadingPlan(
-//   604,
-//   114,
-//   30,
-//   "page",
-//   false,
-// ); // Mulai besok
-// console.log("📖 Target Mulai Besok:", readingPlanTomorrow);
-
-/**
- * Update progress membaca Quran
- * @param plan Rencana baca Quran
- * @param day Hari keberapa yang sedang dibaca
- * @param readItems Daftar halaman/surah yang telah dibaca
- * @returns Rencana baca yang diperbarui
- */
-function updateReadingProgress(
-  plan: QuranReadingPlan[],
-  day: number,
-  readItems: number[],
-): QuranReadingPlan[] {
-  return plan.map((entry) => {
-    if (entry.day === day) {
-      const totalItems = entry.pages || entry.surahs || [];
-      const updatedProgress = Array.from(
-        new Set([...entry.progress!, ...readItems]),
-      ); // Tambahkan item baru yang sudah dibaca
-
-      return {
-        ...entry,
-        progress: updatedProgress,
-        completed: updatedProgress.length >= totalItems.length, // Tandai selesai jika semua item sudah dibaca
-      };
-    }
-    return entry;
-  });
-}
-
-// 🔥 Update progress: Hari pertama sudah membaca halaman 1-5
-// const updatedPlan = updateReadingProgress(readingPlanToday, 1, [1, 2, 3, 4, 5]);
-// console.log("📖 Progress setelah hari pertama:", updatedPlan);
-//
-// // 🔥 Hari pertama menyelesaikan semua halaman yang ditargetkan
-// const finalUpdate = updateReadingProgress(
-//   readingPlanToday,
-//   1,
-//   readingPlanToday[0].pages!,
-// );
-// console.log("✅ Hari pertama selesai:", finalUpdate);
-
+import type { TabPanelProps, TabProps } from "react-aria-components";
 import {
   Button as ButtonRAC,
   Tab,
@@ -1258,7 +624,6 @@ import {
   TabPanel,
   Tabs,
 } from "react-aria-components";
-import type { TabPanelProps, TabProps } from "react-aria-components";
 
 function MyTab(props: TabProps) {
   return (
@@ -1301,21 +666,6 @@ function Article({ title, summary }: { title: string; summary: string }) {
   );
 }
 
-import {
-  addDays,
-  addMonths,
-  eachDayOfInterval,
-  endOfMonth,
-  format,
-  getDay,
-  isBefore,
-  isToday,
-  isWeekend,
-  startOfMonth,
-  subDays,
-  subMonths,
-} from "date-fns";
-
 function Goals() {
   const [rentang, setRentang] = React.useState<string>(
     "",
@@ -1323,8 +673,8 @@ function Goals() {
   const [target, setTarget] = React.useState<string>(
     "",
   );
-  const [result, setResult] = React.useState<string>(
-    null,
+  const [result, setResult] = React.useState<QuranReadingPlan[] | []>(
+    [],
   );
   const target_opts = rentang === "harian"
     ? [
@@ -1349,16 +699,19 @@ function Goals() {
     : [];
 
   React.useEffect(() => {
-    if (target !== "") {
+    if (target !== "" && rentang !== "") {
       if (["harian", "mingguan", "bulanan"].includes(rentang)) {
-        const days = getTotalDays(rentang, target);
+        const days = getTotalDays(
+          rentang as "harian" | "mingguan" | "bulanan",
+          Number(target),
+        );
         const readingPlan = generateQuranReadingPlan(604, 114, days, "page"); // Target khatam dalam 30 hari, baca per halaman
         setResult(readingPlan);
       } else {
         const days = rentang === "juz"
-          ? 30 / target
+          ? 30 / Number(target)
           : rentang === "halaman"
-          ? 604 / target
+          ? 604 / Number(target)
           : 0;
         const readingPlan = generateQuranReadingPlan(604, 114, days, "page"); // Target khatam dalam 30 hari, baca per halaman
         setResult(readingPlan);
@@ -1426,7 +779,7 @@ function Goals() {
                     <SelectItem
                       key={option}
                       id={option}
-                      textValue={option}
+                      textValue={option.toString()}
                       className="capitalize"
                     >
                       {option === 0.5 ? "Setengah" : option}{" "}
@@ -1442,56 +795,38 @@ function Goals() {
         </div>
       </div>
 
-      {result && <CalendarMonth plan={result} />}
+      {result.length > 0 && <CalendarMonth plan={result} />}
     </div>
   );
 }
 
 function GoalsView() {
-  const [target, setTarget] = React.useState<string>(
-    [],
-  );
-  const read = [
-    1,
-    2,
-    3,
-    4,
-    5,
-    6,
-    7,
-    8,
-    9,
-  ];
+  const loaderData = useLoaderData<typeof Loader>();
+  const target = loaderData.plan_read as QuranReadingPlan[];
 
-  React.useEffect(() => {
-    async function getGoals() {
-      const data = await getTarget();
-      if (data.length > 0) {
-        // let target = updateReadingProgress(data, 1, read);
-        setTarget(data);
-      }
-    }
-    getGoals();
-  }, []);
   if (target.length === 0) return null;
 
   const targetLength = target.length;
   const totalTargetSessions = target.length;
   const total_sessions = target.filter((d) => d.completed).length;
-  const hasRead = target.filter((d) => d.completed);
   const today = format(new Date(), "yyyy-MM-dd");
   const progressToday = target.find((d) => d.date === today);
 
   const totalPagesProgress = target?.reduce(
-    (sum, todo) => sum + todo.progress.length,
+    (sum, todo) => sum + (todo?.progress?.length ?? 0),
     0,
   );
+  const pages_length = progressToday?.pages?.length || 0;
+  const progress_length = progressToday?.progress?.length || 0;
+  const next_read = pages_length > 0
+    ? progressToday?.pages?.[progress_length]
+    : 0;
   return (
     <div className="space-y-2 mt-3">
       <div className="max-w-2xl mx-auto text-start px-2 divide-y">
         <div className="mb-2">
           <div className="font-bold  px-2">
-            {target[0].pages.length} Halaman / Hari
+            {target[0]?.pages?.length} Halaman / Hari
           </div>
           <dl className="sm:divide-y sm:divide-border border rounded-md my-2">
             <div className="py-2 sm:grid sm:grid-cols-3 sm:gap-4 px-4">
@@ -1501,7 +836,7 @@ function GoalsView() {
               <dd className="mt-1 text-sm sm:mt-0 sm:col-span-2 font-medium">
                 {totalPagesProgress} /{" "}
                 <span className="font-medium">
-                  {progressToday.pages.length} Halaman
+                  {progressToday?.pages?.length} Halaman
                 </span>
               </dd>
             </div>
@@ -1532,14 +867,10 @@ function GoalsView() {
               buttonVariants(),
               "mb-2",
             )}
-            to={`/muslim/quran/${
-              progressToday.pages[progressToday.progress.length]
-            }`}
-            title={`Lanjut Baca Hal ${
-              progressToday.pages[progressToday.progress.length]
-            }`}
+            to={`/muslim/quran/${next_read ?? 0}`}
+            title={`Lanjut Baca Hal ${next_read ?? 0}`}
           >
-            Lanjut Baca Hal {progressToday.pages[progressToday.progress.length]}
+            Lanjut Baca Hal {next_read ?? 0}
             <ArrowRight />
           </Link>
           <Label>
@@ -1559,19 +890,20 @@ function GoalsView() {
                   width: `${100}%`,
                 }}
               >
-                {progressToday.pages.length} Hal
+                {progressToday?.pages?.length} Hal
                 <Crosshair className="h-5 w-5" />
               </div>
               <div
                 className={cn(
                   "z-10 absolute top-0 flex h-8 items-center justify-end gap-1 overflow-hidden bg-chart-2 text-primary-foreground px-2 rounded-l-md transition-all duration-500 ease-in-out",
-                  progressToday.progress.length >= progressToday.pages.length &&
+                  (progressToday?.progress?.length ?? 0) >=
+                      (progressToday?.pages?.length ?? 0) &&
                     "rounded-md",
                 )}
                 style={{
                   width: `${
-                    (progressToday.progress.length /
-                      progressToday.pages.length) * 100
+                    ((progressToday?.progress?.length ?? 0) /
+                      (progressToday?.pages?.length ?? 0)) * 100
                   }%`,
                 }}
               >
@@ -1579,10 +911,11 @@ function GoalsView() {
                   className="flex shrink-0 items-center gap-1 font-medium"
                   style={{ opacity: 1 }}
                 >
-                  {progressToday.progress.length >= progressToday.pages.length
+                  {(progressToday?.progress?.length ?? 0) >=
+                      (progressToday?.pages?.length ?? 0)
                     ? <CircleCheckBig className="ml-2 h-5 w-5" />
                     : <Circle className="h-5 w-5" />}
-                  {progressToday.progress.length} Hal
+                  {progressToday?.progress?.length} Hal
                   <ArrowRight
                     className={cn(
                       "h-5 w-5 ",
@@ -1655,18 +988,15 @@ function GoalsView() {
   );
 }
 
-const getTarget = async () => {
-  return await get_cache(PLANREAD_KEY) || [];
-};
-
 const saveTarget = async (data: any) => {
   const response = await toast.promise(
     (async () => {
       // 🔥 Ambil cache sebelumnya
-      const savedData = await get_cache(PLANREAD_KEY) || [];
+      // const savedData = await get_cache(PLANREAD_KEY) || [];
 
       // 🔥 Update data tanpa duplikasi
-      const updatedData = Array.from(new Set([...savedData, ...data]));
+      const updatedData = data;
+      // const updatedData = Array.from(new Set([...savedData, ...data]));
 
       // 🔥 Simpan data yang diperbarui
       await set_cache(PLANREAD_KEY, updatedData);
@@ -1683,7 +1013,7 @@ const saveTarget = async (data: any) => {
   return response;
 };
 
-const CalendarMonthProggres = ({ plan }) => {
+const CalendarMonthProggres = ({ plan }: { plan: QuranReadingPlan[] }) => {
   const [currentMonth, setCurrentMonth] = useState(new Date());
   const [daysInMonth, setDaysInMonth] = useState([]);
 
@@ -1732,7 +1062,7 @@ const CalendarMonthProggres = ({ plan }) => {
     <div className="">
       <div className="flex items-center justify-center gap-3 px-3 pb-3 py-1.5">
         <Button
-          onClick={handlePreviousMonth}
+          onPress={handlePreviousMonth}
           variant="outline"
           className="h-8 w-8 p-0"
         >
@@ -1745,7 +1075,7 @@ const CalendarMonthProggres = ({ plan }) => {
           })}
         </h2>
         <Button
-          onClick={handleNextMonth}
+          onPress={handleNextMonth}
           variant="outline"
           className="h-8 w-8 p-0"
         >
@@ -1772,13 +1102,16 @@ const CalendarMonthProggres = ({ plan }) => {
           const readingPlanIndex = day
             ? plan.findIndex((d) => d.date === dataKey)
             : null;
-          const shouldRead = readingPlan ? readingPlan.pages.length : 0;
-          const hasRead = readingPlan ? readingPlan.progress.length : 0;
-          const rangeRead = readingPlan
+          const shouldRead = readingPlan?.pages
+            ? readingPlan?.pages?.length
+            : 0;
+
+          const hasRead = readingPlan?.progress
+            ? readingPlan?.progress?.length
+            : 0;
+          const rangeRead = readingPlan?.pages
             ? `${readingPlan.pages[0]}-${readingPlan.pages[shouldRead - 1]}`
             : 0;
-          const sessions = 2;
-          const statistic = { total: 0, completed: 0 };
           return (
             <React.Fragment
               key={index}
@@ -1860,8 +1193,9 @@ const CalendarMonthProggres = ({ plan }) => {
   );
 };
 
-const CalendarMonth = ({ plan }) => {
+const CalendarMonth = ({ plan }: { plan: QuranReadingPlan[] }) => {
   const [currentMonth, setCurrentMonth] = useState(new Date());
+  const fetcher = useFetcher();
   const [daysInMonth, setDaysInMonth] = useState([]);
 
   // Fungsi untuk memperbarui kalender
@@ -1904,14 +1238,11 @@ const CalendarMonth = ({ plan }) => {
     setCurrentMonth(subMonths(currentMonth, 1));
   };
   // [@media(min-width:900px)]
-  const handleSaveTarget = () => {
-    saveTarget(plan);
-  };
   return (
     <div className="">
       <div className="flex items-center justify-center gap-3 px-3 pb-3 py-1.5">
         <Button
-          onClick={handlePreviousMonth}
+          onPress={handlePreviousMonth}
           variant="outline"
           className="h-8 w-8 p-0"
         >
@@ -1922,7 +1253,7 @@ const CalendarMonth = ({ plan }) => {
           {format(currentMonth, "MMMM yyyy")}
         </h2>
         <Button
-          onClick={handleNextMonth}
+          onPress={handleNextMonth}
           variant="outline"
           className="h-8 w-8 p-0"
         >
@@ -1944,17 +1275,18 @@ const CalendarMonth = ({ plan }) => {
         {daysInMonth.map((day, index) => {
           const dataKey = day ? format(day, "yyyy-MM-dd") : null;
           const readingPlan = day
-            ? plan.find((d) => d.date === dataKey)
+            ? plan.find((d: QuranReadingPlan) => d.date === dataKey)
             : null;
           const readingPlanIndex = day
             ? plan.findIndex((d) => d.date === dataKey)
             : null;
-          const shouldRead = readingPlan ? readingPlan.pages.length : 0;
-          const rangeRead = readingPlan
+          const shouldRead = readingPlan?.pages
+            ? readingPlan?.pages?.length
+            : 0;
+
+          const rangeRead = readingPlan?.pages
             ? `${readingPlan.pages[0]}-${readingPlan.pages[shouldRead - 1]}`
             : 0;
-          const sessions = 2;
-          const statistic = { total: 0, completed: 0 };
           return (
             <div
               key={index}
@@ -2000,7 +1332,7 @@ const CalendarMonth = ({ plan }) => {
             Bacaan
           </dt>
           <dd className="mt-1 text-sm sm:mt-0 sm:col-span-2">
-            {plan[0].pages.length} Halaman / Hari
+            {plan[0]?.pages?.length} Halaman / Hari
           </dd>
         </div>
         <div className="py-2 sm:py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
@@ -2026,12 +1358,20 @@ const CalendarMonth = ({ plan }) => {
             Catatan
           </dt>
           <dd className="mt-1 text-sm sm:mt-0 sm:col-span-2">
-            Khatam {(365 / plan.length).toFixed(0, 0)} kali dalam setahun
+            Khatam {(365 / plan.length).toFixed(0)} kali dalam setahun
           </dd>
         </div>
       </dl>
       <div className="mt-4 px-2">
-        <Button onPress={handleSaveTarget}>Simpan Target</Button>
+        <fetcher.Form action="/muslim/quran?index" method="post">
+          <Button
+            name="days"
+            value={plan.length.toString()}
+            type="submit"
+          >
+            Simpan Target
+          </Button>
+        </fetcher.Form>
       </div>
     </div>
   );

@@ -5,10 +5,10 @@ import {
   LASTREADSURAH_KEY,
   LASTVISITPAGE_KEY,
   PLANREAD_KEY,
+  SETTING_PREFS_KEY,
 } from "#/src/constants/key";
 import { Header } from "#src/components/custom/header";
 import { ScrollToFirstIndex } from "#src/components/custom/scroll-to-top.tsx";
-import { Badge, badgeVariants } from "#src/components/ui/badge";
 import { Button, buttonVariants } from "#src/components/ui/button";
 import { Label } from "#src/components/ui/label";
 import { Popover } from "#src/components/ui/popover";
@@ -16,36 +16,26 @@ import { get_cache, set_cache } from "#src/utils/cache-client.ts";
 import { cn } from "#src/utils/misc";
 import {
   getSurahByPage,
+  QuranReadingPlan,
   updateReadingProgress,
 } from "#src/utils/misc.quran.ts";
-import { format, isToday } from "date-fns";
-import { formatDistanceToNow } from "date-fns";
+import { format, formatDistanceToNow } from "date-fns";
 import { id } from "date-fns/locale";
 import React from "react";
 import type { SliderProps } from "react-aria-components";
-import { Button as ButtonRAC } from "react-aria-components";
 import {
   Slider,
   SliderOutput,
   SliderThumb,
   SliderTrack,
 } from "react-aria-components";
-import toast from "react-hot-toast";
 import type { LoaderFunctionArgs } from "react-router";
-import {
-  Link,
-  useLoaderData,
-  useNavigation,
-  useRouteLoaderData,
-  useSearchParams,
-} from "react-router";
+import { Link, useLoaderData, useRouteLoaderData } from "react-router";
 import type { Loader as muslimLoader } from "./muslim.data";
 
 function sleep(ms: number) {
   return new Promise((resolve) => setTimeout(resolve, ms));
 }
-
-const SETTING_PREFS_KEY = "SETTING_PREFS_KEY";
 
 export async function Loader({ params, request }: LoaderFunctionArgs) {
   const url = new URL(request.url);
@@ -94,7 +84,9 @@ export async function Loader({ params, request }: LoaderFunctionArgs) {
   const plan_read = await get_cache(PLANREAD_KEY) || [];
   if (plan_read.length > 0) {
     const today = format(new Date(), "yyyy-MM-dd");
-    const progressToday = plan_read.find((d) => d.date === today);
+    const progressToday = plan_read.find((d: QuranReadingPlan) =>
+      d.date === today
+    );
     let target = updateReadingProgress(plan_read, progressToday.day, [PAGE]);
     await set_cache(PLANREAD_KEY, target);
   }
@@ -151,17 +143,13 @@ function MySlider<T extends number | number[]>({
   );
 }
 
-import { JollyNumberFieldV2 } from "#src/components/ui/number-field";
 import { type AyatBookmark, save_bookmarks } from "#src/utils/bookmarks";
 import {
-  ArrowUpDown,
   Bookmark,
+  BookOpen,
   ChevronLeft,
   ChevronRight,
-  Circle,
   Dot,
-  Ellipsis,
-  EllipsisVertical,
   Star,
 } from "lucide-react";
 
@@ -522,6 +510,16 @@ const VirtualizedListSurah = ({ children }: { children: React.ReactNode }) => {
       />
 
       <Header redirectTo="/muslim/quran" title={title}>
+        <Link
+          className={cn(
+            buttonVariants({ size: "icon", variant: "ghost" }),
+            "prose-none [&_svg]:size-4",
+          )}
+          to={`/muslim/quran-v2/${page.p}`}
+          title="Quran mirip mushaf"
+        >
+          <BookOpen />
+        </Link>
         <ButtonStar index={currentSurah.current.index} />
       </Header>
       <div
