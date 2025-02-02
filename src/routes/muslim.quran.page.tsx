@@ -1,3 +1,11 @@
+import {
+  BOOKMARK_KEY,
+  FAVORITESURAH_KEY,
+  LASTREAD_KEY,
+  LASTREADSURAH_KEY,
+  LASTVISITPAGE_KEY,
+  PLANREAD_KEY,
+} from "#/src/constants/key";
 import { Header } from "#src/components/custom/header";
 import { ScrollToFirstIndex } from "#src/components/custom/scroll-to-top.tsx";
 import { Badge, badgeVariants } from "#src/components/ui/badge";
@@ -6,7 +14,11 @@ import { Label } from "#src/components/ui/label";
 import { Popover } from "#src/components/ui/popover";
 import { get_cache, set_cache } from "#src/utils/cache-client.ts";
 import { cn } from "#src/utils/misc";
-import { getSurahByPage } from "#src/utils/misc.quran.ts";
+import {
+  getSurahByPage,
+  updateReadingProgress,
+} from "#src/utils/misc.quran.ts";
+import { format, isToday } from "date-fns";
 import { formatDistanceToNow } from "date-fns";
 import { id } from "date-fns/locale";
 import React from "react";
@@ -29,19 +41,6 @@ import {
 } from "react-router";
 import type { Loader as muslimLoader } from "./muslim.data";
 
-const preBismillah = {
-  text: {
-    ar:
-      "\ufeff\u0628\u0650\u0633\u0652\u0645\u0650\u0020\u0627\u0644\u0644\u0651\u064e\u0647\u0650\u0020\u0627\u0644\u0631\u0651\u064e\u062d\u0652\u0645\u064e\u0670\u0646\u0650\u0020\u0627\u0644\u0631\u0651\u064e\u062d\u0650\u064a\u0645\u0650",
-    read: "Bismillāhir-raḥmānir-raḥīm(i). ",
-  },
-  translation: {
-    id: "Dengan nama Allah Yang Maha Pengasih lagi Maha Penyayang.",
-  },
-  tafsir: {
-    text: "Dengan nama Allah Yang Maha Pengasih lagi Maha Penyayang.",
-  },
-};
 function sleep(ms: number) {
   return new Promise((resolve) => setTimeout(resolve, ms));
 }
@@ -53,17 +52,11 @@ export async function Loader({ params, request }: LoaderFunctionArgs) {
   const ayah = url.searchParams.get("ayah");
   const surah = url.searchParams.get("surah");
   const { id } = params;
-  // toast.promise(
-  //   sleep(500).then(() => console.log(id)),
-  //   {
-  //     loading: "Saving...",
-  //     success: <b>Settings saved!</b>,
-  //     error: <b>Could not save.</b>,
-  //   },
-  // );
   const prefs = await get_cache(SETTING_PREFS_KEY);
   let style = "indopak" as "indopak" | "kemenag" | "uthmani" | "imlaei";
-  let translation = prefs?.font_translation == "on" ? true : false;
+  let translation = prefs?.font_translation
+    ? prefs?.font_translation == "on" ? true : false
+    : true;
 
   switch (prefs?.font_type) {
     case "font-indopak":
@@ -91,6 +84,21 @@ export async function Loader({ params, request }: LoaderFunctionArgs) {
     translation,
   });
 
+  const _recent_data = [
+    `${response?.surah[0].name.id}|${
+      response?.ayah[0].vk.replace(":", "|")
+    }|${id}|${response?.juz}`,
+  ];
+  //
+  const PAGE = Number(id);
+  const plan_read = await get_cache(PLANREAD_KEY) || [];
+  if (plan_read.length > 0) {
+    const today = format(new Date(), "yyyy-MM-dd");
+    const progressToday = plan_read.find((d) => d.date === today);
+    let target = updateReadingProgress(plan_read, progressToday.day, [PAGE]);
+    await set_cache(PLANREAD_KEY, target);
+  }
+  saveLastVisitPage(_recent_data);
   return { ...response, query: { surah, ayah } };
 }
 
@@ -157,12 +165,6 @@ import {
   Star,
 } from "lucide-react";
 
-const BOOKMARK_KEY = "BOOKMARK";
-const LASTREAD_KEY = "LASTREAD";
-const LASTREADSURAH_KEY = "LASTREADSURAH";
-const LASTREADAYAHKEY = "LASTREADAYAHKEY";
-const FAVORITESURAH_KEY = "FAVORITESURAH";
-
 import { fontSizeOpt } from "#/src/constants/prefs";
 
 import type { MenuItemProps } from "react-aria-components";
@@ -210,11 +212,11 @@ const saveLastReadSurat = async (data: any) => {
   await set_cache(LASTREADSURAH_KEY, updatedData);
 };
 
-const saveLastReadAyahByOfset = async (data: any) => {
-  const savedData = await get_cache(LASTREADAYAHKEY) || [];
+const saveLastVisitPage = async (data: any) => {
+  const savedData = await get_cache(LASTVISITPAGE_KEY) || [];
 
   const updatedData = Array.from(new Set([...savedData, ...data]));
-  await set_cache(LASTREADAYAHKEY, updatedData);
+  await set_cache(LASTVISITPAGE_KEY, updatedData);
 };
 
 function ButtonStar({ index }: { index: number }) {
@@ -301,7 +303,7 @@ export function Component() {
 import { motion, useScroll, useSpring } from "framer-motion";
 
 const VirtualizedListSurah = ({ children }: { children: React.ReactNode }) => {
-  const { surah, ayah: items, page, query } = useLoaderData();
+  const { bismillah, surah, ayah: items, page, query } = useLoaderData();
   const surat = surah[0];
 
   const parentRef = React.useRef<HTMLDivElement>(null);
@@ -506,7 +508,6 @@ const VirtualizedListSurah = ({ children }: { children: React.ReactNode }) => {
 
   return (
     <React.Fragment>
-      <TrackAyah currentSurah={currentSurah} />
       <motion.div
         className="z-20 bg-primary max-w-xl mx-auto"
         style={{
@@ -651,7 +652,7 @@ const VirtualizedListSurah = ({ children }: { children: React.ReactNode }) => {
                               "3.5rem",
                           }}
                         >
-                          {preBismillah.text.ar}
+                          {bismillah}
                         </div>
                       </div>
                     )}
@@ -811,25 +812,4 @@ const VirtualizedListSurah = ({ children }: { children: React.ReactNode }) => {
       <ScrollToFirstIndex handler={scrollToFirstAyat} container={parentRef} />
     </React.Fragment>
   );
-};
-
-const TrackAyah = ({ currentSurah }: {
-  currentSurah: React.MutableRefObject<
-    { name: string; index: number; ayah: number; page: number }
-  >;
-}) => {
-  const navigation = useNavigation();
-  const isLoading = navigation.state !== "idle";
-
-  React.useEffect(() => {
-    if (isLoading) {
-      const s = currentSurah.current;
-
-      const data = [`${s.name}:${s.index}:${s.ayah}:${s.page}`];
-
-      saveLastReadAyahByOfset(data);
-    }
-  }, [isLoading]);
-
-  return null;
 };

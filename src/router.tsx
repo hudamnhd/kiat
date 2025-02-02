@@ -54,7 +54,7 @@ export const router = createBrowserRouter([
       },
       {
         path: "/terjemahan",
-        lazy: () => import("./routes/terjemahan"),
+        lazy: lazyWrapper(() => import("./routes/terjemahan")),
       },
       {
         path: "/muslim",
@@ -138,7 +138,7 @@ export const router = createBrowserRouter([
                 path: "/muslim/quran-word-by-word/:id",
                 HydrateFallback: Loader,
                 lazy: lazyWrapper(
-                  () => import("./routes/muslim.quran-word-by-word.surat"),
+                  () => import("./routes/muslim.quran-word-by-word.page"),
                 ),
               },
               {

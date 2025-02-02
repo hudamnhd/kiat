@@ -148,7 +148,7 @@ import {
 const BOOKMARK_KEY = "BOOKMARK";
 const LASTREAD_KEY = "LASTREAD";
 const LASTREADSURAH_KEY = "LASTREADSURAH";
-const LASTREADAYAHKEY = "LASTREADAYAHKEY";
+const LASTREADAYAH_KEY = "LAST_READ_PAGE";
 const FAVORITESURAH_KEY = "FAVORITESURAH";
 
 import { fontSizeOpt } from "#/src/constants/prefs";
@@ -199,10 +199,10 @@ const saveLastReadSurat = async (data: any) => {
 };
 
 const saveLastReadAyahByOfset = async (data: any) => {
-  const savedData = await get_cache(LASTREADAYAHKEY) || [];
+  const savedData = await get_cache(LASTVISITPAGE_KEY) || [];
 
   const updatedData = Array.from(new Set([...savedData, ...data]));
-  await set_cache(LASTREADAYAHKEY, updatedData);
+  await set_cache(LASTVISITPAGE_KEY, updatedData);
 };
 
 function ButtonStar({ index }: { index: number }) {
@@ -410,7 +410,7 @@ const VirtualizedListSurah = ({ children }: { children: React.ReactNode }) => {
 
   // 🔥 Update Surah Index Saat Scroll
 
-  const title = `Hal ${page.p} - ${currentSurah.current.name}`;
+  const title = `Hal ${page.p}`;
 
   return (
     <React.Fragment>
@@ -435,30 +435,67 @@ const VirtualizedListSurah = ({ children }: { children: React.ReactNode }) => {
       </Header>
 
       <div
-        className="rtl:text-justify leading-relaxed px-5 py-3 border-y"
+        className="rtl:text-justify border-b px-4"
         dir="rtl"
       >
-        {items.map((dt, index) => (
-          <span
-            key={dt.vk}
-            className={cn(
-              "text-primary font-lpmq inline hover:bg-muted antialiased",
-              opts?.font_type,
-            )}
-            style={{
-              fontWeight: opts?.font_weight,
-              fontSize: font_size_opts?.fontSize || "1.5rem",
-              lineHeight: font_size_opts?.lineHeight || "3.5rem",
-              whiteSpace: "pre-wrap",
-            }}
-          >
-            {dt.ta}
-            <span className="text-right text-3xl font-uthmani-v2-reguler mr-1.5">
-              ‎﴿{toArabicNumber(Number(dt.vk.split(":")[1]))}﴾‏
-            </span>
-            {" "}
-          </span>
-        ))}
+        {items.map((dt, index) => {
+          const surah_index = dt.vk.split(":")[0];
+          const ayah_index = dt.vk.split(":")[1];
+          const id = dt.vk;
+          const key = Number(ayah_index);
+          const should_hidden = surah_index === "1" && ayah_index === "1";
+          return (
+            <React.Fragment>
+              {key === 1 && (
+                <React.Fragment>
+                  {surah_index !== "9" && (
+                    <div
+                      dir="rtl"
+                      className="break-normal w-full bg-muted/50 border mt-1"
+                    >
+                      <div
+                        className={cn(
+                          "font-bismillah text-center",
+                          opts?.font_type,
+                        )}
+                        style={{
+                          fontWeight: opts?.font_weight,
+                          fontSize: font_size_opts?.fontSize || "1.5rem",
+                          lineHeight: font_size_opts?.lineHeight ||
+                            "3.5rem",
+                        }}
+                      >
+                        {preBismillah.text.ar}
+                      </div>
+                    </div>
+                  )}
+                </React.Fragment>
+              )}
+              {!should_hidden &&
+                (
+                  <span
+                    key={dt.vk}
+                    className={cn(
+                      "text-primary font-lpmq inline hover:bg-muted antialiased",
+                      opts?.font_type,
+                    )}
+                    style={{
+                      fontWeight: opts?.font_weight,
+                      fontSize: font_size_opts?.fontSize || "1.5rem",
+                      lineHeight: font_size_opts?.lineHeight || "3.5rem",
+                      whiteSpace: "pre-wrap",
+                    }}
+                  >
+                    {dt.ta}
+                    <span className="text-right text-3xl font-uthmani-v2-reguler mr-1.5">
+                      ‎﴿{toArabicNumber(Number(dt.vk.split(":")[1]))}﴾‏
+                    </span>
+                    {" "}
+                  </span>
+                )}
+            </React.Fragment>
+          );
+        })}
       </div>
       {children}
     </React.Fragment>

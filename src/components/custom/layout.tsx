@@ -46,7 +46,7 @@ export function Layout() {
   return (
     <div
       id="container-main"
-      className="bg-gradient-to-b from-background via-background to-muted/50 border-x min-h-[calc(100vh)] max-w-xl mx-auto relative"
+      className="border-x min-h-[calc(100vh)] max-w-xl mx-auto relative"
     >
       <Outlet />
     </div>

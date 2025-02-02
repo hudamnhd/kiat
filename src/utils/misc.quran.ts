@@ -1,5 +1,12 @@
+import {
+  BOOKMARK_KEY,
+  FAVORITESURAH_KEY,
+  LASTREAD_KEY,
+  LASTREADSURAH_KEY,
+  LASTVISITPAGE_KEY,
+} from "#/src/constants/key";
 import listSurah from "#/src/constants/list-surah.json";
-import { pageAyahs } from "#/src/constants/quran-metadata.ts";
+import { juzPages, pageAyahs } from "#/src/constants/quran-metadata.ts";
 import { get_cache, set_cache } from "#src/utils/cache-client.ts";
 import ky from "ky";
 import toast from "react-hot-toast";
@@ -119,6 +126,8 @@ export const getSurahByPage = async (
     translation ? getTranslation() : Promise.resolve([]),
   ]);
 
+  const juzIndex = juzPages.findIndex(d => page >= d.s && page <= d.e);
+
   const surahData = listSurah.filter(d =>
     page >= d.meta.page.start && page <= d.meta.page.end
   );
@@ -151,6 +160,8 @@ export const getSurahByPage = async (
     ayah,
     page: pageData,
     surah: surahData,
+    juz: juzIndex + 1,
+    bismillah: verses[0].t,
   };
 };
 
@@ -201,4 +212,33 @@ function groupJuzData(data) {
   }
 
   return juzMap;
+}
+
+/**
+ * Update progress membaca Quran
+ * @param plan Rencana baca Quran
+ * @param day Hari keberapa yang sedang dibaca
+ * @param readItems Daftar halaman/surah yang telah dibaca
+ * @returns Rencana baca yang diperbarui
+ */
+export function updateReadingProgress(
+  plan: QuranReadingPlan[],
+  day: number,
+  readItems: number[],
+): QuranReadingPlan[] {
+  return plan.map((entry) => {
+    if (entry.day === day) {
+      const totalItems = entry.pages || entry.surahs || [];
+      const updatedProgress = Array.from(
+        new Set([...entry.progress!, ...readItems]),
+      ); // Tambahkan item baru yang sudah dibaca
+
+      return {
+        ...entry,
+        progress: updatedProgress,
+        completed: updatedProgress.length >= totalItems.length, // Tandai selesai jika semua item sudah dibaca
+      };
+    }
+    return entry;
+  });
 }

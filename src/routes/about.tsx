@@ -1,7 +1,8 @@
 import { Header } from "#src/components/custom/header";
 import { Tooltip, TooltipTrigger } from "#src/components/ui/tooltip";
+import { Dot, Minus } from "lucide-react";
 import { Button } from "react-aria-components";
-import { Link } from "react-router";
+import { Link, useNavigate } from "react-router";
 
 const sources = {
   content: [
@@ -240,26 +241,32 @@ export function Component() {
 }
 
 const List = ({ data }) => {
+  const navigate = useNavigate();
   return (
-    <ul className="marker:text-muted-foreground list-disc list-inside">
+    <div
+      role="list"
+      className="marker:text-muted-foreground list-disc list-inside"
+    >
       {data.map((d, index) => (
-        <li key={index} className="break-all line-clam-1">
+        <div key={index} className="break-all line-clamp-1">
           <TooltipTrigger delay={300}>
-            <Button>
-              <Link to={d.href} className="font-semibold">
-                {d.title}
-                {" "}
-              </Link>
+            <Button
+              onPress={() =>
+                navigate(d.href)}
+              className="prose prose-sm flex items-start justify-start text-start gap-x-1"
+            >
+              <Minus className="text-muted-foreground w-4 mr-1" />
               <span>
-                {d.desc}.
+                <strong>{d.title}</strong>{" "}
+                <span className="text-primary">{d.desc}</span>.
               </span>
             </Button>
             <Tooltip placement="bottom">
               <p>{d.href}</p>
             </Tooltip>
           </TooltipTrigger>
-        </li>
+        </div>
       ))}
-    </ul>
+    </div>
   );
 };

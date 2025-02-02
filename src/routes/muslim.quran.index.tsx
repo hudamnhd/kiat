@@ -3,8 +3,11 @@ import daftarSurat from "#/src/constants/list-surah.json";
 import { juzPages } from "#/src/constants/quran-metadata.ts";
 import { Header } from "#src/components/custom/header";
 import { Badge } from "#src/components/ui/badge";
-import { buttonVariants } from "#src/components/ui/button";
+import { Button, buttonVariants } from "#src/components/ui/button";
+import { Input } from "#src/components/ui/input";
+import { Label } from "#src/components/ui/label";
 import { Tooltip, TooltipTrigger } from "#src/components/ui/tooltip";
+import { get_cache, set_cache } from "#src/utils/cache-client.ts";
 import { cn } from "#src/utils/misc";
 import { fetchAllSurahs } from "#src/utils/misc.quran.ts";
 import { formatDistanceToNow } from "date-fns";
@@ -14,39 +17,56 @@ import { hasMatch, positions, score } from "fzy.js";
 import lodash from "lodash";
 import {
   ArrowDownAZ,
+  ArrowRight,
   ArrowUpAZ,
+  Calendar,
+  ChevronLeft,
+  ChevronRight,
+  Circle,
+  CircleCheckBig,
+  Crosshair,
   Dot,
   History,
   Minus,
   MoveRight,
   Puzzle,
+  Rocket,
   Search as SearchIcon,
   Star,
 } from "lucide-react";
 import React, { JSX, useMemo, useState } from "react";
+import toast from "react-hot-toast";
 import type { LoaderFunctionArgs } from "react-router";
 import { Link, useLoaderData } from "react-router";
 
 type Surah = (typeof daftarSurat)[number];
 
-const LASTREADAYAHKEY = "LASTREADAYAHKEY";
-const LASTREADSURAH_KEY = "LASTREADSURAH";
-const FAVORITESURAH_KEY = "FAVORITESURAH";
+import {
+  BOOKMARK_KEY,
+  FAVORITESURAH_KEY,
+  LASTREAD_KEY,
+  LASTREADSURAH_KEY,
+  LASTVISITPAGE_KEY,
+  PLANREAD_KEY,
+} from "#/src/constants/key";
 
 async function getLastReadAyah() {
-  const cachedData = await get_cache(LASTREADAYAHKEY) || [];
+  const cachedData = await get_cache(LASTVISITPAGE_KEY) || [];
   if (cachedData.length > 0) {
     return cachedData.map((d: string) => {
-      const surah_name = d.split(":")[0];
-      const surah_index = d.split(":")[1];
-      const ayah_index = d.split(":")[2];
-      const page = d.split(":")[3];
-      const title = `${surah_name} ${surah_index}:${ayah_index}`;
+      const surah_name = d.split("|")[0];
+      const surah_index = d.split("|")[1];
+      const ayah_index = d.split("|")[2];
+      const page = d.split("|")[3];
+      const juz = d.split("|")[4];
+      // const title = `${surah_name} ${surah_index}:${ayah_index}`;
+      const title = surah_name;
       let obj = {
         t: title, // title
         s: surah_index, // surah index
         a: ayah_index, // ayah index
         p: page, // page index
+        j: juz, // page index
       };
       return obj;
     }).reverse();
@@ -115,6 +135,47 @@ import {
 } from "#src/components/ui/select";
 
 export function Component() {
+  return (
+    <React.Fragment>
+      <Header redirectTo="/muslim" title="Al Qur'an">
+        <Link
+          className={cn(
+            buttonVariants({ size: "icon", variant: "ghost" }),
+            "prose-none [&_svg]:size-6 mr-0.5",
+          )}
+          to="/muslim/quran-v2/1"
+          title="Al-Quran Per halaman"
+        >
+          V2
+        </Link>
+      </Header>
+      <React.Fragment>
+        <Tabs className="w-full">
+          <TabList
+            aria-label="Quran"
+            className="surah-index grid grid-cols-3 border-b border-border text-sm"
+          >
+            <MyTab id="surah">Surah</MyTab>
+            <MyTab id="lastopen">Riwayat</MyTab>
+            <MyTab id="target">Target</MyTab>
+          </TabList>
+          <MyTabPanel id="surah">
+            <SurahView />
+          </MyTabPanel>
+          <MyTabPanel id="lastopen">
+            <LastReadAyah />
+          </MyTabPanel>
+          <MyTabPanel id="target">
+            <GoalsView />
+            <Goals />
+          </MyTabPanel>
+        </Tabs>
+      </React.Fragment>
+    </React.Fragment>
+  );
+}
+
+function SurahView() {
   const { last_read_surah, favorite_surah, surat, juz_amma } = useLoaderData<
     typeof Loader
   >();
@@ -274,23 +335,9 @@ export function Component() {
 
   return (
     <>
-      <Header redirectTo="/muslim" title="Daftar Surat" menu={menu}>
-        <Link
-          className={cn(
-            buttonVariants({ size: "icon", variant: "ghost" }),
-            "prose-none [&_svg]:size-6 mr-0.5",
-          )}
-          to="/muslim/quran-v2/1"
-          title="Al-Quran Per halaman"
-        >
-          V2
-        </Link>
-      </Header>
       {/*<pre className="text-sm">{JSON.stringify(Object.values(groupedJuz).flat(), null, 2)}</pre>*/}
       {/*45px*/}
       <LastRead />
-
-      <LastReadAyah />
 
       {
         /*<div className="surah-index px-3 border-b py-1.5">
@@ -827,7 +874,7 @@ const VirtualizedListSurahJuz: React.FC<
         style={{
           scaleX,
           position: "fixed",
-          top: getTotalHeight() - 50,
+          top: 0,
           left: 0,
           right: 0,
           height: 2.5,
@@ -927,8 +974,108 @@ const VirtualizedListSurahJuz: React.FC<
   );
 };
 
-import { get_cache } from "#src/utils/cache-client.ts";
-const LASTREAD_KEY = "LASTREAD";
+const VirtualizedListRecent: React.FC<
+  {
+    items: any[];
+  }
+> = (
+  { items },
+) => {
+  const parentRef = React.useRef<HTMLDivElement>(null);
+  const { last_read_surah, favorite_surah, last_read_ayah_mark } =
+    useLoaderData<
+      typeof Loader
+    >();
+  // const calculate_height =
+  // Gunakan useVirtualizer
+  const rowVirtualizer = useVirtualizer({
+    count: items.length, // Jumlah total item
+    getScrollElement: () => parentRef.current, // Elemen tempat scrolling
+    estimateSize: () => 62, // Perkiraan tinggi item (70px)
+  });
+
+  const { scrollYProgress } = useScroll({
+    container: parentRef,
+  });
+
+  const scaleX = useSpring(scrollYProgress, {
+    stiffness: 100,
+    damping: 30,
+    restDelta: 0.001,
+  });
+
+  return (
+    <React.Fragment>
+      <div
+        ref={parentRef}
+        style={{
+          height: `calc(100vh - 120px)`,
+          overflow: "auto",
+        }}
+      >
+        <div
+          className="divide-y border-b"
+          style={{
+            height: `${rowVirtualizer.getTotalSize()}px`,
+            position: "relative",
+          }}
+        >
+          {rowVirtualizer.getVirtualItems().map((virtualRow) => {
+            const d = items[virtualRow.index];
+
+            const to = `/muslim/quran/${d.p}?surah=${d.s}&ayah=${d.a}`;
+            return (
+              <div
+                key={virtualRow.key}
+                data-index={virtualRow.index}
+                ref={rowVirtualizer.measureElement}
+                className="first:border-t group"
+                style={{
+                  position: "absolute",
+                  top: 0,
+                  left: 0,
+                  width: "100%",
+                  transform: `translateY(${virtualRow.start}px)`,
+                }}
+              >
+                <Link
+                  to={to}
+                  className="py-1.5 pl-3 pr-4 flex-1 flex items-center justify-between  hover:bg-muted group"
+                >
+                  <div className="flex items-center gap-x-3">
+                    <div className="text-2xl font-medium text-center min-w-10 h-10 flex items-center justify-center text-muted-foreground group-hover:text-primary">
+                      {d.s}
+                    </div>
+                    <div className="truncate -space-y-2">
+                      <div className="flex text-sm items-center">
+                        <p className="font-medium">
+                          Surah {d.t}
+                        </p>
+                      </div>
+                      <div className="mt-2 flex truncate">
+                        <span className="flex-shrink-0 text-muted-foreground text-sm">
+                          Juz' {d.j}
+                        </span>
+                        <Minus className="mx-1 w-2 scale-150" />
+                        <span className="flex-shrink-0 text-muted-foreground text-sm">
+                          Hal {d.p}
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+
+                  <span className="text-sm">
+                    {d.p}
+                  </span>
+                </Link>
+              </div>
+            );
+          })}
+        </div>
+      </div>
+    </React.Fragment>
+  );
+};
 
 const LastRead = () => {
   const { last_read_ayah_mark } = useLoaderData<
@@ -964,38 +1111,956 @@ const LastReadAyah = () => {
 
   return (
     <>
-      {lastReadAyah.length > 0 && (
-        <div className="surah-index px-3 border-b py-1.5">
-          <div className="text-muted-foreground text-xs font-medium uppercase tracking-wide">
-            Terakhir dibaca
+      {lastReadAyah.length > 0
+        ? (
+          <div className="surah-index border-b py-1.5">
+            <VirtualizedListRecent items={lastReadAyah} />
           </div>
-
-          <div className="flex flex-wrap max-w-xl overflow-y-auto max-h-[70px] gap-3 py-2 px-1">
-            {lastReadAyah.map(
-              (
-                d: { t: string; p: string; s: string; a: string },
-                index: number,
-              ) => {
-                const to = `/muslim/quran/${d.p}?surah=${d.s}&ayah=${d.a}`;
-
-                return (
-                  <Link
-                    key={index}
-                    to={to}
-                    className={cn(
-                      "flex-none text-primary underline underline-offset-2 hover:text-muted-foreground text-sm font-semibold",
-                    )}
-                  >
-                    {d.t}
-                  </Link>
-                );
-              },
-            )}
+        )
+        : (
+          <div className="py-6 text-center text-sm h-[calc(100vh-110px)] border-b flex items-center justify-center">
+            Belum ada riwayat dibaca.
           </div>
-        </div>
-      )}
+        )}
     </>
   );
 };
 
-import { Calendar, ChevronRight } from "lucide-react";
+interface QuranReadingPlan {
+  day: number;
+  date: string; // Format tanggal
+  pages?: number[]; // Jika membaca berdasarkan halaman
+  surahs?: number[]; // Jika membaca berdasarkan surah
+  completed: boolean;
+  progress?: number[]; // Halaman atau surah yang sudah dibaca di hari tersebut
+}
+
+/**
+ * Generate target baca Quran berdasarkan jumlah hari & metode baca (per halaman atau per surah)
+ * @param totalPages Total halaman Quran (misal: 604)
+ * @param totalSurahs Total jumlah surah dalam Quran (114)
+ * @param days Jumlah hari untuk khatam
+ * @param method Metode baca: "page" untuk per halaman, "surah" untuk per surah
+ * @param startToday Jika `true`, target mulai hari ini; jika `false`, mulai besok
+ * @returns Array jadwal baca per hari
+ */
+function generateQuranReadingPlan(
+  totalPages: number = 604,
+  totalSurahs: number = 114,
+  days: number,
+  method: "page" | "surah",
+  startToday: boolean = true,
+): QuranReadingPlan[] {
+  const plan: QuranReadingPlan[] = [];
+  const startDate = startToday ? new Date() : addDays(new Date(), 1); // Mulai hari ini atau besok
+
+  if (method === "page") {
+    const pagesPerDay = Math.ceil(totalPages / days);
+    let currentPage = 1;
+
+    for (let day = 1; day <= days; day++) {
+      let pages: number[] = [];
+      for (let i = 0; i < pagesPerDay; i++) {
+        if (currentPage > totalPages) break;
+        pages.push(currentPage);
+        currentPage++;
+      }
+      plan.push({
+        day,
+        date: format(addDays(startDate, day - 1), "yyyy-MM-dd"),
+        pages,
+        completed: false,
+        progress: [],
+      });
+    }
+  } else if (method === "surah") {
+    const surahsPerDay = Math.ceil(totalSurahs / days);
+    let currentSurah = 1;
+
+    for (let day = 1; day <= days; day++) {
+      let surahs: number[] = [];
+      for (let i = 0; i < surahsPerDay; i++) {
+        if (currentSurah > totalSurahs) break;
+        surahs.push(currentSurah);
+        currentSurah++;
+      }
+      plan.push({
+        day,
+        date: format(addDays(startDate, day - 1), "yyyy-MM-dd"),
+        surahs,
+        completed: false,
+        progress: [],
+      });
+    }
+  }
+
+  return plan;
+}
+
+// 🔥 Contoh Penggunaan
+// const readingPlanToday = generateQuranReadingPlan(604, 114, 30, "page", true); // Mulai hari ini
+// console.log("📖 Target Mulai Hari Ini:", readingPlanToday);
+//
+// const readingPlanTomorrow = generateQuranReadingPlan(
+//   604,
+//   114,
+//   30,
+//   "page",
+//   false,
+// ); // Mulai besok
+// console.log("📖 Target Mulai Besok:", readingPlanTomorrow);
+
+/**
+ * Update progress membaca Quran
+ * @param plan Rencana baca Quran
+ * @param day Hari keberapa yang sedang dibaca
+ * @param readItems Daftar halaman/surah yang telah dibaca
+ * @returns Rencana baca yang diperbarui
+ */
+function updateReadingProgress(
+  plan: QuranReadingPlan[],
+  day: number,
+  readItems: number[],
+): QuranReadingPlan[] {
+  return plan.map((entry) => {
+    if (entry.day === day) {
+      const totalItems = entry.pages || entry.surahs || [];
+      const updatedProgress = Array.from(
+        new Set([...entry.progress!, ...readItems]),
+      ); // Tambahkan item baru yang sudah dibaca
+
+      return {
+        ...entry,
+        progress: updatedProgress,
+        completed: updatedProgress.length >= totalItems.length, // Tandai selesai jika semua item sudah dibaca
+      };
+    }
+    return entry;
+  });
+}
+
+// 🔥 Update progress: Hari pertama sudah membaca halaman 1-5
+// const updatedPlan = updateReadingProgress(readingPlanToday, 1, [1, 2, 3, 4, 5]);
+// console.log("📖 Progress setelah hari pertama:", updatedPlan);
+//
+// // 🔥 Hari pertama menyelesaikan semua halaman yang ditargetkan
+// const finalUpdate = updateReadingProgress(
+//   readingPlanToday,
+//   1,
+//   readingPlanToday[0].pages!,
+// );
+// console.log("✅ Hari pertama selesai:", finalUpdate);
+
+import {
+  Button as ButtonRAC,
+  Tab,
+  TabList,
+  TabPanel,
+  Tabs,
+} from "react-aria-components";
+import type { TabPanelProps, TabProps } from "react-aria-components";
+
+function MyTab(props: TabProps) {
+  return (
+    <Tab
+      {...props}
+      className={({ isSelected }) => `
+        w-full py-2 font-medium text-center cursor-default outline-none transition-colors
+        ${
+        isSelected
+          ? "border-b-2  border-primary  bg-background"
+          : "text-muted-foreground hover:text-accent-foreground pressed:text-accent-foreground"
+      }
+      `}
+    />
+  );
+}
+
+function MyTabPanel(props: TabPanelProps) {
+  return (
+    <TabPanel
+      {...props}
+      className="outline-none"
+    />
+  );
+}
+
+function Article({ title, summary }: { title: string; summary: string }) {
+  return (
+    <Link
+      to="#"
+      className="p-2 rounded-lg hover:bg-gray-100 pressed:bg-gray-100 text-[inherit] no-underline outline-none focus-visible:ring-2 ring-emerald-500"
+    >
+      <h3 className="text-base mt-0 mb-0.5 font-semibold overflow-hidden text-ellipsis whitespace-nowrap">
+        {title}
+      </h3>
+      <p className="text-sm m-0 overflow-hidden text-ellipsis line-clamp-2">
+        {summary}
+      </p>
+    </Link>
+  );
+}
+
+import {
+  addDays,
+  addMonths,
+  eachDayOfInterval,
+  endOfMonth,
+  format,
+  getDay,
+  isBefore,
+  isToday,
+  isWeekend,
+  startOfMonth,
+  subDays,
+  subMonths,
+} from "date-fns";
+
+function Goals() {
+  const [rentang, setRentang] = React.useState<string>(
+    "",
+  );
+  const [target, setTarget] = React.useState<string>(
+    "",
+  );
+  const [result, setResult] = React.useState<string>(
+    null,
+  );
+  const target_opts = rentang === "harian"
+    ? [
+      5,
+      10,
+      15,
+      20,
+      25,
+    ]
+    : rentang === "mingguan"
+    ? [
+      1,
+      2,
+      3,
+    ]
+    : rentang === "bulanan"
+    ? [1, 2, 3, 4, 5, 10]
+    : rentang === "halaman"
+    ? [1, 2, 4, 6, 12]
+    : rentang === "juz"
+    ? [0.5, 1, 2, 3, 4, 5]
+    : [];
+
+  React.useEffect(() => {
+    if (target !== "") {
+      if (["harian", "mingguan", "bulanan"].includes(rentang)) {
+        const days = getTotalDays(rentang, target);
+        const readingPlan = generateQuranReadingPlan(604, 114, days, "page"); // Target khatam dalam 30 hari, baca per halaman
+        setResult(readingPlan);
+      } else {
+        const days = rentang === "juz"
+          ? 30 / target
+          : rentang === "halaman"
+          ? 604 / target
+          : 0;
+        const readingPlan = generateQuranReadingPlan(604, 114, days, "page"); // Target khatam dalam 30 hari, baca per halaman
+        setResult(readingPlan);
+      }
+    }
+  }, [target]);
+
+  return (
+    <div className="max-w-2xl mx-auto text-start p-4">
+      <h2 className="text-2xl sm:text-3xl font-extrabold">
+        <span className="block">Bikin target baca Quran</span>
+      </h2>
+      <p className="mt-2 leading-6 text-muted-foreground">
+        Yuk bikin target baca 10 menit sehari, menyelesaikan satu Juz dalam
+        sebulan, atau menyelesaikan seluruh Al-Qur'an dalam setahun? Sangat
+        mudah untuk membuat target dan melacak progress Anda.
+      </p>
+
+      <div className="grid gap-2 py-4">
+        <div className="space-y-4 w-full">
+          <div className="grid gap-4 py-4">
+            <Select
+              className="w-full"
+              placeholder="Pilih rentang"
+              name="rentang"
+              selectedKey={rentang}
+              onSelectionChange={(selected) => setRentang(selected as string)}
+            >
+              <Label>Rentang</Label>
+              <SelectTrigger>
+                <SelectValue className="capitalize" />
+              </SelectTrigger>
+              <SelectPopover>
+                <SelectListBox>
+                  {["halaman", "juz", "harian", "mingguan", "bulanan"].map((
+                    option,
+                  ) => (
+                    <SelectItem
+                      key={option}
+                      id={option}
+                      textValue={option}
+                      className="capitalize"
+                    >
+                      {option}
+                    </SelectItem>
+                  ))}
+                </SelectListBox>
+              </SelectPopover>
+            </Select>
+            <Select
+              className="w-full"
+              placeholder="Pilih target"
+              name="target"
+              isDisabled={rentang === ""}
+              selectedKey={target}
+              onSelectionChange={(selected) => setTarget(selected as string)}
+            >
+              <Label>Target</Label>
+              <SelectTrigger>
+                <SelectValue />
+              </SelectTrigger>
+              <SelectPopover>
+                <SelectListBox>
+                  {target_opts.map((option) => (
+                    <SelectItem
+                      key={option}
+                      id={option}
+                      textValue={option}
+                      className="capitalize"
+                    >
+                      {option === 0.5 ? "Setengah" : option}{" "}
+                      {["harian", "mingguan", "bulanan"].includes(rentang)
+                        ? rentang.replace("an", "")
+                        : `${rentang} / hari`}
+                    </SelectItem>
+                  ))}
+                </SelectListBox>
+              </SelectPopover>
+            </Select>
+          </div>
+        </div>
+      </div>
+
+      {result && <CalendarMonth plan={result} />}
+    </div>
+  );
+}
+
+function GoalsView() {
+  const [target, setTarget] = React.useState<string>(
+    [],
+  );
+  const read = [
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8,
+    9,
+  ];
+
+  React.useEffect(() => {
+    async function getGoals() {
+      const data = await getTarget();
+      if (data.length > 0) {
+        // let target = updateReadingProgress(data, 1, read);
+        setTarget(data);
+      }
+    }
+    getGoals();
+  }, []);
+  if (target.length === 0) return null;
+
+  const targetLength = target.length;
+  const totalTargetSessions = target.length;
+  const total_sessions = target.filter((d) => d.completed).length;
+  const hasRead = target.filter((d) => d.completed);
+  const today = format(new Date(), "yyyy-MM-dd");
+  const progressToday = target.find((d) => d.date === today);
+
+  const totalPagesProgress = target?.reduce(
+    (sum, todo) => sum + todo.progress.length,
+    0,
+  );
+  return (
+    <div className="space-y-2 mt-3">
+      <div className="max-w-2xl mx-auto text-start px-2 divide-y">
+        <div className="mb-2">
+          <div className="font-bold  px-2">
+            {target[0].pages.length} Halaman / Hari
+          </div>
+          <dl className="sm:divide-y sm:divide-border border rounded-md my-2">
+            <div className="py-2 sm:grid sm:grid-cols-3 sm:gap-4 px-4">
+              <dt className="text-sm font-medium text-muted-foreground">
+                Progress
+              </dt>
+              <dd className="mt-1 text-sm sm:mt-0 sm:col-span-2 font-medium">
+                {totalPagesProgress} /{" "}
+                <span className="font-medium">
+                  {progressToday.pages.length} Halaman
+                </span>
+              </dd>
+            </div>
+            <div className="py-2 sm:grid sm:grid-cols-3 sm:gap-4 px-4">
+              <dt className="text-sm font-medium text-muted-foreground">
+                Mulai
+              </dt>
+              <dd className="mt-1 text-sm sm:mt-0 sm:col-span-2">
+                {format(target[0].date, "PPPP", {
+                  locale: localeId,
+                })}
+              </dd>
+            </div>
+            <div className="py-2 sm:grid sm:grid-cols-3 sm:gap-4 px-4">
+              <dt className="text-sm font-medium text-muted-foreground">
+                Khatam
+              </dt>
+              <dd className="mt-1 text-sm sm:mt-0 sm:col-span-2">
+                {format(target[target.length - 1].date, "PPPP", {
+                  locale: localeId,
+                })}
+              </dd>
+            </div>
+          </dl>
+
+          <Link
+            className={cn(
+              buttonVariants(),
+              "mb-2",
+            )}
+            to={`/muslim/quran/${
+              progressToday.pages[progressToday.progress.length]
+            }`}
+            title={`Lanjut Baca Hal ${
+              progressToday.pages[progressToday.progress.length]
+            }`}
+          >
+            Lanjut Baca Hal {progressToday.pages[progressToday.progress.length]}
+            <ArrowRight />
+          </Link>
+          <Label>
+            Progress Harian
+          </Label>
+          <div
+            style={{ animationDelay: `0.1s` }}
+            className="animate-slide-top [animation-fill-mode:backwards] mb-3 rounded-md transition-all duration-500 ease-in-out text-sm"
+          >
+            <div className="relative h-8 w-full rounded-md bg-muted">
+              <div
+                className={cn(
+                  "absolute top-0 flex h-8 items-center justify-end gap-1 overflow-hidden rounded-l-md backdrop-blur-md bg-primary/10 px-2 transition-all duration-500 ease-in-out",
+                  totalTargetSessions >= targetLength && "rounded-md",
+                )}
+                style={{
+                  width: `${100}%`,
+                }}
+              >
+                {progressToday.pages.length} Hal
+                <Crosshair className="h-5 w-5" />
+              </div>
+              <div
+                className={cn(
+                  "z-10 absolute top-0 flex h-8 items-center justify-end gap-1 overflow-hidden bg-chart-2 text-primary-foreground px-2 rounded-l-md transition-all duration-500 ease-in-out",
+                  progressToday.progress.length >= progressToday.pages.length &&
+                    "rounded-md",
+                )}
+                style={{
+                  width: `${
+                    (progressToday.progress.length /
+                      progressToday.pages.length) * 100
+                  }%`,
+                }}
+              >
+                <div
+                  className="flex shrink-0 items-center gap-1 font-medium"
+                  style={{ opacity: 1 }}
+                >
+                  {progressToday.progress.length >= progressToday.pages.length
+                    ? <CircleCheckBig className="ml-2 h-5 w-5" />
+                    : <Circle className="h-5 w-5" />}
+                  {progressToday.progress.length} Hal
+                  <ArrowRight
+                    className={cn(
+                      "h-5 w-5 ",
+                      true && "ml-2 bounce-left-right",
+                    )}
+                  />
+                </div>
+              </div>
+            </div>
+          </div>
+          <CalendarMonthProggres plan={target} />
+
+          <Label className="mt-3">
+            Progress Khatam
+          </Label>
+          <div
+            style={{ animationDelay: `0.1s` }}
+            className="animate-slide-top [animation-fill-mode:backwards] mb-3 rounded-md transition-all duration-500 ease-in-out text-sm"
+          >
+            <div className="relative h-8 w-full rounded-md bg-muted">
+              <div className="flex h-8 items-center justify-end gap-1 px-2">
+                {target.length} Hari
+                <Rocket className="h-5 w-5" />
+              </div>
+              <div
+                className={cn(
+                  "absolute top-0 flex h-8 items-center justify-end gap-1 overflow-hidden rounded-l-md backdrop-blur-md bg-primary/20 px-2 transition-all duration-500 ease-in-out",
+                  totalTargetSessions >= targetLength && "rounded-md",
+                )}
+                style={{
+                  width: `${
+                    (totalTargetSessions / totalTargetSessions) * 100
+                  }%`,
+                }}
+              >
+                {totalTargetSessions} hari
+                <Rocket className="h-5 w-5" />
+              </div>
+              <div
+                className={cn(
+                  "z-10 absolute top-0 flex h-8 items-center justify-end gap-1 overflow-hidden bg-chart-5 text-primary-foreground px-2 rounded-l-md transition-all duration-500 ease-in-out",
+                  totalTargetSessions >= 16 && "rounded-md",
+                )}
+                style={{
+                  width: `${(total_sessions / totalTargetSessions) * 100}%`,
+                }}
+              >
+                <div
+                  className="flex shrink-0 items-center gap-1 font-medium"
+                  style={{ opacity: 1 }}
+                >
+                  {totalTargetSessions >= 16
+                    ? <CircleCheckBig className="ml-2 h-5 w-5" />
+                    : <Circle className="h-5 w-5" />}
+                  hari ke-{total_sessions}
+                  <ArrowRight
+                    className={cn(
+                      "h-5 w-5 ",
+                      true && "ml-2 bounce-left-right",
+                    )}
+                  />
+                </div>
+              </div>
+            </div>
+          </div>
+          <hr />
+        </div>
+      </div>
+    </div>
+  );
+}
+
+const getTarget = async () => {
+  return await get_cache(PLANREAD_KEY) || [];
+};
+
+const saveTarget = async (data: any) => {
+  const response = await toast.promise(
+    (async () => {
+      // 🔥 Ambil cache sebelumnya
+      const savedData = await get_cache(PLANREAD_KEY) || [];
+
+      // 🔥 Update data tanpa duplikasi
+      const updatedData = Array.from(new Set([...savedData, ...data]));
+
+      // 🔥 Simpan data yang diperbarui
+      await set_cache(PLANREAD_KEY, updatedData);
+
+      return updatedData; // Mengembalikan hasil
+    })(),
+    {
+      loading: "Menyimpan target bacaan...",
+      success: "Target bacaan berhasil disimpan!",
+      error: "Gagal menyimpan target bacaan",
+    },
+  );
+
+  return response;
+};
+
+const CalendarMonthProggres = ({ plan }) => {
+  const [currentMonth, setCurrentMonth] = useState(new Date());
+  const [daysInMonth, setDaysInMonth] = useState([]);
+
+  // Fungsi untuk memperbarui kalender
+  const updateCalendar = () => {
+    // Menghitung tanggal mulai dan akhir bulan di waktu lokal
+    const startOfCurrentMonth = startOfMonth(currentMonth);
+    const endOfCurrentMonth = endOfMonth(currentMonth);
+
+    // Mengambil semua hari dalam bulan ini
+    const days = eachDayOfInterval({
+      start: startOfCurrentMonth,
+      end: endOfCurrentMonth,
+    });
+
+    // Menghitung hari pertama bulan ini
+    const firstDayOfMonth = getDay(startOfCurrentMonth);
+
+    // Menyesuaikan hari pertama kalender, agar selalu dimulai dari Senin
+    // Jika firstDayOfMonth adalah 0 (Minggu), kita anggap sebagai 7 (Sabtu),
+    // dan kita sesuaikan paddingnya.
+    const adjustedFirstDay = firstDayOfMonth === 0 ? 6 : firstDayOfMonth - 1;
+
+    // Menambahkan padding untuk hari-hari sebelum tanggal 1 bulan
+    const paddedDays = Array(adjustedFirstDay).fill(null).concat(days);
+
+    setDaysInMonth(paddedDays);
+  };
+
+  // Update kalender saat currentMonth berubah
+  React.useEffect(() => {
+    updateCalendar();
+  }, [currentMonth]);
+
+  // Menangani navigasi bulan berikutnya dan sebelumnya
+  const handleNextMonth = () => {
+    setCurrentMonth(addMonths(currentMonth, 1));
+  };
+
+  const handlePreviousMonth = () => {
+    setCurrentMonth(subMonths(currentMonth, 1));
+  };
+  // [@media(min-width:900px)]
+
+  return (
+    <div className="">
+      <div className="flex items-center justify-center gap-3 px-3 pb-3 py-1.5">
+        <Button
+          onClick={handlePreviousMonth}
+          variant="outline"
+          className="h-8 w-8 p-0"
+        >
+          <span className="sr-only">Go to previous page</span>
+          <ChevronLeft className="h-4 w-4" />
+        </Button>
+        <h2 className="text-lg font-semibold">
+          {format(currentMonth, "MMMM yyyy", {
+            locale: localeId,
+          })}
+        </h2>
+        <Button
+          onClick={handleNextMonth}
+          variant="outline"
+          className="h-8 w-8 p-0"
+        >
+          <span className="sr-only">Go to next page</span>
+          <ChevronRight className="h-4 w-4" />
+        </Button>
+      </div>
+      <div className="p-2 border rounded-md mx-auto min-w-[280px] max-w-fit w-full grid grid-cols-7 gap-y-2">
+        {/* Header hari (Senin, Selasa, Rabu, dll.) */}
+        {["S", "S", "R", "K", "J", "S", "M"].map((day, index) => (
+          <div
+            key={index}
+            className="border-b text-center font-medium text-sm pb-2 text-muted-foreground"
+          >
+            {day}
+          </div>
+        ))}
+
+        {daysInMonth.map((day, index) => {
+          const dataKey = day ? format(day, "yyyy-MM-dd") : null;
+          const readingPlan = day
+            ? plan.find((d) => d.date === dataKey)
+            : null;
+          const readingPlanIndex = day
+            ? plan.findIndex((d) => d.date === dataKey)
+            : null;
+          const shouldRead = readingPlan ? readingPlan.pages.length : 0;
+          const hasRead = readingPlan ? readingPlan.progress.length : 0;
+          const rangeRead = readingPlan
+            ? `${readingPlan.pages[0]}-${readingPlan.pages[shouldRead - 1]}`
+            : 0;
+          const sessions = 2;
+          const statistic = { total: 0, completed: 0 };
+          return (
+            <React.Fragment
+              key={index}
+            >
+              <div
+                key={index}
+              >
+                {shouldRead > 0
+                  ? (
+                    <TooltipTrigger delay={100}>
+                      <ButtonRAC
+                        className={cn(
+                          "py-2 flex flex-col items-center cursor-pointer text-sm w-full",
+                          shouldRead > 0 &&
+                            "bg-muted font-medium",
+                          isToday(day) &&
+                            "font-medium bg-primary text-primary-foreground rounded-lg",
+                          readingPlanIndex === plan.length - 1 &&
+                            "font-medium bg-primary text-primary-foreground rounded-lg",
+                        )}
+                      >
+                        {day ? format(day, "d") : ""}
+                      </ButtonRAC>
+
+                      {hasRead > 0 && (
+                        <div
+                          style={{ animationDelay: `0.1s` }}
+                          className="animate-slide-top [animation-fill-mode:backwards] rounded-md transition-all duration-500 ease-in-out pt-1"
+                        >
+                          <div className="relative h-4 w-full rounded-md bg-muted">
+                            <div
+                              className={cn(
+                                "absolute top-0 flex h-4 items-center justify-end gap-1 overflow-hidden rounded-l-md bg-muted px-2 transition-all duration-500 ease-in-out",
+                                hasRead >= shouldRead && "rounded",
+                              )}
+                              style={{
+                                width: `100%`,
+                              }}
+                            >
+                            </div>
+                            {hasRead > 0 && (
+                              <div
+                                className={cn(
+                                  "z-10 absolute top-0 flex h-4 items-center justify-end gap-1 overflow-hidden bg-chart-2 text-primary-foreground px-2 rounded-l-md transition-all duration-500 ease-in-out",
+                                  hasRead >= shouldRead && "rounded",
+                                )}
+                                style={{
+                                  width: `${(hasRead / shouldRead) * 100}%`,
+                                }}
+                              >
+                              </div>
+                            )}
+                          </div>
+                        </div>
+                      )}
+
+                      <Tooltip placement="bottom" className="mt-2">
+                        <p>Hal {rangeRead}</p>
+                        <p>{hasRead} Hal yang sudah dibaca</p>
+                      </Tooltip>
+                    </TooltipTrigger>
+                  )
+                  : (
+                    <div
+                      className={cn(
+                        "text-center py-2",
+                        !readingPlan && "text-muted-foreground",
+                      )}
+                    >
+                      {day ? format(day, "d") : ""}
+                    </div>
+                  )}
+              </div>
+            </React.Fragment>
+          );
+        })}
+      </div>
+    </div>
+  );
+};
+
+const CalendarMonth = ({ plan }) => {
+  const [currentMonth, setCurrentMonth] = useState(new Date());
+  const [daysInMonth, setDaysInMonth] = useState([]);
+
+  // Fungsi untuk memperbarui kalender
+  const updateCalendar = () => {
+    // Menghitung tanggal mulai dan akhir bulan di waktu lokal
+    const startOfCurrentMonth = startOfMonth(currentMonth);
+    const endOfCurrentMonth = endOfMonth(currentMonth);
+
+    // Mengambil semua hari dalam bulan ini
+    const days = eachDayOfInterval({
+      start: startOfCurrentMonth,
+      end: endOfCurrentMonth,
+    });
+
+    // Menghitung hari pertama bulan ini
+    const firstDayOfMonth = getDay(startOfCurrentMonth);
+
+    // Menyesuaikan hari pertama kalender, agar selalu dimulai dari Senin
+    // Jika firstDayOfMonth adalah 0 (Minggu), kita anggap sebagai 7 (Sabtu),
+    // dan kita sesuaikan paddingnya.
+    const adjustedFirstDay = firstDayOfMonth === 0 ? 6 : firstDayOfMonth - 1;
+
+    // Menambahkan padding untuk hari-hari sebelum tanggal 1 bulan
+    const paddedDays = Array(adjustedFirstDay).fill(null).concat(days);
+
+    setDaysInMonth(paddedDays);
+  };
+
+  // Update kalender saat currentMonth berubah
+  React.useEffect(() => {
+    updateCalendar();
+  }, [currentMonth]);
+
+  // Menangani navigasi bulan berikutnya dan sebelumnya
+  const handleNextMonth = () => {
+    setCurrentMonth(addMonths(currentMonth, 1));
+  };
+
+  const handlePreviousMonth = () => {
+    setCurrentMonth(subMonths(currentMonth, 1));
+  };
+  // [@media(min-width:900px)]
+  const handleSaveTarget = () => {
+    saveTarget(plan);
+  };
+  return (
+    <div className="">
+      <div className="flex items-center justify-center gap-3 px-3 pb-3 py-1.5">
+        <Button
+          onClick={handlePreviousMonth}
+          variant="outline"
+          className="h-8 w-8 p-0"
+        >
+          <span className="sr-only">Go to previous page</span>
+          <ChevronLeft className="h-4 w-4" />
+        </Button>
+        <h2 className="text-lg font-semibold">
+          {format(currentMonth, "MMMM yyyy")}
+        </h2>
+        <Button
+          onClick={handleNextMonth}
+          variant="outline"
+          className="h-8 w-8 p-0"
+        >
+          <span className="sr-only">Go to next page</span>
+          <ChevronRight className="h-4 w-4" />
+        </Button>
+      </div>
+      <div className="p-2 border rounded-md mx-auto min-w-[280px] max-w-fit w-full grid grid-cols-7 gap-y-2">
+        {/* Header hari (Senin, Selasa, Rabu, dll.) */}
+        {["S", "S", "R", "K", "J", "S", "M"].map((day, index) => (
+          <div
+            key={index}
+            className="border-b text-center font-medium text-sm pb-2 text-muted-foreground"
+          >
+            {day}
+          </div>
+        ))}
+
+        {daysInMonth.map((day, index) => {
+          const dataKey = day ? format(day, "yyyy-MM-dd") : null;
+          const readingPlan = day
+            ? plan.find((d) => d.date === dataKey)
+            : null;
+          const readingPlanIndex = day
+            ? plan.findIndex((d) => d.date === dataKey)
+            : null;
+          const shouldRead = readingPlan ? readingPlan.pages.length : 0;
+          const rangeRead = readingPlan
+            ? `${readingPlan.pages[0]}-${readingPlan.pages[shouldRead - 1]}`
+            : 0;
+          const sessions = 2;
+          const statistic = { total: 0, completed: 0 };
+          return (
+            <div
+              key={index}
+              className={cn(
+                "py-2 flex flex-col items-center cursor-pointer text-sm",
+                shouldRead > 0 &&
+                  "bg-muted font-medium",
+                isToday(day) &&
+                  "font-medium bg-primary text-primary-foreground rounded-lg",
+                readingPlanIndex === plan.length - 1 &&
+                  "font-medium bg-primary text-primary-foreground rounded-lg",
+              )}
+            >
+              {shouldRead > 0
+                ? (
+                  <TooltipTrigger delay={100}>
+                    <ButtonRAC className="w-full h-full">
+                      {day ? format(day, "d") : ""}
+                    </ButtonRAC>
+                    <Tooltip placement="bottom" className="mt-2">
+                      <p>Hal {rangeRead}</p>
+                    </Tooltip>
+                  </TooltipTrigger>
+                )
+                : (
+                  <div
+                    className={cn(
+                      "text-center",
+                      !readingPlan && "text-muted-foreground",
+                    )}
+                  >
+                    {day ? format(day, "d") : ""}
+                  </div>
+                )}
+            </div>
+          );
+        })}
+      </div>
+
+      <dl className="sm:divide-y sm:divide-border border-t mt-4">
+        <div className="py-2 sm:py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
+          <dt className="text-sm font-medium text-muted-foreground">
+            Bacaan
+          </dt>
+          <dd className="mt-1 text-sm sm:mt-0 sm:col-span-2">
+            {plan[0].pages.length} Halaman / Hari
+          </dd>
+        </div>
+        <div className="py-2 sm:py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
+          <dt className="text-sm font-medium text-muted-foreground">Mulai</dt>
+          <dd className="mt-1 text-sm sm:mt-0 sm:col-span-2">
+            {format(plan[0].date, "PPPP", {
+              locale: localeId,
+            })}
+          </dd>
+        </div>
+        <div className="py-2 sm:py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
+          <dt className="text-sm font-medium text-muted-foreground">
+            Khatam
+          </dt>
+          <dd className="mt-1 text-sm sm:mt-0 sm:col-span-2">
+            {format(plan[plan.length - 1].date, "PPPP", {
+              locale: localeId,
+            })}
+          </dd>
+        </div>
+        <div className="py-2 sm:py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
+          <dt className="text-sm font-medium text-muted-foreground">
+            Catatan
+          </dt>
+          <dd className="mt-1 text-sm sm:mt-0 sm:col-span-2">
+            Khatam {(365 / plan.length).toFixed(0, 0)} kali dalam setahun
+          </dd>
+        </div>
+      </dl>
+      <div className="mt-4 px-2">
+        <Button onPress={handleSaveTarget}>Simpan Target</Button>
+      </div>
+    </div>
+  );
+};
+
+/**
+ * Menghitung total hari berdasarkan rentang waktu yang dipilih
+ * @param rentang Jenis rentang waktu: "harian", "mingguan", atau "bulanan"
+ * @param jumlah Jumlah unit yang dipilih (misal: 5 hari, 3 minggu, 2 bulan)
+ * @returns Total hari yang harus dicapai
+ */
+function getTotalDays(
+  rentang: "harian" | "mingguan" | "bulanan",
+  jumlah: number,
+): number {
+  if (rentang === "harian") {
+    return jumlah; // Langsung jumlah hari
+  }
+  if (rentang === "mingguan") {
+    return jumlah * 7; // Setiap minggu = 7 hari
+  }
+  if (rentang === "bulanan") {
+    return jumlah === 12 ? 365 : jumlah * 30; // 12 bulan = 365 hari, lainnya 30 hari per bulan
+  }
+  return 0; // Jika rentang tidak valid, return 0
+}
+
+// // 🔥 Contoh Penggunaan
+// console.log(getTotalDays("harian", 5));  // Output: 5
+// console.log(getTotalDays("mingguan", 2)); // Output: 14
+// console.log(getTotalDays("bulanan", 3));  // Output: 90
+// console.log(getTotalDays("bulanan", 12)); // Output: 365
