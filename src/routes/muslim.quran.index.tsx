@@ -377,7 +377,7 @@ const VirtualizedListSurahJuz: React.FC<
   return (
     <React.Fragment>
       <motion.div
-        className="z-60 bg-primary  max-w-xl mx-auto"
+        className="z-60 bg-primary  max-w-2xl mx-auto"
         style={{
           scaleX,
           position: "fixed",
@@ -412,7 +412,7 @@ const VirtualizedListSurahJuz: React.FC<
                 key={virtualRow.key}
                 data-index={virtualRow.index}
                 ref={rowVirtualizer.measureElement}
-                className="first:border-t group"
+                className="first:border-t"
                 style={{
                   position: "absolute",
                   top: 0,
@@ -425,14 +425,14 @@ const VirtualizedListSurahJuz: React.FC<
                   <Link
                     to={`/muslim/quran/${j.p}`}
                     className={cn(
-                      "text-sm font-semibold py-3 px-4 flex items-center justify-between gap-x-3 text-primary/70 bg-gradient-to-r from-muted from-40 via-muted/80 to-muted/50 hover:bg-muted hover:text-primary",
+                      "text-sm font-semibold py-3 px-4 flex items-center justify-between gap-x-3  bg-gradient-to-r from-muted from-80 via-muted/80 to-muted/50 hover:bg-muted",
                       s && "border-b",
                     )}
                   >
                     <span>
                       {j.n}
                     </span>
-                    <span className="font-normal text-primary">
+                    <span className="font-normal">
                       {j.p}
                     </span>
                   </Link>
@@ -443,7 +443,7 @@ const VirtualizedListSurahJuz: React.FC<
                     className="py-1.5 pr-4 pl-3 flex-1 flex items-center justify-between bg-gradient-to-r from-background  to-muted/30 hover:bg-muted hover:bg-muted group"
                   >
                     <div className="flex items-center gap-x-3">
-                      <div className="text-2xl font-medium text-center min-w-10 h-10 flex items-center justify-center text-muted-foreground group-hover:text-primary">
+                      <div className="text-2xl font-medium text-center min-w-10 h-10 flex items-center justify-center text-muted-foreground group-hover:text-foreground">
                         {s.i}
                       </div>
                       <div className="truncate -space-y-2">

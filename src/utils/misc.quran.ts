@@ -24,7 +24,7 @@ const getStyleTextArabic = async (style: string) => {
   return response;
 };
 
-async function getDataStyle(style: string) {
+export async function getDataStyle(style: string) {
   const cachedDataKey = `data-${style}`;
   const cachedData = await get_cache(cachedDataKey) as Ayah[] | null;
 
@@ -41,7 +41,7 @@ async function getDataStyle(style: string) {
   return fetchedData;
 }
 
-async function getTranslation() {
+export async function getTranslation() {
   const cachedKey = "data-translation";
   const cachedData = await get_cache(cachedKey) as Ayah[] | null;
 

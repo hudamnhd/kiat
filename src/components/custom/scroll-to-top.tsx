@@ -92,7 +92,7 @@ export const ScrollToFirstIndex = ({
       <Button
         onPress={handleScrollUp}
         size="icon"
-        className="bg-slate-600 dark:bg-slate-400"
+        className=""
       >
         <ArrowUp />
       </Button>

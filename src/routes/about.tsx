@@ -260,7 +260,7 @@ const List = ({ data }: { data: Menu }) => {
               <Minus className="text-muted-foreground w-4 mr-1" />
               <span>
                 <strong>{d.title}</strong>{" "}
-                <span className="text-primary">{d.desc}</span>.
+                <span className="text-foreground">{d.desc}</span>.
               </span>
             </Button>
             <Tooltip placement="bottom">

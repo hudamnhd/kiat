@@ -1,72 +1,27 @@
-import Imlaei from "#/src/constants/imlaei.json";
-import { pageAyahs } from "#/src/constants/quran-metadata.ts";
-import UTHMANISIMPLE from "#/src/constants/uthmani_simple.json";
 import { get_cache, set_cache } from "#src/utils/cache-client.ts";
-import { hasMatch, positions, score } from "fzy.js";
+
+import { Button, buttonVariants } from "#src/components/ui/button";
+import { cn } from "#src/utils/misc";
+import {
+  getDataStyle,
+  getTranslation,
+  toArabicNumber,
+} from "#src/utils/misc.quran.ts";
+import FlexSearch from "flexsearch";
+import Fuse, { FuseOptionKey, FuseResult } from "fuse.js";
+import { hasMatch, score } from "fzy.js";
 import ky from "ky";
 import lodash from "lodash";
-import { Search as SearchIcon, Star } from "lucide-react";
+import { Search as SearchIcon } from "lucide-react";
+import React from "react";
 import type { LoaderFunctionArgs } from "react-router";
 import { useFetcher } from "react-router";
-
-const getVersesByPage = (pageNumber: number) => {
-  const pageData = pageAyahs.find(p => p.p === pageNumber);
-  if (!pageData) return [];
-
-  return UTHMANISIMPLE.verses.filter(verse =>
-    verse.id >= pageData.s && verse.id <= pageData.e
-  );
-};
 
 type Ayah = {
   i: number;
   vk: string;
   t: string;
 };
-
-// 🔹 Object lookup untuk menggantikan switch-case
-const styleUrls: Record<string, string> = {
-  indopak: "/muslim/quran/data/indopak_style.json.gz",
-  kemenag: "/muslim/quran/data/kemenag_style.json.gz",
-  uthmani: "/muslim/quran/data/uthmani_style.json.gz",
-  imlaei: "/muslim/quran/data/imlaei_style.json.gz",
-};
-
-async function getDataStyle(style: string) {
-  const cachedDataKey = `data-${style}`;
-  const cachedData = await get_cache(cachedDataKey) as Ayah[] | null;
-
-  if (cachedData) {
-    console.log(`✅ Cache hit: ${cachedDataKey}`);
-    return cachedData;
-  }
-
-  console.log(`❌ Cache miss: Fetching ${cachedDataKey} from API...`);
-  const fetchedData = await ky.get(`/muslim/quran/data/${style}_style.json.gz`)
-    .json<Ayah[]>();
-
-  // Simpan ke cache
-  await set_cache(cachedDataKey, fetchedData);
-  return fetchedData;
-}
-
-async function getTranslation() {
-  const cachedKey = "data-translation";
-  const cachedData = await get_cache(cachedKey) as Ayah[] | null;
-
-  if (cachedData) {
-    console.log(`✅ Cache hit: ${cachedKey}`);
-    return cachedData;
-  }
-
-  console.log(`❌ Cache miss: Fetching ${cachedKey} from API...`);
-  const fetchedData = await ky.get("/muslim/quran/data/translation_id.json.gz")
-    .json<Ayah[]>();
-
-  // Simpan ke cache
-  await set_cache(cachedKey, fetchedData);
-  return fetchedData;
-}
 
 function formatList(text: string) {
   return text
@@ -86,12 +41,42 @@ function formatList(text: string) {
 export async function Loader({ request }: LoaderFunctionArgs) {
   const url = new URL(request.url);
   const query = url.searchParams.get("query") || "";
-  const list_data = await getTranslation();
-  const filter_data = list_data.filter((s) => hasMatch(query, s.t));
-  // const sort_data = lodash.sortBy(filter_data, (s) => -score(query, s.t));
 
-  const sliceData = filter_data.slice(0, 10);
-  return sliceData;
+  // 🔥 Ambil data ayat & terjemahan secara paralel
+  const [verses, trans] = await Promise.all([
+    getDataStyle("indopak"),
+    getTranslation(),
+  ]);
+
+  // 🔹 Gabungkan data ayat dengan terjemahan (cek panjang array untuk keamanan)
+  const merged = verses.map((d, index) => ({
+    i: d.i,
+    ta: d.t,
+    vk: d.vk,
+    tt: trans[index]?.t || "", // Hindari error jika `trans[index]` undefined
+  }));
+
+  // 🔥 Buat indeks FlexSearch untuk `vk` & `tr`
+  const index = new FlexSearch.Index({
+    preset: "match",
+    tokenize: "strict",
+    cache: true,
+    resolution: 9,
+  });
+
+  // 🔹 Tambahkan data ke indeks FlexSearch
+  merged.forEach((verse) => {
+    index.add(verse.i, `${verse.vk} ${verse.tt}`);
+  });
+
+  // 🔥 Cari berdasarkan query
+  const resultIds = index.search(query, { limit: 10 });
+
+  // 🔹 Konversi ID hasil pencarian menjadi objek ayat yang sesuai
+  const results = resultIds.map((id) => merged.find((verse) => verse.i === id))
+    .filter(Boolean);
+
+  return results;
 }
 
 export function Component() {
@@ -115,8 +100,8 @@ export function Component() {
   // }, []);
 
   return (
-    <div className="w-full m-10 max-w-xl">
-      {/*<FzyTest />*/}
+    <>
+      <FzyTest />
       {
         /*<DownloadComponent name="translation_id" data={test} />
       {test && test.length}
@@ -134,7 +119,7 @@ export function Component() {
       {
         /*<div className="grid grid-cols-2 gap-10">
         <div className="font-indopak text-7xl">
-          {UTHMANISIMPLE.verses[0].text_indopak}
+          {Indopak.verses[0].text_indopak}
         </div>
         <div className="font-uthmani-hafs text-7xl">
           {Uthmani.verses[0].text_uthmani}
@@ -145,15 +130,15 @@ export function Component() {
       </div>*/
       }
       {/*<pre className="font-lpmq text-xl p-10">{JSON.stringify(getVersesByPage(1), null, 2)}</pre>*/}
-    </div>
+    </>
   );
 }
-import React from "react";
 
 const FzyTest = () => {
-  const fetcher = useFetcher();
+  const fetcher = useFetcher({ key: "xxx" });
 
   const [input, setInput] = React.useState("");
+  const [data, setData] = React.useState([]);
   const [query, setQuery] = React.useState("");
   const loadingIconRef = React.useRef<SVGSVGElement | null>(null);
   const searchIconRef = React.useRef<SVGSVGElement | null>(null);
@@ -179,9 +164,12 @@ const FzyTest = () => {
     setInput(e.target.value);
     handleSearch(e.target.value);
   };
+  React.useEffect(() => {
+    setData(fetcher.data);
+  }, [fetcher.data]);
 
   return (
-    <div>
+    <div className="w-full max-w-xl mx-auto border-x">
       <div className="surah-index relative pb-1">
         <input
           id="input-26"
@@ -215,7 +203,93 @@ const FzyTest = () => {
           />
         </svg>
       </div>
-      <pre className="text-sm">{JSON.stringify(fetcher.data, null, 2)}</pre>
+
+      <div className="divide-y h-[calc(100vh-45px)] overflow-y-auto">
+        {fetcher.data?.length > 0 &&
+          (
+            <div className="flex items-center justify-center px-3 bg-muted text-slate-600 dark:text-slate-400 font-semibold text-sm py-1 border-b">
+              {fetcher.data?.length} Hasil pencarian "{input}"
+            </div>
+          )}
+        {fetcher.data?.length > 0
+          ? fetcher.data?.map((item, index) => (
+            <div key={index} className="p-3">
+              <Button
+                variant="secondary"
+                aria-label="Menu"
+                size="sm"
+                title={`Menu ayat ${index}`}
+                className="h-8 gap-1 tracking-wide font-bold"
+              >
+                {item.vk}
+              </Button>
+              <div dir="rtl" className="break-normal pr-2.5">
+                <div
+                  className={cn(
+                    "my-3 ",
+                    "font-indopak text-3xl leading-12",
+                  )}
+                >
+                  {item.ta}
+                  <span className="text-right text-3xl font-uthmani-v2-reguler mr-1.5">
+                    ‎﴿{toArabicNumber(Number(item.vk.split(":")[1]))}﴾‏
+                  </span>
+                </div>
+              </div>
+
+              <div
+                className={cn(
+                  "text-slate-800 dark:text-slate-200 px-2 text-justify max-w-none  whitespace-pre-wrap mb-2",
+                )}
+              >
+                {item.tt} ({item.vk.split(":")[1]})
+              </div>
+            </div>
+          ))
+          : (
+            <div className="py-6 text-center text-sm h-full border-b flex items-center justify-center">
+              Pencarian "{input}" tidak ditemukan.
+            </div>
+          )}
+
+        {
+          /*{data?.map((item, index) => {
+          const surah_index = item.vk.split(":")[0];
+          const ayah_index = item.vk.split(":")[1];
+          const id = item.vk;
+
+          <div
+            key={index}
+            className={cn(
+              "group relative p-2",
+            )}
+          >
+            <div dir="rtl" className="break-normal pr-2.5">
+              <div
+                className={cn(
+                  "my-3 antialiased",
+                  "font-indopak text-3xl",
+                )}
+              >
+                {item.t}
+                <span className="text-right text-3xl font-uthmani-v2-reguler mr-1.5">
+                  ‎﴿{toArabicNumber(Number(item.vk.split(":")[1]))}﴾‏
+                </span>
+              </div>
+            </div>
+
+            <div
+              className={cn(
+                "text-slate-800 dark:text-slate-200 px-2 text-justify max-w-none  whitespace-pre-wrap mb-2",
+                "font-indopak text-3xl",
+              )}
+            >
+              {item.tr} ({item.vk.split(":")[1]})
+            </div>
+          </div>;
+        })}*/
+        }
+      </div>
     </div>
   );
 };

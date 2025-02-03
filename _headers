@@ -1,4 +1,4 @@
-/muslim/quran/gz/*.gz
+/muslim/quran/data/*.gz
   Content-Type: application/json
   Content-Encoding: gzip
   Cache-Control: max-age=31536000, immutable

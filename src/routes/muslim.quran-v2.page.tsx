@@ -36,7 +36,7 @@ export function Component() {
     <React.Fragment>
       <Header redirectTo="/muslim/quran" title={title} />
 
-      <div className="flex items-center justify-between px-3 bg-muted text-slate-600 dark:text-slate-400 font-semibold text-sm py-1 border-b">
+      <div className="flex items-center justify-between px-3 bg-muted text-muted-foreground font-semibold text-sm py-1 border-b">
         <span className="w-1/3">{surat.name.id}</span>
         <div className="w-1/3 text-center flex items-center justify-center gap-x-3">
           <Link
@@ -53,7 +53,7 @@ export function Component() {
             <ChevronLeft />
           </Link>
 
-          <span className="text-accent-foreground text-sm">
+          <span className="text-foreground text-sm">
             {page?.p}
           </span>
           <Link
@@ -120,7 +120,7 @@ export function Component() {
                       whiteSpace: "pre-wrap",
                     }}
                     className={cn(
-                      "inline-flex text-primary inline hover:bg-muted antialiased",
+                      "inline-flex inline hover:bg-muted antialiased",
                       opts?.font_type,
                     )}
                   >

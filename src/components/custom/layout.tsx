@@ -43,10 +43,8 @@ export default function ThemeProviderWrapper() {
 }
 export function Layout() {
   return (
-    <div
-      id="container-main"
-      className="border-x min-h-[calc(100vh)] max-w-xl mx-auto relative"
-    >
+    <div // id="container-main"
+     className="border-x min-h-[calc(100vh)] max-w-2xl mx-auto relative">
       <Outlet />
     </div>
   );

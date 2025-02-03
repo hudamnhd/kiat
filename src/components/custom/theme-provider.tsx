@@ -1,6 +1,6 @@
 import React from "react";
 
-type Theme = "dark" | "light" | "system";
+type Theme = "sephia" | "dark" | "light" | "system";
 
 const storageKey = "vite-ui-theme";
 const defaultTheme = "system";
@@ -40,7 +40,7 @@ export function setTheme(theme: Theme | string) {
   }
 
   const root = document.documentElement;
-  root.classList.remove("light", "dark");
+  root.classList.remove("light", "dark", "sephia");
 
   if (theme === "system") {
     const systemTheme = window.matchMedia("(prefers-color-scheme: dark)")
@@ -63,7 +63,8 @@ export function setTheme(theme: Theme | string) {
 }
 
 function validateTheme(theme: string | null): Theme {
-  return theme === "light" || theme === "dark" || theme === "system"
+  return theme === "light" || theme === "sephia" || theme === "dark" ||
+      theme === "system"
     ? theme
     : "system";
 }

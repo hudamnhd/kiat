@@ -1,7 +1,7 @@
 {
   "name": "kiat-app-rr7",
   "private": true,
-  "version": "1.0.1",
+  "version": "1.0.2",
   "type": "module",
   "imports": {
     "#*": "./*"
@@ -22,6 +22,7 @@
     "clsx": "^2.1.1",
     "cmdk": "^0.2.1",
     "date-fns": "^4.1.0",
+    "flexsearch": "^0.7.43",
     "framer-motion": "^12.0.1",
     "fuse.js": "^7.0.0",
     "ky": "^1.7.4",
