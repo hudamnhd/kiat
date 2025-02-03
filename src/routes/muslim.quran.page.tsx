@@ -2,16 +2,16 @@ import {
   BOOKMARK_KEY,
   FAVORITESURAH_KEY,
   LASTREAD_KEY,
-  LASTREADSURAH_KEY,
   LASTVISITPAGE_KEY,
   PLANREAD_KEY,
   SETTING_PREFS_KEY,
 } from "#/src/constants/key";
+import { fontSizeOpt } from "#/src/constants/prefs";
 import { Header } from "#src/components/custom/header";
 import { ScrollToFirstIndex } from "#src/components/custom/scroll-to-top.tsx";
 import { Button, buttonVariants } from "#src/components/ui/button";
-import { Label } from "#src/components/ui/label";
 import { Popover } from "#src/components/ui/popover";
+import { type AyatBookmark, save_bookmarks } from "#src/utils/bookmarks";
 import { get_cache, set_cache } from "#src/utils/cache-client.ts";
 import { cn } from "#src/utils/misc";
 import {
@@ -21,14 +21,17 @@ import {
 } from "#src/utils/misc.quran.ts";
 import { format, formatDistanceToNow } from "date-fns";
 import { id } from "date-fns/locale";
-import React from "react";
-import type { SliderProps } from "react-aria-components";
 import {
-  Slider,
-  SliderOutput,
-  SliderThumb,
-  SliderTrack,
-} from "react-aria-components";
+  Bookmark,
+  BookOpen,
+  ChevronLeft,
+  ChevronRight,
+  Dot,
+  Star,
+} from "lucide-react";
+import React from "react";
+import type { MenuItemProps } from "react-aria-components";
+import { Menu, MenuItem, MenuTrigger } from "react-aria-components";
 import type { LoaderFunctionArgs } from "react-router";
 import { Link, useLoaderData, useRouteLoaderData } from "react-router";
 import type { Loader as muslimLoader } from "./muslim.data";
@@ -42,7 +45,9 @@ export async function Loader({ params, request }: LoaderFunctionArgs) {
   const ayah = url.searchParams.get("ayah");
   const surah = url.searchParams.get("surah");
   const { id } = params;
+
   const prefs = await get_cache(SETTING_PREFS_KEY);
+
   let style = "indopak" as "indopak" | "kemenag" | "uthmani" | "imlaei";
   let translation = prefs?.font_translation
     ? prefs?.font_translation == "on" ? true : false
@@ -94,70 +99,6 @@ export async function Loader({ params, request }: LoaderFunctionArgs) {
   return { ...response, query: { surah, ayah } };
 }
 
-interface MySliderProps<T> extends SliderProps<T> {
-  label?: string;
-  thumbLabels?: string[];
-}
-
-function MySlider<T extends number | number[]>({
-  label,
-  thumbLabels,
-  ...props
-}: MySliderProps<T>) {
-  return (
-    <Slider {...props}>
-      {label && <Label>{label}</Label>}
-      <SliderOutput className="text-sm text-right flex justify-center">
-        {({ state }) =>
-          state.values.map((_, i) => state.getThumbValueLabel(i)).join(" – ")}
-      </SliderOutput>
-      <SliderTrack className="relative w-full h-2 bg-primary/20 rounded mt-2 px-2">
-        {({ state }) => {
-          const thumb1Percent = state.getThumbPercent(0) * 100;
-          const thumb2Percent = state.getThumbPercent(1) * 100;
-
-          return (
-            <>
-              {/* Fill */}
-              <div
-                className="absolute h-full bg-primary rounded-full"
-                style={{
-                  left: `${Math.min(thumb1Percent, thumb2Percent)}%`,
-                  width: `${Math.abs(thumb2Percent - thumb1Percent)}%`,
-                }}
-              />
-              {/* Thumbs */}
-              {state.values.map((_, i) => (
-                <SliderThumb
-                  key={i}
-                  index={i}
-                  className="absolute w-3 h-3 bg-background ring-2 ring-primary rounded transform -translate-y-1/2 top-2.5"
-                  aria-label={thumbLabels?.[i]}
-                />
-              ))}
-            </>
-          );
-        }}
-      </SliderTrack>
-    </Slider>
-  );
-}
-
-import { type AyatBookmark, save_bookmarks } from "#src/utils/bookmarks";
-import {
-  Bookmark,
-  BookOpen,
-  ChevronLeft,
-  ChevronRight,
-  Dot,
-  Star,
-} from "lucide-react";
-
-import { fontSizeOpt } from "#/src/constants/prefs";
-
-import type { MenuItemProps } from "react-aria-components";
-import { Menu, MenuItem, MenuTrigger } from "react-aria-components";
-
 function ActionItem(props: MenuItemProps) {
   return (
     <MenuItem
@@ -187,17 +128,6 @@ const saveFavoriteSurah = async (data: any) => {
     ? [...savedData, data]
     : savedData.filter((currentId: string) => currentId !== data);
   await set_cache(FAVORITESURAH_KEY, updatedData);
-};
-
-const saveLastReadSurat = async (data: any) => {
-  const savedData = await get_cache(LASTREADSURAH_KEY) || {};
-
-  // Tambahkan atau perbarui key `id` dengan objek baru
-  const updatedData = {
-    ...savedData, // salin data lama
-    ...data, // tambahkan atau perbarui data baru
-  };
-  await set_cache(LASTREADSURAH_KEY, updatedData);
 };
 
 const saveLastVisitPage = async (data: any) => {
@@ -246,7 +176,7 @@ function ButtonStar({ index }: { index: number }) {
 }
 
 export function Component() {
-  const { page } = useLoaderData();
+  const { page } = useLoaderData<typeof Loader>();
 
   return (
     <React.Fragment>
@@ -259,9 +189,9 @@ export function Component() {
               buttonVariants({ size: "icon", variant: "outline" }),
             )}
             title="Surat sebelumnya"
-            to={parseInt(page?.p as string) === 1
+            to={page?.p === 1
               ? "#"
-              : `/muslim/quran/${parseInt(page?.p as string) - 1}`}
+              : `/muslim/quran/${page?.p - 1}`}
           >
             <span className="sr-only">Go to previous page</span>
             <ChevronLeft />
@@ -275,9 +205,9 @@ export function Component() {
               buttonVariants({ size: "icon", variant: "outline" }),
             )}
             title="Surat selanjutnya"
-            to={parseInt(page?.p as string) === 604
+            to={page?.p === 604
               ? "#"
-              : `/muslim/quran/${parseInt(page?.p as string) + 1}`}
+              : `/muslim/quran/${page?.p + 1}`}
           >
             <span className="sr-only">Go to next page</span>
             <ChevronRight />
@@ -429,7 +359,8 @@ const VirtualizedListSurah = ({ children }: { children: React.ReactNode }) => {
     const updateSurah = () => {
       const parentHeight = parentRef.current?.clientHeight;
 
-      const centerOffset = rowVirtualizer.scrollOffset + parentHeight / 2;
+      const centerOffset = (rowVirtualizer.scrollOffset ?? 0) +
+        (parentHeight ?? 0) / 2;
 
       // 🔥 Cari item yang berada di tengah viewport
       const centerItem = rowVirtualizer.getVirtualItems().find(
@@ -462,37 +393,11 @@ const VirtualizedListSurah = ({ children }: { children: React.ReactNode }) => {
           };
         }
       }
-
-      {
-        /*const firstVisibleItem = rowVirtualizer.getVirtualItems().find(
-        (item) => item.start >= rowVirtualizer.scrollOffset,
-      );
-
-      if (firstVisibleItem) {
-        const item = items[firstVisibleItem.index];
-        const surahIndex = item.vk.split(":")[0]; // Ambil nomor Surah
-        const _surah = surah.find((d: { index: number }) =>
-          d.index === Number(surahIndex)
-        );
-        if (_surah) {
-          // setCurrentSurah(_surah.name.id);
-          currentSurah.current = {
-            name: _surah.name.id,
-            index: _surah.index,
-          };
-        } else {
-          currentSurah.current = {
-            name: surat.name.id,
-            index: surat.index,
-          };
-        }
-      }*/
-      }
     };
 
     updateSurah();
   }, [rowVirtualizer.scrollOffset]);
-  const title = `Hal ${page.p} - ${currentSurah.current.name}`;
+  const title = `${currentSurah.current.name} - ${page.p}`;
 
   return (
     <React.Fragment>

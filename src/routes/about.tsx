@@ -1,6 +1,6 @@
 import { Header } from "#src/components/custom/header";
 import { Tooltip, TooltipTrigger } from "#src/components/ui/tooltip";
-import { Dot, Minus } from "lucide-react";
+import { Minus } from "lucide-react";
 import { Button } from "react-aria-components";
 import { Link, useNavigate } from "react-router";
 
@@ -167,6 +167,8 @@ const sources = {
   ],
 };
 
+type Menu = typeof sources.content;
+
 export function Component() {
   return (
     <div className="prose-base dark:prose-invert w-full max-w-xl mx-auto border-x">
@@ -240,14 +242,14 @@ export function Component() {
   );
 }
 
-const List = ({ data }) => {
+const List = ({ data }: { data: Menu }) => {
   const navigate = useNavigate();
   return (
     <div
       role="list"
       className="marker:text-muted-foreground list-disc list-inside"
     >
-      {data.map((d, index) => (
+      {data.map((d, index: number) => (
         <div key={index} className="break-all line-clamp-1">
           <TooltipTrigger delay={300}>
             <Button

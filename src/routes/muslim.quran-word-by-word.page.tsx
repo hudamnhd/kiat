@@ -1,14 +1,9 @@
-import { type AyatBookmark, save_bookmarks } from "#src/utils/bookmarks";
-import { ChevronLeft, ChevronRight, CircleCheckBig, X } from "lucide-react";
-
-import { BOOKMARK_KEY, LASTREAD_KEY } from "#/src/constants/key";
 import { fontSizeOpt } from "#/src/constants/prefs";
 import { Header } from "#src/components/custom/header";
 import { Button, buttonVariants } from "#src/components/ui/button";
-import { set_cache } from "#src/utils/cache-client.ts";
 import { cn } from "#src/utils/misc";
 import { getSurahByPage, toArabicNumber } from "#src/utils/misc.quran.ts";
-import { id } from "date-fns/locale";
+import { ChevronLeft, ChevronRight, CircleCheckBig, X } from "lucide-react";
 import React from "react";
 import type { LoaderFunctionArgs } from "react-router";
 import { Link, useLoaderData, useRouteLoaderData } from "react-router";

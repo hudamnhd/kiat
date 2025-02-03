@@ -116,11 +116,6 @@ export const router = createBrowserRouter([
                 lazy: lazyWrapper(() => import("./routes/muslim.quran.page")),
               },
               {
-                path: "/muslim/quran/surat/:id",
-                HydrateFallback: Loader,
-                lazy: lazyWrapper(() => import("./routes/muslim.quran.surat")),
-              },
-              {
                 path: "/muslim/quran",
                 shouldRevalidate: () => {
                   return true;

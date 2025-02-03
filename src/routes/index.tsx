@@ -59,7 +59,7 @@ export default function Index() {
 
   const date = "__DATE__";
   return (
-    <div className="bg-gradient-to-b from-background via-background to-muted/50 border-x min-h-[calc(100vh)] max-w-xl mx-auto relative">
+    <div className="border-x min-h-[calc(100vh)] max-w-xl mx-auto relative">
       <Header isIndex={true} redirectTo="/about" title="kiat">
         <CommandMenu />
       </Header>

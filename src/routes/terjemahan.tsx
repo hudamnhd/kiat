@@ -26,10 +26,10 @@ type Ayah = {
 
 // 🔹 Object lookup untuk menggantikan switch-case
 const styleUrls: Record<string, string> = {
-  indopak: "/muslim/quran/gz/indopak_style.json.gz",
-  kemenag: "/muslim/quran/gz/kemenag_style.json.gz",
-  uthmani: "/muslim/quran/gz/uthmani_style.json.gz",
-  imlaei: "/muslim/quran/gz/imlaei_style.json.gz",
+  indopak: "/muslim/quran/data/indopak_style.json.gz",
+  kemenag: "/muslim/quran/data/kemenag_style.json.gz",
+  uthmani: "/muslim/quran/data/uthmani_style.json.gz",
+  imlaei: "/muslim/quran/data/imlaei_style.json.gz",
 };
 
 async function getDataStyle(style: string) {
@@ -42,7 +42,7 @@ async function getDataStyle(style: string) {
   }
 
   console.log(`❌ Cache miss: Fetching ${cachedDataKey} from API...`);
-  const fetchedData = await ky.get(`/muslim/quran/gz/${style}_style.json.gz`)
+  const fetchedData = await ky.get(`/muslim/quran/data/${style}_style.json.gz`)
     .json<Ayah[]>();
 
   // Simpan ke cache
@@ -60,7 +60,7 @@ async function getTranslation() {
   }
 
   console.log(`❌ Cache miss: Fetching ${cachedKey} from API...`);
-  const fetchedData = await ky.get("/muslim/quran/gz/translation_id.json.gz")
+  const fetchedData = await ky.get("/muslim/quran/data/translation_id.json.gz")
     .json<Ayah[]>();
 
   // Simpan ke cache

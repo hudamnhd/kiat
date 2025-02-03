@@ -4,37 +4,6 @@ import { get_cache, set_cache } from "#src/utils/cache-client.ts";
 import ky from "ky";
 import toast from "react-hot-toast";
 
-export const fetchSurahWithCache = async (number: number) => {
-  const CACHE_KEY = `surah_${number}`;
-  const cachedData = await get_cache(CACHE_KEY);
-  if (cachedData) {
-    // console.log(`Surah ${number} loaded from cache`);
-    return cachedData; // Kembalikan data dari cache jika ada
-  }
-
-  console.log(`Fetching Surah ${number} from server`);
-
-  const response = await fetch(`/muslim/quran/surah_gzip/${number}.json.gz`);
-
-  if (!response.ok) {
-    throw new Error(
-      `Failed to fetch surah ${number}: ${response.statusText}`,
-    );
-  }
-  const data = await response.json();
-
-  await set_cache(CACHE_KEY, data);
-  return data;
-};
-
-export const fetchAllSurahs = async () => {
-  const surahNumbers = Array.from({ length: 114 }, (_, i) => i + 1); // Generate array [1, 2, ..., 114]
-
-  const results = await Promise.all(surahNumbers.map(fetchSurahWithCache));
-
-  return results;
-};
-
 type Ayah = {
   i: number;
   vk: string;
@@ -44,7 +13,7 @@ type Ayah = {
 
 const getStyleTextArabic = async (style: string) => {
   const response = await toast.promise(
-    ky.get(`/muslim/quran/gz/${style}_style.json.gz`).json<Ayah[]>(),
+    ky.get(`/muslim/quran/data/${style}_style.json.gz`).json<Ayah[]>(),
     {
       loading: "Loading data surah...",
       success: "Berhasil memuat data surah",
@@ -66,8 +35,6 @@ async function getDataStyle(style: string) {
 
   console.log(`❌ Cache miss: Fetching ${cachedDataKey} from API...`);
   const fetchedData = await getStyleTextArabic(style);
-  // const fetchedData = await ky.get(`/muslim/quran/gz/${style}_style.json.gz`)
-  //   .json<Ayah[]>();
 
   // Simpan ke cache
   await set_cache(cachedDataKey, fetchedData);
@@ -84,7 +51,7 @@ async function getTranslation() {
   }
 
   console.log(`❌ Cache miss: Fetching ${cachedKey} from API...`);
-  const fetchedData = await ky.get("/muslim/quran/gz/translation_id.json.gz")
+  const fetchedData = await ky.get("/muslim/quran/data/translation_id.json.gz")
     .json<Ayah[]>();
 
   // Simpan ke cache

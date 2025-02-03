@@ -1,10 +1,10 @@
 /**
- * Information pageAyahs
+ * @module pageAyahs
+ * Data Halaman quran type 604 Halaman
  * p: page;
  * s: start ayah;
  * e: end ayah;
  */
-
 export const pageAyahs = [
   {
     p: 1,

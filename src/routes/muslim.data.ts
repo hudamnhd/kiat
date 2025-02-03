@@ -1,19 +1,20 @@
-import type { AyatBookmark } from '#src/utils/bookmarks';
-import { get_cache, set_cache } from '#src/utils/cache-client.ts';
-import { ActionFunctionArgs } from 'react-router';
-
-const SETTING_PREFS_KEY = 'SETTING_PREFS_KEY';
-const BOOKMARK_KEY = 'BOOKMARK';
-const LASTREAD_KEY = 'LASTREAD';
+import {
+  BOOKMARK_KEY,
+  LASTREAD_KEY,
+  SETTING_PREFS_KEY,
+} from "#src/constants/key.ts";
+import type { AyatBookmark } from "#src/utils/bookmarks";
+import { get_cache, set_cache } from "#src/utils/cache-client.ts";
+import { ActionFunctionArgs } from "react-router";
 
 const default_value = {
-  font_type: 'font-kemenag',
-  font_weight: '400',
-  font_size: 'text-3xl',
-  font_trans_size: 'text-base',
-  font_translation: 'on',
-  font_latin: 'on',
-  font_tafsir: 'on',
+  font_type: "font-kemenag",
+  font_weight: "400",
+  font_size: "text-3xl",
+  font_trans_size: "text-base",
+  font_translation: "on",
+  font_latin: "on",
+  font_tafsir: "on",
 };
 
 type Prefs = typeof default_value;

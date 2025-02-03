@@ -177,7 +177,7 @@ export function Component() {
 }
 
 function SurahView() {
-  const { favorite_surah, surat, juz_amma } = useLoaderData<
+  const { surat } = useLoaderData<
     typeof Loader
   >();
   const [input, setInput] = useState("");
@@ -425,7 +425,7 @@ const VirtualizedListSurahJuz: React.FC<
                   <Link
                     to={`/muslim/quran/${j.p}`}
                     className={cn(
-                      "text-sm font-semibold py-3 px-4 flex items-center justify-between gap-x-3 text-primary/70 bg-gradient-to-r from-muted via-muted/80 to-muted/50 hover:bg-muted hover:text-primary",
+                      "text-sm font-semibold py-3 px-4 flex items-center justify-between gap-x-3 text-primary/70 bg-gradient-to-r from-muted from-40 via-muted/80 to-muted/50 hover:bg-muted hover:text-primary",
                       s && "border-b",
                     )}
                   >
@@ -647,22 +647,6 @@ function MyTabPanel(props: TabPanelProps) {
       {...props}
       className="outline-none"
     />
-  );
-}
-
-function Article({ title, summary }: { title: string; summary: string }) {
-  return (
-    <Link
-      to="#"
-      className="p-2 rounded-lg hover:bg-gray-100 pressed:bg-gray-100 text-[inherit] no-underline outline-none focus-visible:ring-2 ring-emerald-500"
-    >
-      <h3 className="text-base mt-0 mb-0.5 font-semibold overflow-hidden text-ellipsis whitespace-nowrap">
-        {title}
-      </h3>
-      <p className="text-sm m-0 overflow-hidden text-ellipsis line-clamp-2">
-        {summary}
-      </p>
-    </Link>
   );
 }
 
@@ -1196,7 +1180,7 @@ const CalendarMonthProggres = ({ plan }: { plan: QuranReadingPlan[] }) => {
 const CalendarMonth = ({ plan }: { plan: QuranReadingPlan[] }) => {
   const [currentMonth, setCurrentMonth] = useState(new Date());
   const fetcher = useFetcher();
-  const [daysInMonth, setDaysInMonth] = useState([]);
+  const [daysInMonth, setDaysInMonth] = useState<any[]>([]);
 
   // Fungsi untuk memperbarui kalender
   const updateCalendar = () => {
@@ -1398,9 +1382,3 @@ function getTotalDays(
   }
   return 0; // Jika rentang tidak valid, return 0
 }
-
-// // 🔥 Contoh Penggunaan
-// console.log(getTotalDays("harian", 5));  // Output: 5
-// console.log(getTotalDays("mingguan", 2)); // Output: 14
-// console.log(getTotalDays("bulanan", 3));  // Output: 90
-// console.log(getTotalDays("bulanan", 12)); // Output: 365

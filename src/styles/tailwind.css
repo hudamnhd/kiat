@@ -129,19 +129,6 @@
 		format("truetype");
 }
 
-
-@font-face {
-	font-family: "ShadatainVer01";
-	src: url("/fonts/ShadatainVer01.otf")
-		format("opentype");
-}
-
-@font-face {
-	font-family: "Symbols1_Ver02";
-	src: url("/fonts/Symbols1_Ver02.otf")
-		format("opentype");
-}
-
 @font-face {
 	font-family: "UthmanTN_v2-0";
 	src: url("/fonts/UthmanTN_v2-0.ttf")
@@ -170,16 +157,6 @@
 	font-weight: 400;
 	font-style: normal;
 	font-display: swap;
-}
-
-
-
-.font-symbols1 {
-	font-family: "Symbols1_Ver02";
-}
-
-.font-shadatain {
-	font-family: "ShadatainVer01";
 }
 
 .font-uthmani-v2-reguler {

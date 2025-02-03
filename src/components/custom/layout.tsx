@@ -41,7 +41,6 @@ export default function ThemeProviderWrapper() {
     </ThemeProvider>
   );
 }
-
 export function Layout() {
   return (
     <div
@@ -86,27 +85,21 @@ const TrackLastRoutes = () => {
         containerMain?.classList.add("sm:max-w-xl");
       }
     }
-    // Cek apakah currentPath cocok dengan salah satu href di muslimLinks.
     const matchedLink = navigate_link.find((link) => link.href === currentPath);
 
     if (matchedLink) {
-      // Ambil daftar route terakhir dari localStorage.
       const lastRoutes = JSON.parse(
         localStorage.getItem("lastUsedRoutes") || "[]",
       );
 
-      // Jika route sudah ada, hapus agar tidak ada duplikasi.
       const updatedRoutes = lastRoutes.filter(
         (route: string) => route !== matchedLink.href,
       );
 
-      // Tambahkan route saat ini ke awal array.
       updatedRoutes.unshift(matchedLink.href);
 
-      // Simpan hanya hingga maksimal 3 route terakhir.
       const limitedRoutes = updatedRoutes.slice(0, 12);
 
-      // Simpan ke localStorage.
       localStorage.setItem("lastUsedRoutes", JSON.stringify(limitedRoutes));
     }
   }, [location.pathname]);

@@ -51,19 +51,18 @@ export function SettingsDisplay() {
   const opts = loaderRoot?.opts;
 
   const fetcher = useFetcher();
-  // Mengelola state untuk font weight
   const [fontType, setFontType] = React.useState<string>(
     opts?.font_type || "font-kemenag",
-  ); // Default ke "Normal"
+  );
   const [fontWeight, setFontWeight] = React.useState<string>(
     opts?.font_weight || "400",
-  ); // Default ke "Normal"
+  );
   const [fontSize, setFontSize] = React.useState<string>(
     opts?.font_size || "text-2xl",
-  ); // Default ke "Normal"
+  );
   const [fontTransSize, setFontTransSize] = React.useState<string>(
     opts?.font_trans_size || "text-md",
-  ); // Default ke "Normal"
+  );
   let showTranslation = opts?.font_translation === "on" ? true : false; // Default ke "Normal"
   let showLatin = opts?.font_latin === "on" ? true : false; // Default ke "Normal"
 
