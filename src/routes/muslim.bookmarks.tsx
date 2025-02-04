@@ -156,7 +156,7 @@ export function Component() {
                     <div className='w-full text-right flex gap-x-2.5 items-start justify-end'>
                       <div
                         className={cn(
-                          'relative text-right text-primary my-3 font-lpmq',
+                          'relative text-right my-3 font-lpmq',
                         )}
                         style={{
                           fontWeight: opts.fontWeight,

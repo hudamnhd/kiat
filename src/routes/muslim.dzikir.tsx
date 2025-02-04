@@ -98,7 +98,7 @@ export function Component() {
                 <div className="w-full text-right flex gap-x-2.5 items-start justify-end">
                   <span
                     className={cn(
-                      "relative text-right text-primary font-lpmq",
+                      "relative text-right font-lpmq",
                       opts?.fontStyle,
                     )}
                     style={{
