@@ -1,6 +1,7 @@
 import listSurah from "#/src/constants/list-surah.json";
 import { juzPages, pageAyahs } from "#/src/constants/quran-metadata.ts";
-import { get_cache, set_cache } from "#src/utils/cache-client.ts";
+import { SOURCE_TRANSLATIONS } from "#src/constants/sources";
+import { getCache, setCache } from "#src/utils/cache-client.ts";
 import ky from "ky";
 import toast from "react-hot-toast";
 
@@ -13,11 +14,37 @@ type Ayah = {
 
 const getStyleTextArabic = async (style: string) => {
   const response = await toast.promise(
-    ky.get(`/muslim/quran/data/${style}_style.json.gz`).json<Ayah[]>(),
+    ky.get(`/muslim/quran/data/${style}.json.gz`).json<Ayah[]>(),
     {
-      loading: "Loading data surah...",
-      success: "Berhasil memuat data surah",
-      error: "Gagal memuat data surah",
+      loading: `Loading data surah ${style}...`,
+      success: `Berhasil memuat data surah ${style}`,
+      error: `Gagal memuat data surah ${style}`,
+    },
+  );
+
+  return response;
+};
+
+const getSourceTranslation = async (source: string) => {
+  const response = await toast.promise(
+    ky.get(`/muslim/quran/data/id-${source}.json.gz`).json<Ayah[]>(),
+    {
+      loading: `Loading data terjemahan ${source}...`,
+      success: `Berhasil memuat data terjemahan ${source}`,
+      error: `Gagal memuat data terjemahan ${source}`,
+    },
+  );
+
+  return response;
+};
+
+const getSourceTafsir = async (source: string) => {
+  const response = await toast.promise(
+    ky.get(`/muslim/quran/data/id-${source}.json.gz`).json<Ayah[]>(),
+    {
+      loading: "Loading data tafsir...",
+      success: "Berhasil memuat data tafsir",
+      error: "Gagal memuat data tafsir",
     },
   );
 
@@ -26,7 +53,7 @@ const getStyleTextArabic = async (style: string) => {
 
 export async function getDataStyle(style: string) {
   const cachedDataKey = `data-${style}`;
-  const cachedData = await get_cache(cachedDataKey) as Ayah[] | null;
+  const cachedData = await getCache(cachedDataKey) as Ayah[] | null;
 
   if (cachedData) {
     console.log(`✅ Cache hit: ${cachedDataKey}`);
@@ -37,13 +64,13 @@ export async function getDataStyle(style: string) {
   const fetchedData = await getStyleTextArabic(style);
 
   // Simpan ke cache
-  await set_cache(cachedDataKey, fetchedData);
+  await setCache(cachedDataKey, fetchedData);
   return fetchedData;
 }
 
-export async function getTranslation() {
-  const cachedKey = "data-translation";
-  const cachedData = await get_cache(cachedKey) as Ayah[] | null;
+export async function getTranslation(source: string) {
+  const cachedKey = `data-translation-${source}`;
+  const cachedData = await getCache(cachedKey) as Ayah[] | null;
 
   if (cachedData) {
     console.log(`✅ Cache hit: ${cachedKey}`);
@@ -51,18 +78,19 @@ export async function getTranslation() {
   }
 
   console.log(`❌ Cache miss: Fetching ${cachedKey} from API...`);
-  const fetchedData = await ky.get("/muslim/quran/data/translation_id.json.gz")
-    .json<Ayah[]>();
+  const fetchedData = await getSourceTranslation(source);
 
   // Simpan ke cache
-  await set_cache(cachedKey, fetchedData);
+  await setCache(cachedKey, fetchedData);
   return fetchedData;
 }
 
 export interface GetSurahByPage {
   page: number;
-  style: "indopak" | "kemenag" | "uthmani" | "imlaei" | "uthmani_simple";
+  style: "indopak" | "kemenag" | "uthmani" | "imlaei" | "uthmani-simple";
   translation?: boolean;
+  translationSource?: string;
+  showTafsir?: boolean;
 }
 
 /**
@@ -73,7 +101,13 @@ export interface GetSurahByPage {
  * @returns Object Data array ayah beserta metadata quran
  */
 export const getSurahByPage = async (
-  { page, style, translation = false }: GetSurahByPage,
+  {
+    page,
+    style,
+    translation = false,
+    translationSource = "kemenag",
+    showTafsir = false,
+  }: GetSurahByPage,
 ) => {
   let initial_page = page;
   // 🔥 Cek apakah `page` berada dalam rentang 1-64
@@ -87,9 +121,10 @@ export const getSurahByPage = async (
   if (!pageData) throw new Error("Not Found");
 
   // 🔹 Fetch Quran & Translation secara parallel untuk mempercepat
-  const [verses, trans] = await Promise.all([
+  const [verses, trans, tafsir] = await Promise.all([
     getDataStyle(style),
-    translation ? getTranslation() : Promise.resolve([]),
+    translation ? getTranslation(translationSource) : Promise.resolve([]),
+    showTafsir ? getTranslation("tafsir-kemenag") : Promise.resolve([]),
   ]);
 
   const juzIndex = juzPages.findIndex(d =>
@@ -106,7 +141,8 @@ export const getSurahByPage = async (
 
   // 🔹 Filter translation hanya jika tersedia
   const transMap = new Map(trans.map(t => [t.i, t.t])); // Optimasi pencarian dengan Map()
-  const transDescMap = new Map(trans.map(t => [t.i, t.d])); // Optimasi pencarian dengan Map()
+  const tafsirMap = new Map(tafsir.map(t => [t.i, t.t])); // Optimasi pencarian dengan Map()
+  const transDescMap = new Map(trans.map(t => [t.i, t.d]));
 
   // 🔥 Merge ayat dengan translation (jika translation tersedia)
   // i : index
@@ -119,7 +155,8 @@ export const getSurahByPage = async (
     vk: verse.vk,
     ta: verse.t,
     tt: transMap.get(verse.i) || null, // Ambil translation dari Map
-    td: transDescMap.get(verse.i) || null, // Ambil translation dari Map
+    td: translationSource === "muntakhab" ? transDescMap.get(verse.i) : null, // Ambil translation dari Map
+    ttf: tafsirMap.get(verse.i) || null, // Ambil tafsir dari Map
   }));
 
   const returnData = {
@@ -128,6 +165,10 @@ export const getSurahByPage = async (
     surah: surahData,
     juz: juzIndex + 1,
     bismillah: verses[0].t,
+    translationSource: translation
+      ? SOURCE_TRANSLATIONS.find((d) => d.id === translationSource)
+      : null,
+    tafsirSource: showTafsir ? SOURCE_TRANSLATIONS[3] : null,
   };
 
   return returnData;

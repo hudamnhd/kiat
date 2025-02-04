@@ -8,10 +8,7 @@ import {
 } from "#/src/constants/key";
 import { FONT_SIZE } from "#/src/constants/prefs";
 import { Header } from "#src/components/custom/header";
-import {
-  ScrollToFirstIndex,
-  ScrollTopButton,
-} from "#src/components/custom/scroll-to-top.tsx";
+import { ScrollToFirstIndex } from "#src/components/custom/scroll-to-top.tsx";
 import { Button, buttonVariants } from "#src/components/ui/button";
 import { Popover } from "#src/components/ui/popover";
 import { type AyatBookmark, save_bookmarks } from "#src/utils/bookmarks";
@@ -196,7 +193,7 @@ export function Component() {
     <React.Fragment>
       <VirtualizedListSurah>
         <Header
-          virtualizer={false}
+          virtualizer={true}
           redirectTo="/muslim/quran"
           title={title}
         >
@@ -212,7 +209,7 @@ export function Component() {
           </Link>
           <ButtonStar index={1} />
         </Header>
-        <div className="ml-auto flex items-center justify-center gap-3 pt-5">
+        <div className="ml-auto flex items-center justify-center gap-3 py-5 ">
           <Link
             className={cn(
               buttonVariants({ size: "icon", variant: "outline" }),
@@ -252,13 +249,6 @@ import { motion, useScroll, useSpring } from "framer-motion";
 
 const titleElement = document.getElementById("title-page");
 const navbarElement = document.getElementById("navbar");
-const saveLastRead = async (lastRead: any) => {
-  await setCache(LASTREAD_KEY, lastRead);
-};
-
-const save_bookmark_to_lf = async (bookmarks: AyatBookmark[]) => {
-  await setCache(BOOKMARK_KEY, bookmarks);
-};
 
 const VirtualizedListSurah = ({ children }: { children: React.ReactNode }) => {
   const [children1, children2] = React.Children.toArray(children);
@@ -274,7 +264,7 @@ const VirtualizedListSurah = ({ children }: { children: React.ReactNode }) => {
   const surat = surah[0];
 
   const parentRef = React.useRef<HTMLDivElement>(null);
-  const ayahRefs = React.useRef<Map<number, HTMLDivElement | null>>(new Map());
+  const prevScrollPos = React.useRef<number>(0);
   const currentSurah = React.useRef<
     { name: string; index: number; ayah: number; page: number }
   >({
@@ -284,11 +274,24 @@ const VirtualizedListSurah = ({ children }: { children: React.ReactNode }) => {
     page: page.p,
   });
 
+  // Gunakan useVirtualizer
+  const rowVirtualizer = useVirtualizer({
+    count: items.length, // Jumlah total item
+    getScrollElement: () => parentRef.current, // Elemen tempat scrolling
+    estimateSize: () => 56, // Perkiraan tinggi item (70px)
+  });
+
   const parentLoader = useRouteLoaderData<typeof muslimLoader>("muslim");
   const opts = parentLoader?.opts;
   const prefsOption = FONT_SIZE.find((d) => d.label === opts?.fontSize);
 
-  const { scrollYProgress } = useScroll({});
+  const virtualItems = rowVirtualizer.getVirtualItems();
+  const lastItem = virtualItems[virtualItems.length - 1]; // Ambil item terakhir
+  const lastItemBottom = lastItem ? lastItem.start + lastItem.size : 0; // Posisi akhir item terakhir
+
+  const { scrollYProgress } = useScroll({
+    container: parentRef,
+  });
 
   const scaleX = useSpring(scrollYProgress, {
     stiffness: 100,
@@ -307,9 +310,9 @@ const VirtualizedListSurah = ({ children }: { children: React.ReactNode }) => {
     if (query.surah && query.ayah) {
       const q = `${query.surah}:${query.ayah}`;
       const getIndex = items.findIndex((d: { vk: string }) => d.vk === q);
-      sleep(0).then(() => scrollToAyat(getIndex));
+      sleep(50).then(() => scrollToAyat(getIndex));
     } else {
-      sleep(0).then(() => scrollToAyat(1));
+      sleep(50).then(() => scrollToFirstAyat());
     }
   }, [page.p]);
 
@@ -322,6 +325,10 @@ const VirtualizedListSurah = ({ children }: { children: React.ReactNode }) => {
       }; // Ambil nilai "ayat"
     });
 
+  const save_bookmark_to_lf = async (bookmarks: AyatBookmark[]) => {
+    await setCache(BOOKMARK_KEY, bookmarks);
+  };
+
   type BookmarkAyah = {
     source: string;
     translation?: string;
@@ -330,8 +337,7 @@ const VirtualizedListSurah = ({ children }: { children: React.ReactNode }) => {
     arab: string;
   };
   // Fungsi untuk toggle favorit
-
-  const toggleBookmark = React.useCallback((data: BookmarkAyah) => {
+  const toggleBookmark = (data: BookmarkAyah) => {
     const newBookmarks = save_bookmarks("ayat", data, [...bookmarks]);
 
     const is_saved = bookmarks_ayah.find((fav) => fav.id === data.id);
@@ -347,10 +353,13 @@ const VirtualizedListSurah = ({ children }: { children: React.ReactNode }) => {
       setBookmarks(newBookmarks);
       save_bookmark_to_lf(newBookmarks);
     }
-  }, []);
+  };
 
+  const saveLastRead = async (lastRead: any) => {
+    await setCache(LASTREAD_KEY, lastRead);
+  };
   // Tandai ayat sebagai terakhir dibaca
-  const handleRead = React.useCallback((data: BookmarkAyah) => {
+  const handleRead = (data: BookmarkAyah) => {
     const data_bookmark = {
       ...data,
       created_at: new Date().toISOString(),
@@ -363,13 +372,18 @@ const VirtualizedListSurah = ({ children }: { children: React.ReactNode }) => {
       setLastRead(data_bookmark);
       saveLastRead(data_bookmark);
     }
-  }, []);
+  };
 
   const scrollToAyat = (index: number) => {
-    const element = ayahRefs.current.get(index);
-    if (element) {
-      element.scrollIntoView({ behavior: "smooth", block: "start" });
-    }
+    rowVirtualizer.scrollToIndex(index, {
+      align: "start",
+    });
+  };
+
+  const scrollToFirstAyat = () => {
+    rowVirtualizer.scrollToIndex(0, {
+      align: "start",
+    });
   };
 
   const relativeTime = lastRead
@@ -382,66 +396,66 @@ const VirtualizedListSurah = ({ children }: { children: React.ReactNode }) => {
 
   const title = `Hal ${page.p} - ${currentSurah.current.name}`;
   // 🔥 Update Surah Index Saat Scroll
-  // React.useEffect(() => {
-  //   const updateSurah = () => {
-  //     const parentHeight = parentRef.current?.clientHeight;
-  //
-  //     const centerOffset = (rowVirtualizer.scrollOffset ?? 0) +
-  //       (parentHeight ?? 0) / 2;
-  //
-  //     // 🔥 Cari item yang berada di tengah viewport
-  //     const centerItem = rowVirtualizer.getVirtualItems().find(
-  //       (item) =>
-  //         item.start <= centerOffset && item.start + item.size > centerOffset,
-  //     );
-  //
-  //     if (centerItem) {
-  //       const item = items[centerItem.index];
-  //       const surahIndex = item.vk.split(":")[0]; // Ambil nomor Surah
-  //       const ayahIndex = item.vk.split(":")[1]; // Ambil nomor Surah
-  //
-  //       const _surah = surah.find((d: { index: number }) =>
-  //         d.index === Number(surahIndex)
-  //       );
-  //       if (_surah) {
-  //         // setCurrentSurah(_surah.name.id);
-  //         currentSurah.current = {
-  //           name: _surah.name.id,
-  //           index: _surah.index,
-  //           ayah: ayahIndex,
-  //           page: page.p,
-  //         };
-  //       } else {
-  //         currentSurah.current = {
-  //           name: surat.name.id,
-  //           index: surat.index,
-  //           ayah: 1,
-  //           page: page.p,
-  //         };
-  //       }
-  //     }
-  //   };
-  //
-  //   updateSurah();
-  //   if (titleElement instanceof HTMLSpanElement) {
-  //     titleElement.innerText = title;
-  //   }
-  //
-  //   const handleVirtualScroll = () => {
-  //     const currentScrollPos = rowVirtualizer?.scrollOffset || 0;
-  //     if (navbarElement instanceof HTMLElement) {
-  //       if (prevScrollPos.current > currentScrollPos) {
-  //         navbarElement.style.top = "0"; // Tampilkan navbar
-  //       } else {
-  //         navbarElement.style.top = `-${navbarElement.offsetHeight}px`; // Sembunyikan navbar
-  //       }
-  //     }
-  //     prevScrollPos.current = currentScrollPos || 0;
-  //   };
-  //
-  //   // 🔥 Gunakan React Effect untuk mendeteksi perubahan scrollOffset
-  //   handleVirtualScroll();
-  // }, [rowVirtualizer.scrollOffset]);
+  React.useEffect(() => {
+    const updateSurah = () => {
+      const parentHeight = parentRef.current?.clientHeight;
+
+      const centerOffset = (rowVirtualizer.scrollOffset ?? 0) +
+        (parentHeight ?? 0) / 2;
+
+      // 🔥 Cari item yang berada di tengah viewport
+      const centerItem = rowVirtualizer.getVirtualItems().find(
+        (item) =>
+          item.start <= centerOffset && item.start + item.size > centerOffset,
+      );
+
+      if (centerItem) {
+        const item = items[centerItem.index];
+        const surahIndex = item.vk.split(":")[0]; // Ambil nomor Surah
+        const ayahIndex = item.vk.split(":")[1]; // Ambil nomor Surah
+
+        const _surah = surah.find((d: { index: number }) =>
+          d.index === Number(surahIndex)
+        );
+        if (_surah) {
+          // setCurrentSurah(_surah.name.id);
+          currentSurah.current = {
+            name: _surah.name.id,
+            index: _surah.index,
+            ayah: ayahIndex,
+            page: page.p,
+          };
+        } else {
+          currentSurah.current = {
+            name: surat.name.id,
+            index: surat.index,
+            ayah: 1,
+            page: page.p,
+          };
+        }
+      }
+    };
+
+    updateSurah();
+    if (titleElement instanceof HTMLSpanElement) {
+      titleElement.innerText = title;
+    }
+
+    const handleVirtualScroll = () => {
+      const currentScrollPos = rowVirtualizer?.scrollOffset || 0;
+      if (navbarElement instanceof HTMLElement) {
+        if (prevScrollPos.current > currentScrollPos) {
+          navbarElement.style.top = "0"; // Tampilkan navbar
+        } else {
+          navbarElement.style.top = `-${navbarElement.offsetHeight}px`; // Sembunyikan navbar
+        }
+      }
+      prevScrollPos.current = currentScrollPos || 0;
+    };
+
+    // 🔥 Gunakan React Effect untuk mendeteksi perubahan scrollOffset
+    handleVirtualScroll();
+  }, [rowVirtualizer.scrollOffset]);
 
   return (
     <React.Fragment>
@@ -453,7 +467,7 @@ const VirtualizedListSurah = ({ children }: { children: React.ReactNode }) => {
           top: 0,
           left: 0,
           right: 0,
-          height: 5,
+          height: 3,
           originX: 0,
         }}
       />
@@ -461,10 +475,25 @@ const VirtualizedListSurah = ({ children }: { children: React.ReactNode }) => {
       <div
         ref={parentRef}
         id="container-page"
+        className="h-screen"
+        style={{
+          overflowAnchor: "none",
+          overflow: "auto",
+          position: "relative",
+          contain: "strict",
+        }}
       >
-        <div className="divide-y">
+        <div
+          className="divide-y"
+          style={{
+            height: `${rowVirtualizer.getTotalSize()}px`,
+            width: "100%",
+            position: "relative",
+          }}
+        >
           {children1}
-          {items.map((item, index) => {
+          {rowVirtualizer.getVirtualItems().map((virtualRow) => {
+            const item = items[virtualRow.index];
             const surah_index = item.vk.split(":")[0];
             const ayah_index = item.vk.split(":")[1];
             const id = item.vk;
@@ -473,7 +502,7 @@ const VirtualizedListSurah = ({ children }: { children: React.ReactNode }) => {
             const _surah = surah.find((d: { index: number }) =>
               d.index === Number(surah_index)
             );
-            const surah_name = _surah?.name.id || surah[0].name.id;
+            const surah_name = _surah.name.id || surah[0].name.id;
             const isFavorite = bookmarks_ayah.some((fav) => fav.id === id);
             const isLastRead = lastRead?.id === id;
             const bookmark_data = {
@@ -487,8 +516,16 @@ const VirtualizedListSurah = ({ children }: { children: React.ReactNode }) => {
 
             return (
               <div
-                ref={(el) => ayahRefs.current.set(index, el)}
-                key={item.vk}
+                key={virtualRow.key}
+                data-index={virtualRow.index}
+                ref={rowVirtualizer.measureElement}
+                style={{
+                  position: "absolute",
+                  top: 0,
+                  left: 0,
+                  width: "100%",
+                  transform: `translateY(${virtualRow.start + 55}px)`, // Tambahkan offset untuk children
+                }}
               >
                 {key === 1 && opts?.showTranslation === "on" && (
                   <React.Fragment>
@@ -750,11 +787,23 @@ const VirtualizedListSurah = ({ children }: { children: React.ReactNode }) => {
             );
           })}
 
-          {children2}
+          <div
+            style={{
+              position: "absolute",
+              top: 0,
+              left: 0,
+              width: "100%",
+              transform: `translateY(${
+                lastItemBottom + (children ? 55 : 0)
+              }px)`, // Tambahkan offset untuk children
+              paddingBottom: "0px",
+            }}
+          >
+            {children2}
+          </div>
         </div>
       </div>
-      {/*<ScrollToFirstIndex handler={scrollToFirstAyat} container={parentRef} />*/}
-      <ScrollTopButton />
+      <ScrollToFirstIndex handler={scrollToFirstAyat} container={parentRef} />
     </React.Fragment>
   );
 };

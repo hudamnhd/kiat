@@ -3,41 +3,39 @@ import { cn } from "#src/utils/misc";
 import { ArrowUp } from "lucide-react";
 import React from "react";
 
-export const ScrollTopButton = ({
-  container,
-}: { container: React.RefObject<HTMLDivElement> | null }) => {
-  const [showGoTop, setShowGoTop] = React.useState(false);
+export const ScrollTopButton = () => {
+  const parentRef = React.useRef<HTMLDivElement>(null);
 
   const handleVisibleButton = () => {
-    if (container?.current) {
-      const shouldShow = container.current.scrollTop > 50;
-      if (shouldShow !== showGoTop) {
-        setShowGoTop(shouldShow);
+    const shouldShow = window.scrollY > window.innerHeight * 0.75;
+    if (parentRef.current) {
+      if (shouldShow) {
+        parentRef.current.style.display = "flex";
+      } else {
+        parentRef.current.style.display = "none";
       }
     }
   };
 
   const handleScrollUp = () => {
-    container?.current?.scrollTo({ left: 0, top: 0, behavior: "smooth" });
+    window?.scrollTo({ left: 0, top: 0, behavior: "smooth" });
   };
 
   React.useEffect(() => {
-    const currentContainer = container?.current;
-    if (!currentContainer) return;
-
-    currentContainer.addEventListener("scroll", handleVisibleButton);
+    window.addEventListener("scroll", handleVisibleButton);
 
     return () => {
-      currentContainer.removeEventListener("scroll", handleVisibleButton);
+      window.removeEventListener("scroll", handleVisibleButton);
     };
-  }, [container, showGoTop]);
+  }, []);
 
   return (
     <div
+      ref={parentRef}
       className={cn(
-        "sticky inset-x-0 ml-auto w-fit -translate-x-3 z-60 bottom-0 -mt-11",
-        !showGoTop && "hidden",
+        "sticky inset-x-0 ml-auto w-fit -translate-x-3 z-60 bottom-3",
       )}
+      style={{ display: "none" }}
     >
       <Button onPress={handleScrollUp} variant="default" size="icon">
         <ArrowUp />

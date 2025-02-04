@@ -53,6 +53,10 @@ export const router = createBrowserRouter([
         lazy: () => import("./routes/about"),
       },
       {
+        path: "/test",
+        lazy: () => import("./routes/test"),
+      },
+      {
         path: "/terjemahan",
         lazy: lazyWrapper(() => import("./routes/terjemahan")),
       },

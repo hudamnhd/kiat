@@ -1,23 +1,34 @@
-export const fontOptions = [
-  { value: "100", label: "Thin" },
-  { value: "200", label: "Extralight" },
-  { value: "300", label: "Light" },
+export const DEFAULT_PREFS = {
+  fontStyle: "font-kemenag",
+  fontWeight: "400",
+  fontSize: "text-3xl",
+  fontTranslationSize: "prose-base",
+  showTranslation: "on",
+  translationSource: "kemenag",
+  showLatin: "on",
+  showTafsir: "off",
+};
+
+export const FONT_WEIGHT = [
+  // { value: "100", label: "Thin" },
+  // { value: "200", label: "Extralight" },
+  // { value: "300", label: "Light" },
   { value: "400", label: "Normal" },
-  { value: "500", label: "Medium" },
-  { value: "600", label: "Semibold" },
+  // { value: "500", label: "Medium" },
+  // { value: "600", label: "Semibold" },
   { value: "700", label: "Bold" },
-  { value: "800", label: "Extrabold" },
+  // { value: "800", label: "Extrabold" },
 ];
 
-export const fontTypeOptions = [
+export const FONT_STYLE = [
+  { value: "font-kemenag", label: "LPMQ Kemenag" },
+  { value: "font-indopak", label: "Indopak" },
+  { value: "font-uthmani-hafs", label: "Uthmani" },
   { value: "font-uthmani-v2-reguler", label: "KFGQPC Hafs" },
   { value: "font-uthmani-v2-bold", label: "KFGQPC Hafs Bold" },
-  { value: "font-kemenag", label: "LPMQ" },
-  { value: "font-uthmani-hafs", label: "Uthmani" },
-  { value: "font-indopak", label: "Indopak" },
 ];
 
-export const fontSizeOpt = [
+export const FONT_SIZE = [
   {
     label: "text-xl",
     fontSize: "1.25rem",
@@ -50,7 +61,7 @@ export const fontSizeOpt = [
   },
 ];
 
-export const fontTransSizeOpt = [
+export const FONT_TRANSLATION_SIZE = [
   {
     label: "prose-sm",
   },

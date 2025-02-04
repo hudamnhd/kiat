@@ -1,5 +1,5 @@
 import { Button, buttonVariants } from '#src/components/ui/button';
-import { fontSizeOpt } from '#src/constants/prefs';
+import { FONT_SIZE } from '#src/constants/prefs';
 import { type Bookmark, save_bookmarks } from '#src/utils/bookmarks';
 import { cn } from '#src/utils/misc';
 import { Ellipsis, ExternalLink, Heart } from 'lucide-react';
@@ -10,7 +10,7 @@ import { Link, useNavigate, useRouteLoaderData } from 'react-router';
 
 // React Component Example
 import { Header } from '#src/components/custom/header.tsx';
-import { get_cache, set_cache } from '#src/utils/cache-client.ts';
+import { getCache, setCache } from '#src/utils/cache-client.ts';
 const BOOKMARK_KEY = 'BOOKMARK';
 const LASTREAD_KEY = 'LASTREAD';
 
@@ -22,11 +22,11 @@ export function Component() {
   const navigate = useNavigate();
   const opts = loaderRoot?.opts || {};
 
-  const font_size_opts = fontSizeOpt.find((d) => d.label === opts?.font_size);
+  const prefsOption = FONT_SIZE.find((d) => d.label === opts?.fontSize);
   React.useEffect(() => {
     const load_bookmark_from_lf = async () => {
-      const storedBookmarks = await get_cache(BOOKMARK_KEY);
-      const storedLastRead = await get_cache(LASTREAD_KEY);
+      const storedBookmarks = await getCache(BOOKMARK_KEY);
+      const storedLastRead = await getCache(LASTREAD_KEY);
       if (storedLastRead !== null) {
         setLastRead(storedLastRead);
       }
@@ -40,7 +40,7 @@ export function Component() {
 
   React.useEffect(() => {
     const save_bookmark_to_lf = async (bookmarks) => {
-      await set_cache(BOOKMARK_KEY, bookmarks);
+      await setCache(BOOKMARK_KEY, bookmarks);
     };
     save_bookmark_to_lf(bookmarks);
   }, [bookmarks]);
@@ -48,7 +48,7 @@ export function Component() {
   React.useEffect(() => {
     if (lastRead !== null) {
       const saveLastRead = async (lastRead) => {
-        await set_cache(LASTREAD_KEY, lastRead);
+        await setCache(LASTREAD_KEY, lastRead);
       };
       saveLastRead(lastRead);
     }
@@ -159,16 +159,16 @@ export function Component() {
                           'relative text-right text-primary my-3 font-lpmq',
                         )}
                         style={{
-                          fontWeight: opts.font_weight,
-                          fontSize: font_size_opts?.fontSize || '1.5rem',
-                          lineHeight: font_size_opts?.lineHeight || '3.5rem',
+                          fontWeight: opts.fontWeight,
+                          fontSize: prefsOption?.fontSize || '1.5rem',
+                          lineHeight: prefsOption?.lineHeight || '3.5rem',
                         }}
                       >
                         {d.arab}
                       </div>
                     </div>
                     <div className=''>
-                      {opts?.font_latin === 'on' && d.latin && (
+                      {opts?.showLatin === 'on' && d.latin && (
                         <div
                           className='latin-text prose prose dark:prose-invert max-w-none leading-6'
                           dangerouslySetInnerHTML={{
@@ -176,7 +176,7 @@ export function Component() {
                           }}
                         />
                       )}
-                      {opts?.font_translation === 'on' && d.translation && (
+                      {opts?.showTranslation === 'on' && d.translation && (
                         <div
                           className='translation-text mt-3 prose prose dark:prose-invert max-w-none leading-6'
                           dangerouslySetInnerHTML={{

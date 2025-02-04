@@ -5,7 +5,7 @@ import {
 } from "#src/constants/nav-link";
 import { lightDarkVar } from "#src/utils/misc";
 import { TimerReset } from "lucide-react";
-import React from "react";
+import React, { ReactNode } from "react";
 import { Toaster } from "react-hot-toast";
 import { Outlet, useLocation } from "react-router";
 import ReloadPrompt from "../pwa/reload-prompt";
@@ -43,9 +43,16 @@ export default function ThemeProviderWrapper() {
 }
 export function Layout() {
   return (
-    <div // id="container-main"
-     className="border-x min-h-[calc(100vh)] max-w-2xl mx-auto relative">
+    <LayoutMain>
       <Outlet />
+    </LayoutMain>
+  );
+}
+
+export function LayoutMain({ children }: { children: ReactNode }) {
+  return (
+    <div className="border-x min-h-[calc(100vh)] max-w-2xl mx-auto relative">
+      {children}
     </div>
   );
 }
@@ -67,22 +74,6 @@ const TrackLastRoutes = () => {
   React.useEffect(() => {
     const currentPath = location.pathname;
 
-    const containerMain = document.getElementById("container-main");
-
-    if (
-      currentPath === "/alat/calculator" &&
-      containerMain instanceof HTMLDivElement
-    ) {
-      containerMain.classList.remove("border-x", "sm:max-w-xl");
-    } else {
-      if (!containerMain?.classList.contains("border-x")) {
-        containerMain?.classList.add("border-x");
-      }
-
-      if (!containerMain?.classList.contains("sm:max-w-xl")) {
-        containerMain?.classList.add("sm:max-w-xl");
-      }
-    }
     const matchedLink = navigate_link.find((link) => link.href === currentPath);
 
     if (matchedLink) {

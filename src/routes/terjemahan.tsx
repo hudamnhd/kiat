@@ -1,6 +1,4 @@
-import { get_cache, set_cache } from "#src/utils/cache-client.ts";
-
-import { Button, buttonVariants } from "#src/components/ui/button";
+import { Button } from "#src/components/ui/button";
 import { cn } from "#src/utils/misc";
 import {
   getDataStyle,
@@ -8,9 +6,6 @@ import {
   toArabicNumber,
 } from "#src/utils/misc.quran.ts";
 import FlexSearch from "flexsearch";
-import Fuse, { FuseOptionKey, FuseResult } from "fuse.js";
-import { hasMatch, score } from "fzy.js";
-import ky from "ky";
 import lodash from "lodash";
 import { Search as SearchIcon } from "lucide-react";
 import React from "react";
@@ -45,7 +40,7 @@ export async function Loader({ request }: LoaderFunctionArgs) {
   // 🔥 Ambil data ayat & terjemahan secara paralel
   const [verses, trans] = await Promise.all([
     getDataStyle("indopak"),
-    getTranslation(),
+    getTranslation("kemenag"),
   ]);
 
   // 🔹 Gabungkan data ayat dengan terjemahan (cek panjang array untuk keamanan)

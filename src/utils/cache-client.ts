@@ -9,7 +9,7 @@ export const construct_key = (request: Request) => {
 	return url.pathname + url.search + url.hash;
 };
 // Fungsi untuk menyimpan data ke cache dengan waktu kedaluwarsa (default 3 menit)
-export const set_cache = async (
+export const setCache = async (
 	key: string,
 	value: any,
 	ttl: number = 31560000,
@@ -24,7 +24,7 @@ export const set_cache = async (
 };
 
 // Fungsi untuk mengambil data dari cache dan memvalidasi waktu kedaluwarsa
-export const get_cache = async (key: string) => {
+export const getCache = async (key: string) => {
 	try {
 		const cacheData: { value: any; expiresAt: number } | null =
 			await app_store.getItem(key);
@@ -92,7 +92,7 @@ export const mutateCache = async (
 	mutator: (value: any) => any,
 ): Promise<{ success: boolean; error: string | null }> => {
 	try {
-		const currentValue = await get_cache(key);
+		const currentValue = await getCache(key);
 
 		// Jika data tidak ada di cache, kembalikan status gagal
 		if (!currentValue) {
@@ -103,7 +103,7 @@ export const mutateCache = async (
 		const newValue = mutator(currentValue);
 
 		// Simpan nilai baru ke cache
-		await set_cache(key, newValue);
+		await setCache(key, newValue);
 
 		// Kembalikan status berhasil
 		return { success: true, error: null };
@@ -120,7 +120,7 @@ export const findInCache = async (
 	try {
 		const keys = await app_store.keys();
 		for (const key of keys) {
-			const value = await get_cache(key);
+			const value = await getCache(key);
 			if (predicate(value, key)) {
 				return { key, value };
 			}

@@ -1,5 +1,6 @@
 import Footer from "#src/components/custom/footer";
 import { Header } from "#src/components/custom/header";
+import { LayoutMain } from "#src/components/custom/layout.tsx";
 import { NavigationList } from "#src/components/custom/navigation-list.tsx";
 import { Button } from "#src/components/ui/button";
 import {
@@ -22,119 +23,6 @@ import React from "react";
 import { useNavigate } from "react-router";
 
 export default function Index() {
-  const colors = [
-    {
-      scale: 50,
-      hex: "#f9fafb",
-      rgb: "rgb(249,250,251)",
-      hsl: "hsl(210,20%,98%)",
-    },
-    {
-      scale: 100,
-      hex: "#f3f4f6",
-      rgb: "rgb(243,244,246)",
-      hsl: "hsl(220,14.3%,95.9%)",
-    },
-    {
-      scale: 200,
-      hex: "#e5e7eb",
-      rgb: "rgb(229,231,235)",
-      hsl: "hsl(220,13%,91%)",
-    },
-    {
-      scale: 300,
-      hex: "#d1d5db",
-      rgb: "rgb(209,213,219)",
-      hsl: "hsl(216,12.2%,83.9%)",
-    },
-    {
-      scale: 400,
-      hex: "#9ca3af",
-      rgb: "rgb(156,163,175)",
-      hsl: "hsl(217.9,10.6%,64.9%)",
-    },
-    {
-      scale: 500,
-      hex: "#6b7280",
-      rgb: "rgb(107,114,128)",
-      hsl: "hsl(220,8.9%,46.1%)",
-    },
-    {
-      scale: 600,
-      hex: "#4b5563",
-      rgb: "rgb(75,85,99)",
-      hsl: "hsl(215,13.8%,34.1%)",
-    },
-    {
-      scale: 700,
-      hex: "#374151",
-      rgb: "rgb(55,65,81)",
-      hsl: "hsl(216.9,19.1%,26.7%)",
-    },
-    {
-      scale: 800,
-      hex: "#1f2937",
-      rgb: "rgb(31,41,55)",
-      hsl: "hsl(215,27.9%,16.9%)",
-    },
-    {
-      scale: 900,
-      hex: "#111827",
-      rgb: "rgb(17,24,39)",
-      hsl: "hsl(220.9,39.3%,11%)",
-    },
-    {
-      scale: 950,
-      hex: "#030712",
-      rgb: "rgb(3,7,18)",
-      hsl: "hsl(224,71.4%,4.1%)",
-    },
-  ];
-
-  const theme = [
-    { name: "background", hsl: "0 0% 100%" },
-    { name: "foreground", hsl: "240 10% 3.9%" },
-    { name: "muted", hsl: "220 14.3% 95.9%" },
-    { name: "muted-foreground", hsl: "220 8.9% 46.1%" },
-    { name: "popover", hsl: "0 0% 100%" },
-    { name: "popover-foreground", hsl: "224 71.4% 4.1%" },
-    { name: "card", hsl: "0 0% 100%" },
-    { name: "card-foreground", hsl: "224 71.4% 4.1%" },
-    { name: "border", hsl: "220 13% 91%" },
-    { name: "input", hsl: "220 13% 91%" },
-    { name: "primary", hsl: "220.9 39.3% 11%" },
-    { name: "primary-foreground", hsl: "210 20% 98%" },
-    { name: "secondary", hsl: "220 14.3% 95.9%" },
-    { name: "secondary-foreground", hsl: "220.9 39.3% 11%" },
-    { name: "accent", hsl: "220 14.3% 95.9%" },
-    { name: "accent-foreground", hsl: "220.9 39.3% 11%" },
-    { name: "destructive", hsl: "0 72.22% 50.59%" },
-    { name: "destructive-foreground", hsl: "210 20% 98%" },
-    { name: "ring", hsl: "224 71.4% 4.1%" },
-    { name: "chart-1", hsl: "12 76% 61%" },
-    { name: "chart-2", hsl: "173 58% 39%" },
-    { name: "chart-3", hsl: "197 37% 24%" },
-    { name: "chart-4", hsl: "43 74% 66%" },
-    { name: "chart-5", hsl: "27 87% 67%" },
-  ];
-
-  // 🔥 Normalisasi format HSL agar bisa dibandingkan
-  const normalizeHSL = (hsl: string) =>
-    hsl.replace(/hsl\(|\)/g, "").replace(/\,/g, " ").trim(); // Hapus "hsl()" dan extra spaces
-
-  // 🔥 Mencari match di array
-  // const matchedColor = colors.find((color) =>
-  //   normalizeHSL(color.hsl) === color_border
-  // );
-
-  const matchedColor = theme.map((color) => {
-    const matchedColor = colors.find((c) => normalizeHSL(c.hsl) === color.hsl);
-    return matchedColor
-      ? `--${color.name}:${matchedColor.scale}`
-      : `--${color.name}:"UNKNOWN"`;
-  });
-  console.warn("DEBUGPRINT[5]: index.tsx:70: matchedColor=", matchedColor);
-
   const data = [...muslimNavigationLink, ...toolsNavigationLink];
   const [last_used, set_last_used] = React.useState<typeof data | []>([]);
 
@@ -172,7 +60,7 @@ export default function Index() {
 
   const date = "__DATE__";
   return (
-    <div className="border-x min-h-[calc(100vh)] max-w-xl mx-auto relative bg-main">
+    <LayoutMain>
       <Header isIndex={true} redirectTo="/about" title="kiat">
         <CommandMenu />
       </Header>
@@ -219,7 +107,7 @@ export default function Index() {
         )}
       </div>
       <Footer />
-    </div>
+    </LayoutMain>
   );
 }
 

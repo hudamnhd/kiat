@@ -1,12 +1,13 @@
-import { fontSizeOpt } from "#/src/constants/prefs";
+import { FONT_SIZE } from "#/src/constants/prefs";
 import sholawat from "#/src/constants/sholawat.json";
 import { Header } from "#src/components/custom/header";
+import TextArab from "#src/components/custom/text-arab.tsx";
 import {
   AyatBookmark,
   type Bookmark,
   save_bookmarks,
 } from "#src/utils/bookmarks";
-import { get_cache, set_cache } from "#src/utils/cache-client.ts";
+import { getCache, setCache } from "#src/utils/cache-client.ts";
 import { cn } from "#src/utils/misc";
 import { Heart } from "lucide-react";
 import React from "react";
@@ -22,13 +23,11 @@ export function Component() {
   const loaderRoot = useRouteLoaderData("muslim");
   const opts = loaderRoot?.opts || {};
 
-  const font_size_opts = fontSizeOpt.find((d) => d.label === opts?.font_size);
-
   const [bookmarks, setBookmarks] = React.useState<Bookmark[]>([]);
 
   React.useEffect(() => {
     const load_bookmark_from_lf = async () => {
-      const storedBookmarks = await get_cache(BOOKMARK_KEY);
+      const storedBookmarks = await getCache(BOOKMARK_KEY);
       if (storedBookmarks) {
         setBookmarks(storedBookmarks);
       }
@@ -75,12 +74,12 @@ export function Component() {
 
   React.useEffect(() => {
     const save_bookmark_to_lf = async (bookmarks: AyatBookmark[]) => {
-      await set_cache(BOOKMARK_KEY, bookmarks);
+      await setCache(BOOKMARK_KEY, bookmarks);
     };
     save_bookmark_to_lf(bookmarks);
   }, [bookmarks]);
   return (
-    <div className="prose-base dark:prose-invert w-full max-w-xl mx-auto border-x">
+    <>
       <Header redirectTo="/muslim" title="Sholawat" />
       <div className="text-center text-3xl font-bold leading-tight tracking-tighter md:text-4xl lg:leading-[1.1] capitalize py-3">
         Sholawat
@@ -123,23 +122,11 @@ export function Component() {
                 />
               </button>
             </div>
-            <div className="w-full text-right flex gap-x-2.5 items-start justify-end px-4">
-              <div
-                className={cn(
-                  "relative text-right text-primary font-lpmq",
-                  opts?.font_type,
-                )}
-                style={{
-                  fontWeight: opts.font_weight,
-                  fontSize: font_size_opts?.fontSize || "1.5rem",
-                  lineHeight: font_size_opts?.lineHeight || "3.5rem",
-                }}
-              >
-                {ayat.arab}
-              </div>
-            </div>
+            <TextArab
+              text={ayat.arab}
+            />
             <div className="px-4">
-              {opts?.font_latin === "on" && (
+              {opts?.showLatin === "on" && (
                 <div
                   className="latin-text prose max-w-none border-b pb-2 mb-2 text-muted-foreground"
                   dangerouslySetInnerHTML={{
@@ -147,7 +134,7 @@ export function Component() {
                   }}
                 />
               )}
-              {opts?.font_translation === "on" && (
+              {opts?.showTranslation === "on" && (
                 <div
                   className="translation-text mt-1 prose max-w-none text-accent-foreground"
                   dangerouslySetInnerHTML={{
@@ -159,6 +146,6 @@ export function Component() {
           </div>
         );
       })}
-    </div>
+    </>
   );
 }

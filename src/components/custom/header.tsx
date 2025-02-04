@@ -1,6 +1,7 @@
 import ThemeSwitch from "#src/components/custom/theme-switch";
 import { buttonVariants } from "#src/components/ui/button";
 import { cn } from "#src/utils/misc";
+import { Virtualizer } from "@tanstack/react-virtual";
 import { ArrowLeft, ChevronLeft } from "lucide-react";
 import React from "react";
 import { Link, useLocation } from "react-router";
@@ -12,6 +13,7 @@ const SettingsDisplay = React.lazy(() =>
 );
 
 type HeaderProps = {
+  virtualizer?: boolean;
   children?: React.ReactNode;
   menu?: React.ReactNode;
   redirectTo: string;
@@ -29,8 +31,56 @@ export function Header(props: HeaderProps) {
   const location = useLocation();
   const showDisplay = location?.pathname?.startsWith("/muslim");
 
+  const prevScrollPos = React.useRef<number>(0);
+
+  React.useEffect(() => {
+    const navbarElement = document.getElementById("navbar");
+
+    // 🔥 Jika menggunakan React Virtual Tanstack
+    if (props.virtualizer) {
+      // const handleVirtualScroll = () => {
+      //   const currentScrollPos = props.virtualizer?.scrollOffset || 0;
+      //   if (navbarElement instanceof HTMLElement) {
+      //     if (prevScrollPos.current > currentScrollPos) {
+      //       navbarElement.style.top = "0"; // Tampilkan navbar
+      //     } else {
+      //       navbarElement.style.top = `-${navbarElement.offsetHeight}px`; // Sembunyikan navbar
+      //     }
+      //   }
+      //   prevScrollPos.current = currentScrollPos || 0;
+      // };
+      //
+      // // 🔥 Gunakan React Effect untuk mendeteksi perubahan scrollOffset
+      // handleVirtualScroll();
+    } else {
+      // 🔥 Jika tidak menggunakan Virtualizer, pakai window scroll event
+      let prevScrollpos = window.scrollY;
+
+      const handleWindowScroll = () => {
+        let currentScrollPos = window.scrollY;
+        if (navbarElement instanceof HTMLElement) {
+          if (prevScrollpos > currentScrollPos) {
+            navbarElement.style.top = "0"; // Tampilkan navbar
+          } else {
+            navbarElement.style.top = `-${navbarElement.offsetHeight}px`; // Sembunyikan navbar
+          }
+        }
+        prevScrollpos = currentScrollPos;
+      };
+
+      window.addEventListener("scroll", handleWindowScroll);
+
+      return () => {
+        window.removeEventListener("scroll", handleWindowScroll);
+      };
+    }
+  }, [props.virtualizer]);
+
   return (
-    <header className="px-1.5 pt-2.5 pb-2 flex justify-between gap-x-3 border-b sticky top-0 border-b  z-10">
+    <header
+      id="navbar"
+      className="px-1.5 pt-2.5 pb-2 flex justify-between gap-x-3 border-b sticky top-0 border-b bg-background/95 backdrop-blur-sm supports-backdrop-filter:bg-background/60 z-10 duration-300"
+    >
       <div className="flex items-center gap-x-1.5">
         <Link
           title={props.title === "kiat" ? "Tentang Kiat" : "Kembali"}
@@ -50,7 +100,9 @@ export function Header(props: HeaderProps) {
         </Link>
 
         {!props.isIndex && !props.menu && (
-          <span className="truncate font-semibold">{props.title}</span>
+          <span id="title-page" className="truncate font-semibold">
+            {props.title}
+          </span>
         )}
         {props.menu && props.menu}
       </div>

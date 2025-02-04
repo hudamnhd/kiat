@@ -77,7 +77,7 @@ let initial_data = true;
 async function load_data_daily_tasks() {
   const data_tasks = localStorage.getItem("daily-tasks");
   const initialTasks = data_tasks ? JSON.parse(data_tasks) : {};
-  // const initialTasks = await get_cache("daily-tasks");
+  // const initialTasks = await getCache("daily-tasks");
   const now = new Date();
 
   // Fungsi untuk memperbarui status

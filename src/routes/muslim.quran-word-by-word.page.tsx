@@ -1,4 +1,4 @@
-import { fontSizeOpt } from "#/src/constants/prefs";
+import { FONT_SIZE } from "#/src/constants/prefs";
 import { Header } from "#src/components/custom/header";
 import { Button, buttonVariants } from "#src/components/ui/button";
 import { cn } from "#src/utils/misc";
@@ -30,7 +30,7 @@ export async function Loader({ params, request }: LoaderFunctionArgs) {
 
   const response = await getSurahByPage({
     page: Number(id),
-    style: "uthmani_simple",
+    style: "uthmani-simple",
   });
 
   return { ...response, query: { surah, ayah } };
@@ -254,7 +254,7 @@ const PuzzleGame: React.FC<PuzzleProps> = ({
 }) => {
   const parentLoader = useRouteLoaderData<typeof muslimLoader>("muslim");
   const opts = parentLoader?.opts;
-  const font_size_opts = fontSizeOpt.find((d) => d.label === opts?.font_size);
+  const prefsOption = FONT_SIZE.find((d) => d.label === opts?.fontSize);
   const [state, setState] = React.useState<
     { slices: TextType[]; userAnswer: TextType[]; isCorrect: boolean | null }
   >(
@@ -445,12 +445,12 @@ const PuzzleGame: React.FC<PuzzleProps> = ({
             <span
               className={cn(
                 "text-center h-fit mx-1 border py-1 px-2 rounded-md mb-1",
-                opts?.font_type,
+                opts?.fontStyle,
               )}
               style={{
-                fontWeight: opts?.font_weight,
-                fontSize: font_size_opts?.fontSize || "1.5rem",
-                lineHeight: font_size_opts?.lineHeight ||
+                fontWeight: opts?.fontWeight,
+                fontSize: prefsOption?.fontSize || "1.5rem",
+                lineHeight: prefsOption?.lineHeight ||
                   "3.5rem",
               }}
               key={w.text + index}
@@ -464,9 +464,9 @@ const PuzzleGame: React.FC<PuzzleProps> = ({
 
           <span
             style={{
-              fontWeight: opts?.font_weight,
-              fontSize: font_size_opts?.fontSize || "1.5rem",
-              lineHeight: font_size_opts?.lineHeight ||
+              fontWeight: opts?.fontWeight,
+              fontSize: prefsOption?.fontSize || "1.5rem",
+              lineHeight: prefsOption?.lineHeight ||
                 "3.5rem",
             }}
             className="text-right font-uthmani-v2-reguler mr-1.5"
@@ -484,12 +484,12 @@ const PuzzleGame: React.FC<PuzzleProps> = ({
                 variant="secondary"
                 className={cn(
                   "text-center h-fit",
-                  opts?.font_type,
+                  opts?.fontStyle,
                 )}
                 style={{
-                  fontWeight: opts?.font_weight,
-                  fontSize: font_size_opts?.fontSize || "1.5rem",
-                  lineHeight: font_size_opts?.lineHeight ||
+                  fontWeight: opts?.fontWeight,
+                  fontSize: prefsOption?.fontSize || "1.5rem",
+                  lineHeight: prefsOption?.lineHeight ||
                     "3.5rem",
                 }}
                 key={slice.index}
@@ -516,13 +516,13 @@ const PuzzleGame: React.FC<PuzzleProps> = ({
                   className={cn(
                     buttonVariants({ size: "lg", variant: "outline" }),
                     "text-center h-fit",
-                    opts?.font_type,
+                    opts?.fontStyle,
                     state.isCorrect && "bg-transparent",
                   )}
                   style={{
-                    fontWeight: opts?.font_weight,
-                    fontSize: font_size_opts?.fontSize || "1.5rem",
-                    lineHeight: font_size_opts?.lineHeight ||
+                    fontWeight: opts?.fontWeight,
+                    fontSize: prefsOption?.fontSize || "1.5rem",
+                    lineHeight: prefsOption?.lineHeight ||
                       "3.5rem",
                   }}
                   draggable

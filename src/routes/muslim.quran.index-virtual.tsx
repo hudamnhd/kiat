@@ -289,8 +289,7 @@ function SurahView() {
       </div>
       <SearchResult query={query} />
       {/*46px*/}
-      {
-        /*<div className="surah-index">
+      <div className="surah-index">
         <Link
           to="/muslim/quran-word-by-word"
           className="p-3 flex items-center justify-center gap-x-2 bg-muted/50 text-sm [&_svg]:size-4 font-medium"
@@ -300,8 +299,7 @@ function SurahView() {
             Baru
           </Badge>
         </Link>
-      </div>*/
-      }
+      </div>
       {/*<Example />*/}
     </>
   );
@@ -370,7 +368,15 @@ const VirtualizedListSurahJuz: React.FC<
   const parentRef = React.useRef<HTMLDivElement>(null);
   // const calculate_height =
   // Gunakan useVirtualizer
-  const { scrollYProgress } = useScroll({});
+  const rowVirtualizer = useVirtualizer({
+    count: items.length, // Jumlah total item
+    getScrollElement: () => parentRef.current, // Elemen tempat scrolling
+    estimateSize: () => 62, // Perkiraan tinggi item (70px)
+  });
+
+  const { scrollYProgress } = useScroll({
+    container: parentRef,
+  });
 
   const scaleX = useSpring(scrollYProgress, {
     stiffness: 100,
@@ -392,66 +398,93 @@ const VirtualizedListSurahJuz: React.FC<
           originX: 0,
         }}
       />
-      <div className="divide-y ">
-        {items.map((item, index) => {
-          const s = item?.s;
-          const j = item?.j;
-          return (
-            <div
-              key={index}
-              className="first:border-t"
-            >
-              {j && (
-                <Link
-                  to={`/muslim/quran/${j.p}`}
-                  className={cn(
-                    "text-sm font-semibold py-3 px-4 flex items-center justify-between gap-x-3  bg-gradient-to-r from-muted from-80 via-muted/80 to-muted/50 hover:bg-muted",
-                    s && "border-b",
-                  )}
-                >
-                  <span>
-                    {j.n}
-                  </span>
-                  <span className="font-normal">
-                    {j.p}
-                  </span>
-                </Link>
-              )}
-              {s && (
-                <Link
-                  to={`/muslim/quran/${s.p}?surah=${s.i}&ayah=1`}
-                  className="py-1.5 pr-4 pl-3 flex-1 flex items-center justify-between bg-gradient-to-r from-background  to-muted/30 hover:bg-muted hover:bg-muted group"
-                >
-                  <div className="flex items-center gap-x-3">
-                    <div className="text-2xl font-medium text-center min-w-10 h-10 flex items-center justify-center text-muted-foreground group-hover:text-foreground">
-                      {s.i}
-                    </div>
-                    <div className="truncate -space-y-2">
-                      <div className="flex text-sm items-center">
-                        <p className="font-medium">
-                          Surah {s.n}
-                        </p>
+      <div
+        ref={parentRef}
+        className="border-b"
+        style={{
+          height: `calc(100vh - ${getTotalHeight()}px)`,
+          overflow: "auto",
+        }}
+      >
+        <div
+          className="divide-y"
+          style={{
+            height: `${rowVirtualizer.getTotalSize()}px`,
+            position: "relative",
+          }}
+        >
+          {rowVirtualizer.getVirtualItems().map((virtualRow) => {
+            const item = items[virtualRow.index];
+            const s = item?.s;
+            const j = item?.j;
+            return (
+              <div
+                key={virtualRow.key}
+                data-index={virtualRow.index}
+                ref={rowVirtualizer.measureElement}
+                className="first:border-t"
+                style={{
+                  position: "absolute",
+                  top: 0,
+                  left: 0,
+                  width: "100%",
+                  transform: `translateY(${virtualRow.start}px)`,
+                }}
+              >
+                {j && (
+                  <Link
+                    to={`/muslim/quran/${j.p}`}
+                    className={cn(
+                      "text-sm font-semibold py-3 px-4 flex items-center justify-between gap-x-3  bg-gradient-to-r from-muted from-80 via-muted/80 to-muted/50 hover:bg-muted",
+                      s && "border-b",
+                    )}
+                  >
+                    <span>
+                      {j.n}
+                    </span>
+                    <span className="font-normal">
+                      {j.p}
+                    </span>
+                  </Link>
+                )}
+                {s && (
+                  <Link
+                    to={`/muslim/quran/${s.p}?surah=${s.i}&ayah=1`}
+                    className="py-1.5 pr-4 pl-3 flex-1 flex items-center justify-between bg-gradient-to-r from-background  to-muted/30 hover:bg-muted hover:bg-muted group"
+                  >
+                    <div className="flex items-center gap-x-3">
+                      <div className="text-2xl font-medium text-center min-w-10 h-10 flex items-center justify-center text-muted-foreground group-hover:text-foreground">
+                        {s.i}
                       </div>
-                      <div className="mt-2 flex truncate">
-                        <span className="flex-shrink-0 text-muted-foreground text-sm">
-                          {s.r}
-                        </span>
-                        <Minus className="mx-1 w-2 scale-150" />
-                        <span className="flex-shrink-0 text-muted-foreground text-sm">
-                          {s.v} ayat
-                        </span>
+                      <div className="truncate -space-y-2">
+                        <div className="flex text-sm items-center">
+                          <p className="font-medium">
+                            Surah {s.n}
+                          </p>
+                        </div>
+                        <div className="mt-2 flex truncate">
+                          <span className="flex-shrink-0 text-muted-foreground text-sm">
+                            {s.r}
+                          </span>
+                          <Minus className="mx-1 w-2 scale-150" />
+                          <span className="flex-shrink-0 text-muted-foreground text-sm">
+                            {s.v} ayat
+                          </span>
+                        </div>
                       </div>
                     </div>
-                  </div>
 
-                  <span className="text-sm">
-                    {s.p}
-                  </span>
-                </Link>
-              )}
-            </div>
-          );
-        })}
+                    <span className="text-sm">
+                      {s.p}
+                    </span>
+                  </Link>
+                )}
+
+                {/*<pre className="text-sm">{JSON.stringify(item, null, 2)}</pre>*/}
+              </div>
+            );
+          })}
+        </div>
       </div>
     </React.Fragment>
   );

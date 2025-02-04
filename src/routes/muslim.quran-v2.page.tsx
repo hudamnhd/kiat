@@ -1,4 +1,4 @@
-import { fontSizeOpt } from "#/src/constants/prefs";
+import { FONT_SIZE } from "#/src/constants/prefs";
 import { Header } from "#src/components/custom/header";
 import { buttonVariants } from "#src/components/ui/button";
 import { cn } from "#src/utils/misc";
@@ -28,7 +28,7 @@ export function Component() {
 
   const parentLoader = useRouteLoaderData<typeof muslimLoader>("muslim");
   const opts = parentLoader?.opts;
-  const font_size_opts = fontSizeOpt.find((d) => d.label === opts?.font_size);
+  const prefsOption = FONT_SIZE.find((d) => d.label === opts?.fontSize);
 
   const title = `Hal ${page.p}`;
 
@@ -94,12 +94,12 @@ export function Component() {
                       <div
                         className={cn(
                           "font-bismillah text-center",
-                          opts?.font_type,
+                          opts?.fontStyle,
                         )}
                         style={{
-                          fontWeight: opts?.font_weight,
-                          fontSize: font_size_opts?.fontSize || "1.5rem",
-                          lineHeight: font_size_opts?.lineHeight ||
+                          fontWeight: opts?.fontWeight,
+                          fontSize: prefsOption?.fontSize || "1.5rem",
+                          lineHeight: prefsOption?.lineHeight ||
                             "3.5rem",
                         }}
                       >
@@ -114,14 +114,14 @@ export function Component() {
                   <div
                     key={dt.vk}
                     style={{
-                      fontWeight: opts?.font_weight,
-                      fontSize: font_size_opts?.fontSize || "1.5rem",
-                      lineHeight: font_size_opts?.lineHeight || "3.5rem",
+                      fontWeight: opts?.fontWeight,
+                      fontSize: prefsOption?.fontSize || "1.5rem",
+                      lineHeight: prefsOption?.lineHeight || "3.5rem",
                       whiteSpace: "pre-wrap",
                     }}
                     className={cn(
                       "inline-flex inline hover:bg-muted antialiased",
-                      opts?.font_type,
+                      opts?.fontStyle,
                     )}
                   >
                     {dt.ta}
