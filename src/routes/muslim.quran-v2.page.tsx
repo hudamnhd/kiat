@@ -30,50 +30,15 @@ export function Component() {
   const opts = parentLoader?.opts;
   const prefsOption = FONT_SIZE.find((d) => d.label === opts?.fontSize);
 
-  const title = `Hal ${page.p}`;
+  const title = `Hal ${page.p} - Juz' ${juz}`;
+  const subtitle = surat.name.id;
 
   return (
     <React.Fragment>
-      <Header redirectTo="/muslim/quran" title={title} />
+      <Header redirectTo="/muslim/quran" title={title} subtitle={subtitle} />
 
-      <div className="flex items-center justify-between px-3 bg-muted text-muted-foreground font-semibold text-sm py-1 border-b">
-        <span className="w-1/3">{surat.name.id}</span>
-        <div className="w-1/3 text-center flex items-center justify-center gap-x-3">
-          <Link
-            className={cn(
-              buttonVariants({ size: "icon", variant: "secondary" }),
-              "[&_svg]:size-5",
-            )}
-            title="Surat sebelumnya"
-            to={page?.p === 1
-              ? "#"
-              : `/muslim/quran-v2/${page?.p - 1}`}
-          >
-            <span className="sr-only">Go to previous page</span>
-            <ChevronLeft />
-          </Link>
-
-          <span className="text-foreground text-sm">
-            {page?.p}
-          </span>
-          <Link
-            className={cn(
-              buttonVariants({ size: "icon", variant: "secondary" }),
-              "[&_svg]:size-5",
-            )}
-            title="Surat selanjutnya"
-            to={page?.p === 604
-              ? "#"
-              : `/muslim/quran-v2/${page?.p + 1}`}
-          >
-            <span className="sr-only">Go to next page</span>
-            <ChevronRight />
-          </Link>
-        </div>
-        <span className="w-1/3 text-right">Juz' {juz}</span>
-      </div>
       <div
-        className="rtl:text-justify border-b px-6 pt-1 pb-4"
+        className="rtl:text-justify border-b px-4 pt-1 pb-4"
         dir="rtl"
       >
         {items.map((dt) => {
@@ -117,7 +82,7 @@ export function Component() {
                       fontWeight: opts?.fontWeight,
                       fontSize: prefsOption?.fontSize || "1.5rem",
                       lineHeight: prefsOption?.lineHeight || "3.5rem",
-                      whiteSpace: "pre-wrap",
+                      whiteSpace: "pre-line",
                     }}
                     className={cn(
                       "inline-flex inline hover:bg-muted antialiased",
@@ -134,6 +99,37 @@ export function Component() {
             </React.Fragment>
           );
         })}
+      </div>
+
+      <div className="ml-auto flex items-center justify-center gap-3 py-3">
+        <Link
+          className={cn(
+            buttonVariants({ size: "icon", variant: "outline" }),
+          )}
+          title="Surat sebelumnya"
+          to={page?.p === 1
+            ? "#"
+            : `/muslim/quran-v2/${page?.p - 1}`}
+        >
+          <span className="sr-only">Go to previous page</span>
+          <ChevronLeft />
+        </Link>
+
+        <span className="text-accent-foreground text-sm">
+          Halaman <strong>{page?.p}</strong> dari <strong>604</strong>
+        </span>
+        <Link
+          className={cn(
+            buttonVariants({ size: "icon", variant: "outline" }),
+          )}
+          title="Surat selanjutnya"
+          to={page?.p === 604
+            ? "#"
+            : `/muslim/quran-v2/${page?.p + 1}`}
+        >
+          <span className="sr-only">Go to next page</span>
+          <ChevronRight />
+        </Link>
       </div>
     </React.Fragment>
   );

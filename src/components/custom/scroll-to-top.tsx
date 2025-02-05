@@ -33,7 +33,7 @@ export const ScrollTopButton = () => {
     <div
       ref={parentRef}
       className={cn(
-        "sticky inset-x-0 ml-auto w-fit -translate-x-3 z-60 bottom-3",
+        "sticky inset-x-0 ml-auto w-fit -translate-x-3 z-20 bottom-3",
       )}
       style={{ display: "none" }}
     >

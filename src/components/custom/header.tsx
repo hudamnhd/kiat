@@ -18,6 +18,7 @@ type HeaderProps = {
   menu?: React.ReactNode;
   redirectTo: string;
   title?: string;
+  subtitle?: string;
   isIndex?: boolean;
 };
 
@@ -100,9 +101,19 @@ export function Header(props: HeaderProps) {
         </Link>
 
         {!props.isIndex && !props.menu && (
-          <span id="title-page" className="truncate font-semibold">
-            {props.title}
-          </span>
+          <div className="grid">
+            <span id="title-page" className="truncate font-semibold">
+              {props.title}
+            </span>
+            {props.subtitle && (
+              <span
+                id="sub-title-page"
+                className="truncate text-xs -mt-0.5 text-muted-foreground font-medium"
+              >
+                {props.subtitle}
+              </span>
+            )}
+          </div>
         )}
         {props.menu && props.menu}
       </div>

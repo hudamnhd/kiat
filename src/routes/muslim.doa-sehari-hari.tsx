@@ -83,7 +83,7 @@ export function Component() {
 
                 {opts?.showLatin === "on" && (
                   <div
-                    className="latin-text prose dark:prose-invert max-w-none whitespace-pre-wrap leading-6 pb-1 text-muted-foreground"
+                    className="latin-text prose dark:prose-invert max-w-none whitespace-pre-line leading-6 pb-1 text-muted-foreground"
                     dangerouslySetInnerHTML={{
                       __html: dt.latin,
                     }}
@@ -91,7 +91,7 @@ export function Component() {
                 )}
 
                 {opts?.showTranslation === "on" && (
-                  <div className="translation-text pt-2 prose dark:prose-invert max-w-none whitespace-pre-wrap leading-6 border-t">
+                  <div className="translation-text pt-2 prose dark:prose-invert max-w-none whitespace-pre-line leading-6 border-t">
                     {dt.arti.replace(
                       /(.{150,}?[\.\!\?])\s+/g,
                       "$1\n\n",

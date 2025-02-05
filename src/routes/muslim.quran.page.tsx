@@ -18,6 +18,7 @@ import { type AyatBookmark, save_bookmarks } from "#src/utils/bookmarks";
 import { getCache, setCache } from "#src/utils/cache-client.ts";
 import { cn } from "#src/utils/misc";
 import {
+  getSurahByIndex,
   getSurahByPage,
   QuranReadingPlan,
   updateReadingProgress,
@@ -54,6 +55,9 @@ export async function Loader({ params, request }: LoaderFunctionArgs) {
 
   let style = "indopak" as "indopak" | "kemenag" | "uthmani" | "imlaei";
 
+  let mode = prefs?.modeQuran
+    ? prefs?.modeQuran
+    : "page";
   let translation = prefs?.showTranslation
     ? prefs?.showTranslation == "on" ? true : false
     : true;
@@ -84,6 +88,7 @@ export async function Loader({ params, request }: LoaderFunctionArgs) {
       style = "kemenag";
       break;
   }
+
   const response = await getSurahByPage({
     page: Number(id),
     style: style,
@@ -92,23 +97,32 @@ export async function Loader({ params, request }: LoaderFunctionArgs) {
     translationSource,
   });
 
+  // await getSurahByIndex({
+  //     index: Number(id),
+  //     style: style,
+  //     translation,
+  //     showTafsir: tafsir,
+  //     translationSource,
+  // });
   const _recent_data = [
     `${response?.surah[0].name.id}|${
       response?.ayah[0].vk.replace(":", "|")
     }|${id}|${response?.juz}`,
   ];
   //
-  const PAGE = Number(id);
-  const plan_read = await getCache(PLANREAD_KEY) || [];
-  if (plan_read.length > 0) {
-    const today = format(new Date(), "yyyy-MM-dd");
-    const progressToday = plan_read.find((d: QuranReadingPlan) =>
-      d.date === today
-    );
-    let target = updateReadingProgress(plan_read, progressToday.day, [PAGE]);
-    await setCache(PLANREAD_KEY, target);
+  if (mode === "page") {
+    const PAGE = Number(id);
+    const plan_read = await getCache(PLANREAD_KEY) || [];
+    if (plan_read.length > 0) {
+      const today = format(new Date(), "yyyy-MM-dd");
+      const progressToday = plan_read.find((d: QuranReadingPlan) =>
+        d.date === today
+      );
+      let target = updateReadingProgress(plan_read, progressToday.day, [PAGE]);
+      await setCache(PLANREAD_KEY, target);
+    }
+    saveLastVisitPage(_recent_data);
   }
-  saveLastVisitPage(_recent_data);
   return { ...response, query: { surah, ayah } };
 }
 
@@ -191,7 +205,8 @@ function ButtonStar({ index }: { index: number }) {
 export function Component() {
   const { page, surah } = useLoaderData<typeof Loader>();
 
-  const title = ` Hal ${page.p} - ${surah[0].name.id}`;
+  const title = `Hal ${page.p}`;
+  const subtitle = surah[0].name.id;
   return (
     <React.Fragment>
       <VirtualizedListSurah>
@@ -199,6 +214,7 @@ export function Component() {
           virtualizer={false}
           redirectTo="/muslim/quran"
           title={title}
+          subtitle={subtitle}
         >
           <Link
             className={cn(
@@ -210,7 +226,7 @@ export function Component() {
           >
             <BookOpen />
           </Link>
-          <ButtonStar index={1} />
+          {/*<ButtonStar index={1} />*/}
         </Header>
         <div className="ml-auto flex items-center justify-center gap-3 pt-5">
           <Link
@@ -309,7 +325,7 @@ const VirtualizedListSurah = ({ children }: { children: React.ReactNode }) => {
       const getIndex = items.findIndex((d: { vk: string }) => d.vk === q);
       sleep(0).then(() => scrollToAyat(getIndex));
     } else {
-      sleep(0).then(() => scrollToAyat(1));
+      sleep(0).then(() => scrollToAyat(0));
     }
   }, [page.p]);
 
@@ -446,7 +462,7 @@ const VirtualizedListSurah = ({ children }: { children: React.ReactNode }) => {
   return (
     <React.Fragment>
       <motion.div
-        className="z-20 bg-primary max-w-2xl mx-auto"
+        className="z-20 bg-primary  sm:max-w-2xl mx-auto"
         style={{
           scaleX,
           position: "fixed",
@@ -459,49 +475,252 @@ const VirtualizedListSurah = ({ children }: { children: React.ReactNode }) => {
       />
 
       <div
+        className="divide-y"
         ref={parentRef}
         id="container-page"
       >
-        <div className="divide-y">
-          {children1}
-          {items.map((item, index) => {
-            const surah_index = item.vk.split(":")[0];
-            const ayah_index = item.vk.split(":")[1];
-            const id = item.vk;
-            const key = Number(ayah_index);
+        {children1}
+        {items.map((item, index) => {
+          const surah_index = item.vk.split(":")[0];
+          const ayah_index = item.vk.split(":")[1];
+          const id = item.vk;
+          const key = Number(ayah_index);
 
-            const _surah = surah.find((d: { index: number }) =>
-              d.index === Number(surah_index)
-            );
-            const surah_name = _surah?.name.id || surah[0].name.id;
-            const isFavorite = bookmarks_ayah.some((fav) => fav.id === id);
-            const isLastRead = lastRead?.id === id;
-            const bookmark_data = {
-              id,
-              title: surah_name + ":" + ayah_index,
-              arab: item.ta,
-              ...(item?.tt ? { translation: item.tt } : {}),
-              source:
-                `/muslim/quran/${page.p}?surah=${surah_index}&ayah=${ayah_index}`,
-            };
+          const _surah = surah.find((d: { index: number }) =>
+            d.index === Number(surah_index)
+          );
+          const surah_name = _surah?.name.id || surah[0].name.id;
+          const isFavorite = bookmarks_ayah.some((fav) => fav.id === id);
+          const isLastRead = lastRead?.id === id;
+          const bookmark_data = {
+            id,
+            title: surah_name + ":" + ayah_index,
+            arab: item.ta,
+            ...(item?.tt ? { translation: item.tt } : {}),
+            source:
+              `/muslim/quran/${page.p}?surah=${surah_index}&ayah=${ayah_index}`,
+          };
 
-            return (
+          return (
+            <div
+              ref={(el) => ayahRefs.current.set(index, el)}
+              key={item.vk}
+            >
+              {key === 1 && opts?.showTranslation === "on" && (
+                <React.Fragment>
+                  <details
+                    className={cn(
+                      "group [&_summary::-webkit-details-marker]:hidden px-4 py-2 border-b",
+                    )}
+                  >
+                    <summary className="flex cursor-pointer items-center gap-1.5 outline-hidden w-full justify-start">
+                      <div className="font-medium text-sm text-muted-foreground">
+                        Tentang Surat {surah_name}
+                      </div>
+
+                      <svg
+                        className="size-4 shrink-0 transition duration-300 group-open:-rotate-180 opacity-80"
+                        xmlns="http://www.w3.org/2000/svg"
+                        fill="none"
+                        viewBox="0 0 24 24"
+                        stroke="currentColor"
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          strokeWidth="2"
+                          d="M19 9l-7 7-7-7"
+                        />
+                      </svg>
+                    </summary>
+
+                    <div className="font-normal text-start group-open:animate-slide-top group-open:[animation-fill-mode:backwards] group-open:transition-all group-open:duration-300">
+                      <div className="flex text-center items-center justify-center max-w-none my-1.5 font-semibold whitespace-pre-line text-accent-foreground border-b">
+                        <span className="">
+                          Surat ke- {surat.index}
+                        </span>
+                      </div>
+
+                      <div
+                        className={cn(
+                          "prose prose-zinc dark:prose-invert max-w-none whitespace-pre-line mb-2 text-justify",
+                          opts?.fontTranslationSize,
+                        )}
+                      >
+                        {item?.td
+                          ? item.td
+                          : _surah?.tafsir?.id
+                          ? _surah?.tafsir?.id.replace(
+                            /(.{150,}?[\.\!\?])\s+/g,
+                            "$1\n\n",
+                          )
+                          : "Tidak ada deskripsi surat ini"}
+                      </div>
+                      <div className="text-muted-foreground text-xs py-2 hidden">
+                        Sumber:
+                        <br />
+                        <div className="flex flex-wrap items-center justify-between">
+                          <span>Muhammad Quraish Shihab et al</span>
+                          <span>https://tanzil.net/download</span>
+                        </div>
+                      </div>
+                    </div>
+                  </details>
+
+                  {surat.index !== 1 && (
+                    <div
+                      dir="rtl"
+                      className="break-normal w-full border-b bg-muted/50 py-0.5"
+                    >
+                      <div
+                        className={cn(
+                          "font-bismillah text-center",
+                          opts?.fontStyle,
+                        )}
+                        style={{
+                          fontWeight: opts?.fontWeight,
+                          fontSize: prefsOption?.fontSize || "1.5rem",
+                          lineHeight: prefsOption?.lineHeight ||
+                            "3.5rem",
+                        }}
+                      >
+                        {bismillah}
+                      </div>
+                    </div>
+                  )}
+                </React.Fragment>
+              )}
               <div
-                ref={(el) => ayahRefs.current.set(index, el)}
-                key={item.vk}
+                id={"quran" + surah_index + ayah_index}
+                key={key}
+                className={cn(
+                  "group relative p-2",
+                  isFavorite &&
+                    "bg-gradient-to-r from-background via-background to-muted/50",
+                )}
               >
-                {key === 1 && opts?.showTranslation === "on" && (
+                <div
+                  className={cn(
+                    " flex justify-start gap-1.5 w-full items-center",
+                  )}
+                >
+                  <MenuTrigger>
+                    <Button
+                      variant="secondary"
+                      aria-label="Menu"
+                      size="sm"
+                      title={`Menu ayat ${key}`}
+                      className="h-8 gap-1 tracking-wide font-bold"
+                    >
+                      {item.vk}
+                    </Button>
+                    <Popover
+                      placement="bottom"
+                      className=" bg-background p-1 w-44 overflow-auto rounded-md shadow-lg entering:animate-in entering:fade-in entering:zoom-in-95 exiting:animate-out exiting:fade-out exiting:zoom-out-95 fill-mode-forwards origin-top-left"
+                    >
+                      <div className="px-2 py-1.5 text-sm font-semibold border-b mb-1">
+                        {surah_name} - Ayat {ayah_index}
+                      </div>
+                      <Menu className="outline-hidden">
+                        <ActionItem
+                          id="new"
+                          onAction={() => toggleBookmark(bookmark_data)}
+                        >
+                          <Star
+                            className={cn(
+                              "mr-1 size-3",
+                              isFavorite &&
+                                "fill-orange-500 text-orange-500 dark:text-orange-400 dark:fill-orange-400",
+                            )}
+                          />
+                          Bookmark
+                        </ActionItem>
+                        <ActionItem
+                          id="open"
+                          onAction={() => handleRead(bookmark_data)}
+                        >
+                          <Bookmark
+                            className={cn(
+                              "mr-1 w-4 h-4",
+                              isLastRead &&
+                                "fill-blue-500 text-blue-500",
+                            )}
+                          />
+                          Terakhir Baca
+                        </ActionItem>
+                      </Menu>
+                    </Popover>
+                  </MenuTrigger>
+                  {isFavorite && (
+                    <Button
+                      onPress={() => toggleBookmark(bookmark_data)}
+                      aria-label="Menu"
+                      variant="secondary"
+                      size="icon"
+                      className={cn("h-8 w-8")}
+                      title="Hapus bookmark"
+                    >
+                      <Star
+                        className={cn(
+                          "fill-slate-600 text-slate-600 dark:fill-slate-400 dark:text-slate-400",
+                        )}
+                      />
+                    </Button>
+                  )}
+                  {isLastRead
+                    ? (
+                      <div
+                        className={cn(
+                          buttonVariants({ variant: "secondary" }),
+                          "h-8 px-2 text-xs gap-1",
+                        )}
+                      >
+                        <Bookmark
+                          className={cn(
+                            "fill-slate-600 text-slate-600 dark:fill-slate-400 dark:text-slate-400",
+                          )}
+                        />
+                        <span className="truncate max-w-[150px]">
+                          {relativeTime}
+                        </span>
+                      </div>
+                    )
+                    : <div />}
+                </div>
+
+                <TextArab
+                  text={item.ta}
+                  ayah={Number(item.vk.split(":")[1])}
+                />
+
+                {item?.tt && opts?.showTranslation === "on" && (
+                  <React.Fragment>
+                    <div
+                      className={cn(
+                        "prose dark:prose-invert px-2 text-justify max-w-none  whitespace-pre-line",
+                        opts?.fontTranslationSize,
+                      )}
+                    >
+                      {item.tt} ({item.vk.split(":")[1]})
+                    </div>
+                    <div className="hidden sm:flex items-center text-xs text-muted-foreground px-2 mt-0.5">
+                      <Minus strokeWidth={1} />
+                      {translationSource?.name}
+                    </div>
+                  </React.Fragment>
+                )}
+
+                {item?.ttf && opts?.showTafsir === "on" && (
                   <React.Fragment>
                     <details
                       className={cn(
-                        "group [&_summary::-webkit-details-marker]:hidden px-4 py-2 border-b",
+                        "group [&_summary::-webkit-details-marker]:hidden  open:bg-muted/50 open:ring-1 ring-border rounded-md mt-2",
                       )}
                     >
-                      <summary className="flex cursor-pointer items-center gap-1.5 outline-hidden w-full justify-start">
-                        <div className="font-medium text-sm">
-                          Tentang {surah_name}
+                      <summary className="flex gap-3 cursor-pointer items-center outline-hidden w-full justify-start group-open:bg-muted group-open:mb-2 px-2 py-1.5 rounded-t-md group-open:border-b group-open:px-3">
+                        <div className="font-medium text-sm prose dark:prose-invert">
+                          Tafsir ayat {item.vk.split(":")[1]}
                         </div>
-
                         <svg
                           className="size-4 shrink-0 transition duration-300 group-open:-rotate-180 opacity-80"
                           xmlns="http://www.w3.org/2000/svg"
@@ -518,240 +737,39 @@ const VirtualizedListSurah = ({ children }: { children: React.ReactNode }) => {
                         </svg>
                       </summary>
 
-                      <div className="font-normal text-start group-open:animate-slide-top group-open:[animation-fill-mode:backwards] group-open:transition-all group-open:duration-300">
-                        <div className="flex text-center items-center justify-center max-w-none my-1.5 font-semibold whitespace-pre-wrap text-accent-foreground border-b">
-                          <span className="">
-                            Surat ke- {surat.index}
-                          </span>
-                          <Dot />
-                          <span>{_surah?.meta?.number_of_verses} Ayat</span>
+                      <div className="font-normal text-start group-open:animate-slide-top group-open:[animation-fill-mode:backwards] group-open:transition-all group-open:duration-300 px-3">
+                        <div className="hidden sm:flex items-center text-xs text-muted-foreground mt-0.5">
+                          <Minus strokeWidth={1} />
+                          {tafsirSource?.title}
                         </div>
-
                         <div
                           className={cn(
-                            "prose prose-zinc dark:prose-invert max-w-none whitespace-pre-wrap mb-2 text-justify",
+                            "prose dark:prose-invert max-w-none whitespace-pre-line my-2 text-justify",
                             opts?.fontTranslationSize,
                           )}
                         >
-                          {item?.td
-                            ? item.td
+                          {item?.ttf
+                            ? item.ttf
                             : "Tidak ada deskripsi surat ini"}
                         </div>
                         <div className="text-muted-foreground text-xs py-2">
                           Sumber:
                           <br />
                           <div className="flex flex-wrap items-center justify-between">
-                            <span>Muhammad Quraish Shihab et al</span>
-                            <span>https://tanzil.net/download</span>
+                            <span>{tafsirSource?.name}</span>
+                            <span>{tafsirSource?.href}</span>
                           </div>
                         </div>
                       </div>
                     </details>
-
-                    {surat.index !== 1 && (
-                      <div
-                        dir="rtl"
-                        className="break-normal w-full border-b bg-muted/50 py-0.5"
-                      >
-                        <div
-                          className={cn(
-                            "font-bismillah text-center",
-                            opts?.fontStyle,
-                          )}
-                          style={{
-                            fontWeight: opts?.fontWeight,
-                            fontSize: prefsOption?.fontSize || "1.5rem",
-                            lineHeight: prefsOption?.lineHeight ||
-                              "3.5rem",
-                          }}
-                        >
-                          {bismillah}
-                        </div>
-                      </div>
-                    )}
                   </React.Fragment>
                 )}
-                <div
-                  id={"quran" + surah_index + ayah_index}
-                  key={key}
-                  className={cn(
-                    "group relative p-2",
-                    isFavorite &&
-                      "bg-gradient-to-r from-background via-background to-muted/50",
-                  )}
-                >
-                  <div
-                    className={cn(
-                      " flex justify-start gap-1.5 w-full items-center",
-                    )}
-                  >
-                    <MenuTrigger>
-                      <Button
-                        variant="secondary"
-                        aria-label="Menu"
-                        size="sm"
-                        title={`Menu ayat ${key}`}
-                        className="h-8 gap-1 tracking-wide font-bold"
-                      >
-                        {item.vk}
-                      </Button>
-                      <Popover
-                        placement="bottom"
-                        className=" bg-background p-1 w-44 overflow-auto rounded-md shadow-lg entering:animate-in entering:fade-in entering:zoom-in-95 exiting:animate-out exiting:fade-out exiting:zoom-out-95 fill-mode-forwards origin-top-left"
-                      >
-                        <div className="px-2 py-1.5 text-sm font-semibold border-b mb-1">
-                          {surah_name} - Ayat {ayah_index}
-                        </div>
-                        <Menu className="outline-hidden">
-                          <ActionItem
-                            id="new"
-                            onAction={() => toggleBookmark(bookmark_data)}
-                          >
-                            <Star
-                              className={cn(
-                                "mr-1 size-3",
-                                isFavorite &&
-                                  "fill-orange-500 text-orange-500 dark:text-orange-400 dark:fill-orange-400",
-                              )}
-                            />
-                            Bookmark
-                          </ActionItem>
-                          <ActionItem
-                            id="open"
-                            onAction={() => handleRead(bookmark_data)}
-                          >
-                            <Bookmark
-                              className={cn(
-                                "mr-1 w-4 h-4",
-                                isLastRead &&
-                                  "fill-blue-500 text-blue-500",
-                              )}
-                            />
-                            Terakhir Baca
-                          </ActionItem>
-                        </Menu>
-                      </Popover>
-                    </MenuTrigger>
-                    {isFavorite && (
-                      <Button
-                        onPress={() => toggleBookmark(bookmark_data)}
-                        aria-label="Menu"
-                        variant="secondary"
-                        size="icon"
-                        className={cn("h-8 w-8")}
-                        title="Hapus bookmark"
-                      >
-                        <Star
-                          className={cn(
-                            "fill-slate-600 text-slate-600 dark:fill-slate-400 dark:text-slate-400",
-                          )}
-                        />
-                      </Button>
-                    )}
-                    {isLastRead
-                      ? (
-                        <div
-                          className={cn(
-                            buttonVariants({ variant: "secondary" }),
-                            "h-8 px-2 text-xs gap-1",
-                          )}
-                        >
-                          <Bookmark
-                            className={cn(
-                              "fill-slate-600 text-slate-600 dark:fill-slate-400 dark:text-slate-400",
-                            )}
-                          />
-                          <span className="truncate max-w-[150px]">
-                            {relativeTime}
-                          </span>
-                        </div>
-                      )
-                      : <div />}
-                  </div>
-
-                  <TextArab
-                    text={item.ta}
-                    ayah={Number(item.vk.split(":")[1])}
-                  />
-
-                  {item?.tt && opts?.showTranslation === "on" && (
-                    <React.Fragment>
-                      <div
-                        className={cn(
-                          "text-slate-800 dark:text-slate-200 px-2 text-justify max-w-none  whitespace-pre-wrap",
-                          opts?.fontTranslationSize,
-                        )}
-                      >
-                        {item.tt} ({item.vk.split(":")[1]})
-                      </div>
-                      <div className="hidden sm:flex items-center text-xs text-muted-foreground px-2 mt-0.5">
-                        <Minus strokeWidth={1} />
-                        {translationSource?.name}
-                      </div>
-                    </React.Fragment>
-                  )}
-
-                  {item?.ttf && opts?.showTafsir === "on" && (
-                    <React.Fragment>
-                      <details
-                        className={cn(
-                          "group [&_summary::-webkit-details-marker]:hidden  open:bg-muted/50 open:ring-1 ring-border rounded-md mt-2",
-                        )}
-                      >
-                        <summary className="flex gap-3 cursor-pointer items-center outline-hidden w-full justify-start group-open:bg-muted group-open:mb-2 px-2 py-1.5 rounded-t-md group-open:border-b group-open:px-4">
-                          <div className="font-medium text-sm prose dark:prose-invert">
-                            Tafsir ayat {item.vk.split(":")[1]}
-                          </div>
-                          <svg
-                            className="size-4 shrink-0 transition duration-300 group-open:-rotate-180 opacity-80"
-                            xmlns="http://www.w3.org/2000/svg"
-                            fill="none"
-                            viewBox="0 0 24 24"
-                            stroke="currentColor"
-                          >
-                            <path
-                              strokeLinecap="round"
-                              strokeLinejoin="round"
-                              strokeWidth="2"
-                              d="M19 9l-7 7-7-7"
-                            />
-                          </svg>
-                        </summary>
-
-                        <div className="font-normal text-start group-open:animate-slide-top group-open:[animation-fill-mode:backwards] group-open:transition-all group-open:duration-300 px-4">
-                          <div className="hidden sm:flex items-center text-xs text-muted-foreground mt-0.5">
-                            <Minus strokeWidth={1} />
-                            {tafsirSource?.title}
-                          </div>
-                          <div
-                            className={cn(
-                              "prose dark:prose-invert max-w-none whitespace-pre-wrap my-2 text-justify",
-                              opts?.fontTranslationSize,
-                            )}
-                          >
-                            {item?.ttf
-                              ? item.ttf
-                              : "Tidak ada deskripsi surat ini"}
-                          </div>
-                          <div className="text-muted-foreground text-xs py-2">
-                            Sumber:
-                            <br />
-                            <div className="flex flex-wrap items-center justify-between">
-                              <span>{tafsirSource?.name}</span>
-                              <span>{tafsirSource?.href}</span>
-                            </div>
-                          </div>
-                        </div>
-                      </details>
-                    </React.Fragment>
-                  )}
-                </div>
               </div>
-            );
-          })}
+            </div>
+          );
+        })}
 
-          {children2}
-        </div>
+        {children2}
       </div>
       {/*<ScrollToFirstIndex handler={scrollToFirstAyat} container={parentRef} />*/}
       <ScrollTopButton />

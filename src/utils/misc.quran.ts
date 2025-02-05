@@ -1,5 +1,10 @@
 import listSurah from "#/src/constants/list-surah.json";
-import { juzPages, pageAyahs } from "#/src/constants/quran-metadata.ts";
+import {
+  INDEXAYAHBYSURAH,
+  juzPages,
+  pageAyahs,
+  surahPages,
+} from "#/src/constants/quran-metadata.ts";
 import { SOURCE_TRANSLATIONS } from "#src/constants/sources";
 import { getCache, setCache } from "#src/utils/cache-client.ts";
 import ky from "ky";
@@ -158,12 +163,104 @@ export const getSurahByPage = async (
     td: translationSource === "muntakhab" ? transDescMap.get(verse.i) : null, // Ambil translation dari Map
     ttf: tafsirMap.get(verse.i) || null, // Ambil tafsir dari Map
   }));
+  console.warn("DEBUGPRINT[7]: misc.quran.ts:168: ayah=", ayah);
 
   const returnData = {
     ayah,
     page: pageData,
     surah: surahData,
     juz: juzIndex + 1,
+    bismillah: verses[0].t,
+    translationSource: translation
+      ? SOURCE_TRANSLATIONS.find((d) => d.id === translationSource)
+      : null,
+    tafsirSource: showTafsir ? SOURCE_TRANSLATIONS[3] : null,
+  };
+
+  return returnData;
+};
+
+export interface GetSurahByIndex {
+  index: number;
+  style: "indopak" | "kemenag" | "uthmani" | "imlaei" | "uthmani-simple";
+  translation?: boolean;
+  translationSource?: string;
+  showTafsir?: boolean;
+}
+
+/**
+ * Get data Quran berdasarkan index surat
+ * @param index surat Quran (misal: 1 - 114)
+ * @param style gaya tulisan "indopak" | "kemenag" | "uthmani" | "imlaei" | "uthmani_simple";
+ * @param translation Jika `true`, return ditambahkan data translation
+ * @returns Object Data array ayah beserta metadata quran
+ */
+export const getSurahByIndex = async (
+  {
+    index,
+    style,
+    translation = false,
+    translationSource = "kemenag",
+    showTafsir = false,
+  }: GetSurahByIndex,
+) => {
+  let initial_page = index;
+  // 🔥 Cek apakah `index` berada dalam rentang 1-64
+  if (index < 1 || index > 604) {
+    console.warn(
+      `Invalid index number: ${index}. Must be between 1 and 114.`,
+    );
+    initial_page = 1;
+  }
+  // const pageData = pageAyahs.find(p => p.p === initial_page);
+  // if (!pageData) throw new Error("Not Found");
+
+  // const startPage = pageAyahs.find(p => p.p === startIndex.s);
+  // const endPage = pageAyahs.find(p => p.p === startIndex.e);
+  // // 🔹 Fetch Quran & Translation secara parallel untuk mempercepat
+  const [verses, trans, tafsir] = await Promise.all([
+    getDataStyle(style),
+    translation ? getTranslation(translationSource) : Promise.resolve([]),
+    showTafsir ? getTranslation("tafsir-kemenag") : Promise.resolve([]),
+  ]);
+  //
+  const surahData = listSurah.find(d => d.index == index);
+  console.warn("DEBUGPRINT[10]: misc.quran.ts:227: surahData=", surahData);
+
+  const pageData = pageAyahs.find(p => p.p === surahData?.meta.page.start);
+  const juzIndex = surahData?.meta.juz.start;
+  //
+  // 🔹 Filter ayat hanya untuk halaman tertentu
+  const verseData = verses.filter(verse =>
+    verse.i >= INDEXAYAHBYSURAH[index - 1] &&
+    verse.i <= (INDEXAYAHBYSURAH[index] - 1)
+  );
+
+  // 🔹 Filter translation hanya jika tersedia
+  const transMap = new Map(trans.map(t => [t.i, t.t])); // Optimasi pencarian dengan Map()
+  const tafsirMap = new Map(tafsir.map(t => [t.i, t.t])); // Optimasi pencarian dengan Map()
+  const transDescMap = new Map(trans.map(t => [t.i, t.d]));
+
+  // 🔥 Merge ayat dengan translation (jika translation tersedia)
+  // i : index
+  // vk : verse key
+  // ta : text arab
+  // tt : text translation
+
+  const ayah = verseData.map(verse => ({
+    i: verse.i,
+    vk: verse.vk,
+    ta: verse.t,
+    tt: transMap.get(verse.i) || null, // Ambil translation dari Map
+    td: translationSource === "muntakhab" ? transDescMap.get(verse.i) : null, // Ambil translation dari Map
+    ttf: tafsirMap.get(verse.i) || null, // Ambil tafsir dari Map
+  }));
+
+  const returnData = {
+    ayah,
+    page: pageData,
+    surah: surahData ? [surahData] : [],
+    juz: juzIndex,
     bismillah: verses[0].t,
     translationSource: translation
       ? SOURCE_TRANSLATIONS.find((d) => d.id === translationSource)

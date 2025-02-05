@@ -291,6 +291,18 @@ function SurahView() {
       {/*46px*/}
       <div className="surah-index">
         <Link
+          to="/muslim/quran/search"
+          className="p-3 flex items-center justify-center gap-x-2 bg-muted/50 text-sm [&_svg]:size-4 font-medium"
+        >
+          <SearchIcon /> Pencarian kata terjemahan{" "}
+          <Badge>
+            Baru
+          </Badge>
+        </Link>
+      </div>
+      {
+        /*<div className="surah-index">
+        <Link
           to="/muslim/quran-word-by-word"
           className="p-3 flex items-center justify-center gap-x-2 bg-muted/50 text-sm [&_svg]:size-4 font-medium"
         >
@@ -299,7 +311,8 @@ function SurahView() {
             Baru
           </Badge>
         </Link>
-      </div>
+      </div>*/
+      }
       {/*<Example />*/}
     </>
   );

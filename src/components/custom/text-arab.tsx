@@ -19,7 +19,7 @@ const TextArab = (
     <div
       dir="rtl"
       className={cn(
-        "p-3 font-kemenag break-normal",
+        "p-3 font-kemenag",
         opts?.fontStyle,
         className,
       )}

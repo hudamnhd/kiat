@@ -1,7 +1,7 @@
 export const SOURCE_TRANSLATIONS = [
   {
     id: "muntakhab",
-    title: "Quraish Shihab",
+    title: "Tafsir Muntakhab",
     name: "Muhammad Quraish Shihab et al",
     href: "https://tanzil.net/download",
   },

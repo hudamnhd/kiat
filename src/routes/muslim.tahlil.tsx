@@ -43,7 +43,7 @@ export function Component() {
               </div>
             </div>
             {opts?.showTranslation === "on" && (
-              <div className="translation-text pt-2 prose dark:prose-invert max-w-none whitespace-pre-wrap leading-6 border-t">
+              <div className="translation-text pt-2 prose dark:prose-invert max-w-none whitespace-pre-line leading-6 border-t">
                 {translateContent.replace(
                   /(.{150,}?[\.\!\?])\s+/g,
                   "$1\n\n",

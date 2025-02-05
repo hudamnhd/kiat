@@ -67,6 +67,9 @@ export function SettingsDisplay() {
   const [translationSource, setSourceTranslation] = React.useState<string>(
     opts?.translationSource || "kemenag",
   );
+  // const [modeQuran, setModeQuran] = React.useState<string>(
+  //   opts?.modeQuran || "page",
+  // );
   let showTranslation = opts?.showTranslation === "on" ? true : false; // Default ke "Normal"
   let showLatin = opts?.showLatin === "on" ? true : false; // Default ke "Normal"
   let showTafsir = opts?.showTafsir === "on" ? true : false; // Default ke "Normal"
@@ -127,7 +130,7 @@ export function SettingsDisplay() {
                         {opts?.showTranslation === "on" && (
                           <div
                             className={cn(
-                              "text-slate-700 dark:text-slate-300 px-2 text-justify max-w-none  whitespace-pre-wrap mb-2",
+                              "text-slate-700 dark:text-slate-300 px-2 text-justify max-w-none whitespace-pre-line mb-2",
                               fontTransSize,
                             )}
                           >
@@ -357,6 +360,36 @@ export function SettingsDisplay() {
                         </div>
                       </div>
                     </div>
+                    {
+                      /*<Select
+                      className="w-full"
+                      placeholder="Pilih mode"
+                      name="modeQuran"
+                      selectedKey={modeQuran}
+                      onSelectionChange={(selected) =>
+                        setModeQuran(selected as string)}
+                    >
+                      <Label>Mode Tampilan</Label>
+                      <SelectTrigger>
+                        <SelectValue />
+                      </SelectTrigger>
+                      <SelectPopover>
+                        <SelectListBox>
+                          {["page", "surah"].map((option) => (
+                            <SelectItem
+                              key={option}
+                              id={option}
+                              textValue={option}
+                            >
+                              <span className="capitalize">
+                                {option}
+                              </span>
+                            </SelectItem>
+                          ))}
+                        </SelectListBox>
+                      </SelectPopover>
+                    </Select>*/
+                    }
                   </div>
                   <DialogFooter className="flex flex-col">
                     <Button

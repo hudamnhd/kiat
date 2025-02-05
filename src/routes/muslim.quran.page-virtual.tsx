@@ -556,7 +556,7 @@ const VirtualizedListSurah = ({ children }: { children: React.ReactNode }) => {
                       </summary>
 
                       <div className="font-normal text-start group-open:animate-slide-top group-open:[animation-fill-mode:backwards] group-open:transition-all group-open:duration-300">
-                        <div className="flex text-center items-center justify-center max-w-none my-1.5 font-semibold whitespace-pre-wrap text-accent-foreground border-b">
+                        <div className="flex text-center items-center justify-center max-w-none my-1.5 font-semibold whitespace-pre-line text-accent-foreground border-b">
                           <span className="">
                             Surat ke- {surat.index}
                           </span>
@@ -566,7 +566,7 @@ const VirtualizedListSurah = ({ children }: { children: React.ReactNode }) => {
 
                         <div
                           className={cn(
-                            "prose prose-zinc dark:prose-invert max-w-none whitespace-pre-wrap mb-2 text-justify",
+                            "prose prose-zinc dark:prose-invert max-w-none whitespace-pre-line mb-2 text-justify",
                             opts?.fontTranslationSize,
                           )}
                         >
@@ -715,7 +715,7 @@ const VirtualizedListSurah = ({ children }: { children: React.ReactNode }) => {
                     <React.Fragment>
                       <div
                         className={cn(
-                          "text-slate-800 dark:text-slate-200 px-2 text-justify max-w-none  whitespace-pre-wrap",
+                          "text-slate-800 dark:text-slate-200 px-2 text-justify max-w-none  whitespace-pre-line",
                           opts?.fontTranslationSize,
                         )}
                       >
@@ -762,7 +762,7 @@ const VirtualizedListSurah = ({ children }: { children: React.ReactNode }) => {
                           </div>
                           <div
                             className={cn(
-                              "prose dark:prose-invert max-w-none whitespace-pre-wrap my-2 text-justify",
+                              "prose dark:prose-invert max-w-none whitespace-pre-line my-2 text-justify",
                               opts?.fontTranslationSize,
                             )}
                           >

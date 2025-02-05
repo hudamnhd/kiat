@@ -7,6 +7,7 @@ export const DEFAULT_PREFS = {
   translationSource: "kemenag",
   showLatin: "on",
   showTafsir: "off",
+  modeQuran: "page",
 };
 
 export const FONT_WEIGHT = [
