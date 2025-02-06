@@ -24,6 +24,7 @@ import { hasMatch } from "fzy.js";
 import lodash from "lodash";
 import {
   ArrowRight,
+  BookOpenCheck,
   ChevronLeft,
   ChevronRight,
   Circle,
@@ -149,7 +150,18 @@ import {
 export function Component() {
   return (
     <React.Fragment>
-      <Header redirectTo="/muslim" title="Al Qur'an" />
+      <Header redirectTo="/muslim" title="Al Qur'an">
+        <Link
+          className={cn(
+            buttonVariants({ size: "icon", variant: "ghost" }),
+            "prose-none [&_svg]:size-4",
+          )}
+          to={`/muslim/quran-hafalan/1`}
+          title="Quran mirip mushaf"
+        >
+          <BookOpenCheck />
+        </Link>
+      </Header>
       <React.Fragment>
         <Tabs className="w-full">
           <TabList

@@ -112,6 +112,11 @@ export const router = createBrowserRouter([
             lazy: lazyWrapper(() => import("./routes/muslim.quran-v2.page")),
           },
           {
+            path: "/muslim/quran-hafalan/:id",
+            HydrateFallback: Loader,
+            lazy: lazyWrapper(() => import("./routes/muslim.quran.hafalan")),
+          },
+          {
             path: "/muslim/quran",
             children: [
               {

@@ -33,7 +33,15 @@ const TextArab = (
       {text}
 
       {ayah && (
-        <span className="text-right text-3xl font-uthmani-v2-reguler mr-1.5">
+        <span
+          style={{
+            fontWeight: opts?.fontWeight,
+            fontSize: prefsOption?.fontSize || "1.5rem",
+            lineHeight: prefsOption?.lineHeight ||
+              "3.5rem",
+          }}
+          className="text-right  font-uthmani-v2-reguler mr-1.5"
+        >
           ‎﴿{toArabicNumber(ayah)}﴾‏
         </span>
       )}

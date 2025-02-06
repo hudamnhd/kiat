@@ -163,7 +163,6 @@ export const getSurahByPage = async (
     td: translationSource === "muntakhab" ? transDescMap.get(verse.i) : null, // Ambil translation dari Map
     ttf: tafsirMap.get(verse.i) || null, // Ambil tafsir dari Map
   }));
-  console.warn("DEBUGPRINT[7]: misc.quran.ts:168: ayah=", ayah);
 
   const returnData = {
     ayah,

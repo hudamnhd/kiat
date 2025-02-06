@@ -110,9 +110,9 @@
 */
 @layer base {
 	:root {
-		--theme-sephia: initial;
+		--theme-light: initial;
 		--theme-dark: ;
-        --theme-light: ;
+        --theme-sephia: ;
 		color-scheme: light dark sephia;
 	}
 

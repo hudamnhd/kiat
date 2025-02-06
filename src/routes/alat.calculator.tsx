@@ -1,9 +1,7 @@
 import { Header } from "#src/components/custom/header";
 import { Button, buttonVariants } from "#src/components/ui/button";
-import { Input } from "#src/components/ui/input";
 import {
   ChevronDown,
-  ChevronLeft,
   Delete,
   Equal,
   History,
@@ -14,7 +12,6 @@ import {
 } from "lucide-react";
 import React, { useState } from "react";
 import toast from "react-hot-toast";
-import { Link } from "react-router";
 
 import {
   DialogContent,
@@ -527,12 +524,12 @@ export const Component = () => {
 
                     <Button
                       size="icon"
-                      variant="outline"
+                      variant="ghost"
                       className="h-8"
                       onPress={() => {
                         let a;
                         do {
-                          a = window.prompt(`Ganti ${item}`, "");
+                          a = window.prompt(`Ganti ${item}`, item);
                           if (a === null) break;
                         } while (!/^\d+$/.test(a)); // Hanya menerima angka positif (tanpa titik atau koma)
 
@@ -568,16 +565,25 @@ export const Component = () => {
                     {/*{formatRupiah(evaluateInput(currentInput))}*/}
                     {formatRupiah(evaluateInputSequential(currentInput))}
                   </span>
-                  {lastOperator !== "" && (
-                    <div
-                      className={cn(
-                        buttonVariants({ size: "icon" }),
-                        "h-8 w-8 text-2xl pb-0.5",
-                      )}
-                    >
-                      {lastOperator}
-                    </div>
-                  )}
+                  {lastOperator !== ""
+                    ? (
+                      <div
+                        className={cn(
+                          buttonVariants({ size: "icon" }),
+                          "h-8 w-8 text-2xl pb-0.5",
+                        )}
+                      >
+                        {lastOperator}
+                      </div>
+                    )
+                    : (
+                      <div
+                        className={cn(
+                          "h-8 w-8 text-2xl pb-0.5",
+                        )}
+                      >
+                      </div>
+                    )}
                 </div>
               </div>
             </div>
