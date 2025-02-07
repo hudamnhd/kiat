@@ -351,7 +351,13 @@ const SearchResult = React.memo(
             );
           } else {
             return (
-              <div className="py-6 text-center text-sm h-[calc(100vh-290px)] border-b flex items-center justify-center">
+              <div
+                style={{
+                  height: `calc(100vh - ${getTotalHeight()}px)`,
+                  overflow: "auto",
+                }}
+                className="py-6 text-center text-sm border-b flex items-center justify-center"
+              >
                 Surat tidak ditemukan.
               </div>
             );

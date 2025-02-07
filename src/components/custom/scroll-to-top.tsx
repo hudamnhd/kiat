@@ -8,11 +8,22 @@ export const ScrollTopButton = () => {
 
   const handleVisibleButton = () => {
     const shouldShow = window.scrollY > window.innerHeight * 0.75;
+    const paginationPage = document.getElementById("pagination-page");
     if (parentRef.current) {
       if (shouldShow) {
-        parentRef.current.style.display = "flex";
+        parentRef.current.style.display = "block";
+
+        if (paginationPage instanceof HTMLDivElement) {
+          paginationPage.classList.remove("py-5");
+          paginationPage?.classList.add("pt-5");
+        }
       } else {
         parentRef.current.style.display = "none";
+
+        if (paginationPage instanceof HTMLDivElement) {
+          paginationPage.classList.remove("pt-5");
+          paginationPage?.classList.add("py-5");
+        }
       }
     }
   };
@@ -33,7 +44,7 @@ export const ScrollTopButton = () => {
     <div
       ref={parentRef}
       className={cn(
-        "sticky inset-x-0 ml-auto w-fit -translate-x-3 z-20 bottom-3",
+        "sticky  ml-auto w-fit -translate-x-3 z-20 bottom-3",
       )}
       style={{ display: "none" }}
     >
@@ -82,7 +93,7 @@ export const ScrollToFirstIndex = ({
   return (
     <div
       className={cn(
-        "sticky inset-x-0 ml-auto w-fit -translate-x-5 z-10 bottom-0 -mt-11",
+        "sticky h-fit inset-x-0 ml-auto w-fit -translate-x-5 z-10 bottom-0 -mt-11",
         !showGoTop && "hidden",
         className,
       )}

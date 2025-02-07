@@ -1,8 +1,9 @@
+import listSurahWithJuz from "#/src/constants/list-surah.json";
 import { LayoutMain } from "#src/components/custom/layout.tsx";
 import { Button } from "#src/components/ui/button";
 import { Spinner } from "#src/components/ui/spinner";
 import PERINTAH from "#src/constants/perintah.json";
-import { pageAyahs } from "#src/constants/quran-metadata";
+import { juzPages, pageAyahs, surahPages } from "#src/constants/quran-metadata";
 import { SOURCE_TRANSLATIONS } from "#src/constants/sources";
 import { cn } from "#src/utils/misc";
 import {
@@ -11,6 +12,8 @@ import {
   toArabicNumber,
 } from "#src/utils/misc.quran.ts";
 import FlexSearch from "flexsearch";
+import Fuse from "fuse.js";
+import { hasMatch, score } from "fzy.js";
 import lodash from "lodash";
 import { Minus, MoveRight, Search as SearchIcon } from "lucide-react";
 import React from "react";
@@ -38,46 +41,111 @@ function formatList(text: string) {
     .replace(/Pendahuluan:+\s+/g, "\nPendahuluan:\n");
 }
 
+const TAGS = Array.from({ length: 604 }).map(
+  (_, i, a) => {
+    return {
+      i: a.length - i,
+      t: `Page ${a.length - i}`,
+      m: "page",
+    };
+  },
+);
 export async function Loader({ request }: LoaderFunctionArgs) {
   const url = new URL(request.url);
   const query = url.searchParams.get("query") || "";
   const source = url.searchParams.get("source") || "kemenag";
+  const juz = juzPages.map((d, i) => {
+    return {
+      i: i + 1,
+      t: `Juz' ${i + 1}`,
+      p: d.s,
+      m: "juz",
+    };
+  });
+
+  const surah = listSurahWithJuz.map((d) => {
+    return {
+      i: d.index,
+      t: "Surat " + d.name.id,
+      p: d.meta.page.start,
+      m: "surah",
+    };
+  });
+  // 🔥 Buat indeks FlexSearch untuk `vk` & `tr`
+  let merged = [...surah, ...juz, ...TAGS];
+  const fuse = new Fuse(merged, {
+    keys: ["title"], // Cari berdasarkan nama Surah
+    includeScore: false, // Tampilkan skor kemiripan
+  });
+  function searchQuran(query: string) {
+    // Jika query adalah angka, cari di nomor ayah, halaman, atau juz
+    if (!isNaN(Number(query))) {
+      const numQuery = Number(query);
+      return merged.filter(
+        (item) => item.i === numQuery,
+      ).slice(0, 5);
+    }
+
+    // Jika query adalah teks, gunakan Fuzzy Search
+    const fuzzyResults = fuse.search(query).map((result) => result.item).slice(
+      0,
+      5,
+    );
+    return fuzzyResults;
+  }
+  return searchQuran(query);
+  // 🔹 Tambahkan data ke indeks FlexSearch
+
+  // merged.forEach((verse, index) => {
+  //   INDEX.add(verse.title, `${verse.title}`);
+  // });
+  //
+  // // 🔥 Cari berdasarkan query
+  // const resultIds = INDEX.search(query, { limit: 10 });
+  //
+  // // 🔹 Konversi ID hasil pencarian menjadi objek ayat yang sesuai
+  // const results = resultIds.map((id) =>
+  //   merged.find((verse) => verse.title === id)
+  // )
+  //   .filter(Boolean);
+  //
+  // return { source, query, data: results };
 
   // 🔥 Ambil data ayat & terjemahan secara paralel
-  const [verses, trans] = await Promise.all([
-    getDataStyle("indopak"),
-    getTranslation(source),
-  ]);
-
-  // 🔹 Gabungkan data ayat dengan terjemahan (cek panjang array untuk keamanan)
-  const merged = verses.map((d, index) => ({
-    i: d.i,
-    ta: d.t,
-    vk: d.vk,
-    tt: trans[index]?.t || "", // Hindari error jika `trans[index]` undefined
-  }));
-
-  // 🔥 Buat indeks FlexSearch untuk `vk` & `tr`
-  const index = new FlexSearch.Index({
-    preset: "match",
-    tokenize: "strict",
-    cache: true,
-    resolution: 9,
-  });
-
-  // 🔹 Tambahkan data ke indeks FlexSearch
-  merged.forEach((verse) => {
-    index.add(verse.i, `${verse.vk} ${verse.tt}`);
-  });
-
-  // 🔥 Cari berdasarkan query
-  const resultIds = index.search(query, { limit: 10 });
-
-  // 🔹 Konversi ID hasil pencarian menjadi objek ayat yang sesuai
-  const results = resultIds.map((id) => merged.find((verse) => verse.i === id))
-    .filter(Boolean);
-
-  return { source, query, data: results };
+  // const [verses, trans] = await Promise.all([
+  //   getDataStyle("indopak"),
+  //   getTranslation(source),
+  // ]);
+  //
+  // // 🔹 Gabungkan data ayat dengan terjemahan (cek panjang array untuk keamanan)
+  // const merged = verses.map((d, index) => ({
+  //   i: d.i,
+  //   ta: d.t,
+  //   vk: d.vk,
+  //   tt: trans[index]?.t || "", // Hindari error jika `trans[index]` undefined
+  // }));
+  //
+  // // 🔥 Buat indeks FlexSearch untuk `vk` & `tr`
+  // const index = new FlexSearch.Index({
+  //   preset: "match",
+  //   tokenize: "strict",
+  //   cache: true,
+  //   resolution: 9,
+  // });
+  //
+  // // 🔹 Tambahkan data ke indeks FlexSearch
+  // merged.forEach((verse) => {
+  //   index.add(verse.i, `${verse.vk} ${verse.tt}`);
+  // });
+  //
+  // // 🔥 Cari berdasarkan query
+  // const resultIds = index.search(query, { limit: 10 });
+  //
+  // // 🔹 Konversi ID hasil pencarian menjadi objek ayat yang sesuai
+  // const results = resultIds.map((id) => merged.find((verse) => verse.i === id))
+  //   .filter(Boolean);
+  //
+  // return { source, query, data: results };
 }
 
 import { Input } from "#src/components/ui/input";
@@ -108,7 +176,7 @@ export function Component() {
   return (
     <LayoutMain>
       <FzyTest />
-      <ResultSearch />
+      {/*<ResultSearch />*/}
       {
         /*<DownloadComponent name="translation_id" data={test} />
       {test && test.length}
@@ -254,9 +322,13 @@ const FzyTest = () => {
           </div>
         </div>
       </div>
-      {input.length === 0 && (
+
+      <pre className="text-sm">{JSON.stringify(fetcher.data, null, 2)}</pre>
+      {
+        /*{input.length === 0 && (
         <SuggestionSearh handler={handleInputChangeValue} />
-      )}
+      )}*/
+      }
     </React.Fragment>
   );
 };

@@ -7,6 +7,7 @@ import React from "react";
 import { Link, useLoaderData, useRouteLoaderData } from "react-router";
 import type { Loader as muslimLoader } from "./muslim.data";
 
+import { TextAyah } from "#src/components/custom/text-arab.tsx";
 import { Loader } from "./muslim.quran.page";
 export { Loader } from "./muslim.quran.page";
 
@@ -20,6 +21,9 @@ const toArabicNumber = (number: number) => {
     .join("");
 };
 
+const handleScrollUp = () => {
+  window?.scrollTo({ left: 0, top: 0, behavior: "smooth" });
+};
 export function Component() {
   const { juz, surah, ayah: items, page, bismillah } = useLoaderData<
     typeof Loader
@@ -33,12 +37,19 @@ export function Component() {
   const title = `Hal ${page.p} - Juz' ${juz}`;
   const subtitle = surat.name.id;
 
+  React.useEffect(() => {
+    handleScrollUp();
+  }, [page.p]);
+
   return (
     <React.Fragment>
       <Header redirectTo="/muslim/quran" title={title} subtitle={subtitle} />
 
       <div
-        className="rtl:text-justify border-b px-4 pt-1 pb-4"
+        className={cn(
+          "rtl:text-justify border-b px-4 pt-1 pb-4",
+          opts?.fontStyle === "font-kemenag" && "px-6",
+        )}
         dir="rtl"
       >
         {items.map((dt) => {
@@ -68,7 +79,9 @@ export function Component() {
                             "3.5rem",
                         }}
                       >
-                        {bismillah}
+                        {opts?.fontStyle === "font-indopak"
+                          ? bismillah.slice(0, 40)
+                          : bismillah}
                       </div>
                     </div>
                   )}
@@ -90,10 +103,7 @@ export function Component() {
                     )}
                   >
                     {dt.ta}
-                    <div className="inline-flex text-right text-3xl font-uthmani-v2-reguler mr-1.5">
-                      ‎﴿{toArabicNumber(Number(dt.vk.split(":")[1]))}﴾‏
-                    </div>
-                    {" "}
+                    <TextAyah ayah={Number(ayah_index)} />
                   </div>
                 )}
             </React.Fragment>

@@ -31,6 +31,7 @@ import {
   useRouteLoaderData,
 } from "react-router";
 import type { Loader as muslimLoader } from "./muslim.data";
+import { CommandNavigation } from "./muslim.quran.navigation";
 
 export async function Loader({ params, request }: LoaderFunctionArgs) {
   const url = new URL(request.url);
@@ -329,45 +330,6 @@ const toArabicNumber = (number: number) => {
     .join("");
 };
 
-function Command() {
-  return (
-    <KeyboardModalTrigger keyboardShortcut="/">
-      <ModalOverlay
-        isDismissable
-        className={({ isEntering, isExiting }) =>
-          cn(
-            "fixed inset-0 z-50 bg-black/80",
-            isEntering ? "animate-in fade-in duration-200 ease-out" : "",
-            isExiting ? "animate-out fade-out duration-200 ease-in" : "",
-          )}
-      >
-        <Modal
-          className={({ isEntering, isExiting }) =>
-            cn(
-              "fixed sm:left-[50%] sm:top-[50%] z-50 w-full sm:max-w-lg sm:translate-x-[-50%] sm:translate-y-[-50%] border-b sm:border-none bg-background sm:rounded-md inset-x-0 top-0 shadow-xl bg-background p-2 sm:p-0",
-              isEntering ? "animate-in slide-in-from-top duration-200" : "",
-              isExiting ? "animate-out slide-out-to-top duration-200" : "",
-            )}
-        >
-          <Dialog
-            aria-label="Command Menu"
-            role="alertdialog"
-            className="outline-hidden relative"
-          >
-            {({ close }) => (
-              <>
-                <div className="rounded-md">
-                  <SurahView />
-                  <CloseModal close={close} />
-                </div>
-              </>
-            )}
-          </Dialog>
-        </Modal>
-      </ModalOverlay>
-    </KeyboardModalTrigger>
-  );
-}
 export function Component() {
   const { page, surah } = useLoaderData<typeof Loader>();
 
@@ -406,7 +368,7 @@ const VirtualizedListSurah = () => {
         title={title}
         subtitle={subtitle}
       >
-        <Command />
+        <CommandNavigation />
       </Header>
       <div
         className="border-b px-5 pt-2 pb-4"
@@ -430,7 +392,9 @@ const VirtualizedListSurah = () => {
                 <React.Fragment>
                   {surah_index !== "9" && (
                     <TextArab
-                      text={bismillah}
+                      text={opts?.fontStyle === "font-indopak"
+                        ? bismillah.slice(0, 40)
+                        : bismillah}
                       className="text-center w-full bg-muted/30 border rounded-md p-1 m-1"
                     />
                   )}
@@ -520,63 +484,6 @@ const VirtualizedListSurah = () => {
     </React.Fragment>
   );
 };
-
-import {
-  Dialog,
-  Modal,
-  ModalContext,
-  ModalOverlay,
-} from "react-aria-components";
-
-interface KeyboardModalTriggerProps {
-  keyboardShortcut: string;
-  children: React.ReactNode;
-}
-
-function KeyboardModalTrigger(props: KeyboardModalTriggerProps) {
-  let [isOpen, setOpen] = React.useState(false);
-
-  React.useEffect(() => {
-    const onKeyDown = (e: KeyboardEvent) => {
-      if ((e.key === "k" && (e.metaKey || e.ctrlKey)) || e.key === "/") {
-        if (
-          (e.target instanceof HTMLElement && e.target.isContentEditable) ||
-          e.target instanceof HTMLInputElement ||
-          e.target instanceof HTMLTextAreaElement ||
-          e.target instanceof HTMLSelectElement
-        ) {
-          return;
-        }
-
-        e.preventDefault();
-        setOpen((open) => !open);
-      }
-    };
-
-    document.addEventListener("keydown", onKeyDown);
-    return () => document.removeEventListener("keydown", onKeyDown);
-  }, [props.keyboardShortcut]);
-
-  return (
-    <ModalContext.Provider value={{ isOpen, onOpenChange: setOpen }}>
-      <Button
-        variant="ghost"
-        className={cn(
-          "focus-visible:ring-0 sm:border outline-hidden relative w-full justify-start rounded-md font-normal text-muted-foreground shadow-none sm:pr-12 w-9 px-2 sm:w-36 sm:text-sm text-base",
-        )}
-        onPress={() => setOpen(true)}
-        {...props}
-      >
-        <SearchIcon className="inline-flex sm:hidden text-primary" />
-        <span className="hidden sm:inline-flex">Cari surat...</span>
-        <kbd className="pointer-events-none absolute right-[0.3rem] top-[0.50rem] hidden h-5 select-none items-center gap-1 rounded border px-1.5 font-mono text-[10px] font-medium opacity-100 sm:flex">
-          <span className="text-sm">⌘</span>K
-        </kbd>
-      </Button>
-      {props.children}
-    </ModalContext.Provider>
-  );
-}
 
 function smartSlice(text: string, length: number, last?: boolean) {
   if (text.length <= length * 2) return text;

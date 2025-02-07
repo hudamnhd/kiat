@@ -43,22 +43,22 @@ export const FONT_SIZE = [
   {
     label: "text-3xl",
     fontSize: "1.875rem",
-    lineHeight: "4rem",
+    lineHeight: "4.2rem",
   },
   {
     label: "text-4xl",
     fontSize: "2.25rem",
-    lineHeight: "5rem",
+    lineHeight: "5.5rem",
   },
   {
     label: "text-5xl",
     fontSize: "3rem",
-    lineHeight: "6.5rem",
+    lineHeight: "7rem",
   },
   {
     label: "text-6xl",
     fontSize: "3.75rem",
-    lineHeight: "7.5rem",
+    lineHeight: "8rem",
   },
 ];
 

@@ -1,11 +1,15 @@
-import { Header } from "#src/components/custom/header";
+import { LayoutMain } from "#src/components/custom/layout.tsx";
 import { Button } from "#src/components/ui/button";
 import { Spinner } from "#src/components/ui/spinner";
 import PERINTAH from "#src/constants/perintah.json";
 import { pageAyahs } from "#src/constants/quran-metadata";
 import { SOURCE_TRANSLATIONS } from "#src/constants/sources";
 import { cn } from "#src/utils/misc";
-import { getDataStyle, getTranslation } from "#src/utils/misc.quran.ts";
+import {
+  getDataStyle,
+  getTranslation,
+  toArabicNumber,
+} from "#src/utils/misc.quran.ts";
 import FlexSearch from "flexsearch";
 import lodash from "lodash";
 import { Minus, MoveRight, Search as SearchIcon } from "lucide-react";
@@ -15,10 +19,24 @@ import { useFetcher, useNavigate } from "react-router";
 
 type Ayah = {
   i: number;
-  ta: string;
   vk: string;
-  tt: string;
+  t: string;
 };
+
+function formatList(text: string) {
+  return text
+    .replace(/\--(.*?)--/g, " ($1) ")
+    .replace(/a+\.+\s+s+./g, "a.s.")
+    .replace(/\[\[(.*?)\]\]/g, "$1")
+    .replace(
+      /([;:.])+\s+(\d|\w)+[.]\s+([A-Z|a-z])/g,
+      "$1\n\n$2. $3",
+    )
+    .replace(/(.{200,}?[\.\!\?])\s+/g, "$1\n\n")
+    .replace(/(\d+)\s*~\s*(.*?)\s*~\s+/g, "($1) $2.\n")
+    .replace(/(\d+)\s*~\s*(.*?)\s*~/g, "($1) $2")
+    .replace(/Pendahuluan:+\s+/g, "\nPendahuluan:\n");
+}
 
 export async function Loader({ request }: LoaderFunctionArgs) {
   const url = new URL(request.url);
@@ -56,29 +74,74 @@ export async function Loader({ request }: LoaderFunctionArgs) {
   const resultIds = index.search(query, { limit: 10 });
 
   // 🔹 Konversi ID hasil pencarian menjadi objek ayat yang sesuai
+  const results = resultIds.map((id) => merged.find((verse) => verse.i === id))
+    .filter(Boolean);
 
-  const results: Ayah[] = resultIds.reduce((acc, id) => {
-    const found = merged.find((verse) => verse.i === id);
-    if (found) (acc as Ayah[]).push(found);
-    return acc;
-  }, []);
   return { source, query, data: results };
 }
 
+import { Input } from "#src/components/ui/input";
+import { Label } from "#src/components/ui/label";
 import { ChevronDown } from "lucide-react";
 import { useId } from "react";
 
 export function Component() {
+  const [test, settest] = React.useState(null);
+  // React.useEffect(() => {
+  //   const getSurahByPage = async () => {
+  //     const t = await getTranslation();
+  //     const m = t.map((d) => {
+  //       const vk = d.vk.split(":")[1];
+  //       return {
+  //         i: d.i,
+  //         vk: d.vk,
+  //         ...(vk == "1" ? { d: formatList(d.d) } : {}),
+  //         t: d.t.replace(/\--(.*?)--/g, " ($1) "),
+  //       };
+  //     });
+  //     settest(m);
+  //   };
+  //
+  //   getSurahByPage();
+  // }, []);
+
   return (
-    <>
-      <Header redirectTo="/muslim/quran" title="Pencarian" />
-      <SearchBox />
+    <LayoutMain>
+      <FzyTest />
       <ResultSearch />
-    </>
+      {
+        /*<DownloadComponent name="translation_id" data={test} />
+      {test && test.length}
+      <pre className="text-sm">{JSON.stringify(test, null, 2)}</pre>*/
+      }
+      {
+        /*{test &&
+        test.map((d) => (
+          <div className="border-b prose prose-xl dark:prose-invert max-w-none  whitespace-pre-line mb-2">
+            {d.vk}
+            {d.d}
+          </div>
+        ))}*/
+      }
+      {
+        /*<div className="grid grid-cols-2 gap-10">
+        <div className="font-indopak text-7xl">
+          {Indopak.verses[0].text_indopak}
+        </div>
+        <div className="font-uthmani-hafs text-7xl">
+          {Uthmani.verses[0].text_uthmani}
+        </div>
+        <div className="font-uthmani-hafs text-7xl">
+          {Imlaei.verses[0].text_imlaei}
+        </div>
+      </div>*/
+      }
+      {/*<pre className="font-lpmq text-xl p-10">{JSON.stringify(getVersesByPage(1), null, 2)}</pre>*/}
+    </LayoutMain>
   );
 }
 
-const SearchBox = () => {
+const FzyTest = () => {
   const fetcher = useFetcher({ key: "search-translation" });
 
   const id = useId();
@@ -96,7 +159,7 @@ const SearchBox = () => {
 
         fetcher.submit(
           { query: value, source },
-          { method: "get", action: "/muslim/quran/search" },
+          { method: "get", action: "/terjemahan" },
         );
       }, 500),
     [],
@@ -123,7 +186,8 @@ const SearchBox = () => {
   return (
     <React.Fragment>
       <div className="space-y-2">
-        <div className="flex sm:flex-row flex-col border-b divide-x divide-y sm:divide-y-0">
+        <Label className="px-2 pt-2" htmlFor={id}>Pencarian</Label>
+        <div className="flex sm:flex-row flex-col border-y divide-x divide-y sm:divide-y-0">
           <div className="relative flex-1">
             <input
               id={id}
@@ -216,7 +280,7 @@ const SuggestionSearh = (
           https://smamsa.sch.id/2019/07/04/100-perintah-allah-pada-manusia-yang-tercatat-di-dalam-quran/
         </a>
       </div>
-      <div className="text-start p-3 border-y">
+      <div className="max-h-[90%] overflow-y-auto text-start bg-muted/30 p-3 border-y">
         {PERINTAH.map((d, index) => (
           <div
             key={index}
@@ -232,13 +296,12 @@ const SuggestionSearh = (
     </div>
   );
 };
-
 const ResultSearch = () => {
-  const fetcher = useFetcher<typeof Loader>({ key: "search-translation" });
+  const fetcher = useFetcher({ key: "search-translation" });
   const navigate = useNavigate();
   const perintahKey = PERINTAH.find((d) => d.vk === fetcher.data?.query);
   return (
-    <div className="divide-y">
+    <div className="divide-y h-[calc(100vh-45px)] overflow-y-auto">
       {fetcher.state !== "idle"
         ? (
           <div className="absolute h-full w-full flex items-center justify-center bottom-0 left-1/2 transform -translate-x-1/2  rounded-xl">
@@ -247,7 +310,7 @@ const ResultSearch = () => {
             </div>
           </div>
         )
-        : (fetcher.data?.data?.length ?? 0) > 0
+        : fetcher.data?.data?.length > 0
         ? (
           <div className="my-1 pb-1">
             <div className="flex items-center justify-center px-3 bg-muted text-slate-600 dark:text-slate-400  text-sm py-1 border-b">
@@ -286,9 +349,9 @@ const ResultSearch = () => {
           </div>
         )
         : null}
-      {(fetcher.data?.data?.length ?? 0) > 0 &&
+      {fetcher.data?.data?.length > 0 &&
         fetcher.data?.data?.map((item, index) => (
-          <div key={index} className="p-3 last:border-b">
+          <div key={index} className="p-3">
             <Button
               variant="secondary"
               aria-label="Menu"
@@ -307,6 +370,7 @@ const ResultSearch = () => {
                     `/muslim/quran/${page.p}?surah=${surahIndex}&ayah=${ayahIndex}`,
                   );
                 }
+                console.warn("DEBUGPRINT[11]: terjemahan.tsx:360: page=", page);
               }}
               className="h-8 gap-1 tracking-wide font-bold"
             >
@@ -317,10 +381,13 @@ const ResultSearch = () => {
               <div
                 className={cn(
                   "my-3 ",
-                  "font-indopak text-3xl sm:text-4xl leading-12 sm:leading-14",
+                  "font-indopak text-3xl leading-12",
                 )}
               >
                 {item.ta}
+                <span className="text-right text-3xl font-uthmani-v2-reguler mr-1.5">
+                  ‎﴿{toArabicNumber(Number(item.vk.split(":")[1]))}﴾‏
+                </span>
               </div>
             </div>
 
@@ -339,3 +406,108 @@ const ResultSearch = () => {
     </div>
   );
 };
+
+const Walpaper = () => {
+  return (
+    <div className="flex items-center justify-center h-screen w-screen">
+      <div className="text-8xl font-medium bg-black text-white px-2 rounded-lg">
+        K
+      </div>
+    </div>
+  );
+};
+
+const DownloadComponent = ({ data, name }) => {
+  const downloadJson = () => {
+    const jsonData = JSON.stringify(data, null, 2); // Format JSON dengan indentasi 2
+    const blob = new Blob([jsonData], { type: "application/json" }); // Buat Blob
+    const url = URL.createObjectURL(blob); // Buat URL dari Blob
+
+    // Buat elemen <a> untuk trigger download
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = `${name}.json`; // Nama file yang akan didownload
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+
+    // URL.revokeObjectURL(url); // Hapus URL dari memori setelah download
+  };
+
+  return <button onClick={downloadJson}>Download {name} JSON</button>;
+};
+
+// this history i'm learned regex
+const fixTypography = (text: string): string => {
+  return text
+    // Tambahkan paragraf baru setelah titik, tanda tanya, atau tanda seru diikuti oleh teks baru
+    .replace(/([.!?])\s*(\w)/g, (_, p1, p2) => `${p1}\n\n${p2.toUpperCase()}`)
+    // Tambahkan break line untuk pola list (1., -, atau *)
+    .replace(/(?:^|\n)(\d+\.\s|\-\s|\*\s)(.+)/g, (_, p1, p2) => `\n${p1}${p2}`)
+    // Hapus spasi berlebihan
+    .replace(/\s{2,}/g, " ")
+    // Hapus newline berlebih (jika ada banyak \n berturut-turut)
+    .replace(/\n{3,}/g, "\n\n")
+    // Hilangkan spasi sebelum tanda baca
+    .replace(/\s+([.,!?])/g, "$1")
+    // Uppercase huruf pertama di paragraf
+    .replace(/(^|\n)(\w)/g, (_, p1, p2) => `${p1}${p2.toUpperCase()}`);
+};
+
+const formatTranslationText = (text: string): string => {
+  return text
+    // Tambahkan paragraf baru setelah kata-kata transisi/topik baru
+    .replace(
+      /\b(kemudian|selanjutnya|sebagai khatimah|di sela-sela|disebut pula)\b/gi,
+      "\n\n$1",
+    )
+    // Tambahkan newline setelah nama tokoh atau peristiwa penting
+    .replace(
+      /\b(Mûsâ a\.s\.|Banû Isrâ'îl|Ibrâhîm a\.s\.|Ismâ'îl a\.s\.|Yahudi|Nasrani|Ahl al-Qur'ân)\b/gi,
+      "\n$1",
+    )
+    // Pisahkan daftar dengan newline (untuk kata seperti "seperti" dan "antara lain")
+    .replace(/\b(seperti|antara lain)\b/gi, "\n$1")
+    // Tambahkan newline jika kalimat terlalu panjang (>120 karakter)
+    .replace(/(.{120,}?[\.\!\?])\s+/g, "$1\n\n")
+    // Hapus spasi berlebihan sebelum tanda baca
+    .replace(/\s+([.,!?])/g, "$1")
+    // Trim spasi di awal dan akhir setiap paragraf
+    .replace(/^\s+|\s+$/gm, "");
+};
+
+// "$1\n\n$2. $3-4$4-5$5",
+// function formatList(text: string) {
+//   return text
+//     .replace(/a+\.+\s+s+./g, "a.s.")
+//     .replace(/\[\[(.*?)\]\]/g, "$1")
+//     .replace(
+//       /([;:.])+\s+(\d|\w)+[.]\s+([A-Z|a-z])/g,
+//       "$1\n\n$2. $3",
+//     )
+//     .replace(/(.{200,}?[\.\!\?])\s+/g, "$1\n\n");
+//   // .replace(/\.+\s+(\d|\w)+[.]/g, ".\n$1.")
+//   // .replace(/\:+\s+(\d|\w)+[.]/g, ":\n$1."); // Hapus bagian [[ ... ]]
+//   // .replace(/([a-z]\.)\s+/gi, "-$1 ") // Tambahkan newline sebelum list huruf
+//   // .replace(/(\d+)\.\s+/g, "\n$1. "); // Tambahkan newline sebelum list angka
+//   // .replace(/([.!?])\s+(?=[A-Z])/g, "$1\n\n"); // Pisahkan paragraf berdasarkan titik diikuti huruf besar
+// }
+
+function fixDescription(text: string): string {
+  // 🔹 1. Hapus hanya `[[` dan `]]`, tetapi pertahankan isinya
+  return text.trim();
+  text = text.replace(/\s+/g, " ");
+  text = text.replace(/\[\[(.*?)\]\]/g, "$1");
+
+  // 🔹 2. Ganti "XXX ~ Kalimat ~" dengan "XXX. Kalimat."
+  text = text.replace(/(\d+)\s*~\s*(.*?)\s*~/g, "$1. $2.");
+  text = text.replace(/([;:])\s*/g, "$1\n\n");
+  text = text.replace(/\--(.*?)--/g, " ($1) ");
+  text = text.replace(
+    /(.{120,}?[\.\!\?])(?!\s?[a-zA-Z]\.|a\.s\.)\s+/g,
+    "$1\n\n",
+  );
+  text = text.replace(/([^\n])\s*([a-z]+:)/g, "\n$1$2");
+
+  return text.trim();
+}

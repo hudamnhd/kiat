@@ -40,6 +40,7 @@ import { Menu, MenuItem, MenuTrigger } from "react-aria-components";
 import type { LoaderFunctionArgs } from "react-router";
 import { Link, useLoaderData, useRouteLoaderData } from "react-router";
 import type { Loader as muslimLoader } from "./muslim.data";
+import { CommandNavigation } from "./muslim.quran.navigation";
 
 function sleep(ms: number) {
   return new Promise((resolve) => setTimeout(resolve, ms));
@@ -55,14 +56,16 @@ export async function Loader({ params, request }: LoaderFunctionArgs) {
 
   let style = "indopak" as "indopak" | "kemenag" | "uthmani" | "imlaei";
 
-  let mode = prefs?.modeQuran
-    ? prefs?.modeQuran
-    : "page";
+  let mode = prefs?.modeQuran ? prefs?.modeQuran : "page";
   let translation = prefs?.showTranslation
-    ? prefs?.showTranslation == "on" ? true : false
+    ? prefs?.showTranslation == "on"
+      ? true
+      : false
     : true;
   let tafsir = prefs?.showTafsir
-    ? prefs?.showTafsir == "on" ? true : false
+    ? prefs?.showTafsir == "on"
+      ? true
+      : false
     : false;
   let translationSource = prefs?.translationSource
     ? prefs?.translationSource
@@ -106,17 +109,20 @@ export async function Loader({ params, request }: LoaderFunctionArgs) {
   // });
   const _recent_data = [
     `${response?.surah[0].name.id}|${
-      response?.ayah[0].vk.replace(":", "|")
+      response?.ayah[0].vk.replace(
+        ":",
+        "|",
+      )
     }|${id}|${response?.juz}`,
   ];
   //
   if (mode === "page") {
     const PAGE = Number(id);
-    const plan_read = await getCache(PLANREAD_KEY) || [];
+    const plan_read = (await getCache(PLANREAD_KEY)) || [];
     if (plan_read.length > 0) {
       const today = format(new Date(), "yyyy-MM-dd");
-      const progressToday = plan_read.find((d: QuranReadingPlan) =>
-        d.date === today
+      const progressToday = plan_read.find(
+        (d: QuranReadingPlan) => d.date === today,
       );
       let target = updateReadingProgress(plan_read, progressToday.day, [PAGE]);
       await setCache(PLANREAD_KEY, target);
@@ -148,7 +154,7 @@ const toArabicNumber = (number: number) => {
 import { useVirtualizer } from "@tanstack/react-virtual";
 
 const saveFavoriteSurah = async (data: any) => {
-  const savedData = await getCache(FAVORITESURAH_KEY) || [];
+  const savedData = (await getCache(FAVORITESURAH_KEY)) || [];
 
   // Tambahkan atau perbarui key `id` dengan objek baru
   const updatedData = !savedData.includes(data)
@@ -158,7 +164,7 @@ const saveFavoriteSurah = async (data: any) => {
 };
 
 const saveLastVisitPage = async (data: any) => {
-  const savedData = await getCache(LASTVISITPAGE_KEY) || [];
+  const savedData = (await getCache(LASTVISITPAGE_KEY)) || [];
 
   const updatedData = Array.from(new Set([...savedData, ...data]));
   await setCache(LASTVISITPAGE_KEY, updatedData);
@@ -169,7 +175,7 @@ function ButtonStar({ index }: { index: number }) {
 
   React.useEffect(() => {
     const checkFavoriteSurah = async (index: number) => {
-      const savedDataFavorite = await getCache(FAVORITESURAH_KEY) || [];
+      const savedDataFavorite = (await getCache(FAVORITESURAH_KEY)) || [];
       setIsFavorite(savedDataFavorite.includes(index));
     };
 
@@ -203,10 +209,10 @@ function ButtonStar({ index }: { index: number }) {
 }
 
 export function Component() {
-  const { page, surah } = useLoaderData<typeof Loader>();
+  const { page, juz, surah } = useLoaderData<typeof Loader>();
 
   const title = `Hal ${page.p}`;
-  const subtitle = surah[0].name.id;
+  const subtitle = `Juz' ${juz} - ` + surah[0].name.id;
   return (
     <React.Fragment>
       <VirtualizedListSurah>
@@ -216,6 +222,7 @@ export function Component() {
           title={title}
           subtitle={subtitle}
         >
+          <CommandNavigation />
           <Link
             className={cn(
               buttonVariants({ size: "icon", variant: "ghost" }),
@@ -228,15 +235,14 @@ export function Component() {
           </Link>
           {/*<ButtonStar index={1} />*/}
         </Header>
-        <div className="ml-auto flex items-center justify-center gap-3 pt-5">
+        <div
+          id="pagination-page"
+          className="ml-auto flex items-center justify-center gap-3 pt-5"
+        >
           <Link
-            className={cn(
-              buttonVariants({ size: "icon", variant: "outline" }),
-            )}
+            className={cn(buttonVariants({ size: "icon", variant: "outline" }))}
             title="Surat sebelumnya"
-            to={page?.p === 1
-              ? "#"
-              : `/muslim/quran/${page?.p - 1}`}
+            to={page?.p === 1 ? "#" : `/muslim/quran/${page?.p - 1}`}
           >
             <span className="sr-only">Go to previous page</span>
             <ChevronLeft />
@@ -246,19 +252,17 @@ export function Component() {
             Halaman <strong>{page?.p}</strong> dari <strong>604</strong>
           </span>
           <Link
-            className={cn(
-              buttonVariants({ size: "icon", variant: "outline" }),
-            )}
+            className={cn(buttonVariants({ size: "icon", variant: "outline" }))}
             title="Surat selanjutnya"
-            to={page?.p === 604
-              ? "#"
-              : `/muslim/quran/${page?.p + 1}`}
+            to={page?.p === 604 ? "#" : `/muslim/quran/${page?.p + 1}`}
           >
             <span className="sr-only">Go to next page</span>
             <ChevronRight />
           </Link>
         </div>
       </VirtualizedListSurah>
+
+      <ScrollTopButton />
     </React.Fragment>
   );
 }
@@ -276,6 +280,9 @@ const save_bookmark_to_lf = async (bookmarks: AyatBookmark[]) => {
   await setCache(BOOKMARK_KEY, bookmarks);
 };
 
+const handleScrollUp = () => {
+  window?.scrollTo({ left: 0, top: 0, behavior: "smooth" });
+};
 const VirtualizedListSurah = ({ children }: { children: React.ReactNode }) => {
   const [children1, children2] = React.Children.toArray(children);
   const {
@@ -291,9 +298,12 @@ const VirtualizedListSurah = ({ children }: { children: React.ReactNode }) => {
 
   const parentRef = React.useRef<HTMLDivElement>(null);
   const ayahRefs = React.useRef<Map<number, HTMLDivElement | null>>(new Map());
-  const currentSurah = React.useRef<
-    { name: string; index: number; ayah: number; page: number }
-  >({
+  const currentSurah = React.useRef<{
+    name: string;
+    index: number;
+    ayah: number;
+    page: number;
+  }>({
     name: surat.name.id,
     index: surat.index,
     ayah: 1,
@@ -323,9 +333,9 @@ const VirtualizedListSurah = ({ children }: { children: React.ReactNode }) => {
     if (query.surah && query.ayah) {
       const q = `${query.surah}:${query.ayah}`;
       const getIndex = items.findIndex((d: { vk: string }) => d.vk === q);
-      sleep(0).then(() => scrollToAyat(getIndex));
+      sleep(50).then(() => scrollToAyat(getIndex));
     } else {
-      sleep(0).then(() => scrollToAyat(0));
+      handleScrollUp();
     }
   }, [page.p]);
 
@@ -474,11 +484,7 @@ const VirtualizedListSurah = ({ children }: { children: React.ReactNode }) => {
         }}
       />
 
-      <div
-        className="divide-y"
-        ref={parentRef}
-        id="container-page"
-      >
+      <div className="divide-y" ref={parentRef} id="container-page">
         {children1}
         {items.map((item, index) => {
           const surah_index = item.vk.split(":")[0];
@@ -486,8 +492,8 @@ const VirtualizedListSurah = ({ children }: { children: React.ReactNode }) => {
           const id = item.vk;
           const key = Number(ayah_index);
 
-          const _surah = surah.find((d: { index: number }) =>
-            d.index === Number(surah_index)
+          const _surah = surah.find(
+            (d: { index: number }) => d.index === Number(surah_index),
           );
           const surah_name = _surah?.name.id || surah[0].name.id;
           const isFavorite = bookmarks_ayah.some((fav) => fav.id === id);
@@ -502,10 +508,7 @@ const VirtualizedListSurah = ({ children }: { children: React.ReactNode }) => {
           };
 
           return (
-            <div
-              ref={(el) => ayahRefs.current.set(index, el)}
-              key={item.vk}
-            >
+            <div ref={(el) => ayahRefs.current.set(index, el)} key={item.vk}>
               {key === 1 && opts?.showTranslation === "on" && (
                 <React.Fragment>
                   <details
@@ -536,9 +539,7 @@ const VirtualizedListSurah = ({ children }: { children: React.ReactNode }) => {
 
                     <div className="font-normal text-start group-open:animate-slide-top group-open:[animation-fill-mode:backwards] group-open:transition-all group-open:duration-300">
                       <div className="flex text-center items-center justify-center max-w-none my-1.5 font-semibold whitespace-pre-line text-accent-foreground border-b">
-                        <span className="">
-                          Surat ke- {surat.index}
-                        </span>
+                        <span className="">Surat ke- {surat.index}</span>
                       </div>
 
                       <div
@@ -580,8 +581,7 @@ const VirtualizedListSurah = ({ children }: { children: React.ReactNode }) => {
                         style={{
                           fontWeight: opts?.fontWeight,
                           fontSize: prefsOption?.fontSize || "1.5rem",
-                          lineHeight: prefsOption?.lineHeight ||
-                            "3.5rem",
+                          lineHeight: prefsOption?.lineHeight || "3.5rem",
                         }}
                       >
                         {bismillah}
@@ -624,7 +624,8 @@ const VirtualizedListSurah = ({ children }: { children: React.ReactNode }) => {
                       <Menu className="outline-hidden">
                         <ActionItem
                           id="new"
-                          onAction={() => toggleBookmark(bookmark_data)}
+                          onAction={() =>
+                            toggleBookmark(bookmark_data)}
                         >
                           <Star
                             className={cn(
@@ -637,13 +638,13 @@ const VirtualizedListSurah = ({ children }: { children: React.ReactNode }) => {
                         </ActionItem>
                         <ActionItem
                           id="open"
-                          onAction={() => handleRead(bookmark_data)}
+                          onAction={() =>
+                            handleRead(bookmark_data)}
                         >
                           <Bookmark
                             className={cn(
                               "mr-1 w-4 h-4",
-                              isLastRead &&
-                                "fill-blue-500 text-blue-500",
+                              isLastRead && "fill-blue-500 text-blue-500",
                             )}
                           />
                           Terakhir Baca
@@ -688,14 +689,12 @@ const VirtualizedListSurah = ({ children }: { children: React.ReactNode }) => {
                     : <div />}
                 </div>
 
-                <TextArab
-                  text={item.ta}
-                  ayah={Number(item.vk.split(":")[1])}
-                />
+                <TextArab text={item.ta} ayah={Number(item.vk.split(":")[1])} />
 
                 {item?.tt && opts?.showTranslation === "on" && (
                   <React.Fragment>
                     <div
+                      title={"Sumber: " + translationSource?.name}
                       className={cn(
                         "prose dark:prose-invert px-2 text-justify max-w-none  whitespace-pre-line",
                         opts?.fontTranslationSize,
@@ -703,10 +702,12 @@ const VirtualizedListSurah = ({ children }: { children: React.ReactNode }) => {
                     >
                       {item.tt} ({item.vk.split(":")[1]})
                     </div>
-                    <div className="hidden sm:flex items-center text-xs text-muted-foreground px-2 mt-0.5">
+                    {
+                      /*<div className="hidden sm:flex items-center text-xs text-muted-foreground px-2 mt-0.5">
                       <Minus strokeWidth={1} />
                       {translationSource?.name}
-                    </div>
+                    </div>*/
+                    }
                   </React.Fragment>
                 )}
 
@@ -772,7 +773,6 @@ const VirtualizedListSurah = ({ children }: { children: React.ReactNode }) => {
         {children2}
       </div>
       {/*<ScrollToFirstIndex handler={scrollToFirstAyat} container={parentRef} />*/}
-      <ScrollTopButton />
     </React.Fragment>
   );
 };

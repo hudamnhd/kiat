@@ -200,9 +200,8 @@
 
 @font-face {
 	font-family: IndoPak;
-	src: url("/fonts/IndoPak.woff2") format("woff2"), url("/fonts/IndoPak.woff")
-		format("woff");
-	font-weight: 400;
+	src: url("/fonts/AlQuran-IndoPak-by-QuranWBW.v.4.2.2-WL-COMPRESSED.ttf") format("truetype");
+	font-weight: 300;
 	font-style: normal;
 	font-display: swap;
 }

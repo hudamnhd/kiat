@@ -96,18 +96,18 @@ export function SettingsDisplay() {
             {...(sm ? { side: "right" } : {})}
             {...(!sm
               ? { className: "sm:max-w-[425px] max-h-[95vh] overflow-y-auto" }
-              : {})}
+              : { className: "p-0" })}
           >
             {({ close }) => (
               <>
                 <fetcher.Form method="post" action="/muslim">
-                  <DialogHeader>
+                  <DialogHeader className="p-4">
                     <DialogTitle>Pengaturan Tampilan</DialogTitle>
                     <DialogDescription>
                       Kelola pengaturan tampilan Anda di sini.
                     </DialogDescription>
                   </DialogHeader>
-                  <div className="grid gap-2">
+                  <div className="grid gap-2 max-h-[85vh] overflow-y-auto px-4">
                     <div className="space-y-4 w-full">
                       <div>
                         <div dir="rtl" className="break-normal pr-2.5">
@@ -391,7 +391,7 @@ export function SettingsDisplay() {
                     </Select>*/
                     }
                   </div>
-                  <DialogFooter className="flex flex-col">
+                  <DialogFooter className="flex flex-col py-2 px-4">
                     <Button
                       onPress={close}
                       variant="outline"

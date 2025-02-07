@@ -30,7 +30,7 @@ export async function Loader({ params, request }: LoaderFunctionArgs) {
 
   const response = await getSurahByPage({
     page: Number(id),
-    style: "uthmani-simple",
+    style: "indopak",
   });
 
   return { ...response, query: { surah, ayah } };
@@ -79,11 +79,32 @@ export function Component() {
   );
 }
 
-import { motion, useScroll, useSpring } from "framer-motion";
+function mergeWordsByLength(words: string[], maxLength: number) {
+  let tempSentence = "";
+  let result: { text: string; index: number }[] = [];
+  let indexCounter = 0;
+
+  for (const word of words) {
+    if ((tempSentence + " " + word).trim().length > maxLength) {
+      // Jika panjang melebihi batas, simpan sentence sebelumnya sebagai objek
+      result.push({ text: tempSentence.trim(), index: indexCounter++ });
+      tempSentence = word; // Reset dengan kata baru
+    } else {
+      tempSentence += (tempSentence ? " " : "") + word; // Tambahkan kata ke dalam sentence
+    }
+  }
+
+  // Tambahkan sentence terakhir jika masih ada
+  if (tempSentence) {
+    result.push({ text: tempSentence.trim(), index: indexCounter++ });
+  }
+
+  return result;
+}
 
 let initialLoad = {};
 const VirtualizedListSurah = ({ children }: { children: React.ReactNode }) => {
-  const { surah, ayah: items, page, query } = useLoaderData();
+  const { surah, ayah: items, page, query } = useLoaderData<typeof Loader>();
   const surat = surah[0];
 
   const parentRef = React.useRef<HTMLDivElement>(null);
@@ -93,16 +114,6 @@ const VirtualizedListSurah = ({ children }: { children: React.ReactNode }) => {
     count: items.length, // Jumlah total item
     getScrollElement: () => parentRef.current, // Elemen tempat scrolling
     estimateSize: () => 56, // Perkiraan tinggi item (70px)
-  });
-
-  const { scrollYProgress } = useScroll({
-    container: parentRef,
-  });
-
-  const scaleX = useSpring(scrollYProgress, {
-    stiffness: 100,
-    damping: 30,
-    restDelta: 0.001,
   });
 
   React.useEffect(() => {
@@ -157,19 +168,6 @@ const VirtualizedListSurah = ({ children }: { children: React.ReactNode }) => {
   };
   return (
     <React.Fragment>
-      <motion.div
-        className="z-20 bg-primary max-w-xl mx-auto"
-        style={{
-          scaleX,
-          position: "fixed",
-          top: 52,
-          left: 0,
-          right: 0,
-          height: 3,
-          originX: 0,
-        }}
-      />
-
       <Header redirectTo="/muslim/quran-word-by-word" title={title} />
       <div
         ref={parentRef}
@@ -192,13 +190,15 @@ const VirtualizedListSurah = ({ children }: { children: React.ReactNode }) => {
           {items.map((item) => {
             const surah_index = item.vk.split(":")[0];
             const ayah_index = item.vk.split(":")[1];
+            // const words = item.ta;
             const words = item.ta.split(" ");
-            const originalSentence = words.map((d: string, index: number) => {
-              return {
-                text: d,
-                index,
-              };
-            });
+
+            const maxLength = 30; // Batas panjang maksimal
+            const originalSentence = mergeWordsByLength(
+              words.filter((d) => d.trim() !== ""), // Hilangkan string kosong
+              maxLength,
+            );
+
             const shuffleSentence = shuffleArray(originalSentence);
 
             return (
@@ -206,9 +206,9 @@ const VirtualizedListSurah = ({ children }: { children: React.ReactNode }) => {
                 key={item.vk}
                 originalSentence={originalSentence}
                 shuffleSentence={shuffleSentence}
-                ayat_number={ayah_index}
+                ayat_number={Number(ayah_index)}
                 percent={10}
-                surat={surah_index}
+                surat={Number(surah_index)}
                 isCorrect={false}
                 progressReff={progressReff}
                 scrollToAyat={scrollToAyat}
@@ -409,6 +409,7 @@ const PuzzleGame: React.FC<PuzzleProps> = ({
       {state.isCorrect === false && (
         <X className="absolute z-[-1] left-2 top-2 w-8 h-8 text-red-500 dark:text-red-400" />
       )}
+
       <details className="group [&_summary::-webkit-details-marker]:hidden mb-2">
         <summary className="flex cursor-pointer items-center gap-1.5 outline-none">
           <svg
@@ -444,8 +445,7 @@ const PuzzleGame: React.FC<PuzzleProps> = ({
           ) => (
             <span
               className={cn(
-                "text-center h-fit mx-1 border py-1 px-2 rounded-md mb-1",
-                opts?.fontStyle,
+                "font-indopak text-center h-fit mx-1 border py-1 px-2 rounded-md mb-1",
               )}
               style={{
                 fontWeight: opts?.fontWeight,
@@ -461,18 +461,6 @@ const PuzzleGame: React.FC<PuzzleProps> = ({
               {w.text}
             </span>
           ))}
-
-          <span
-            style={{
-              fontWeight: opts?.fontWeight,
-              fontSize: prefsOption?.fontSize || "1.5rem",
-              lineHeight: prefsOption?.lineHeight ||
-                "3.5rem",
-            }}
-            className="text-right font-uthmani-v2-reguler mr-1.5"
-          >
-            ‎﴿{toArabicNumber(Number(ayat_number))}﴾‏
-          </span>
         </div>
       </details>
       <div className="space-y-2">
@@ -483,8 +471,7 @@ const PuzzleGame: React.FC<PuzzleProps> = ({
               <Button
                 variant="secondary"
                 className={cn(
-                  "text-center h-fit",
-                  opts?.fontStyle,
+                  "font-indopak text-center h-fit",
                 )}
                 style={{
                   fontWeight: opts?.fontWeight,
@@ -498,12 +485,6 @@ const PuzzleGame: React.FC<PuzzleProps> = ({
                 {slice.text}
               </Button>
             ))}
-
-          {state.slices.length > 0 && (
-            <span className="text-right text-3xl font-uthmani-v2-reguler mr-1.5">
-              ‎﴿{toArabicNumber(Number(ayat_number))}﴾‏
-            </span>
-          )}
         </div>
       </div>
 
@@ -515,8 +496,7 @@ const PuzzleGame: React.FC<PuzzleProps> = ({
                 <div
                   className={cn(
                     buttonVariants({ size: "lg", variant: "outline" }),
-                    "text-center h-fit",
-                    opts?.fontStyle,
+                    "font-indopak text-center h-fit",
                     state.isCorrect && "bg-transparent",
                   )}
                   style={{
@@ -536,12 +516,6 @@ const PuzzleGame: React.FC<PuzzleProps> = ({
                   {slice.text}
                 </div>
               ))}
-
-              {state.slices.length === 0 && (
-                <span className="text-right text-3xl font-uthmani-v2-reguler mr-1.5">
-                  ‎﴿{toArabicNumber(Number(ayat_number))}﴾‏
-                </span>
-              )}
             </React.Fragment>
           )}
         </div>
