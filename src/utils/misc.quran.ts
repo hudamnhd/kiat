@@ -3,7 +3,6 @@ import {
   INDEXAYAHBYSURAH,
   juzPages,
   pageAyahs,
-  surahPages,
 } from "#/src/constants/quran-metadata.ts";
 import { SOURCE_TRANSLATIONS } from "#src/constants/sources";
 import { getCache, setCache } from "#src/utils/cache-client.ts";
@@ -31,25 +30,13 @@ const getStyleTextArabic = async (style: string) => {
 };
 
 const getSourceTranslation = async (source: string) => {
+  let mode = source === "tafsir-kemenag" ? "tafsir" : "terjemahan";
   const response = await toast.promise(
     ky.get(`/muslim/quran/data/id-${source}.json.gz`).json<Ayah[]>(),
     {
-      loading: `Loading data terjemahan ${source}...`,
-      success: `Berhasil memuat data terjemahan ${source}`,
-      error: `Gagal memuat data terjemahan ${source}`,
-    },
-  );
-
-  return response;
-};
-
-const getSourceTafsir = async (source: string) => {
-  const response = await toast.promise(
-    ky.get(`/muslim/quran/data/id-${source}.json.gz`).json<Ayah[]>(),
-    {
-      loading: "Loading data tafsir...",
-      success: "Berhasil memuat data tafsir",
-      error: "Gagal memuat data tafsir",
+      loading: `Loading data ${mode} ${source}...`,
+      success: `Berhasil memuat data ${mode} ${source}`,
+      error: `Gagal memuat data ${mode} ${source}`,
     },
   );
 
@@ -89,6 +76,92 @@ export async function getTranslation(source: string) {
   await setCache(cachedKey, fetchedData);
   return fetchedData;
 }
+
+export interface GetSurahByJuz {
+  index: number;
+  style: "indopak" | "kemenag" | "uthmani" | "imlaei" | "uthmani-simple";
+  translation?: boolean;
+  translationSource?: string;
+  showTafsir?: boolean;
+}
+
+/**
+ * Get data Quran berdasarkan juz
+ * @param index (nomor juz) Quran (misal: 1-30)
+ * @param style gaya tulisan "indopak" | "kemenag" | "uthmani" | "imlaei" | "uthmani_simple";
+ * @param translation Jika `true`, return ditambahkan data translation
+ * @returns Object Data array ayah beserta metadata quran
+ */
+export const getSurahByJuz = async (
+  {
+    index,
+    style,
+    translation = false,
+    translationSource = "kemenag",
+    showTafsir = false,
+  }: GetSurahByJuz,
+) => {
+  let initial_index = index;
+  // 🔥 Cek apakah `page` berada dalam rentang 1-30
+  if (index < 1 || index > 30) {
+    initial_index = 1;
+  }
+  const juzIndex = juzPages[initial_index - 1];
+
+  const pages = pageAyahs.filter(p => p.p >= juzIndex.s && p.p <= juzIndex.e);
+  const startPage = pageAyahs.find(p => p.p === juzIndex.s);
+  const endPage = pageAyahs.find(p => p.p === juzIndex.e);
+  if (!startPage || !endPage) throw new Error("Not Found");
+
+  // 🔹 Fetch Quran & Translation secara parallel untuk mempercepat
+  const [verses, trans, tafsir] = await Promise.all([
+    getDataStyle(style),
+    translation ? getTranslation(translationSource) : Promise.resolve([]),
+    showTafsir ? getTranslation("tafsir-kemenag") : Promise.resolve([]),
+  ]);
+
+  const surahData = listSurah.filter(d =>
+    initial_index >= d.meta.juz.start && initial_index <= d.meta.juz.end
+  );
+  // 🔹 Filter ayat hanya untuk halaman tertentu
+  const verseData = verses.filter(verse =>
+    verse.i >= startPage.s && verse.i <= endPage.e
+  );
+
+  // 🔹 Filter translation hanya jika tersedia
+  const transMap = new Map(trans.map(t => [t.i, t.t])); // Optimasi pencarian dengan Map()
+  const tafsirMap = new Map(tafsir.map(t => [t.i, t.t])); // Optimasi pencarian dengan Map()
+  const transDescMap = new Map(trans.map(t => [t.i, t.d]));
+
+  // 🔥 Merge ayat dengan translation (jika translation tersedia)
+  // i : index
+  // vk : verse key
+  // ta : text arab
+  // tt : text translation
+
+  const ayah = verseData.map(verse => ({
+    i: verse.i,
+    vk: verse.vk,
+    ta: verse.t,
+    tt: transMap.get(verse.i) || null, // Ambil translation dari Map
+    td: translationSource === "muntakhab" ? transDescMap.get(verse.i) : null, // Ambil translation dari Map
+    ttf: tafsirMap.get(verse.i) || null, // Ambil tafsir dari Map
+  }));
+
+  const returnData = {
+    ayah,
+    page: pages,
+    surah: surahData,
+    juz: initial_index,
+    bismillah: verses[0].t,
+    translationSource: translation
+      ? SOURCE_TRANSLATIONS.find((d) => d.id === translationSource)
+      : null,
+    tafsirSource: showTafsir ? SOURCE_TRANSLATIONS[3] : null,
+  };
+
+  return returnData;
+};
 
 export interface GetSurahByPage {
   page: number;
@@ -205,18 +278,13 @@ export const getSurahByIndex = async (
 ) => {
   let initial_page = index;
   // 🔥 Cek apakah `index` berada dalam rentang 1-64
-  if (index < 1 || index > 604) {
+  if (index < 1 || index > 114) {
     console.warn(
       `Invalid index number: ${index}. Must be between 1 and 114.`,
     );
     initial_page = 1;
   }
-  // const pageData = pageAyahs.find(p => p.p === initial_page);
-  // if (!pageData) throw new Error("Not Found");
-
-  // const startPage = pageAyahs.find(p => p.p === startIndex.s);
-  // const endPage = pageAyahs.find(p => p.p === startIndex.e);
-  // // 🔹 Fetch Quran & Translation secara parallel untuk mempercepat
+  // 🔹 Fetch Quran & Translation secara parallel untuk mempercepat
   const [verses, trans, tafsir] = await Promise.all([
     getDataStyle(style),
     translation ? getTranslation(translationSource) : Promise.resolve([]),
@@ -224,7 +292,6 @@ export const getSurahByIndex = async (
   ]);
   //
   const surahData = listSurah.find(d => d.index == index);
-  console.warn("DEBUGPRINT[10]: misc.quran.ts:227: surahData=", surahData);
 
   const pageData = pageAyahs.find(p => p.p === surahData?.meta.page.start);
   const juzIndex = surahData?.meta.juz.start;

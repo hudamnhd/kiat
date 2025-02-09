@@ -27,7 +27,7 @@ export default function ThemeProviderWrapper() {
 
           // Default options for specific types
           success: {
-            duration: 3000,
+            duration: 1500,
             iconTheme: {
               primary: lightDarkVar("chart-2"),
               secondary: lightDarkVar("background"),

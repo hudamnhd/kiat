@@ -15,7 +15,7 @@ import { type AyatBookmark, save_bookmarks } from "#src/utils/bookmarks";
 import { getCache, setCache } from "#src/utils/cache-client.ts";
 import { cn } from "#src/utils/misc";
 import {
-  getSurahByPage,
+  getSurahByJuz,
   QuranReadingPlan,
   updateReadingProgress,
 } from "#src/utils/misc.quran.ts";
@@ -81,8 +81,8 @@ export async function Loader({ params, request }: LoaderFunctionArgs) {
       style = "kemenag";
       break;
   }
-  const response = await getSurahByPage({
-    page: Number(id),
+  const response = await getSurahByJuz({
+    index: Number(id),
     style: style,
     translation,
     showTafsir: tafsir,
@@ -186,9 +186,10 @@ function ButtonStar({ index }: { index: number }) {
 }
 
 export function Component() {
-  const { page, surah } = useLoaderData<typeof Loader>();
+  const { page, juz, surah } = useLoaderData<typeof Loader>();
 
-  const title = ` Hal ${page.p} - ${surah[0].name.id}`;
+  const title = `Hal' ${page[0].p} - ${surah[0].name.id}`;
+  const subtitle = `Juz' ${juz}`;
   return (
     <React.Fragment>
       <VirtualizedListSurah>
@@ -196,13 +197,14 @@ export function Component() {
           virtualizer={true}
           redirectTo="/muslim/quran"
           title={title}
+          subtitle={subtitle}
         >
           <Link
             className={cn(
               buttonVariants({ size: "icon", variant: "ghost" }),
               "prose-none [&_svg]:size-4",
             )}
-            to={`/muslim/quran-v2/${page.p}`}
+            to={`/muslim/quran-v1/${juz}`}
             title="Quran mirip mushaf"
           >
             <BookOpen />
@@ -215,27 +217,27 @@ export function Component() {
               buttonVariants({ size: "icon", variant: "outline" }),
             )}
             title="Surat sebelumnya"
-            to={page?.p === 1
+            to={juz === 1
               ? "#"
-              : `/muslim/quran/${page?.p - 1}`}
+              : `/muslim/quran/${juz - 1}`}
           >
             <span className="sr-only">Go to previous page</span>
             <ChevronLeft />
           </Link>
 
           <span className="text-accent-foreground text-sm">
-            Halaman <strong>{page?.p}</strong> dari <strong>604</strong>
+            Juz <strong>{juz}</strong> dari <strong>30</strong>
           </span>
           <Link
             className={cn(
               buttonVariants({ size: "icon", variant: "outline" }),
             )}
             title="Surat selanjutnya"
-            to={page?.p === 604
+            to={juz === 30
               ? "#"
-              : `/muslim/quran/${page?.p + 1}`}
+              : `/muslim/quran/${juz + 1}`}
           >
-            <span className="sr-only">Go to next page</span>
+            <span className="sr-only">Go to next juz</span>
             <ChevronRight />
           </Link>
         </div>
@@ -246,9 +248,6 @@ export function Component() {
 
 import TextArab from "#src/components/custom/text-arab.tsx";
 import { motion, useScroll, useSpring } from "framer-motion";
-
-const titleElement = document.getElementById("title-page");
-const navbarElement = document.getElementById("navbar");
 
 const VirtualizedListSurah = ({ children }: { children: React.ReactNode }) => {
   const [children1, children2] = React.Children.toArray(children);
@@ -271,7 +270,7 @@ const VirtualizedListSurah = ({ children }: { children: React.ReactNode }) => {
     name: surat.name.id,
     index: surat.index,
     ayah: 1,
-    page: page.p,
+    page: page[0].p,
   });
 
   // Gunakan useVirtualizer
@@ -394,7 +393,8 @@ const VirtualizedListSurah = ({ children }: { children: React.ReactNode }) => {
     })
     : null;
 
-  const title = `Hal ${page.p} - ${currentSurah.current.name}`;
+  const title =
+    `Hal ${currentSurah.current.page} - ${currentSurah.current.name}`;
   // 🔥 Update Surah Index Saat Scroll
   React.useEffect(() => {
     const updateSurah = () => {
@@ -417,25 +417,28 @@ const VirtualizedListSurah = ({ children }: { children: React.ReactNode }) => {
         const _surah = surah.find((d: { index: number }) =>
           d.index === Number(surahIndex)
         );
-        if (_surah) {
+        const _page = page.find((p) => item.i >= p.s && item.i <= p.e);
+        if (_surah && _page) {
           // setCurrentSurah(_surah.name.id);
           currentSurah.current = {
             name: _surah.name.id,
             index: _surah.index,
-            ayah: ayahIndex,
-            page: page.p,
+            ayah: Number(ayahIndex),
+            page: _page.p,
           };
         } else {
           currentSurah.current = {
             name: surat.name.id,
             index: surat.index,
             ayah: 1,
-            page: page.p,
+            page: page[0].p,
           };
         }
       }
     };
 
+    const titleElement = document.getElementById("title-page");
+    const navbarElement = document.getElementById("navbar");
     updateSurah();
     if (titleElement instanceof HTMLSpanElement) {
       titleElement.innerText = title;

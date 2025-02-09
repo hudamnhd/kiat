@@ -2,7 +2,7 @@ import { FONT_SIZE } from "#/src/constants/prefs";
 import { Header } from "#src/components/custom/header";
 import { Button, buttonVariants } from "#src/components/ui/button";
 import { cn } from "#src/utils/misc";
-import { getSurahByPage, toArabicNumber } from "#src/utils/misc.quran.ts";
+import { getSurahByPage } from "#src/utils/misc.quran.ts";
 import { ChevronLeft, ChevronRight, CircleCheckBig, X } from "lucide-react";
 import React from "react";
 import type { LoaderFunctionArgs } from "react-router";
@@ -35,8 +35,6 @@ export async function Loader({ params, request }: LoaderFunctionArgs) {
 
   return { ...response, query: { surah, ayah } };
 }
-
-import { useVirtualizer } from "@tanstack/react-virtual";
 
 export function Component() {
   const { page } = useLoaderData();
@@ -107,14 +105,7 @@ const VirtualizedListSurah = ({ children }: { children: React.ReactNode }) => {
   const { surah, ayah: items, page, query } = useLoaderData<typeof Loader>();
   const surat = surah[0];
 
-  const parentRef = React.useRef<HTMLDivElement>(null);
-
-  // Gunakan useVirtualizer
-  const rowVirtualizer = useVirtualizer({
-    count: items.length, // Jumlah total item
-    getScrollElement: () => parentRef.current, // Elemen tempat scrolling
-    estimateSize: () => 56, // Perkiraan tinggi item (70px)
-  });
+  const ayahRefs = React.useRef<Map<number, HTMLDivElement | null>>(new Map());
 
   React.useEffect(() => {
     if (query.surah && query.ayah) {
@@ -127,15 +118,14 @@ const VirtualizedListSurah = ({ children }: { children: React.ReactNode }) => {
   }, [page.p]);
 
   const scrollToAyat = (index: number) => {
-    rowVirtualizer.scrollToIndex(index, {
-      align: "start",
-    });
+    const element = ayahRefs.current.get(index);
+    if (element) {
+      element.scrollIntoView({ behavior: "smooth", block: "start" });
+    }
   };
 
   const scrollToFirstAyat = () => {
-    rowVirtualizer.scrollToIndex(0, {
-      align: "start",
-    });
+    scrollToAyat(0);
   };
 
   // 🔥 Update Surah Index Saat Scroll
@@ -166,59 +156,51 @@ const VirtualizedListSurah = ({ children }: { children: React.ReactNode }) => {
       return updatedItems;
     });
   };
+
   return (
     <React.Fragment>
       <Header redirectTo="/muslim/quran-word-by-word" title={title} />
       <div
-        ref={parentRef}
-        className="h-[calc(100vh-55px)]"
+        className="divide-y"
         style={{
-          overflowAnchor: "none",
-          overflow: "auto",
+          width: "100%",
           position: "relative",
-          contain: "strict",
         }}
       >
-        <div
-          className="divide-y"
-          style={{
-            height: `${rowVirtualizer.getTotalSize()}px`,
-            width: "100%",
-            position: "relative",
-          }}
-        >
-          {items.map((item) => {
-            const surah_index = item.vk.split(":")[0];
-            const ayah_index = item.vk.split(":")[1];
-            // const words = item.ta;
-            const words = item.ta.split(" ");
+        {items.map((item, index) => {
+          const surah_index = item.vk.split(":")[0];
+          const ayah_index = item.vk.split(":")[1];
+          // const words = item.ta;
+          const words = item.ta.split(" ");
 
-            const maxLength = 30; // Batas panjang maksimal
-            const originalSentence = mergeWordsByLength(
-              words.filter((d) => d.trim() !== ""), // Hilangkan string kosong
-              maxLength,
-            );
+          const maxLength = 30; // Batas panjang maksimal
+          const originalSentence = mergeWordsByLength(
+            words.filter((d) => d.trim() !== ""), // Hilangkan string kosong
+            maxLength,
+          );
 
-            const shuffleSentence = shuffleArray(originalSentence);
+          const shuffleSentence = shuffleArray(originalSentence);
+          const isCorrect = resultAnswer[surah_index] &&
+            resultAnswer[surah_index][ayah_index];
 
-            return (
+          return (
+            <div ref={(el) => ayahRefs.current.set(index, el)} key={item.vk}>
               <PuzzleGame
-                key={item.vk}
                 originalSentence={originalSentence}
                 shuffleSentence={shuffleSentence}
                 ayat_number={Number(ayah_index)}
                 percent={10}
                 surat={Number(surah_index)}
-                isCorrect={false}
+                isCorrect={isCorrect}
                 progressReff={progressReff}
                 scrollToAyat={scrollToAyat}
                 handleTrue={handleTrue}
               />
-            );
-          })}
+            </div>
+          );
+        })}
 
-          {children}
-        </div>
+        {children}
       </div>
     </React.Fragment>
   );
@@ -399,15 +381,14 @@ const PuzzleGame: React.FC<PuzzleProps> = ({
       dir="rtl"
       className={cn(
         "relative transition-all duration-300 relative flex flex-col items-start gap-2 animate-slide-top [animation-fill-mode:backwards] group relative py-3 pr-4 pl-2",
-        state.isCorrect && "bg-green-400/10",
-        state.isCorrect === false && "bg-destructive/5",
+        state.isCorrect && "bg-muted/50",
       )}
     >
       {state.isCorrect && (
-        <CircleCheckBig className="absolute z-[-1] left-2 top-2 w-8 h-8 text-green-500 dark:text-green-400" />
+        <CircleCheckBig className="absolute z-[-1] left-2 top-2 w-8 h-8 text-foreground" />
       )}
       {state.isCorrect === false && (
-        <X className="absolute z-[-1] left-2 top-2 w-8 h-8 text-red-500 dark:text-red-400" />
+        <X className="absolute z-[-1] left-2 top-2 w-8 h-8 text-foreground" />
       )}
 
       <details className="group [&_summary::-webkit-details-marker]:hidden mb-2">
@@ -467,7 +448,7 @@ const PuzzleGame: React.FC<PuzzleProps> = ({
         <div dir="rtl" className="flex flex-wrap gap-2 items-center">
           {/* Menampilkan potongan teks */}
           {state.slices.length > 0 &&
-            state.slices.map((slice, index) => (
+            state.slices.map((slice) => (
               <Button
                 variant="secondary"
                 className={cn(

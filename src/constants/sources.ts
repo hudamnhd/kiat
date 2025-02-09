@@ -14,16 +14,17 @@ export const SOURCE_TRANSLATIONS = [
   {
     id: "kemenag",
     title: "Terjemahan Kemenag",
-    name: "Aplikasi Quran Kementrian Agama Republik Indonesia",
+    name: "Kementrian Agama Republik Indonesia",
     href: "https://github.com/rioastamal/quran-single-file",
   },
   {
     id: "tafsir-kemenag",
     title: "Tafsir Kemenag",
-    name: "Aplikasi Quran Kementrian Agama Republik Indonesia",
+    name: "Kementrian Agama Republik Indonesia",
     href: "https://github.com/rioastamal/quran-single-file",
   },
 ];
+
 const map_translation = SOURCE_TRANSLATIONS.map((d) => {
   return {
     title: d.title,
@@ -36,7 +37,7 @@ export const sources = {
   content: [
     {
       title: "Quran text",
-      desc: "indopak, uthmani, imlaei",
+      desc: "uthmani, imlaei",
       href: "https://api-docs.quran.com",
     },
     {
@@ -46,8 +47,8 @@ export const sources = {
     },
     {
       title: "Quran text",
-      desc: "Indopak, Uthmani, Imlaei",
-      href: "https://api-docs.quran.com",
+      desc: "Indopak",
+      href: "https://github.com/marwan/indopak-quran-text",
     },
     ...map_translation,
     {
@@ -65,6 +66,11 @@ export const sources = {
       desc: "dari repositori Islamic Bit",
       href:
         "https://github.com/wahyall/islamic-bit/blob/main/sholawat/sholawat.json",
+    },
+    {
+      title: "Sholawat",
+      desc: "dari Buku Pesantren Al-Khirot",
+      href: "https://alkhoirot.com/buku-islam/",
     },
     {
       title: "Dzikir",
@@ -165,6 +171,11 @@ export const sources = {
       title: "Fzy.js",
       desc: "Dependesi fuzzy",
       href: "https://github.com/jhawthorn/fzy.js",
+    },
+    {
+      title: "Flex Search",
+      desc: "Dependesi pencarian text panjang",
+      href: "https://github.com/nextapps-de/flexsearch",
     },
     {
       title: "Jolly UI",

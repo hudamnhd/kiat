@@ -26,7 +26,7 @@ const TextArab = (
     <div
       dir="rtl"
       className={cn(
-        "p-3 text-justify",
+        "p-3",
         opts?.fontStyle,
         className,
       )}
@@ -63,7 +63,7 @@ export const TextAyah = (
       className={cn(
         "mx-1 text-right font-normal mr-1.5 text-3xl",
         opts?.fontStyle,
-        isKemenag && "font-uthmani-hafs",
+        "font-uthmani-hafs",
       )}
     >
       {toArabicNumber(ayah)}

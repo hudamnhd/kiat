@@ -25,6 +25,7 @@ export const FONT_STYLE = [
   { value: "font-kemenag", label: "LPMQ Kemenag" },
   { value: "font-indopak", label: "Indopak" },
   { value: "font-uthmani-hafs", label: "Uthmani" },
+  { value: "font-uthmani-hafs-simple", label: "Uthmani Simple" },
   { value: "font-uthmani-v2-reguler", label: "KFGQPC Hafs" },
   { value: "font-uthmani-v2-bold", label: "KFGQPC Hafs Bold" },
 ];

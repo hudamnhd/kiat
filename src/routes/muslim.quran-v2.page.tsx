@@ -1,25 +1,15 @@
 import { FONT_SIZE } from "#/src/constants/prefs";
 import { Header } from "#src/components/custom/header";
+import TextArab from "#src/components/custom/text-arab";
 import { buttonVariants } from "#src/components/ui/button";
 import { cn } from "#src/utils/misc";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import React from "react";
 import { Link, useLoaderData, useRouteLoaderData } from "react-router";
 import type { Loader as muslimLoader } from "./muslim.data";
-
-import { TextAyah } from "#src/components/custom/text-arab.tsx";
+import { CommandNavigation } from "./muslim.quran.navigation";
 import { Loader } from "./muslim.quran.page";
 export { Loader } from "./muslim.quran.page";
-
-// Fungsi untuk mengonversi angka ke format Arab
-const toArabicNumber = (number: number) => {
-  const arabicDigits = ["٠", "١", "٢", "٣", "٤", "٥", "٦", "٧", "٨", "٩"];
-  return number
-    .toString()
-    .split("")
-    .map((digit) => arabicDigits[parseInt(digit)])
-    .join("");
-};
 
 const handleScrollUp = () => {
   window?.scrollTo({ left: 0, top: 0, behavior: "smooth" });
@@ -41,13 +31,23 @@ export function Component() {
     handleScrollUp();
   }, [page.p]);
 
+  const _lineHeight = prefsOption?.lineHeight;
+  const _replacelineHeight = _lineHeight?.replace("rem", "");
+  const _parselineHeight = Number(_replacelineHeight);
+  const isKemenag = opts?.fontStyle === "font-kemenag";
+  const lineHeight = isKemenag
+    ? _lineHeight
+    : (_parselineHeight - (_parselineHeight * 0.3)).toFixed(1) + "rem";
+
   return (
     <React.Fragment>
-      <Header redirectTo="/muslim/quran" title={title} subtitle={subtitle} />
+      <Header redirectTo="/muslim/quran" title={title} subtitle={subtitle}>
+        <CommandNavigation />
+      </Header>
 
       <div
         className={cn(
-          "rtl:text-justify border-b px-4 pt-1 pb-4",
+          "border-b px-4 pt-1 pb-4 text-center",
           opts?.fontStyle === "font-kemenag" && "px-6",
         )}
         dir="rtl"
@@ -75,8 +75,7 @@ export function Component() {
                         style={{
                           fontWeight: opts?.fontWeight,
                           fontSize: prefsOption?.fontSize || "1.5rem",
-                          lineHeight: prefsOption?.lineHeight ||
-                            "3.5rem",
+                          lineHeight: lineHeight || "3.5rem",
                         }}
                       >
                         {opts?.fontStyle === "font-indopak"
@@ -89,22 +88,11 @@ export function Component() {
               )}
               {!should_hidden &&
                 (
-                  <div
-                    key={dt.vk}
-                    style={{
-                      fontWeight: opts?.fontWeight,
-                      fontSize: prefsOption?.fontSize || "1.5rem",
-                      lineHeight: prefsOption?.lineHeight || "3.5rem",
-                      whiteSpace: "pre-line",
-                    }}
-                    className={cn(
-                      "inline-flex inline hover:bg-muted antialiased",
-                      opts?.fontStyle,
-                    )}
-                  >
-                    {dt.ta}
-                    <TextAyah ayah={Number(ayah_index)} />
-                  </div>
+                  <TextArab
+                    text={dt.ta}
+                    className="whiteSpace-pre-line p-0 px-2 inline h-fit"
+                    ayah={Number(ayah_index)}
+                  />
                 )}
             </React.Fragment>
           );

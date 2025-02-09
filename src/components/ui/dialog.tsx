@@ -1,8 +1,8 @@
-'use client';
+"use client";
 
-import { cva, type VariantProps } from 'class-variance-authority';
-import { X } from 'lucide-react';
-import * as React from 'react';
+import { cva, type VariantProps } from "class-variance-authority";
+import { X } from "lucide-react";
+import * as React from "react";
 import {
   Button as AriaButton,
   composeRenderProps,
@@ -14,31 +14,31 @@ import {
   Modal as AriaModal,
   ModalOverlay as AriaModalOverlay,
   ModalOverlayProps as AriaModalOverlayProps,
-} from 'react-aria-components';
+} from "react-aria-components";
 
-import { cn } from '#src/utils/misc';
+import { cn } from "#src/utils/misc";
 
 const Dialog = AriaDialog;
 
 const sheetVariants = cva(
   [
-    'fixed z-50 gap-4 bg-background shadow-lg transition ease-in-out',
+    "fixed z-50 gap-4 bg-background shadow-lg transition ease-in-out",
     /* Entering */
-    'data-entering:duration-500 data-entering:animate-in',
+    "data-entering:duration-300 data-entering:animate-in",
     /* Exiting */
-    'data-exiting:duration-300  data-exiting:animate-out',
+    "data-exiting:duration-300  data-exiting:animate-out",
   ],
   {
     variants: {
       side: {
         top:
-          'inset-x-0 top-0 border-b data-entering:slide-in-from-top data-exiting:slide-out-to-top',
+          "inset-x-0 top-0 border-b data-entering:slide-in-from-top data-exiting:slide-out-to-top",
         bottom:
-          'inset-x-0 bottom-0 border-t data-entering:slide-in-from-bottom data-exiting:slide-out-to-bottom',
+          "inset-x-0 bottom-0 border-t data-entering:slide-in-from-bottom data-exiting:slide-out-to-bottom",
         left:
-          'inset-y-0 left-0 h-full w-3/4 border-r data-entering:slide-in-from-left data-exiting:slide-out-to-left sm:max-w-sm',
+          "inset-y-0 left-0 h-full w-3/4 border-r data-entering:slide-in-from-left data-exiting:slide-out-to-left sm:max-w-sm",
         right:
-          'inset-y-0 right-0 h-full w-3/4  border-l data-entering:slide-in-from-right data-exiting:slide-out-to-right sm:max-w-sm',
+          "inset-y-0 right-0 h-full w-3/4  border-l data-entering:slide-in-from-right data-exiting:slide-out-to-right sm:max-w-sm",
       },
     },
   },
@@ -55,11 +55,11 @@ const DialogOverlay = ({
     isDismissable={isDismissable}
     className={composeRenderProps(className, (className) =>
       cn(
-        'fixed inset-0 z-50 bg-black/80',
+        "fixed inset-0 z-50 bg-black/80",
         /* Exiting */
-        'data-exiting:duration-300 data-exiting:animate-out data-exiting:fade-out-0',
+        "data-exiting:duration-300 data-exiting:animate-out data-exiting:fade-out-0",
         /* Entering */
-        'data-entering:animate-in data-entering:fade-in-0',
+        "data-entering:animate-in data-entering:fade-in-0",
         className,
       ))}
     {...props}
@@ -68,28 +68,28 @@ const DialogOverlay = ({
 
 interface DialogContentProps
   extends
-    Omit<React.ComponentProps<typeof AriaModal>, 'children'>,
+    Omit<React.ComponentProps<typeof AriaModal>, "children">,
     VariantProps<typeof sheetVariants>
 {
-  children?: AriaDialogProps['children'];
-  role?: AriaDialogProps['role'];
+  children?: AriaDialogProps["children"];
+  role?: AriaDialogProps["role"];
   closeButton?: boolean;
 }
 
 const baseDialog = cn(
-  'fixed bottom-0 sm:bottom-auto sm:top-[50%] sm:left-[50%] ',
-  'sm:translate-x-[-50%] sm:translate-y-[-50%] translate-y-[0%] w-full sm:max-w-lg sm:w-full ',
-  'z-50 ',
-  'border p-5 ',
-  'bg-background shadow-lg ',
-  'sm:rounded-lg ',
-  'duration-300 data-exiting:duration-300 ',
-  'data-entering:animate-in data-exiting:animate-out ',
-  'sm:data-entering:fade-in-0 sm:data-exiting:fade-out-0 ',
-  'sm:data-entering:zoom-in-95 sm:data-exiting:zoom-out-95 ',
-  'sm:data-entering:slide-in-from-left-1/2 sm:data-entering:slide-in-from-top-[48%] ',
-  'data-entering:slide-in-from-bottom data-exiting:slide-out-to-bottom ',
-  'sm:data-exiting:slide-out-to-left-1/2 sm:data-exiting:slide-out-to-top-[48%] ',
+  "fixed bottom-0 sm:bottom-auto sm:top-[50%] sm:left-[50%] ",
+  "sm:translate-x-[-50%] sm:translate-y-[-50%] translate-y-[0%] w-full sm:max-w-lg sm:w-full ",
+  "z-50 ",
+  "border p-5 ",
+  "bg-background shadow-lg ",
+  "sm:rounded-lg ",
+  "duration-300 data-exiting:duration-300 ",
+  "data-entering:animate-in data-exiting:animate-out ",
+  "sm:data-entering:fade-in-0 sm:data-exiting:fade-out-0 ",
+  "sm:data-entering:zoom-in-95 sm:data-exiting:zoom-out-95 ",
+  "sm:data-entering:slide-in-from-left-1/2 sm:data-entering:slide-in-from-top-[48%] ",
+  "data-entering:slide-in-from-bottom data-exiting:slide-out-to-bottom ",
+  "sm:data-exiting:slide-out-to-left-1/2 sm:data-exiting:slide-out-to-top-[48%] ",
 );
 
 const DialogContent = ({
@@ -103,14 +103,14 @@ const DialogContent = ({
   <AriaModal
     className={composeRenderProps(className, (className) =>
       cn(
-        side ? sheetVariants({ side, className: 'h-full p-6' }) : baseDialog,
+        side ? sheetVariants({ side, className: "h-full p-6" }) : baseDialog,
         className,
       ))}
     {...props}
   >
     <AriaDialog
       role={role}
-      className={cn(!side && 'grid h-full gap-2', 'h-full outline-hidden')}
+      className={cn(!side && "grid h-full gap-2", "h-full outline-hidden")}
     >
       {composeRenderProps(children, (children, renderProps) => (
         <>
@@ -118,10 +118,10 @@ const DialogContent = ({
           {closeButton && (
             <AriaButton
               onPress={renderProps.close}
-              className='absolute right-4 top-4 rounded-sm opacity-70 ring-offset-background transition-opacity data-disabled:pointer-events-none data-entering:bg-accent data-entering:text-muted-foreground data-hovered:opacity-100 data-focused:outline-hidden data-focused:ring-2 data-focused:ring-ring data-focused:ring-offset-2'
+              className="absolute right-4 top-4 rounded-sm opacity-70 ring-offset-background transition-opacity data-disabled:pointer-events-none data-entering:bg-accent data-entering:text-muted-foreground data-hovered:opacity-100 data-focused:outline-hidden data-focused:ring-2 data-focused:ring-ring data-focused:ring-offset-2"
             >
-              <X className='size-4' />
-              <span className='sr-only'>Close</span>
+              <X className="size-4" />
+              <span className="sr-only">Close</span>
             </AriaButton>
           )}
         </>
@@ -136,7 +136,7 @@ const DialogHeader = ({
 }: React.HTMLAttributes<HTMLDivElement>) => (
   <div
     className={cn(
-      'flex flex-col space-y-1 text-center sm:text-left',
+      "flex flex-col space-y-1 text-center sm:text-left",
       className,
     )}
     {...props}
@@ -149,7 +149,7 @@ const DialogFooter = ({
 }: React.HTMLAttributes<HTMLDivElement>) => (
   <div
     className={cn(
-      'flex flex-col-reverse sm:flex-row sm:justify-end gap-2 mt-4',
+      "flex flex-col-reverse sm:flex-row sm:justify-end gap-2 mt-4",
       className,
     )}
     {...props}
@@ -158,9 +158,9 @@ const DialogFooter = ({
 
 const DialogTitle = ({ className, ...props }: AriaHeadingProps) => (
   <AriaHeading
-    slot='title'
+    slot="title"
     className={cn(
-      'text-lg font-semibold leading-none tracking-tight',
+      "text-lg font-semibold leading-none tracking-tight",
       className,
     )}
     {...props}
@@ -173,7 +173,7 @@ const DialogDescription = ({
 }: React.HTMLAttributes<HTMLParagraphElement>) => (
   <p
     className={cn(
-      'flex flex-col space-y-1.5 text-center sm:text-left text-sm text-muted-foreground',
+      "flex flex-col space-y-1.5 text-center sm:text-left text-sm text-muted-foreground",
       className,
     )}
     {...props}

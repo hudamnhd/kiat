@@ -34,10 +34,14 @@ import { SOURCE_TRANSLATIONS } from "#src/constants/sources";
 
 const preBismillah = {
   text: {
-    ar:
-      "\ufeff\u0628\u0650\u0633\u0652\u0645\u0650\u0020\u0627\u0644\u0644\u0651\u064e\u0647\u0650\u0020\u0627\u0644\u0631\u0651\u064e\u062d\u0652\u0645\u064e\u0670\u0646\u0650\u0020\u0627\u0644\u0631\u0651\u064e\u062d\u0650\u064a\u0645\u0650",
-    read: "Bismillāhir-raḥmānir-raḥīm(i). ",
+    "font-uthmani-hafs-simple": "بسم الله الرحمن الرحيم",
+    "font-uthmani-hafs": "بِسْمِ ٱللَّهِ ٱلرَّحْمَـٰنِ ٱلرَّحِيمِ",
+    "font-indopak": "بِسْمِ اللّٰهِ الرَّحْمٰنِ الرَّحِیْمِ ۟",
+    "font-kemenag": "بِسْمِ اللّٰهِ الرَّحْمٰنِ الرَّحِيْمِ",
+    "font-uthmani-v2-reguler": "بِسْمِ اللَّهِ الرَّحْمَٰنِ الرَّحِيمِ",
+    "font-uthmani-v2-bold": "بِسْمِ اللَّهِ الرَّحْمَٰنِ الرَّحِيمِ",
   },
+  read: "Bismillāhir-raḥmānir-raḥīm(i). ",
   translation: {
     id: "Dengan nama Allah Yang Maha Pengasih lagi Maha Penyayang.",
   },
@@ -46,14 +50,16 @@ const preBismillah = {
   },
 };
 
+type FontType = keyof typeof preBismillah.text;
+
 export function SettingsDisplay() {
   const loaderRoot = useRouteLoaderData<typeof Loader>("muslim");
 
   const opts = loaderRoot?.opts;
 
   const fetcher = useFetcher();
-  const [fontType, setFontType] = React.useState<string>(
-    opts?.fontStyle || "font-kemenag",
+  const [fontType, setFontType] = React.useState<FontType>(
+    opts?.fontStyle as FontType,
   );
   const [fontWeight, setFontWeight] = React.useState<string>(
     opts?.fontWeight || "400",
@@ -79,6 +85,10 @@ export function SettingsDisplay() {
   const translation_opts = SOURCE_TRANSLATIONS.find((d) =>
     d.id === translationSource
   );
+
+  // {...(!sm
+  //   ? { className: "sm:max-w-[425px] max-h-[95vh] overflow-y-auto" }
+  //   : { className: "p-0" })}
   return (
     <React.Fragment>
       <DialogTrigger>
@@ -93,10 +103,8 @@ export function SettingsDisplay() {
         </Button>
         <DialogOverlay>
           <DialogContent
-            {...(sm ? { side: "right" } : {})}
-            {...(!sm
-              ? { className: "sm:max-w-[425px] max-h-[95vh] overflow-y-auto" }
-              : { className: "p-0" })}
+            className="p-0 h-fit sm:h-auto"
+            {...(sm ? { side: "right" } : { side: "bottom" })}
           >
             {({ close }) => (
               <>
@@ -107,13 +115,13 @@ export function SettingsDisplay() {
                       Kelola pengaturan tampilan Anda di sini.
                     </DialogDescription>
                   </DialogHeader>
-                  <div className="grid gap-2 max-h-[85vh] overflow-y-auto px-4">
+                  <div className="grid gap-2 h-[calc(100vh-250px)] overflow-y-auto px-4">
                     <div className="space-y-4 w-full">
                       <div>
                         <div dir="rtl" className="break-normal pr-2.5">
                           <div
                             className={cn(
-                              "text-primary my-3 font-kemenag transition-all duration-300",
+                              "my-3 font-kemenag transition-all duration-300",
                               fontType,
                             )}
                             style={{
@@ -123,7 +131,7 @@ export function SettingsDisplay() {
                                 "3.5rem",
                             }}
                           >
-                            {preBismillah.text.ar}
+                            {preBismillah.text[fontType]}
                           </div>
                         </div>
 
@@ -146,7 +154,7 @@ export function SettingsDisplay() {
                           name="fontStyle"
                           selectedKey={fontType}
                           onSelectionChange={(selected) =>
-                            setFontType(selected as string)}
+                            setFontType(selected as FontType)}
                         >
                           <Label>Jenis Huruf Arab</Label>
                           <SelectTrigger>

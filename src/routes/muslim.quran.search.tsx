@@ -62,7 +62,8 @@ export async function Loader({ request }: LoaderFunctionArgs) {
     if (found) (acc as Ayah[]).push(found);
     return acc;
   }, []);
-  return { source, query, data: results };
+  const sources = SOURCE_TRANSLATIONS.find((d) => d.id === source);
+  return { sources, source, query, data: results };
 }
 
 import { ChevronDown } from "lucide-react";
@@ -202,11 +203,11 @@ const SuggestionSearh = (
 ) => {
   return (
     <div>
-      <div className="font-medium text-muted-foreground px-3 pt-2">
+      <div className="font-medium opacity-80 px-3 pt-2">
         Perintah allah di dalam al-Quran
       </div>
 
-      <div className="flex font-medium items-center text-xs text-muted-foreground px-3 mt-0.5 gap-1">
+      <div className="flex font-medium items-center text-xs text-muted-foreground px-2 mb-1 gap-1">
         <Minus strokeWidth={1} />
         Sumber
         <a
@@ -221,10 +222,10 @@ const SuggestionSearh = (
           <div
             key={index}
             onClick={() => handler(d.vk)}
-            className="text-sm flex items-center gap-1 text-muted-foreground hover:text-foreground duration-300 cursor-pointer"
+            className="px-2 py-1.5 text-sm flex items-center gap-3 text-muted-foreground hover:text-foreground hover:bg-accent duration-300 cursor-pointer rounded-md"
           >
-            <div className="flex-none w-[50px]">{d.vk}</div>
-            <Minus />
+            <MoveRight className="h-5 w-5 opacity-80" />
+            {/*<div className="flex-none w-[50px]">{d.vk}</div>*/}
             <div className="line-clamp-1">{d.t}</div>
           </div>
         ))}
@@ -257,7 +258,7 @@ const ResultSearch = () => {
 
             <div className="capitalize flex font-medium items-center text-xs text-muted-foreground px-2 mt-0.5">
               <Minus strokeWidth={1} />
-              terjemahan {fetcher.data?.source}
+              terjemahan {fetcher.data?.source} ( {fetcher.data?.sources?.name})
             </div>
             {perintahKey && (
               <div className="capitalize flex font-medium items-center text-xs px-2 mt-1 gap-2">

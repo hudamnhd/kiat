@@ -1,12 +1,18 @@
 import { Header } from "#src/components/custom/header";
 import { Button, buttonVariants } from "#src/components/ui/button";
+import { Label } from "#src/components/ui/label";
+import {
+  Popover,
+  PopoverDialog,
+  PopoverTrigger,
+} from "#src/components/ui/popover";
 import {
   ChevronDown,
   Delete,
   Equal,
   History,
   Minus,
-  Pencil,
+  PenLine,
   Plus,
   X,
 } from "lucide-react";
@@ -29,6 +35,8 @@ import {
   CollapsibleContent,
   CollapsibleTrigger,
 } from "#src/components/ui/collapsible";
+import { Input } from "#src/components/ui/input";
+import { number } from "zod";
 
 // Tipe untuk riwayat kalkulator
 interface HistoryItem {
@@ -469,6 +477,71 @@ export const Component = () => {
                     key={index}
                     className="text-right w-full flex items-center justify-between gap-2"
                   >
+                    <PopoverTrigger>
+                      <Button variant="ghost" size="icon">
+                        <PenLine />
+                      </Button>
+                      <Popover placement="end">
+                        <PopoverDialog className="max-w-[250px]">
+                          {({ close }) => {
+                            const [newInput, setNewInput] = useState<string>(
+                              item,
+                            );
+                            const handleNewInputChange = (
+                              e: { target: { value: string } },
+                            ) => {
+                              setNewInput(
+                                e.target.value.replace(/\D/g, ""),
+                              );
+                            };
+
+                            const handleNewInputSave = () => {
+                              const inputData = splitExpression(currentInput);
+                              const findIndex = inputData.findIndex((
+                                d,
+                                i,
+                              ) => i === index);
+                              const _inputData = [...inputData];
+                              _inputData[findIndex] = newInput.toString() ||
+                                item;
+                              const joidData = _inputData.join("");
+                              setCurrentInput(joidData);
+                              close();
+                            };
+
+                            return (
+                              <div className="grid gap-2">
+                                <div>
+                                  <Label>
+                                    Ubah {item} :
+                                  </Label>
+                                  <Input
+                                    type="text"
+                                    inputMode="numeric"
+                                    pattern="[0-9]*"
+                                    value={newInput}
+                                    onChange={handleNewInputChange}
+                                  />
+                                </div>
+                                <div className="grid gap-2 grid-cols-2">
+                                  <Button
+                                    onPress={close}
+                                    variant="outline"
+                                  >
+                                    Batal
+                                  </Button>
+                                  <Button
+                                    onPress={handleNewInputSave}
+                                  >
+                                    Simpan
+                                  </Button>
+                                </div>
+                              </div>
+                            );
+                          }}
+                        </PopoverDialog>
+                      </Popover>
+                    </PopoverTrigger>
                     {index === 0
                       ? (
                         // Menampilkan angka pertama dengan warna biru
@@ -521,33 +594,6 @@ export const Component = () => {
                           </div>
                         </>
                       )}
-
-                    <Button
-                      size="icon"
-                      variant="ghost"
-                      className="h-8"
-                      onPress={() => {
-                        let a;
-                        do {
-                          a = window.prompt(`Ganti ${item}`, item);
-                          if (a === null) break;
-                        } while (!/^\d+$/.test(a)); // Hanya menerima angka positif (tanpa titik atau koma)
-
-                        if (a === null) return;
-                        a = Number(a);
-                        const inputData = splitExpression(currentInput);
-                        const findIndex = inputData.findIndex((
-                          d,
-                          i,
-                        ) => i === index);
-                        const _inputData = [...inputData];
-                        _inputData[findIndex] = a.toString() || item;
-                        const joidData = _inputData.join("");
-                        setCurrentInput(joidData);
-                      }}
-                    >
-                      <Pencil className="size-4" />
-                    </Button>
                   </div>
                 );
               } else {
@@ -561,10 +607,6 @@ export const Component = () => {
                   TOTAL{" "}
                 </div>
                 <div className="flex items-center gap-3 py-1">
-                  <span className="text-2xl font-bold text-right">
-                    {/*{formatRupiah(evaluateInput(currentInput))}*/}
-                    {formatRupiah(evaluateInputSequential(currentInput))}
-                  </span>
                   {lastOperator !== ""
                     ? (
                       <div
@@ -584,6 +626,10 @@ export const Component = () => {
                       >
                       </div>
                     )}
+                  <span className="text-2xl font-bold text-right">
+                    {/*{formatRupiah(evaluateInput(currentInput))}*/}
+                    {formatRupiah(evaluateInputSequential(currentInput))}
+                  </span>
                 </div>
               </div>
             </div>

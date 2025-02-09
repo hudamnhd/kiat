@@ -1,4 +1,5 @@
 import { Header } from "#src/components/custom/header";
+import TextArab from "#src/components/custom/text-arab.tsx";
 import { buttonVariants } from "#src/components/ui/button";
 import { data } from "#src/constants/dzikr.ts";
 import { FONT_SIZE } from "#src/constants/prefs";
@@ -18,6 +19,12 @@ function getWaktuSekarang(): string {
 }
 
 const time = getWaktuSekarang();
+
+function removeHtmlTagsExceptNewline(input: string): string {
+  return input
+    .replace(/<(?!\/?br\s*\/?)[^>]+>/g, "") // Hapus semua tag HTML kecuali <br>
+    .replace(/@/g, "\n\n"); // Ganti '@' dengan newline
+}
 
 export function Component() {
   const { dzikr } = data;
@@ -61,9 +68,8 @@ export function Component() {
             const lineHeight = prefsOption?.lineHeight || "3.5rem";
             const content =
               `<div style="font-weight:  ${fontWeight}; font-size: ${fontSize}; line-height:  ${lineHeight};" class="${opts?.fontStyle}">`;
-            const arabicContent = ayat?.arabic
-              .replace(/@/g, "\n")
-              .replace(/<p>/g, content);
+            const arabicContent = removeHtmlTagsExceptNewline(ayat.arabic);
+
             const translateContent = ayat?.translated_id
               .replace(/@/g, "<br/><br/>")
               .replace(/(\.)(\s|$)/g, "$1<br />");
@@ -95,22 +101,11 @@ export function Component() {
                     </div>
                   </div>
                 </div>
-                <div className="w-full text-right flex gap-x-2.5 items-start justify-end">
-                  <span
-                    className={cn(
-                      "relative text-right font-lpmq",
-                      opts?.fontStyle,
-                    )}
-                    style={{
-                      fontWeight: opts.fontWeight,
-                      fontSize: prefsOption?.fontSize || "1.5rem",
-                      lineHeight: prefsOption?.lineHeight || "3.5rem",
-                    }}
-                    dangerouslySetInnerHTML={{
-                      __html: arabicContent,
-                    }}
-                  />
-                </div>
+
+                <TextArab
+                  text={arabicContent}
+                  className="whitespace-pre-line"
+                />
 
                 <div className="flex items-center justify-end gap-4 mt-2">
                   <span className="counter-display text-2xl font-bold">

@@ -1,5 +1,6 @@
 import { Header } from "#src/components/custom/header";
 import { ScrollTopButton } from "#src/components/custom/scroll-to-top.tsx";
+import TextArab from "#src/components/custom/text-arab.tsx";
 import { getCache, setCache } from "#src/utils/cache-client.ts";
 import { cn } from "#src/utils/misc";
 import ky from "ky";
@@ -235,25 +236,10 @@ const DoaView = ({ children }: { children: React.ReactNode }) => {
                   </button>
                 </div>
 
-                <div className="w-full px-4 text-right flex gap-x-2.5 items-start justify-end">
-                  <p
-                    className={cn(
-                      "relative font-lpmq text-right font-lpmq pt-2",
-                      opts?.fontStyle,
-                    )}
-                    style={{
-                      fontWeight: opts?.fontWeight,
-                      fontSize: prefsOption?.fontSize || "1.5rem",
-                      lineHeight: prefsOption?.lineHeight || "3.5rem",
-                    }}
-                    dangerouslySetInnerHTML={{
-                      __html: doa.arab,
-                    }}
-                  />
-                </div>
-                <div className="mt-3 space-y-3 px-4">
+                <div className="p-2">
+                  <TextArab text={doa.arab} />
                   <div
-                    className="translation-text prose dark:prose-invert leading-6 max-w-none"
+                    className="translation-text prose dark:prose-invert max-w-none px-2"
                     dangerouslySetInnerHTML={{
                       __html: doa.indo,
                     }}

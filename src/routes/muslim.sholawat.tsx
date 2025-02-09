@@ -102,7 +102,7 @@ export function Component() {
                   "from-primary/10 to-secondary/10 dark:from-primary/20 dark:to-secondary/20",
               )}
             >
-              <div className="text-primary font-medium text-lg sm:text-xl  line-clamp-1">
+              <div className="font-medium text-lg sm:text-xl  line-clamp-1">
                 {ayat.nama}
               </div>
 
@@ -123,12 +123,13 @@ export function Component() {
               </button>
             </div>
             <TextArab
+              className="px-4"
               text={ayat.arab}
             />
             <div className="px-4">
               {opts?.showLatin === "on" && (
                 <div
-                  className="latin-text prose max-w-none border-b pb-2 mb-2 text-muted-foreground"
+                  className="latin-text prose max-w-none pb-2 mb-2 text-muted-foreground"
                   dangerouslySetInnerHTML={{
                     __html: ayat.latin,
                   }}

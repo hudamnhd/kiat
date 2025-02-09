@@ -4,47 +4,24 @@ import { Button } from "#src/components/ui/button";
 import { Spinner } from "#src/components/ui/spinner";
 import { juzPages, pageAyahs } from "#src/constants/quran-metadata";
 import { cn } from "#src/utils/misc";
-import Fuse from "fuse.js";
 import { hasMatch } from "fzy.js";
 import lodash from "lodash";
 import { Search as SearchIcon } from "lucide-react";
 import React from "react";
 import type { LoaderFunctionArgs } from "react-router";
-import { Link, useFetcher, useNavigate, useNavigation } from "react-router";
+import { Link, useFetcher, useNavigation } from "react-router";
 
 const TAGS = Array.from({ length: 604 }).map(
   (_, i, a) => {
     return {
       i: a.length - i,
+      p: a.length - i,
       t: `Page ${a.length - i}`,
       m: "page",
     };
   },
 );
 
-function parseQuery(query: string): { first: number; second: number } | null {
-  const pattern = /^(\d+):(\d+)$/; // Regex untuk pola "114:3"
-  const match = query.match(pattern);
-
-  if (!match) return null; // Jika tidak sesuai format, kembalikan null
-
-  // Parse angka dari hasil regex
-  const first = parseInt(match[1], 10);
-  const second = parseInt(match[2], 10);
-
-  return { first, second };
-}
-
-// Contoh penggunaan
-const query = "114:3";
-const result = parseQuery(query);
-
-if (result) {
-  console.log("First:", result.first); // Output: 114
-  console.log("Second:", result.second); // Output: 3
-} else {
-  console.log("Format query tidak valid.");
-}
 export async function Loader({ request }: LoaderFunctionArgs) {
   const url = new URL(request.url);
   const query = url.searchParams.get("query") || "";
@@ -68,10 +45,6 @@ export async function Loader({ request }: LoaderFunctionArgs) {
   });
   // 🔥 Buat indeks FlexSearch untuk `vk` & `tr`
   let merged = [...surah, ...juz, ...TAGS];
-  const fuse = new Fuse(surah, {
-    keys: ["t"], // Cari berdasarkan nama Surah
-    includeScore: false, // Tampilkan skor kemiripan
-  });
 
   function searchQuran(query: string) {
     // Jika query adalah angka:angka (misal 114:3)
@@ -89,7 +62,7 @@ export async function Loader({ request }: LoaderFunctionArgs) {
         return {
           ...d,
           t: `${d.t}, Ayat ${ayahNum}`,
-          v: ayahNum,
+          v: ayahNum.toString(),
           m: "ayat",
           p: page,
         };
@@ -109,83 +82,11 @@ export async function Loader({ request }: LoaderFunctionArgs) {
   }
 
   return { query, data: searchQuran(query) };
-  // 🔹 Tambahkan data ke indeks FlexSearch
-
-  // merged.forEach((verse, index) => {
-  //   INDEX.add(verse.title, `${verse.title}`);
-  // });
-  //
-  // // 🔥 Cari berdasarkan query
-  // const resultIds = INDEX.search(query, { limit: 10 });
-  //
-  // // 🔹 Konversi ID hasil pencarian menjadi objek ayat yang sesuai
-  // const results = resultIds.map((id) =>
-  //   merged.find((verse) => verse.title === id)
-  // )
-  //   .filter(Boolean);
-  //
-  // return { source, query, data: results };
-
-  // 🔥 Ambil data ayat & terjemahan secara paralel
-  // const [verses, trans] = await Promise.all([
-  //   getDataStyle("indopak"),
-  //   getTranslation(source),
-  // ]);
-  //
-  // // 🔹 Gabungkan data ayat dengan terjemahan (cek panjang array untuk keamanan)
-  // const merged = verses.map((d, index) => ({
-  //   i: d.i,
-  //   ta: d.t,
-  //   vk: d.vk,
-  //   tt: trans[index]?.t || "", // Hindari error jika `trans[index]` undefined
-  // }));
-  //
-  // // 🔥 Buat indeks FlexSearch untuk `vk` & `tr`
-  // const index = new FlexSearch.Index({
-  //   preset: "match",
-  //   tokenize: "strict",
-  //   cache: true,
-  //   resolution: 9,
-  // });
-  //
-  // // 🔹 Tambahkan data ke indeks FlexSearch
-  // merged.forEach((verse) => {
-  //   index.add(verse.i, `${verse.vk} ${verse.tt}`);
-  // });
-  //
-  // // 🔥 Cari berdasarkan query
-  // const resultIds = index.search(query, { limit: 10 });
-  //
-  // // 🔹 Konversi ID hasil pencarian menjadi objek ayat yang sesuai
-  // const results = resultIds.map((id) => merged.find((verse) => verse.i === id))
-  //   .filter(Boolean);
-  //
-  // return { source, query, data: results };
 }
 
-import { Badge } from "#src/components/ui/badge.tsx";
 import { useId } from "react";
 
 export function Component() {
-  const [test, settest] = React.useState(null);
-  // React.useEffect(() => {
-  //   const getSurahByPage = async () => {
-  //     const t = await getTranslation();
-  //     const m = t.map((d) => {
-  //       const vk = d.vk.split(":")[1];
-  //       return {
-  //         i: d.i,
-  //         vk: d.vk,
-  //         ...(vk == "1" ? { d: formatList(d.d) } : {}),
-  //         t: d.t.replace(/\--(.*?)--/g, " ($1) "),
-  //       };
-  //     });
-  //     settest(m);
-  //   };
-  //
-  //   getSurahByPage();
-  // }, []);
-
   return (
     <LayoutMain>
       <CommandNavigation />
@@ -194,9 +95,8 @@ export function Component() {
 }
 
 const FzyTest = () => {
-  const fetcher = useFetcher({ key: "search-translation" });
+  const fetcher = useFetcher<typeof Loader>({ key: "search-translation" });
 
-  const id = useId();
   const [input, setInput] = React.useState("");
   const sourceValueRef = React.useRef<HTMLSelectElement | null>(null);
   const loadingIconRef = React.useRef<SVGSVGElement | null>(null);
@@ -240,17 +140,6 @@ const FzyTest = () => {
     }
     setInput(e.target.value);
     handleSearch(e.target.value);
-  };
-
-  const handleInputChangeValue = (value: string) => {
-    loadingIconRef.current?.classList.remove("hidden");
-    searchIconRef.current?.classList.add("hidden");
-    setInput(value);
-    handleSearch(value);
-  };
-
-  const handleSelectChange = () => {
-    handleSearch(input);
   };
 
   return (
@@ -302,12 +191,6 @@ const FzyTest = () => {
           onChange={handleInputChange}
         />
       </div>
-
-      {
-        /*{input.length === 0 && (
-        <SuggestionSearh handler={handleInputChangeValue} />
-      )}*/
-      }
     </React.Fragment>
   );
 };
@@ -323,7 +206,7 @@ const SUGGESTION = [
     "i": 2,
     "t": "Ayat kursi",
     "p": 42,
-    "v": 255,
+    "v": "255",
     "m": "ayat",
   },
   {
@@ -355,11 +238,19 @@ const SUGGESTION = [
     "m": "surah",
   },
 ];
+
+type Item = {
+  i: number;
+  t: string;
+  p: number;
+  m: string;
+  v?: string;
+};
+
 const ResultSearch = () => {
   const fetcher = useFetcher({ key: "search-translation" });
-  const navigate = useNavigate();
   return (
-    <div className="h-[250px] scroll-py-10 scroll-pb-2 space-y-4 overflow-y-auto p-2 relative">
+    <div className="h-[200px] scroll-py-10 scroll-pb-2 space-y-4 overflow-y-auto p-2 relative">
       <div
         id="loading-spinner-search"
         className="absolute h-full w-full flex items-center justify-center bottom-0 left-1/2 transform -translate-x-1/2  rounded-xl"
@@ -372,60 +263,22 @@ const ResultSearch = () => {
 
       {fetcher.data?.data?.length > 0
         ? (
-          <ul className="text-sm text-foreground">
-            {fetcher.data?.data?.length > 0 &&
-              fetcher.data?.data?.map((item, index) => {
-                const mode = item.m;
-                const isAyah = mode === "ayat";
-                const isSurah = mode === "surah";
-                const to = isAyah
-                  ? `/muslim/quran/${item.p}?surah=${item.i}&ayah=${item.v}`
-                  : isSurah
-                  ? `/muslim/quran/${item.p}?surah=${item.i}&ayah=1`
-                  : `/muslim/quran/${item.p}`;
-
-                return (
-                  <Link
-                    key={index}
-                    to={to}
-                  >
-                    <li
-                      className="hover:bg-accent text-muted-foreground hover:text-foreground font-medium group flex cursor-default select-none items-center px-4 py-2 rounded-md"
-                      id="option-1"
-                      role="option"
-                      tabIndex={-1}
-                    >
-                      <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        width="24"
-                        height="24"
-                        viewBox="0 0 24 24"
-                        fill="none"
-                        stroke="currentColor"
-                        strokeWidth="2"
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        className="text-muted-foreground/70"
-                      >
-                        <path d="M18 8L22 12L18 16" />
-                        <path d="M2 12H22" />
-                      </svg>
-                      <span className="ml-3 flex-auto truncate">
-                        {item.t}
-                      </span>
-                    </li>
-                  </Link>
-                );
-              })}
-
-            {/* More projects... */}
-          </ul>
+          <div>
+            <h2 className="text-xs font-semibold mb-1 px-2">
+              Pencarian "{fetcher.data?.query}"
+            </h2>
+            <ul className="text-sm text-foreground">
+              {fetcher.data?.data?.length > 0 &&
+                fetcher.data?.data?.map((item: Item, index: number) => {
+                  return <ListItem key={index} {...item} />;
+                })}
+            </ul>
+          </div>
         )
         : fetcher.data?.query
         ? (
           <React.Fragment>
             <div className="py-14 px-6 text-center text-sm sm:px-14">
-              {/* Heroicon name: outline/exclamation */}
               <svg
                 className="mx-auto h-6 w-6 text-gray-400"
                 xmlns="http://www.w3.org/2000/svg"
@@ -441,11 +294,12 @@ const ResultSearch = () => {
                   d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"
                 />
               </svg>
-              <p className="mt-4 font-semibold text-gray-900">
-                No results found
+              <p className="mt-2 font-semibold text-gray-900">
+                Tidak ada hasil
               </p>
               <p className="mt-2 text-gray-500">
-                We couldn’t find anything with that term. Please try again.
+                Coba ketik nomor surah 1-114, nomor juz 1-30, halaman 1-604 atau
+                nomor surah dan ayat misal 2:285.
               </p>
             </div>
           </React.Fragment>
@@ -454,48 +308,8 @@ const ResultSearch = () => {
           <div>
             <h2 className="text-xs font-semibold mb-1 px-2">Disarankan</h2>
             <ul className="text-sm text-foreground">
-              {SUGGESTION.map((item, index) => {
-                const mode = item.m;
-                const isAyah = mode === "ayat";
-                const isSurah = mode === "surah";
-                const to = isAyah
-                  ? `/muslim/quran/${item.p}?surah=${item.i}&ayah=${item.v}`
-                  : isSurah
-                  ? `/muslim/quran/${item.p}?surah=${item.i}&ayah=1`
-                  : `/muslim/quran/${item.p}`;
-
-                return (
-                  <Link
-                    key={index}
-                    to={to}
-                  >
-                    <li
-                      className="hover:bg-accent text-muted-foreground hover:text-foreground font-medium group flex cursor-default select-none items-center px-4 py-2 rounded-md"
-                      id="option-1"
-                      role="option"
-                      tabIndex={-1}
-                    >
-                      <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        width="24"
-                        height="24"
-                        viewBox="0 0 24 24"
-                        fill="none"
-                        stroke="currentColor"
-                        strokeWidth="2"
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        className="text-muted-foreground/70"
-                      >
-                        <path d="M18 8L22 12L18 16" />
-                        <path d="M2 12H22" />
-                      </svg>
-                      <span className="ml-3 flex-auto truncate">
-                        {item.t}
-                      </span>
-                    </li>
-                  </Link>
-                );
+              {SUGGESTION.map((item: Item, index: number) => {
+                return <ListItem key={index} {...item} />;
               })}
             </ul>
           </div>
@@ -503,6 +317,55 @@ const ResultSearch = () => {
     </div>
   );
 };
+
+function ListItem(props: Item) {
+  const fullPath = window.location.pathname;
+  const basePath = fullPath.split("/").slice(0, -1).join("/") + "/";
+
+  console.log(basePath); // Output: "/muslim/quran/"
+  const item = props;
+  const mode = item.m;
+  const isAyah = mode === "ayat";
+  const isSurah = mode === "surah";
+  const to = isAyah
+    ? `${basePath}${item.p}?surah=${item.i}&ayah=${item.v}`
+    : isSurah
+    ? `${basePath}${item.p}?surah=${item.i}&ayah=1`
+    : `${basePath}${item.p}`;
+  return (
+    <Link
+      key={to}
+      to={to}
+      className="group"
+    >
+      <li
+        className="group-hover:bg-accent opacity-70  group-hover:opacity-100 font-medium group flex cursor-default select-none items-center px-2 sm:px-3 py-2 rounded-md"
+        id="option-1"
+        role="option"
+        tabIndex={-1}
+      >
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          width="24"
+          height="24"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          strokeWidth="2"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          className="group-hover:opacity-100 opacity-70"
+        >
+          <path d="M18 8L22 12L18 16" />
+          <path d="M2 12H22" />
+        </svg>
+        <span className="ml-3 flex-auto truncate">
+          {item.t}
+        </span>
+      </li>
+    </Link>
+  );
+}
 
 import {
   Dialog,
@@ -568,20 +431,18 @@ export function CommandNavigation() {
     <KeyboardModalTrigger keyboardShortcut="/">
       <ModalOverlay
         isDismissable
-        className={({ isEntering, isExiting }) =>
-          cn(
-            "fixed inset-0 z-50 bg-black/80",
-            isEntering ? "animate-in fade-in duration-200 ease-out" : "",
-            isExiting ? "animate-out fade-out duration-200 ease-in" : "",
-          )}
+        className={cn(
+          "fixed inset-0 z-50 bg-black/80",
+          "data-exiting:duration-300 data-exiting:animate-out data-exiting:fade-out-0",
+          "data-entering:animate-in data-entering:fade-in-0",
+        )}
       >
         <Modal
-          className={({ isEntering, isExiting }) =>
-            cn(
-              "fixed sm:left-[50%] sm:top-[50%] z-50 w-full sm:max-w-lg sm:translate-x-[-50%] sm:translate-y-[-50%] border-b sm:border-none bg-background sm:rounded-md inset-x-0 top-0 shadow-xl bg-background p-2 sm:p-0",
-              isEntering ? "animate-in slide-in-from-top duration-200" : "",
-              isExiting ? "animate-out slide-out-to-top duration-200" : "",
-            )}
+          className={cn(
+            "fixed sm:left-[50%] sm:top-[50%] z-50 w-full sm:max-w-lg sm:translate-x-[-50%] sm:translate-y-[-50%] border-b sm:border-none bg-background sm:rounded-md inset-x-0 top-0 shadow-xl bg-background",
+            "data-exiting:duration-300 data-exiting:animate-out data-exiting:fade-out-0",
+            "data-entering:animate-in data-entering:fade-in-0",
+          )}
         >
           <Dialog
             aria-label="Command Menu"
@@ -590,24 +451,26 @@ export function CommandNavigation() {
           >
             {({ close }) => (
               <>
-                <div className="flex flex-col justify-between mx-auto max-w-xl transform divide-y divide-gray-100 overflow-hidden rounded-lg bg-background transition-all">
+                <div className="flex flex-col justify-between mx-auto max-w-xl transform divide-y divide-gray-100 overflow-hidden sm:rounded-lg bg-background transition-all">
                   <FzyTest />
 
                   <ResultSearch />
-                  <div className="flex flex-wrap items-center bg-muted py-2.5 px-4 text-xs sticky bottom-0">
-                    Ketik{" "}
-                    <Badge className="rounded-md mx-1">
-                      2:255
-                    </Badge>
-                    <span className="">untuk menujuk ayat,</span>{" "}
-                    <Badge className="rounded-md mx-1">
-                      1 - 604
-                    </Badge>{" "}
-                    menuju surah, juz atau halaman.
+                  <div className="flex flex-row flex-wrap sm:items-center bg-primary/10 py-2.5 px-2 sm:px-3 text-xs sticky bottom-0 border-t">
+                    <span className="">Ketik{" "}</span>
+                    <span className="block">
+                      <span className="font-bold mx-1">
+                        2:255
+                      </span>
+                      <span className="">untuk menujuk ayat,</span>
+                      {" "}
+                    </span>
+                    <span className="">
+                      <span className="font-bold mx-1">
+                        1 - 604
+                      </span>
+                      menuju surah, juz atau halaman.
+                    </span>
                   </div>
-                  {/* Results, show/hide based on command palette state. */}
-
-                  {/* Empty state, show/hide based on command palette state. */}
                 </div>
                 <CloseModal close={close} />
               </>

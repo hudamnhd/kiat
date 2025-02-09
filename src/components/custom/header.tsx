@@ -13,7 +13,6 @@ const SettingsDisplay = React.lazy(() =>
 );
 
 type HeaderProps = {
-  virtualizer?: boolean;
   children?: React.ReactNode;
   menu?: React.ReactNode;
   redirectTo: string;
@@ -32,50 +31,29 @@ export function Header(props: HeaderProps) {
   const location = useLocation();
   const showDisplay = location?.pathname?.startsWith("/muslim");
 
-  const prevScrollPos = React.useRef<number>(0);
-
   React.useEffect(() => {
     const navbarElement = document.getElementById("navbar");
 
-    // 🔥 Jika menggunakan React Virtual Tanstack
-    if (props.virtualizer) {
-      // const handleVirtualScroll = () => {
-      //   const currentScrollPos = props.virtualizer?.scrollOffset || 0;
-      //   if (navbarElement instanceof HTMLElement) {
-      //     if (prevScrollPos.current > currentScrollPos) {
-      //       navbarElement.style.top = "0"; // Tampilkan navbar
-      //     } else {
-      //       navbarElement.style.top = `-${navbarElement.offsetHeight}px`; // Sembunyikan navbar
-      //     }
-      //   }
-      //   prevScrollPos.current = currentScrollPos || 0;
-      // };
-      //
-      // // 🔥 Gunakan React Effect untuk mendeteksi perubahan scrollOffset
-      // handleVirtualScroll();
-    } else {
-      // 🔥 Jika tidak menggunakan Virtualizer, pakai window scroll event
-      let prevScrollpos = window.scrollY;
+    let prevScrollpos = window.scrollY;
 
-      const handleWindowScroll = () => {
-        let currentScrollPos = window.scrollY;
-        if (navbarElement instanceof HTMLElement) {
-          if (prevScrollpos > currentScrollPos) {
-            navbarElement.style.top = "0"; // Tampilkan navbar
-          } else {
-            navbarElement.style.top = `-${navbarElement.offsetHeight}px`; // Sembunyikan navbar
-          }
+    const handleWindowScroll = () => {
+      let currentScrollPos = window.scrollY;
+      if (navbarElement instanceof HTMLElement) {
+        if (prevScrollpos > currentScrollPos) {
+          navbarElement.style.top = "0"; // Tampilkan navbar
+        } else {
+          navbarElement.style.top = `-${navbarElement.offsetHeight}px`; // Sembunyikan navbar
         }
-        prevScrollpos = currentScrollPos;
-      };
+      }
+      prevScrollpos = currentScrollPos;
+    };
 
-      window.addEventListener("scroll", handleWindowScroll);
+    window.addEventListener("scroll", handleWindowScroll);
 
-      return () => {
-        window.removeEventListener("scroll", handleWindowScroll);
-      };
-    }
-  }, [props.virtualizer]);
+    return () => {
+      window.removeEventListener("scroll", handleWindowScroll);
+    };
+  }, []);
 
   return (
     <header
