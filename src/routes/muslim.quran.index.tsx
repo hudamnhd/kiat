@@ -372,7 +372,7 @@ function Goals() {
   }, [target]);
 
   return (
-    <div className="max-w-2xl mx-auto text-start p-4">
+    <div className="max-w-3xl mx-auto text-start p-4">
       <h2 className="text-2xl sm:text-3xl font-extrabold">
         <span className="block">Bikin target baca Quran</span>
       </h2>
@@ -475,7 +475,7 @@ function GoalsView() {
     : 0;
   return (
     <div className="space-y-2 mt-3">
-      <div className="max-w-2xl mx-auto text-start px-2 divide-y">
+      <div className="max-w-3xl mx-auto text-start px-2 divide-y">
         <div className="mb-2">
           <div className="font-bold  px-2">
             {target[0]?.pages?.length} Halaman / Hari

@@ -651,51 +651,10 @@ const TaskApp = ({
             </PopoverDialog>
           </Popover>
         </PopoverTrigger>
-        <PopoverTrigger>
-          <Button variant="ghost" size="icon">
-            <Activity />
-          </Button>
-
-          <Popover placement="bottom">
-            <PopoverDialog>
-              <List03 tasks={todos} />
-            </PopoverDialog>
-          </Popover>
-        </PopoverTrigger>
-        <PopoverTrigger>
-          <Button variant="ghost" size="icon">
-            <Info />
-          </Button>
-
-          <Popover placement="bottom">
-            <PopoverDialog>
-              <div className="grid gap-2">
-                <label
-                  htmlFor="upload-file"
-                  className={cn(buttonVariants({ variant: "outline" }))}
-                >
-                  <Upload /> Import
-                  <input
-                    id="upload-file"
-                    type="file"
-                    className="hidden"
-                    accept=".json"
-                    onChange={(e) => importTodos(e, data)}
-                  />
-                </label>
-
-                <Button variant="outline" onPress={() => exportTodos(data)}>
-                  <Download /> Export
-                </Button>
-
-                <LocalStorageProgressBar />
-              </div>
-            </PopoverDialog>
-          </Popover>
-        </PopoverTrigger>
       </Header>
-
       <TodoTimer todos={todos} date={date} active_task={active_task} />
+
+      {/*<Outlet />*/}
 
       <div className="px-2.5">
         <div
@@ -3036,6 +2995,7 @@ function ComboboxPopoverFilter({ data, handler }) {
 }
 import store from "#src/store/store";
 import { Provider } from "react-redux";
+import { Outlet } from "react-router";
 
 // Komponen Item yang menggunakan React.memo untuk mencegah re-render
 

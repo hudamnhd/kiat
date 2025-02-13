@@ -173,7 +173,7 @@ const DoaView = ({ children }: { children: React.ReactNode }) => {
   return (
     <React.Fragment>
       <motion.div
-        className="z-20 bg-primary max-w-2xl mx-auto"
+        className="z-20 bg-primary max-w-3xl mx-auto"
         style={{
           scaleX,
           position: "fixed",

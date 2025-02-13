@@ -48,7 +48,7 @@ export function Component() {
           <h1 className="text-3xl font-bold leading-tight tracking-tighter md:text-4xl lg:leading-[1.1]">
             Hapus Semua Data
           </h1>
-          <p className="max-w-2xl text-lg font-light text-foreground mb-2">
+          <p className="max-w-3xl text-lg font-light text-foreground mb-2">
             This will delete all data that has been saved.
           </p>
           <div className="flex flex-wrap items-center gap-2">

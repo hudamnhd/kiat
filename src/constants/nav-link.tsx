@@ -39,6 +39,12 @@ const muslimNavigationLink: NavigationLink[] = [
     icon: Book,
   },
   {
+    title: "Qur'an Per Juz",
+    href: "/muslim/quran-v1/1",
+    description: "Al Qur'an untuk focus baca",
+    icon: Book,
+  },
+  {
     title: "Sholawat",
     href: "/muslim/sholawat",
     description: "Dekatkan diri dengan Rasulullah melalui sholawat.",
@@ -69,9 +75,9 @@ const muslimNavigationLink: NavigationLink[] = [
     icon: Activity,
   },
   {
-    title: "Game Al Qur'an",
+    title: "Susun Ayat",
     href: "/muslim/quran-word-by-word",
-    description: "Game susun kata setiap ayat quran",
+    description: "Permainan susun kata quran",
     icon: Puzzle,
   },
 ];
@@ -84,9 +90,9 @@ const toolsNavigationLink: NavigationLink[] = [
     icon: Calculator,
   },
   {
-    title: "Daily tasks",
+    title: "Tugas harian",
     href: "/alat/daily-tasks",
-    description: "Todo list dengan timer",
+    description: "Daftar tugas dengan timer",
     icon: List,
   },
   {

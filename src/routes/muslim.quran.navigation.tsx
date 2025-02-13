@@ -322,7 +322,6 @@ function ListItem(props: Item) {
   const fullPath = window.location.pathname;
   const basePath = fullPath.split("/").slice(0, -1).join("/") + "/";
 
-  console.log(basePath); // Output: "/muslim/quran/"
   const item = props;
   const mode = item.m;
   const isAyah = mode === "ayat";

@@ -85,6 +85,123 @@ export interface GetSurahByJuz {
   showTafsir?: boolean;
 }
 
+export const getSurahByJuz = async ({
+  juz,
+  style,
+  translation = false,
+  translationSource = "kemenag",
+  showTafsir = false,
+}: {
+  juz: number;
+  style: any;
+  translation?: boolean;
+  translationSource?: string;
+  showTafsir?: boolean;
+}) => {
+  let initial_index = juz;
+  // 🔥 Cek apakah `page` berada dalam rentang 1-30
+  if (juz < 1 || juz > 30) {
+    initial_index = 1;
+  }
+  const juzData = juzPages[initial_index - 1];
+  const { s: startPage, e: endPage } = juzData;
+
+  // 🔹 Ambil semua halaman dalam rentang juz
+  const pagesInJuz = pageAyahs.filter(p => p.p >= startPage && p.p <= endPage);
+
+  // 🔹 Fetch Quran & Translation secara paralel (ambil semua dalam satu juz)
+  const [verses, trans, tafsir] = await Promise.all([
+    getDataStyle(style),
+    translation ? getTranslation(translationSource) : Promise.resolve([]),
+    showTafsir ? getTranslation("tafsir-kemenag") : Promise.resolve([]),
+  ]);
+
+  // 🔹 Optimasi pencarian dengan Map()
+  const transMap = new Map(trans.map(t => [t.i, t.t]));
+  const tafsirMap = new Map(tafsir.map(t => [t.i, t.t]));
+  const transDescMap = new Map(trans.map(t => [t.i, t.d]));
+
+  // 🔹 Dapatkan daftar surah dalam halaman ini
+  const surahData = listSurah.filter(d =>
+    initial_index >= d.meta.juz.start && initial_index <= d.meta.juz.end
+  );
+  // 🔹 Buat object per halaman `{ 1: { ayah: [...], surah: [...], juz: 1 }, 2: { ... } }`
+  const resultPerPage: Record<number, {
+    ayah: {
+      i: number;
+      vk: string;
+      ta: string;
+      tt: string | null;
+      td: string | null | undefined;
+      ttf: string | null;
+    }[];
+    page: {
+      p: number;
+      s: number;
+      e: number;
+    };
+    surah: string[];
+    bismillah: string | null;
+  }> = {};
+
+  // 🔥 Iterasi setiap halaman dalam juz menggunakan `for...of`
+  for (const page of pagesInJuz) {
+    const pageAyah = verses.filter(verse =>
+      verse.i >= page.s && verse.i <= page.e
+    );
+    let showBismillah = false;
+
+    const ayah = pageAyah.map((verse, index) => {
+      if (index === 0) {
+        const ayahIndex = verse.vk.split(":")[1];
+        if (ayahIndex === "1") {
+          showBismillah = true;
+        } else {
+          showBismillah = false;
+        }
+      }
+      return {
+        i: verse.i,
+        vk: verse.vk,
+        ta: verse.t,
+        tt: transMap.get(verse.i) || null, // Ambil translation dari Map
+        td: translationSource === "muntakhab"
+          ? transDescMap.get(verse.i)
+          : null, // Ambil translation dari Map
+        ttf: tafsirMap.get(verse.i) || null, // Ambil tafsir dari Map
+      };
+    });
+
+    // 🔹 Dapatkan daftar surah dalam halaman ini
+    const _surahData = surahData.filter(d =>
+      page.p >= d.meta.page.start && page.p <= d.meta.page.end
+    );
+
+    const firstAyah = ayah[0].vk.split(":")[1];
+    const lastAyah = ayah[ayah.length - 1].vk.split(":")[1];
+    // 🔹 Simpan dalam objek per halaman
+    const _data = {
+      ayah,
+      page,
+      surah: _surahData.map((d) =>
+        `${d.index}. ${d.name.id} (${firstAyah}-${lastAyah})`
+      ),
+      bismillah: showBismillah ? verses[0].t : null,
+    };
+    resultPerPage[page.p] = _data;
+  }
+
+  return {
+    page: resultPerPage,
+    surah: surahData,
+    juz,
+    translationSource: translation
+      ? SOURCE_TRANSLATIONS.find(d => d.id === translationSource)
+      : null,
+    tafsirSource: showTafsir ? SOURCE_TRANSLATIONS[3] : null,
+  };
+};
+
 /**
  * Get data Quran berdasarkan juz
  * @param index (nomor juz) Quran (misal: 1-30)
@@ -92,7 +209,7 @@ export interface GetSurahByJuz {
  * @param translation Jika `true`, return ditambahkan data translation
  * @returns Object Data array ayah beserta metadata quran
  */
-export const getSurahByJuz = async (
+export const getSurahByJuzOld = async (
   {
     index,
     style,

@@ -57,7 +57,7 @@ export function LayoutMain({ children }: { children: ReactNode }) {
     <div
       id="container-main"
       className={cn(
-        "border-x min-h-[calc(100vh)] sm:max-w-2xl sm:mx-auto relative",
+        "border-x min-h-[calc(100vh)] sm:max-w-3xl sm:mx-auto relative",
       )}
     >
       {children}
@@ -81,6 +81,7 @@ const TrackLastRoutes = () => {
 
   React.useEffect(() => {
     const currentPath = location.pathname;
+    const isQuranV1 = currentPath.startsWith("/muslim/quran-v1");
 
     const containerMain = document.getElementById("container-main");
 
@@ -88,16 +89,23 @@ const TrackLastRoutes = () => {
       currentPath === "/alat/calculator" &&
       containerMain instanceof HTMLDivElement
     ) {
-      containerMain.classList.remove("sm:max-w-2xl");
+      containerMain.classList.remove("sm:max-w-3xl");
 
       containerMain?.classList.add("sm:max-w-md");
+    } else if (
+      isQuranV1 &&
+      containerMain instanceof HTMLDivElement
+    ) {
+      // containerMain.classList.remove("sm:max-w-3xl");
+
+      // containerMain?.classList.add("sm:max-w-3xl");
     } else {
       if (!containerMain?.classList.contains("border-x")) {
         containerMain?.classList.add("border-x");
       }
 
-      if (!containerMain?.classList.contains("sm:max-w-2xl")) {
-        containerMain?.classList.add("sm:max-w-2xl");
+      if (!containerMain?.classList.contains("sm:max-w-3xl")) {
+        containerMain?.classList.add("sm:max-w-3xl");
         containerMain?.classList.remove("sm:max-w-md");
       }
     }

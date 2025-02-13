@@ -15,6 +15,7 @@ import { type AyatBookmark, save_bookmarks } from "#src/utils/bookmarks";
 import { getCache, setCache } from "#src/utils/cache-client.ts";
 import { cn } from "#src/utils/misc";
 import {
+  GetSurahByPage,
   getSurahByPage,
   QuranReadingPlan,
   updateReadingProgress,
@@ -42,6 +43,8 @@ function sleep(ms: number) {
   return new Promise((resolve) => setTimeout(resolve, ms));
 }
 
+type SurahStyle = GetSurahByPage["style"];
+
 export async function Loader({ params, request }: LoaderFunctionArgs) {
   const url = new URL(request.url);
   const ayah = url.searchParams.get("ayah");
@@ -50,7 +53,7 @@ export async function Loader({ params, request }: LoaderFunctionArgs) {
 
   const prefs = await getCache(SETTING_PREFS_KEY);
 
-  let style = "indopak" as "indopak" | "kemenag" | "uthmani" | "imlaei";
+  let style = "indopak" as SurahStyle;
 
   let mode = prefs?.modeQuran ? prefs?.modeQuran : "page";
   let translation = prefs?.showTranslation
@@ -351,73 +354,10 @@ const VirtualizedListSurah = ({ children }: { children: React.ReactNode }) => {
     })
     : null;
 
-  const title = `Hal ${page.p} - ${currentSurah.current.name}`;
-  // 🔥 Update Surah Index Saat Scroll
-  // React.useEffect(() => {
-  //   const updateSurah = () => {
-  //     const parentHeight = parentRef.current?.clientHeight;
-  //
-  //     const centerOffset = (rowVirtualizer.scrollOffset ?? 0) +
-  //       (parentHeight ?? 0) / 2;
-  //
-  //     // 🔥 Cari item yang berada di tengah viewport
-  //     const centerItem = rowVirtualizer.getVirtualItems().find(
-  //       (item) =>
-  //         item.start <= centerOffset && item.start + item.size > centerOffset,
-  //     );
-  //
-  //     if (centerItem) {
-  //       const item = items[centerItem.index];
-  //       const surahIndex = item.vk.split(":")[0]; // Ambil nomor Surah
-  //       const ayahIndex = item.vk.split(":")[1]; // Ambil nomor Surah
-  //
-  //       const _surah = surah.find((d: { index: number }) =>
-  //         d.index === Number(surahIndex)
-  //       );
-  //       if (_surah) {
-  //         // setCurrentSurah(_surah.name.id);
-  //         currentSurah.current = {
-  //           name: _surah.name.id,
-  //           index: _surah.index,
-  //           ayah: ayahIndex,
-  //           page: page.p,
-  //         };
-  //       } else {
-  //         currentSurah.current = {
-  //           name: surat.name.id,
-  //           index: surat.index,
-  //           ayah: 1,
-  //           page: page.p,
-  //         };
-  //       }
-  //     }
-  //   };
-  //
-  //   updateSurah();
-  //   if (titleElement instanceof HTMLSpanElement) {
-  //     titleElement.innerText = title;
-  //   }
-  //
-  //   const handleVirtualScroll = () => {
-  //     const currentScrollPos = rowVirtualizer?.scrollOffset || 0;
-  //     if (navbarElement instanceof HTMLElement) {
-  //       if (prevScrollPos.current > currentScrollPos) {
-  //         navbarElement.style.top = "0"; // Tampilkan navbar
-  //       } else {
-  //         navbarElement.style.top = `-${navbarElement.offsetHeight}px`; // Sembunyikan navbar
-  //       }
-  //     }
-  //     prevScrollPos.current = currentScrollPos || 0;
-  //   };
-  //
-  //   // 🔥 Gunakan React Effect untuk mendeteksi perubahan scrollOffset
-  //   handleVirtualScroll();
-  // }, [rowVirtualizer.scrollOffset]);
-
   return (
     <React.Fragment>
       <motion.div
-        className="z-20 bg-primary  sm:max-w-2xl mx-auto"
+        className="z-20 bg-primary  sm:max-w-3xl mx-auto"
         style={{
           scaleX,
           position: "fixed",
