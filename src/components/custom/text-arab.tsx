@@ -5,8 +5,9 @@ import { toArabicNumber } from "#src/utils/misc.quran.ts";
 import { useRouteLoaderData } from "react-router";
 
 const TextArab = (
-  { text, ayah, className }: {
+  { onClick, text, ayah, className }: {
     text: string;
+    onClick?: React.MouseEventHandler<HTMLDivElement> | undefined;
     ayah?: number;
     className?: string;
   },
@@ -20,10 +21,11 @@ const TextArab = (
   const isKemenag = opts?.fontStyle === "font-kemenag";
   const lineHeight = isKemenag
     ? _lineHeight
-    : (_parselineHeight - (_parselineHeight * 0.3)).toFixed(1) + "rem";
+    : (_parselineHeight - (_parselineHeight * 0.2)).toFixed(1) + "rem";
 
   return (
     <div
+      onClick={onClick}
       dir="rtl"
       className={cn(
         "p-3",

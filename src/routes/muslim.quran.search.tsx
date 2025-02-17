@@ -24,6 +24,7 @@ export async function Loader({ request }: LoaderFunctionArgs) {
   const url = new URL(request.url);
   const query = url.searchParams.get("query") || "";
   const source = url.searchParams.get("source") || "kemenag";
+  if (!query) return null;
 
   // 🔥 Ambil data ayat & terjemahan secara paralel
   const [verses, trans] = await Promise.all([

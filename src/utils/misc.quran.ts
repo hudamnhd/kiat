@@ -140,7 +140,12 @@ export const getSurahByJuz = async ({
       s: number;
       e: number;
     };
-    surah: string[];
+    surah: {
+      i: number;
+      n: string;
+      s: string;
+      e: string;
+    }[];
     bismillah: string | null;
   }> = {};
 
@@ -183,9 +188,14 @@ export const getSurahByJuz = async ({
     const _data = {
       ayah,
       page,
-      surah: _surahData.map((d) =>
-        `${d.index}. ${d.name.id} (${firstAyah}-${lastAyah})`
-      ),
+      surah: _surahData.map((d) => {
+        return {
+          i: d.index,
+          n: d.name.id,
+          s: firstAyah,
+          e: lastAyah,
+        };
+      }),
       bismillah: showBismillah ? verses[0].t : null,
     };
     resultPerPage[page.p] = _data;

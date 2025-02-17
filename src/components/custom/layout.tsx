@@ -52,7 +52,6 @@ export function Layout() {
 }
 
 export function LayoutMain({ children }: { children: ReactNode }) {
-  const isCalculator = window.location.pathname === "/alat/calculator";
   return (
     <div
       id="container-main"

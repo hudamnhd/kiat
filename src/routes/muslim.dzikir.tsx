@@ -1,4 +1,5 @@
 import { Header } from "#src/components/custom/header";
+import { ScrollTopButton } from "#src/components/custom/scroll-to-top.tsx";
 import TextArab from "#src/components/custom/text-arab.tsx";
 import { buttonVariants } from "#src/components/ui/button";
 import { data } from "#src/constants/dzikr.ts";
@@ -164,6 +165,7 @@ export function Component() {
             );
           })}
       </div>
+      <ScrollTopButton />
     </>
   );
 }

@@ -91,7 +91,6 @@ export const extendedTheme = {
   },
   fontFamily: {
     sans: [
-      '"Fira Sans"',
       '"Inter"',
       "ui-sans-serif",
       "system-ui",

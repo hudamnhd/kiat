@@ -3,13 +3,22 @@ import { FONT_SIZE } from "#/src/constants/prefs";
 import { Header } from "#src/components/custom/header";
 import { ScrollToFirstIndex } from "#src/components/custom/scroll-to-top.tsx";
 import TextArab from "#src/components/custom/text-arab.tsx";
-import { buttonVariants } from "#src/components/ui/button";
+import { Button, buttonVariants } from "#src/components/ui/button";
+import {
+  Popover,
+  PopoverDialog,
+  PopoverTrigger,
+} from "#src/components/ui/popover";
 import { getCache } from "#src/utils/cache-client.ts";
 import { cn } from "#src/utils/misc";
-import { getSurahByJuz, toArabicNumber } from "#src/utils/misc.quran.ts";
+import {
+  getSurahByJuz,
+  GetSurahByPage,
+  toArabicNumber,
+} from "#src/utils/misc.quran.ts";
 import { motion, useScroll, useSpring } from "framer-motion";
-import { ChevronLeft, ChevronRight } from "lucide-react";
-import React from "react";
+import { ChevronLeft, ChevronRight, LayoutGrid } from "lucide-react";
+import React, { useState } from "react";
 import { Button as ButtonRAC } from "react-aria-components";
 import type { LoaderFunctionArgs } from "react-router";
 import {
@@ -18,33 +27,19 @@ import {
   useNavigate,
   useRouteLoaderData,
 } from "react-router";
-
-import {
-  Popover,
-  PopoverDialog,
-  PopoverTrigger,
-} from "#src/components/ui/popover";
 import type { Loader as muslimLoader } from "./muslim.data";
+type SurahStyle = GetSurahByPage["style"];
 
 export async function Loader({ params, request }: LoaderFunctionArgs) {
   const url = new URL(request.url);
   const ayah = url.searchParams.get("ayah");
   const surah = url.searchParams.get("surah");
+  const mode = url.searchParams.get("mode") || "v1";
   const { id } = params;
 
   const prefs = await getCache(SETTING_PREFS_KEY);
 
-  let style = "indopak" as "indopak" | "kemenag" | "uthmani" | "imlaei";
-
-  let translation = prefs?.showTranslation
-    ? prefs?.showTranslation == "on" ? true : false
-    : true;
-  let tafsir = prefs?.showTafsir
-    ? prefs?.showTafsir == "on" ? true : false
-    : false;
-  let translationSource = prefs?.translationSource
-    ? prefs?.translationSource
-    : "kemenag";
+  let style = "indopak" as SurahStyle;
 
   switch (prefs?.fontStyle) {
     case "font-indopak":
@@ -62,6 +57,9 @@ export async function Loader({ params, request }: LoaderFunctionArgs) {
     case "font-uthmani-hafs":
       style = "uthmani";
       break;
+    case "font-uthmani-hafs-simple":
+      style = "uthmani-simple";
+      break;
     default:
       style = "kemenag";
       break;
@@ -69,11 +67,10 @@ export async function Loader({ params, request }: LoaderFunctionArgs) {
   const response = await getSurahByJuz({
     juz: Number(id),
     style: style,
-    translation,
-    showTafsir: tafsir,
-    translationSource,
+    translation: false,
+    showTafsir: false,
   });
-  return { ...response, query: { surah, ayah } };
+  return { ...response, query: { surah, ayah, mode } };
 }
 
 import { useVirtualizer } from "@tanstack/react-virtual";
@@ -128,7 +125,7 @@ const JUZ = Array.from({ length: 30 }).map(
 ).reverse();
 
 const VirtualizedAyahByJuz = ({ children }: { children: React.ReactNode }) => {
-  const { page, juz } = useLoaderData<typeof Loader>();
+  const { page, juz, query } = useLoaderData<typeof Loader>();
 
   const startPage = Object.keys(page)[0];
   const endPage = Object.keys(page)[Object.keys(page).length - 1];
@@ -186,6 +183,30 @@ const VirtualizedAyahByJuz = ({ children }: { children: React.ReactNode }) => {
     lineHeight: prefsOption?.lineHeight || "3.5rem",
     whiteSpace: "pre-line",
   };
+
+  const [resultAnswer, setResultAnswer] = React.useState<
+    { [key: number]: { [key: number]: string } } | null
+  >(() => {
+    const localData = localStorage.getItem("quran-hafalan");
+    return localData ? JSON.parse(localData) : null;
+  });
+
+  const handleBlur = (suratIndex: number, index: number, text: string) => {
+    setResultAnswer((prevState) => {
+      const updatedItems = {
+        ...prevState,
+        [suratIndex]: {
+          ...(prevState && prevState[suratIndex] &&
+            { ...prevState[suratIndex] }),
+          [index]: text,
+        },
+      };
+
+      localStorage.setItem("quran-hafalan", JSON.stringify(updatedItems));
+
+      return updatedItems;
+    });
+  };
   return (
     <React.Fragment>
       <motion.div
@@ -201,172 +222,336 @@ const VirtualizedAyahByJuz = ({ children }: { children: React.ReactNode }) => {
         }}
       />
 
-      <div
-        ref={parentRef}
-        id="container-page"
-        className="h-screen"
-        style={{
-          overflowAnchor: "none",
-          overflow: "auto",
-        }}
-      >
-        <div
-          style={{
-            height: `${rowVirtualizer.getTotalSize()}px`,
-            width: "100%",
-            position: "relative",
-          }}
-        >
-          {rowVirtualizer.getVirtualItems().map((virtualRow) => {
-            const d = items[virtualRow.index];
-            const index = virtualRow.index;
+      {query.mode === "v1"
+        ? (
+          <div
+            ref={parentRef}
+            id="container-page"
+            className="h-screen"
+            style={{
+              overflowAnchor: "none",
+              overflow: "auto",
+            }}
+          >
+            <div
+              style={{
+                height: `${rowVirtualizer.getTotalSize()}px`,
+                width: "100%",
+                position: "relative",
+              }}
+            >
+              {rowVirtualizer.getVirtualItems().map((virtualRow) => {
+                const d = items[virtualRow.index];
+                const index = virtualRow.index;
 
-            return (
+                return (
+                  <div
+                    key={virtualRow.key}
+                    data-index={virtualRow.index}
+                    ref={rowVirtualizer.measureElement}
+                    style={{
+                      position: "absolute",
+                      top: 0,
+                      left: 0,
+                      width: "100%",
+                      transform: `translateY(${virtualRow.start + 0}px)`, // Tambahkan offset untuk children
+                    }}
+                  >
+                    <React.Fragment
+                      key={index}
+                    >
+                      {index === 0 && (
+                        <React.Fragment>
+                          <MemoHeader
+                            scrollToAyat={scrollToAyat}
+                            mode={query.mode}
+                            juz={juz}
+                            startPage={startPage}
+                            endPage={endPage}
+                          />
+                        </React.Fragment>
+                      )}
+                      <div
+                        dir="ltr"
+                        className={cn(
+                          "bg-muted/50 grid grid-cols-5 p-2.5 text-xs sm:text-sm w-full text-muted-foreground font-medium",
+                          index === 0 ? "border-b" : "border-y ",
+                        )}
+                      >
+                        <div className="text-start col-span-2">
+                          {d.surah[0].n} ({d.surah[0].s}-{d.surah[0].e})
+                        </div>
+                        <div className="font-semibold text-center">
+                          <span>Hal</span> {d.page.p}
+                        </div>
+                        <div className="text-right col-span-2">Juz' {juz}</div>
+                      </div>
+                      <div
+                        className={cn(
+                          "grid",
+                          opts?.fontStyle === "font-kemenag" && "px-4 sm:px-6",
+                        )}
+                        dir="rtl"
+                      >
+                        {d.ayah.map((dt) => {
+                          const surah_index = dt.vk.split(":")[0];
+                          const ayah_index = dt.vk.split(":")[1];
+                          const id = dt.vk;
+                          const key = Number(ayah_index);
+                          const should_hidden = surah_index === "1" &&
+                            ayah_index === "1";
+                          const isResult = resultAnswer &&
+                            resultAnswer[Number(surah_index)] &&
+                            resultAnswer[Number(surah_index)][key];
+                          return (
+                            <div
+                              className="relative"
+                              key={id}
+                            >
+                              {/*ini placeholder*/}
+                              <div
+                                contentEditable="true"
+                                onBlur={(e) => {
+                                  handleBlur(
+                                    Number(surah_index),
+                                    key,
+                                    e.currentTarget.textContent || "",
+                                  );
+                                }}
+                                dangerouslySetInnerHTML={{
+                                  __html: isResult
+                                    ? resultAnswer[Number(surah_index)][key]
+                                    : "",
+                                }}
+                                className={cn(
+                                  "focus:outline-none focus:ring min-w-3xl absolute p-2 max-w-3xl whiteSpace-pre-line break-words z-10",
+                                  opts?.fontStyle,
+                                )}
+                                style={{
+                                  fontWeight: opts?.fontWeight,
+                                  fontSize: prefsOption?.fontSize ||
+                                    "1.5rem",
+                                  lineHeight: lineHeight || "3.5rem",
+                                }}
+                              >
+                                {
+                                  /*{isResult
+                              ? resultAnswer[Number(surah_index)][key]
+                              : ""}*/
+                                }
+                              </div>
+                              {/*ini placeholder*/}
+                              <div
+                                className={cn(
+                                  "text-muted-foreground opacity-70 p-2",
+                                  opts?.fontStyle,
+                                )}
+                                style={{
+                                  fontWeight: opts?.fontWeight,
+                                  fontSize: prefsOption?.fontSize ||
+                                    "1.5rem",
+                                  lineHeight: lineHeight || "3.5rem",
+                                }}
+                              >
+                                {dt.ta}
+                              </div>
+                            </div>
+                          );
+                        })}
+                      </div>
+                    </React.Fragment>
+                  </div>
+                );
+              })}
+
               <div
-                key={virtualRow.key}
-                data-index={virtualRow.index}
-                ref={rowVirtualizer.measureElement}
                 style={{
                   position: "absolute",
                   top: 0,
                   left: 0,
                   width: "100%",
-                  transform: `translateY(${virtualRow.start + 0}px)`, // Tambahkan offset untuk children
+                  transform: `translateY(${
+                    lastItemBottom + (children ? 55 : 0)
+                  }px)`, // Tambahkan offset untuk children
+                  paddingBottom: "0px",
                 }}
               >
-                <React.Fragment
-                  key={index}
-                >
-                  {index === 0 && (
-                    <React.Fragment>
-                      <MemoHeader
-                        scrollToAyat={scrollToAyat}
-                        juz={juz}
-                        startPage={startPage}
-                        endPage={endPage}
-                      />
-                    </React.Fragment>
-                  )}
-                  <div
-                    dir="ltr"
-                    className={cn(
-                      "bg-muted/50 grid grid-cols-5 p-2.5 text-xs sm:text-sm w-full text-muted-foreground font-medium",
-                      index === 0 ? "border-b" : "border-y ",
-                    )}
-                  >
-                    <div className="text-start col-span-2">{d.surah[0]}</div>
-                    <div className="font-semibold text-center">
-                      <span>Hal</span> {d.page.p}
-                    </div>
-                    <div className="text-right col-span-2">Juz' {juz}</div>
-                  </div>
-                  <div
-                    className={cn(
-                      "px-4 text-center sm:text-justify pb-2 pt-3",
-                      opts?.fontStyle === "font-kemenag" && "px-4 sm:px-6",
-                    )}
-                    dir="rtl"
-                  >
-                    {d.ayah.map((dt) => {
-                      const surah_index = dt.vk.split(":")[0];
-                      const ayah_index = dt.vk.split(":")[1];
-                      const id = dt.vk;
-                      const key = Number(ayah_index);
-                      const should_hidden = surah_index === "1" &&
-                        ayah_index === "1";
-                      return (
-                        <React.Fragment key={id}>
-                          {d.bismillah && key === 1 && (
-                            <React.Fragment>
-                              {surah_index !== "9" && (
-                                <div
-                                  dir="rtl"
-                                  className="break-normal w-full bg-muted/50 border rounded-md mb-2"
-                                >
-                                  <div
-                                    className={cn(
-                                      "font-bismillah text-center",
-                                      opts?.fontStyle,
-                                    )}
-                                    style={{
-                                      fontWeight: opts?.fontWeight,
-                                      fontSize: prefsOption?.fontSize ||
-                                        "1.5rem",
-                                      lineHeight: lineHeight || "3.5rem",
-                                    }}
-                                  >
-                                    {opts?.fontStyle === "font-indopak"
-                                      ? d.bismillah.slice(0, 40)
-                                      : d.bismillah}
-                                  </div>
-                                </div>
-                              )}
-                            </React.Fragment>
-                          )}
-                          {!should_hidden &&
-                            (
-                              <React.Fragment
-                                key={dt.vk}
-                              >
-                                <PopoverTrigger>
-                                  <ButtonRAC
-                                    style={style}
-                                    className={cn(
-                                      "inline-flex inline hover:bg-muted antialiased rounded-md mx-1 px-1 focus-visible:outline-hidden my-1 ring-1 ring-border",
-                                      opts?.fontStyle,
-                                    )}
-                                  >
-                                    {smartSlice(dt.ta, 10)}
-
-                                    <span
-                                      className="inline-flex text-right font-uthmani-v2-reguler mr-1.5"
-                                      style={style}
-                                    >
-                                      ‎﴿{toArabicNumber(
-                                        Number(dt.vk.split(":")[1]),
-                                      )}﴾‏
-                                    </span>
-                                  </ButtonRAC>
-
-                                  <Popover
-                                    placement="top"
-                                    className="w-fit inset-x-0 mx-2 sm:mx-auto max-w-3xl"
-                                  >
-                                    <PopoverDialog className="bg-muted/50 text-foreground ring-1 ring-border p-0 shadow-md">
-                                      <TextArab
-                                        text={dt.ta}
-                                        ayah={Number(dt.vk.split(":")[1])}
-                                      />
-                                    </PopoverDialog>
-                                  </Popover>
-                                </PopoverTrigger>
-                              </React.Fragment>
-                            )}
-                        </React.Fragment>
-                      );
-                    })}
-                  </div>
-                </React.Fragment>
+                {children}
               </div>
-            );
-          })}
-
+            </div>
+          </div>
+        )
+        : (
           <div
+            ref={parentRef}
+            id="container-page"
+            className="h-screen"
             style={{
-              position: "absolute",
-              top: 0,
-              left: 0,
-              width: "100%",
-              transform: `translateY(${
-                lastItemBottom + (children ? 55 : 0)
-              }px)`, // Tambahkan offset untuk children
-              paddingBottom: "0px",
+              overflowAnchor: "none",
+              overflow: "auto",
             }}
           >
-            {children}
+            <div
+              style={{
+                height: `${rowVirtualizer.getTotalSize()}px`,
+                width: "100%",
+                position: "relative",
+              }}
+            >
+              {rowVirtualizer.getVirtualItems().map((virtualRow) => {
+                const d = items[virtualRow.index];
+                const index = virtualRow.index;
+
+                return (
+                  <div
+                    key={virtualRow.key}
+                    data-index={virtualRow.index}
+                    ref={rowVirtualizer.measureElement}
+                    style={{
+                      position: "absolute",
+                      top: 0,
+                      left: 0,
+                      width: "100%",
+                      transform: `translateY(${virtualRow.start + 0}px)`, // Tambahkan offset untuk children
+                    }}
+                  >
+                    <React.Fragment
+                      key={index}
+                    >
+                      {index === 0 && (
+                        <React.Fragment>
+                          <MemoHeader
+                            scrollToAyat={scrollToAyat}
+                            mode={query.mode}
+                            juz={juz}
+                            startPage={startPage}
+                            endPage={endPage}
+                          />
+                        </React.Fragment>
+                      )}
+                      <div
+                        dir="ltr"
+                        className={cn(
+                          "bg-muted/50 grid grid-cols-5 p-2.5 text-xs sm:text-sm w-full text-muted-foreground font-medium",
+                          index === 0 ? "border-b" : "border-y ",
+                        )}
+                      >
+                        <div className="text-start col-span-2">
+                          {d.surah[0].n} ({d.surah[0].s}-{d.surah[0].e})
+                        </div>
+                        <div className="font-semibold text-center">
+                          <span>Hal</span> {d.page.p}
+                        </div>
+                        <div className="text-right col-span-2">Juz' {juz}</div>
+                      </div>
+                      <div
+                        className={cn(
+                          "px-4 text-center sm:text-justify pb-2 pt-3",
+                          opts?.fontStyle === "font-kemenag" && "px-4 sm:px-6",
+                        )}
+                        dir="rtl"
+                      >
+                        {d.ayah.map((dt) => {
+                          const surah_index = dt.vk.split(":")[0];
+                          const ayah_index = dt.vk.split(":")[1];
+                          const id = dt.vk;
+                          const key = Number(ayah_index);
+                          const should_hidden = surah_index === "1" &&
+                            ayah_index === "1";
+                          return (
+                            <React.Fragment key={id}>
+                              {d.bismillah && key === 1 && (
+                                <React.Fragment>
+                                  {surah_index !== "9" && (
+                                    <div
+                                      dir="rtl"
+                                      className="break-normal w-full bg-muted/50 border rounded-md mb-2"
+                                    >
+                                      <div
+                                        className={cn(
+                                          "font-bismillah text-center",
+                                          opts?.fontStyle,
+                                        )}
+                                        style={{
+                                          fontWeight: opts?.fontWeight,
+                                          fontSize: prefsOption?.fontSize ||
+                                            "1.5rem",
+                                          lineHeight: lineHeight || "3.5rem",
+                                        }}
+                                      >
+                                        {opts?.fontStyle === "font-indopak"
+                                          ? d.bismillah.slice(0, 40)
+                                          : d.bismillah}
+                                      </div>
+                                    </div>
+                                  )}
+                                </React.Fragment>
+                              )}
+                              {!should_hidden &&
+                                (
+                                  <React.Fragment
+                                    key={dt.vk}
+                                  >
+                                    <PopoverTrigger>
+                                      <ButtonRAC
+                                        style={style}
+                                        className={cn(
+                                          "inline-flex inline hover:bg-muted antialiased rounded-md mx-1 px-1 focus-visible:outline-hidden my-1 ring-1 ring-border",
+                                          opts?.fontStyle,
+                                        )}
+                                      >
+                                        {smartSlice(dt.ta, 10)}
+
+                                        <span
+                                          className="inline-flex text-right font-uthmani-v2-reguler mr-1.5"
+                                          style={style}
+                                        >
+                                          ‎﴿{toArabicNumber(
+                                            Number(dt.vk.split(":")[1]),
+                                          )}﴾‏
+                                        </span>
+                                      </ButtonRAC>
+
+                                      <Popover
+                                        placement="top"
+                                        className="w-fit inset-x-0 mx-2 sm:mx-auto max-w-3xl"
+                                      >
+                                        <PopoverDialog className="bg-muted/50 text-foreground ring-1 ring-border p-0 shadow-md">
+                                          <TextArab
+                                            text={dt.ta}
+                                            ayah={Number(dt.vk.split(":")[1])}
+                                          />
+                                        </PopoverDialog>
+                                      </Popover>
+                                    </PopoverTrigger>
+                                  </React.Fragment>
+                                )}
+                            </React.Fragment>
+                          );
+                        })}
+                      </div>
+                    </React.Fragment>
+                  </div>
+                );
+              })}
+
+              <div
+                style={{
+                  position: "absolute",
+                  top: 0,
+                  left: 0,
+                  width: "100%",
+                  transform: `translateY(${
+                    lastItemBottom + (children ? 55 : 0)
+                  }px)`, // Tambahkan offset untuk children
+                  paddingBottom: "0px",
+                }}
+              >
+                {children}
+              </div>
+            </div>
           </div>
-        </div>
-      </div>
+        )}
       <ScrollToFirstIndex handler={scrollToFirstAyat} container={parentRef} />
     </React.Fragment>
   );
@@ -376,14 +561,17 @@ const MemoHeader = React.memo(
   ({
     juz,
     startPage,
+    mode,
     endPage,
     scrollToAyat,
   }: {
     scrollToAyat: (index: number) => void;
     juz: number;
     startPage: string;
+    mode: string;
     endPage: string;
   }) => {
+    const [isOpen, setIsOpen] = useState(false);
     const navigate = useNavigate();
     const fullPath = window.location.pathname;
     const basePath = fullPath.split("/").slice(0, -1).join("/") + "/";
@@ -391,76 +579,124 @@ const MemoHeader = React.memo(
     const handleSelectChange = (e: { target: { value: string } }) => {
       const redirectTo = basePath + e.target.value;
       navigate(redirectTo);
+      setIsOpen(false);
     };
     const handleSelectPageChange = (e: { target: { value: string } }) => {
       const index = Number(e.target.value);
       scrollToAyat(index);
+      setIsOpen(false);
     };
+    const handleSelectModeChange = (e: { target: { value: string } }) => {
+      navigate(window.location.pathname + "?mode=" + e.target.value);
+      setIsOpen(false);
+    };
+
     return (
       <Header
         redirectTo="/muslim/quran"
         title={`Juz' ${juz}`}
         subtitle={`Hal ${startPage}-${endPage}`}
       >
-        <React.Fragment>
-          <div className="grid ">
-            <select
-              name="page"
-              defaultValue={Number(startPage) - 1}
-              onChange={handleSelectPageChange}
-              aria-label="Select Juz"
-              id="juz-select"
-              className="col-start-1 row-start-1 appearance-none text-sm py-2 px-3 w-16 sm:w-20"
-            >
-              {[...Array(Number(endPage) - Number(startPage) + 1)].map((
-                _,
-                i,
-              ) => (
-                <option key={i} value={i}>
-                  Hal {Number(startPage) + i}
-                </option>
-              ))}
-            </select>
-            <svg
-              className="pointer-events-none relative right-1 z-10 col-start-1 row-start-1 h-4 w-4 self-center justify-self-end forced-colors:hidden"
-              viewBox="0 0 16 16"
-              fill="currentColor"
-              aria-hidden="true"
-            >
-              <path
-                fillRule="evenodd"
-                d="M4.22 6.22a.75.75 0 0 1 1.06 0L8 8.94l2.72-2.72a.75.75 0 1 1 1.06 1.06l-3.25 3.25a.75.75 0 0 1-1.06 0L4.22 7.28a.75.75 0 0 1 0-1.06Z"
-                clipRule="evenodd"
-              >
-              </path>
-            </svg>
-          </div>
-          <div className="grid ">
-            <select
-              name="juz"
-              value={juz}
-              onChange={handleSelectChange}
-              aria-label="Select Juz"
-              id="juz-select"
-              className="col-start-1 row-start-1 appearance-none text-sm py-2 px-3 w-16 sm:w-20"
-            >
-              {JUZ.map((d) => <option key={d.i} value={d.i}>{d.t}</option>)}
-            </select>
-            <svg
-              className="pointer-events-none relative right-1 z-10 col-start-1 row-start-1 h-4 w-4 self-center justify-self-end forced-colors:hidden"
-              viewBox="0 0 16 16"
-              fill="currentColor"
-              aria-hidden="true"
-            >
-              <path
-                fillRule="evenodd"
-                d="M4.22 6.22a.75.75 0 0 1 1.06 0L8 8.94l2.72-2.72a.75.75 0 1 1 1.06 1.06l-3.25 3.25a.75.75 0 0 1-1.06 0L4.22 7.28a.75.75 0 0 1 0-1.06Z"
-                clipRule="evenodd"
-              >
-              </path>
-            </svg>
-          </div>
-        </React.Fragment>
+        <PopoverTrigger>
+          <Button
+            variant="ghost"
+            size="icon"
+            onPress={() => setIsOpen(true)}
+          >
+            <LayoutGrid />
+          </Button>
+
+          <Popover isOpen={isOpen} placement="bottom">
+            <PopoverDialog className="text-foreground ring-1 ring-border p-2 shadow-md space-y-2">
+              <React.Fragment>
+                <div className="grid border rounded-md">
+                  <select
+                    name="mode"
+                    defaultValue={mode}
+                    onChange={handleSelectModeChange}
+                    aria-label="Select mode"
+                    id="mode-select"
+                    className="col-start-1 row-start-1 appearance-none text-sm py-2 px-3 w-16"
+                  >
+                    <option value="v1">V1</option>
+                    <option value="v2">V2</option>
+                  </select>
+                  <svg
+                    className="pointer-events-none relative right-1 z-10 col-start-1 row-start-1 h-4 w-4 self-center justify-self-end forced-colors:hidden"
+                    viewBox="0 0 16 16"
+                    fill="currentColor"
+                    aria-hidden="true"
+                  >
+                    <path
+                      fillRule="evenodd"
+                      d="M4.22 6.22a.75.75 0 0 1 1.06 0L8 8.94l2.72-2.72a.75.75 0 1 1 1.06 1.06l-3.25 3.25a.75.75 0 0 1-1.06 0L4.22 7.28a.75.75 0 0 1 0-1.06Z"
+                      clipRule="evenodd"
+                    >
+                    </path>
+                  </svg>
+                </div>
+                <div className="grid border rounded-md">
+                  <select
+                    name="page"
+                    defaultValue={Number(startPage) - 1}
+                    onChange={handleSelectPageChange}
+                    aria-label="Select Juz"
+                    id="juz-select"
+                    className="col-start-1 row-start-1 appearance-none text-sm py-2 px-3 w-20"
+                  >
+                    {[...Array(Number(endPage) - Number(startPage) + 1)].map((
+                      _,
+                      i,
+                    ) => (
+                      <option key={i} value={i}>
+                        Hal {Number(startPage) + i}
+                      </option>
+                    ))}
+                  </select>
+                  <svg
+                    className="pointer-events-none relative right-1 z-10 col-start-1 row-start-1 h-4 w-4 self-center justify-self-end forced-colors:hidden"
+                    viewBox="0 0 16 16"
+                    fill="currentColor"
+                    aria-hidden="true"
+                  >
+                    <path
+                      fillRule="evenodd"
+                      d="M4.22 6.22a.75.75 0 0 1 1.06 0L8 8.94l2.72-2.72a.75.75 0 1 1 1.06 1.06l-3.25 3.25a.75.75 0 0 1-1.06 0L4.22 7.28a.75.75 0 0 1 0-1.06Z"
+                      clipRule="evenodd"
+                    >
+                    </path>
+                  </svg>
+                </div>
+                <div className="grid border rounded-md">
+                  <select
+                    name="juz"
+                    value={juz}
+                    onChange={handleSelectChange}
+                    aria-label="Select Juz"
+                    id="juz-select"
+                    className="col-start-1 row-start-1 appearance-none text-sm py-2 px-3 w-20"
+                  >
+                    {JUZ.map((d) => <option key={d.i} value={d.i}>{d.t}
+                    </option>)}
+                  </select>
+                  <svg
+                    className="pointer-events-none relative right-1 z-10 col-start-1 row-start-1 h-4 w-4 self-center justify-self-end forced-colors:hidden"
+                    viewBox="0 0 16 16"
+                    fill="currentColor"
+                    aria-hidden="true"
+                  >
+                    <path
+                      fillRule="evenodd"
+                      d="M4.22 6.22a.75.75 0 0 1 1.06 0L8 8.94l2.72-2.72a.75.75 0 1 1 1.06 1.06l-3.25 3.25a.75.75 0 0 1-1.06 0L4.22 7.28a.75.75 0 0 1 0-1.06Z"
+                      clipRule="evenodd"
+                    >
+                    </path>
+                  </svg>
+                </div>
+              </React.Fragment>
+            </PopoverDialog>
+          </Popover>
+        </PopoverTrigger>
       </Header>
     );
   },

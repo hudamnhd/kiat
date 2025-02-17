@@ -1,7 +1,11 @@
 import { Header } from "#src/components/custom/header";
 import { Button, buttonVariants } from "#src/components/ui/button";
 import { Input } from "#src/components/ui/input";
-import { DisplaySetting } from "#src/routes/resources+/prefs";
+import {
+  Popover,
+  PopoverDialog,
+  PopoverTrigger,
+} from "#src/components/ui/popover";
 import { cn } from "#src/utils/misc";
 import {
   addDays,
@@ -21,6 +25,7 @@ import {
   Check,
   ChevronLeft,
   ChevronRight,
+  Flame,
   PencilLine,
   Plus,
   Trash2,
@@ -159,7 +164,19 @@ const HabitTracker: React.FC = () => {
   const statistics = getStatistics(habits);
   return (
     <>
-      <Header redirectTo="/alat" title="Habit" />
+      <Header redirectTo="/alat" title="Habit">
+        <PopoverTrigger>
+          <Button variant="ghost" size="icon">
+            <Flame />
+          </Button>
+
+          <Popover placement="bottom">
+            <PopoverDialog className="text-foreground ring-1 ring-border p-2 shadow-md space-y-2">
+              <CalendarMonth total_sessions={6} statistics={statistics} />
+            </PopoverDialog>
+          </Popover>
+        </PopoverTrigger>
+      </Header>
       <div className="grid gap-5 sm:p-4 place-items-start max-w-4xl sm:max-w-full  w-full">
         <div className="w-full">
           <h1 className="text-2xl font-bold  mb-4 sm:text-start text-center">
@@ -175,7 +192,7 @@ const HabitTracker: React.FC = () => {
                 const today = isToday(date);
                 return (
                   <div
-                    key={date}
+                    key={index}
                     className={cn(
                       "flex flex-col items-center uppercase font-semibold text-sm py-2 border-b",
                       today && "bg-accent",
@@ -210,7 +227,7 @@ const HabitTracker: React.FC = () => {
                             variant="outline"
                             size="icon"
                             className="h-6 w-6"
-                            onClick={() => handleEditHabit(habit.id)}
+                            onPress={() => handleEditHabit(habit.id)}
                           >
                             <PencilLine />
                           </Button>
@@ -218,7 +235,7 @@ const HabitTracker: React.FC = () => {
                             size="icon"
                             variant="destructive"
                             className="h-6 w-6"
-                            onClick={() => deleteHabit(habit.id)}
+                            onPress={() => deleteHabit(habit.id)}
                           >
                             <Trash2 />
                           </Button>
@@ -301,14 +318,13 @@ const HabitTracker: React.FC = () => {
             />
             <Button
               size="icon"
-              disabled={newHabit.lengh == 0}
-              onClick={addHabit}
+              isDisabled={newHabit.lengh == 0}
+              onPress={addHabit}
             >
               <Plus />
             </Button>
           </div>
         </div>
-        <CalendarMonth total_sessions={6} statistics={statistics} />
       </div>
     </>
   );

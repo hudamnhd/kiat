@@ -4,30 +4,56 @@ import { Header } from "#src/components/custom/header";
 import { ScrollToFirstIndex } from "#src/components/custom/scroll-to-top.tsx";
 import TextArab from "#src/components/custom/text-arab.tsx";
 import { buttonVariants } from "#src/components/ui/button";
-import { getCache } from "#src/utils/cache-client.ts";
+import { getCache, setCache } from "#src/utils/cache-client.ts";
 import { cn } from "#src/utils/misc";
 import { getSurahByJuz } from "#src/utils/misc.quran.ts";
 import { motion, useScroll, useSpring } from "framer-motion";
-import { ChevronLeft, ChevronRight } from "lucide-react";
+import { Bookmark, ChevronLeft, ChevronRight } from "lucide-react";
 import React from "react";
 import type { LoaderFunctionArgs } from "react-router";
 import {
   Link,
+  redirect,
   useLoaderData,
   useNavigate,
   useRouteLoaderData,
 } from "react-router";
 import type { Loader as muslimLoader } from "./muslim.data";
 
+function sleep(ms: number) {
+  return new Promise((resolve) => setTimeout(resolve, ms));
+}
+
+type SurahStyle = GetSurahByPage["style"];
 export async function Loader({ params, request }: LoaderFunctionArgs) {
   const url = new URL(request.url);
   const ayah = url.searchParams.get("ayah");
   const surah = url.searchParams.get("surah");
+  const page = url.searchParams.get("page");
   const { id } = params;
 
-  const prefs = await getCache(SETTING_PREFS_KEY);
+  const [prefs, lastReadV1] = await Promise.all([
+    getCache(SETTING_PREFS_KEY),
+    getCache(LASTREAD_KEY + "V1"),
+  ]);
 
-  let style = "indopak" as "indopak" | "kemenag" | "uthmani" | "imlaei";
+  if (lastReadV1) {
+    const url = lastReadV1.source;
+    const basePath = request.url.split("/").slice(0, -1).join("/") + "/";
+
+    const pathSegments = url.split("/"); // ["", "muslim", "quran-v1", "1"]
+    const juzNumber = pathSegments[3].split("?")[0]; // Ambil angka "1"
+    // Ambil query params
+    const queryString = url.split("?")[1]; // "page=3&surah=2&ayah=8"
+    const params = new URLSearchParams(queryString);
+
+    const page = params.get("page");
+    if (juzNumber !== id) {
+      const redirectTo = `${basePath}${juzNumber}?page=${page}`;
+      return redirect(redirectTo);
+    }
+  }
+  let style = "indopak" as SurahStyle;
 
   let translation = prefs?.showTranslation
     ? prefs?.showTranslation == "on" ? true : false
@@ -55,6 +81,9 @@ export async function Loader({ params, request }: LoaderFunctionArgs) {
     case "font-uthmani-hafs":
       style = "uthmani";
       break;
+    case "font-uthmani-hafs-simple":
+      style = "uthmani-simple";
+      break;
     default:
       style = "kemenag";
       break;
@@ -66,7 +95,7 @@ export async function Loader({ params, request }: LoaderFunctionArgs) {
     showTafsir: tafsir,
     translationSource,
   });
-  return { ...response, query: { surah, ayah } };
+  return { ...response, query: { page, surah, ayah } };
 }
 
 import { useVirtualizer } from "@tanstack/react-virtual";
@@ -120,8 +149,14 @@ const JUZ = Array.from({ length: 30 }).map(
   },
 ).reverse();
 
+import { LASTREAD_KEY } from "#/src/constants/key";
+
+const saveLastRead = async (lastRead: any) => {
+  await setCache(LASTREAD_KEY + "V1", lastRead);
+};
+
 const VirtualizedAyahByJuz = ({ children }: { children: React.ReactNode }) => {
-  const { page, juz } = useLoaderData<typeof Loader>();
+  const { page, juz, query } = useLoaderData<typeof Loader>();
 
   const startPage = Object.keys(page)[0];
   const endPage = Object.keys(page)[Object.keys(page).length - 1];
@@ -135,6 +170,14 @@ const VirtualizedAyahByJuz = ({ children }: { children: React.ReactNode }) => {
     estimateSize: () => 500, // Perkiraan tinggi item (70px)
   });
 
+  React.useEffect(() => {
+    if (query.page) {
+      const getIndex = items.findIndex((d) => d.page.p === Number(query.page));
+      sleep(50).then(() => scrollToAyat(getIndex));
+    } else {
+      sleep(50).then(() => scrollToFirstAyat());
+    }
+  }, [juz]);
   const parentLoader = useRouteLoaderData<typeof muslimLoader>("muslim");
   const opts = parentLoader?.opts;
   const prefsOption = FONT_SIZE.find((d) => d.label === opts?.fontSize);
@@ -172,6 +215,24 @@ const VirtualizedAyahByJuz = ({ children }: { children: React.ReactNode }) => {
       align: "start",
     });
   }, []);
+
+  const [lastRead, setLastRead] = React.useState<any | null>(
+    parentLoader?.lastReadV1 || null,
+  );
+  // Tandai ayat sebagai terakhir dibaca
+  const handleRead = React.useCallback((data: any) => {
+    const data_bookmark = {
+      ...data,
+      created_at: new Date().toISOString(),
+    };
+    if (data.id === lastRead?.id) {
+      setLastRead(null);
+      saveLastRead(null);
+    } else {
+      setLastRead(data_bookmark);
+      saveLastRead(data_bookmark);
+    }
+  }, [lastRead]);
 
   return (
     <React.Fragment>
@@ -241,7 +302,9 @@ const VirtualizedAyahByJuz = ({ children }: { children: React.ReactNode }) => {
                       index === 0 ? "border-b" : "border-y ",
                     )}
                   >
-                    <div className="text-start col-span-2">{d.surah[0]}</div>
+                    <div className="text-start col-span-2">
+                      {d.surah[0].n} ({d.surah[0].s}-{d.surah[0].e})
+                    </div>
                     <div className="font-semibold text-center">
                       <span>Hal</span> {d.page.p}
                     </div>
@@ -261,6 +324,14 @@ const VirtualizedAyahByJuz = ({ children }: { children: React.ReactNode }) => {
                       const key = Number(ayah_index);
                       const should_hidden = surah_index === "1" &&
                         ayah_index === "1";
+
+                      const bookmark_data = {
+                        id,
+                        title: d.surah[0].n + ":" + ayah_index,
+                        arab: dt.ta,
+                        source:
+                          `/muslim/quran-v1/${juz}?page=${d.page.p}&surah=${surah_index}&ayah=${ayah_index}`,
+                      };
                       return (
                         <React.Fragment key={id}>
                           {d.bismillah && key === 1 && (
@@ -292,11 +363,29 @@ const VirtualizedAyahByJuz = ({ children }: { children: React.ReactNode }) => {
                           )}
                           {!should_hidden &&
                             (
-                              <TextArab
-                                text={dt.ta}
-                                className="whiteSpace-pre-line p-0 px-2 inline h-fit"
-                                ayah={Number(ayah_index)}
-                              />
+                              <React.Fragment>
+                                {lastRead?.id === dt.vk && (
+                                  <span
+                                    className="ml-1.5 inline-flex items-end justify-end font-serif rounded-md"
+                                    style={{
+                                      fontSize: prefsOption?.fontSize ||
+                                        "1.5rem",
+                                    }}
+                                  >
+                                    &#128278;
+                                  </span>
+                                )}
+                                <TextArab
+                                  onClick={() => handleRead(bookmark_data)}
+                                  text={dt.ta}
+                                  className={cn(
+                                    "whiteSpace-pre-line p-0 px-2 inline h-fit",
+                                    lastRead?.id === dt.vk &&
+                                      "underline underline-offset-[16px]",
+                                  )}
+                                  ayah={Number(ayah_index)}
+                                />
+                              </React.Fragment>
                             )}
                         </React.Fragment>
                       );
@@ -354,7 +443,7 @@ const MemoHeader = React.memo(
     };
     return (
       <Header
-        redirectTo="/muslim/quran"
+        redirectTo="/muslim"
         title={`Juz' ${juz}`}
         subtitle={`Hal ${startPage}-${endPage}`}
       >
@@ -366,7 +455,7 @@ const MemoHeader = React.memo(
               onChange={handleSelectPageChange}
               aria-label="Select Juz"
               id="juz-select"
-              className="col-start-1 row-start-1 appearance-none text-sm py-2 px-3 w-16 sm:w-20"
+              className="col-start-1 row-start-1 appearance-none text-sm py-2 px-3 w-20"
             >
               {[...Array(Number(endPage) - Number(startPage) + 1)].map((
                 _,
@@ -398,7 +487,7 @@ const MemoHeader = React.memo(
               onChange={handleSelectChange}
               aria-label="Select Juz"
               id="juz-select"
-              className="col-start-1 row-start-1 appearance-none text-sm py-2 px-3 w-16 sm:w-20"
+              className="col-start-1 row-start-1 appearance-none text-sm py-2 px-3 w-20"
             >
               {JUZ.map((d) => <option key={d.i} value={d.i}>{d.t}</option>)}
             </select>

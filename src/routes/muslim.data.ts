@@ -14,6 +14,7 @@ type DataLoader = {
   opts: Prefs;
   bookmarks: AyatBookmark[] | [];
   lastRead: AyatBookmark | null;
+  lastReadV1: AyatBookmark | null;
 };
 
 export async function Action({ request }: ActionFunctionArgs) {
@@ -24,10 +25,11 @@ export async function Action({ request }: ActionFunctionArgs) {
 }
 
 export async function Loader() {
-  const [prefs, bookmarks, lastRead] = await Promise.all([
+  const [prefs, bookmarks, lastRead, lastReadV1] = await Promise.all([
     getCache(SETTING_PREFS_KEY),
     getCache(BOOKMARK_KEY),
     getCache(LASTREAD_KEY),
+    getCache(LASTREAD_KEY + "V1"),
   ]);
 
   const opts = prefs || DEFAULT_PREFS;
@@ -36,6 +38,7 @@ export async function Loader() {
     opts,
     bookmarks,
     lastRead,
+    lastReadV1,
   } as DataLoader;
 
   return data;

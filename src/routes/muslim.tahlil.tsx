@@ -1,4 +1,5 @@
 import { Header } from "#src/components/custom/header";
+import { ScrollTopButton } from "#src/components/custom/scroll-to-top.tsx";
 import { FONT_SIZE } from "#src/constants/prefs";
 import { data } from "#src/constants/tahlil.json";
 import { cn } from "#src/utils/misc";
@@ -53,6 +54,7 @@ export function Component() {
           </div>
         );
       })}
+      <ScrollTopButton />
     </>
   );
 }
