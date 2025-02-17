@@ -1,3 +1,4 @@
+import TextArab from "#src/components/custom/text-arab.tsx";
 import { Button, buttonVariants } from "#src/components/ui/button";
 import { FONT_SIZE } from "#src/constants/prefs";
 import { type Bookmark, save_bookmarks } from "#src/utils/bookmarks";
@@ -107,7 +108,7 @@ export function Component() {
                 d.type === "sholawat"
               ) {
                 return (
-                  <div key={index} className="group relative p-3">
+                  <div key={index} className="group relative p-3 last:border-b">
                     <div className="flex items-center justify-between gap-x-2">
                       <Link
                         to={d.source}
@@ -143,7 +144,8 @@ export function Component() {
                               </ActionItem>
                               <ActionItem
                                 id="goto"
-                                onAction={() => navigate(d.source)}
+                                onAction={() =>
+                                  navigate(d.source)}
                               >
                                 <ExternalLink className="mr-1.5 w-4 h-4" />
                                 Go to ayat
@@ -154,18 +156,9 @@ export function Component() {
                       </div>
                     </div>
                     <div className="w-full text-right flex gap-x-2.5 items-start justify-end">
-                      <div
-                        className={cn(
-                          "relative text-right my-3 font-lpmq",
-                        )}
-                        style={{
-                          fontWeight: opts.fontWeight,
-                          fontSize: prefsOption?.fontSize || "1.5rem",
-                          lineHeight: prefsOption?.lineHeight || "3.5rem",
-                        }}
-                      >
-                        {d.arab}
-                      </div>
+                      <TextArab
+                        text={d.arab}
+                      />
                     </div>
                     <div className="">
                       {opts?.showLatin === "on" && d.latin && (

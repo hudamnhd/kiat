@@ -180,8 +180,9 @@ const VirtualizedListSurah = ({ children }: { children: React.ReactNode }) => {
           );
 
           const shuffleSentence = shuffleArray(originalSentence);
-          const isCorrect = resultAnswer[surah_index] &&
-            resultAnswer[surah_index][ayah_index];
+          const isCorrect = resultAnswer && resultAnswer[Number(surah_index)] &&
+            resultAnswer[Number(surah_index)][Number(ayah_index)];
+          const isCorrectTrue = typeof isCorrect === "number";
 
           return (
             <div ref={(el) => ayahRefs.current.set(index, el)} key={item.vk}>
@@ -191,7 +192,7 @@ const VirtualizedListSurah = ({ children }: { children: React.ReactNode }) => {
                 ayat_number={Number(ayah_index)}
                 percent={10}
                 surat={Number(surah_index)}
-                isCorrect={isCorrect}
+                isCorrect={isCorrectTrue}
                 progressReff={progressReff}
                 scrollToAyat={scrollToAyat}
                 handleTrue={handleTrue}
