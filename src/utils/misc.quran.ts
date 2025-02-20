@@ -624,3 +624,15 @@ export const toArabicNumber = (number: number) => {
     .map((digit) => arabicDigits[parseInt(digit)])
     .join("");
 };
+
+const fontMapping = {
+  "font-indopak": "indopak",
+  "font-kemenag": "kemenag",
+  "font-uthmani-v2-reguler": "imlaei",
+  "font-uthmani-v2-bold": "imlaei",
+  "font-uthmani-hafs": "uthmani",
+  "font-uthmani-hafs-simple": "uthmani-simple",
+};
+export function getFontStyle(fontStyle: keyof typeof fontMapping) {
+  return fontMapping[fontStyle] || "kemenag";
+}

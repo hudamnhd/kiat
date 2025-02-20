@@ -238,6 +238,14 @@ export const Component = () => {
     });
   };
 
+  const CN = {
+    number:
+      "font-medium text-3xl h-14 data-[pressed]:bg-chart-2 data-[hovered]:bg-chart-2 data-[pressed]:text-background data-[hovered]:text-background",
+    operator:
+      "[&_svg]:size-9 h-14 bg-slate-600 dark:bg-slate-500 data-[pressed]:bg-chart-2 data-[hovered]:bg-chart-2 dark:data-[pressed]:bg-chart-2 dark:data-[hovered]:bg-chart-2",
+    equal:
+      "[&_svg]:size-9 h-14 bg-orange-600 dark:bg-orange-500 data-hovered:bg-orange-600/90 dark:data-hovered:bg-orange-500/90",
+  };
   return (
     <div
       className={cn(
@@ -667,21 +675,21 @@ export const Component = () => {
             <div className="grid grid-cols-4 gap-2 px-2.5 sm:px-3 pb-2.5 sm:pb-3">
               <Button
                 size="lg"
-                className="font-semibold text-3xl h-14 bg-slate-600 dark:bg-slate-500  data-[pressed]:bg-chart-5 data-[hovered]:bg-chart-5 dark:data-[pressed]:bg-chart-5 dark:data-[hovered]:bg-chart-5"
+                className={CN.operator}
                 onPress={handleClear}
               >
-                C
+                <div className="text-4xl font-medium">C</div>
               </Button>
               <Button
                 size="lg"
-                className="[&_svg]:size-9 h-14 bg-slate-600 dark:bg-slate-500 data-[pressed]:bg-chart-2 data-[hovered]:bg-chart-2 dark:data-[pressed]:bg-chart-2 dark:data-[hovered]:bg-chart-2"
+                className={CN.operator}
                 onPress={() => handleOperatorClick("*")}
               >
                 <X strokeWidth={2} />
               </Button>
               <Button
                 size="lg"
-                className="[&_svg]:size-9 h-14 bg-slate-600 dark:bg-slate-500 data-[pressed]:bg-chart-2 data-[hovered]:bg-chart-2 dark:data-[pressed]:bg-chart-2 dark:data-[hovered]:bg-chart-2"
+                className={CN.operator}
                 onPress={() => handleOperatorClick("/")}
               >
                 <div className="text-4xl font-medium pb-1">÷</div>
@@ -689,7 +697,7 @@ export const Component = () => {
               <Button
                 size="lg"
                 variant="default"
-                className="[&_svg]:size-9 h-14 bg-slate-600 dark:bg-slate-500 data-[pressed]:bg-chart-2 data-[hovered]:bg-chart-2 dark:data-[pressed]:bg-chart-2 dark:data-[hovered]:bg-chart-2"
+                className={CN.operator}
                 onPress={handleBackspace}
               >
                 <Delete
@@ -698,7 +706,7 @@ export const Component = () => {
               </Button>
 
               <Button
-                className="font-medium text-3xl h-14 data-[pressed]:bg-chart-2 data-[hovered]:bg-chart-2"
+                className={CN.number}
                 size="lg"
                 variant="secondary"
                 onPress={() => handleButtonPress("7")}
@@ -706,7 +714,7 @@ export const Component = () => {
                 7
               </Button>
               <Button
-                className="font-medium text-3xl h-14 data-[pressed]:bg-chart-2 data-[hovered]:bg-chart-2"
+                className={CN.number}
                 size="lg"
                 variant="secondary"
                 onPress={() => handleButtonPress("8")}
@@ -714,7 +722,7 @@ export const Component = () => {
                 8
               </Button>
               <Button
-                className="font-medium text-3xl h-14 data-[pressed]:bg-chart-2 data-[hovered]:bg-chart-2"
+                className={CN.number}
                 size="lg"
                 variant="secondary"
                 onPress={() => handleButtonPress("9")}
@@ -722,14 +730,14 @@ export const Component = () => {
                 9
               </Button>
               <Button
-                className="[&_svg]:size-9 h-14 bg-slate-600 dark:bg-slate-500 data-[pressed]:bg-chart-2 data-[hovered]:bg-chart-2 dark:data-[pressed]:bg-chart-2 dark:data-[hovered]:bg-chart-2"
+                className={CN.operator}
                 size="lg"
                 onPress={() => handleOperatorClick("-")}
               >
                 <Minus strokeWidth={2} />
               </Button>
               <Button
-                className="font-medium text-3xl h-14 data-[pressed]:bg-chart-2 data-[hovered]:bg-chart-2"
+                className={CN.number}
                 size="lg"
                 variant="secondary"
                 onPress={() => handleButtonPress("4")}
@@ -737,7 +745,7 @@ export const Component = () => {
                 4
               </Button>
               <Button
-                className="font-medium text-3xl h-14 data-[pressed]:bg-chart-2 data-[hovered]:bg-chart-2"
+                className={CN.number}
                 size="lg"
                 variant="secondary"
                 onPress={() => handleButtonPress("5")}
@@ -745,7 +753,7 @@ export const Component = () => {
                 5
               </Button>
               <Button
-                className="font-medium text-3xl h-14 data-[pressed]:bg-chart-2 data-[hovered]:bg-chart-2"
+                className={CN.number}
                 size="lg"
                 variant="secondary"
                 onPress={() => handleButtonPress("6")}
@@ -753,7 +761,7 @@ export const Component = () => {
                 6
               </Button>
               <Button
-                className="[&_svg]:size-9 h-14 bg-slate-600 dark:bg-slate-500 data-[pressed]:bg-chart-2 data-[hovered]:bg-chart-2 dark:data-[pressed]:bg-chart-2 dark:data-[hovered]:bg-chart-2"
+                className={CN.operator}
                 size="lg"
                 onPress={() => handleOperatorClick("+")}
               >
@@ -761,7 +769,7 @@ export const Component = () => {
               </Button>
 
               <Button
-                className="font-medium text-3xl h-14 data-[pressed]:bg-chart-2 data-[hovered]:bg-chart-2"
+                className={CN.number}
                 size="lg"
                 variant="secondary"
                 onPress={() => handleButtonPress("1")}
@@ -769,7 +777,7 @@ export const Component = () => {
                 1
               </Button>
               <Button
-                className="font-medium text-3xl h-14 data-[pressed]:bg-chart-2 data-[hovered]:bg-chart-2"
+                className={CN.number}
                 size="lg"
                 variant="secondary"
                 onPress={() => handleButtonPress("2")}
@@ -777,7 +785,7 @@ export const Component = () => {
                 2
               </Button>
               <Button
-                className="font-medium text-3xl h-14 data-[pressed]:bg-chart-2 data-[hovered]:bg-chart-2"
+                className={CN.number}
                 size="lg"
                 variant="secondary"
                 onPress={() => handleButtonPress("3")}
@@ -785,14 +793,14 @@ export const Component = () => {
                 3
               </Button>
               <Button
-                className="[&_svg]:size-9 h-14 bg-orange-600 dark:bg-orange-500 data-hovered:bg-orange-600/90 dark:data-hovered:bg-orange-500/90"
+                className={CN.equal}
                 size="lg"
                 onPress={handleEvaluate}
               >
                 <Equal strokeWidth={2} />
               </Button>
               <Button
-                className="font-medium text-3xl h-14 data-[pressed]:bg-chart-2 data-[hovered]:bg-chart-2"
+                className={CN.number}
                 size="lg"
                 variant="secondary"
                 onPress={() => handleButtonPress("0")}
@@ -800,7 +808,7 @@ export const Component = () => {
                 0
               </Button>
               <Button
-                className="font-medium text-3xl h-14 data-[pressed]:bg-chart-2 data-[hovered]:bg-chart-2"
+                className={CN.number}
                 size="lg"
                 variant="secondary"
                 onPress={() => handleButtonPress("00")}
@@ -808,7 +816,7 @@ export const Component = () => {
                 00
               </Button>
               <Button
-                className="font-medium text-3xl h-14 data-[pressed]:bg-chart-2 data-[hovered]:bg-chart-2"
+                className={CN.number}
                 size="lg"
                 variant="secondary"
                 onPress={() => handleButtonPress("000")}
@@ -816,7 +824,7 @@ export const Component = () => {
                 000
               </Button>
               <Button
-                className="font-medium text-3xl h-14 data-[pressed]:bg-chart-2 data-[hovered]:bg-chart-2"
+                className={CN.number}
                 size="lg"
                 variant="secondary"
                 onPress={() => handleButtonPress(".")}

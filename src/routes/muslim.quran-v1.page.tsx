@@ -1,12 +1,12 @@
 import { SETTING_PREFS_KEY } from "#/src/constants/key";
-import { FONT_SIZE } from "#/src/constants/prefs";
+import { DEFAULT_PREFS, FONT_SIZE } from "#/src/constants/prefs";
 import { Header } from "#src/components/custom/header";
 import { ScrollToFirstIndex } from "#src/components/custom/scroll-to-top.tsx";
 import TextArab from "#src/components/custom/text-arab.tsx";
 import { buttonVariants } from "#src/components/ui/button";
 import { getCache, setCache } from "#src/utils/cache-client.ts";
 import { cn } from "#src/utils/misc";
-import { getSurahByJuz } from "#src/utils/misc.quran.ts";
+import { getFontStyle, getSurahByJuz } from "#src/utils/misc.quran.ts";
 import { motion, useScroll, useSpring } from "framer-motion";
 import { Bookmark, ChevronLeft, ChevronRight } from "lucide-react";
 import React from "react";
@@ -24,20 +24,21 @@ function sleep(ms: number) {
   return new Promise((resolve) => setTimeout(resolve, ms));
 }
 
-type SurahStyle = GetSurahByPage["style"];
 export async function Loader({ params, request }: LoaderFunctionArgs) {
   const url = new URL(request.url);
   const ayah = url.searchParams.get("ayah");
   const surah = url.searchParams.get("surah");
   const page = url.searchParams.get("page");
+  const isNavigation = url.searchParams.get("navigate") || "0";
+
   const { id } = params;
 
   const [prefs, lastReadV1] = await Promise.all([
-    getCache(SETTING_PREFS_KEY),
+    getCache(SETTING_PREFS_KEY) || DEFAULT_PREFS,
     getCache(LASTREAD_KEY + "V1"),
   ]);
 
-  if (lastReadV1) {
+  if (lastReadV1 && isNavigation === "0") {
     const url = lastReadV1.source;
     const basePath = request.url.split("/").slice(0, -1).join("/") + "/";
 
@@ -53,41 +54,13 @@ export async function Loader({ params, request }: LoaderFunctionArgs) {
       return redirect(redirectTo);
     }
   }
-  let style = "indopak" as SurahStyle;
 
-  let translation = prefs?.showTranslation
-    ? prefs?.showTranslation == "on" ? true : false
-    : true;
-  let tafsir = prefs?.showTafsir
-    ? prefs?.showTafsir == "on" ? true : false
-    : false;
-  let translationSource = prefs?.translationSource
-    ? prefs?.translationSource
-    : "kemenag";
+  let style = getFontStyle(prefs?.fontStyle);
 
-  switch (prefs?.fontStyle) {
-    case "font-indopak":
-      style = "indopak";
-      break;
-    case "font-kemenag":
-      style = "kemenag";
-      break;
-    case "font-uthmani-v2-reguler":
-      style = "imlaei";
-      break;
-    case "font-uthmani-v2-bold":
-      style = "imlaei";
-      break;
-    case "font-uthmani-hafs":
-      style = "uthmani";
-      break;
-    case "font-uthmani-hafs-simple":
-      style = "uthmani-simple";
-      break;
-    default:
-      style = "kemenag";
-      break;
-  }
+  let translation = prefs?.showTranslation == "on" ? true : false;
+  let tafsir = prefs?.showTafsir == "on" ? true : false;
+  let translationSource = prefs?.translationSource;
+
   const response = await getSurahByJuz({
     juz: Number(id),
     style: style,
@@ -434,7 +407,7 @@ const MemoHeader = React.memo(
     const basePath = fullPath.split("/").slice(0, -1).join("/") + "/";
 
     const handleSelectChange = (e: { target: { value: string } }) => {
-      const redirectTo = basePath + e.target.value;
+      const redirectTo = basePath + e.target.value + "?navigate=1";
       navigate(redirectTo);
     };
     const handleSelectPageChange = (e: { target: { value: string } }) => {

@@ -39,7 +39,7 @@ const muslimNavigationLink: NavigationLink[] = [
     icon: Book,
   },
   {
-    title: "Qur'an Per Juz",
+    title: "Al Qur'an Per Juz",
     href: "/muslim/quran-v1/1",
     description: "Al Qur'an untuk focus baca",
     icon: Book,
