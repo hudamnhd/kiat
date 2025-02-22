@@ -13,10 +13,10 @@
     Content-Type = "application/manifest+json"
 
 # Header untuk semua file kecuali yang lebih spesifik
-[[headers]]
-  for = "/*"
-  [headers.values]
-    Cache-Control = "max-age=31536000, immutable"
+# [[headers]]
+#   for = "/*"
+#   [headers.values]
+#     Cache-Control = "max-age=31536000, immutable"
 
 # Header khusus untuk file yang dikompresi
 [[headers]]
@@ -24,4 +24,4 @@
   [headers.values]
     Content-Type = "application/json"
     Content-Encoding = "gzip"
-    Cache-Control = "max-age=31536000, immutable"
+    Cache-Control = "public, max-age=0, must-revalidate"
