@@ -89,12 +89,12 @@ const toolsNavigationLink: NavigationLink[] = [
     description: "Kalkulator penjumlahan sederhana",
     icon: Calculator,
   },
-  {
-    title: "Tugas harian",
-    href: "/alat/daily-tasks",
-    description: "Daftar tugas dengan timer",
-    icon: List,
-  },
+  // {
+  //   title: "Tugas harian",
+  //   href: "/alat/daily-tasks",
+  //   description: "Daftar tugas dengan timer",
+  //   icon: List,
+  // },
   {
     title: "Pomodoro",
     href: "/alat/pomodoro",

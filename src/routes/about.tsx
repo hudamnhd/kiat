@@ -93,7 +93,7 @@ const List = ({ data }: { data: Menu }) => {
           <TooltipTrigger delay={300}>
             <Link
               href={d.href}
-              className="prose prose-sm flex items-start justify-start text-start gap-x-1"
+              className="flex items-start justify-start text-start gap-x-1"
             >
               <Minus className="text-muted-foreground w-4 mr-1" />
               <span>

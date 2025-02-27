@@ -2,7 +2,11 @@ import listSurahWithJuz from "#/src/constants/list-surah.json";
 import { LayoutMain } from "#src/components/custom/layout.tsx";
 import { Button } from "#src/components/ui/button";
 import { Spinner } from "#src/components/ui/spinner";
-import { juzPages, pageAyahs } from "#src/constants/quran-metadata";
+import {
+  INDEXAYAHBYSURAH,
+  juzPages,
+  pageAyahs,
+} from "#src/constants/quran-metadata";
 import { cn } from "#src/utils/misc";
 import { hasMatch } from "fzy.js";
 import lodash from "lodash";
@@ -55,17 +59,24 @@ export async function Loader({ request }: LoaderFunctionArgs) {
       const surahNum = Number(match[1]); // Ambil angka sebelum ":"
       const ayahNum = Number(match[2]); // Ambil angka setelah ":"
 
+      const prevSurah = INDEXAYAHBYSURAH[surahNum - 1];
+
+      const prevSurahIdx = ayahNum + Number(prevSurah) || 0; // Ambil angka sebelum ":"
       return surah.filter(
         (d) => d.i === surahNum && ayahNum <= Number(d.v), // Bandingkan dengan format "114:3"
       ).map((d) => {
-        const page = pageAyahs.find((d) => ayahNum >= d.s && ayahNum <= d.e);
-        return {
-          ...d,
-          t: `${d.t}, Ayat ${ayahNum}`,
-          v: ayahNum.toString(),
-          m: "ayat",
-          p: page,
-        };
+        const page = pageAyahs.find((d) =>
+          prevSurahIdx >= d.s && prevSurahIdx <= d.e
+        );
+        if (page) {
+          return {
+            ...d,
+            t: `${d.t}, Ayat ${ayahNum}`,
+            v: ayahNum.toString(),
+            m: "ayat",
+            p: page.p,
+          };
+        }
       }).slice(0, 5);
     }
 
