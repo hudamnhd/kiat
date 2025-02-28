@@ -27,12 +27,6 @@ export type NavigationLink = {
 
 const muslimNavigationLink: NavigationLink[] = [
   {
-    title: "Bookmarks",
-    href: "/muslim/bookmarks",
-    description: "List Bookmark ayah, doa and anymore.",
-    icon: Star,
-  },
-  {
     title: "Al Qur'an",
     href: "/muslim/quran",
     description: "Temukan ketenangan melalui ayat-ayat Al Qur'an.",
@@ -80,6 +74,12 @@ const muslimNavigationLink: NavigationLink[] = [
     description: "Permainan susun kata quran",
     icon: Puzzle,
   },
+  {
+    title: "Bookmarks",
+    href: "/muslim/bookmarks",
+    description: "List Bookmark ayah, doa and anymore.",
+    icon: Star,
+  },
 ];
 
 const toolsNavigationLink: NavigationLink[] = [
@@ -101,12 +101,12 @@ const toolsNavigationLink: NavigationLink[] = [
     description: "Timer",
     icon: Timer,
   },
-  {
-    title: "Habit",
-    href: "/alat/habit",
-    description: "Pelacak Kebiasaan",
-    icon: Repeat,
-  },
+  // {
+  //   title: "Habit",
+  //   href: "/alat/habit",
+  //   description: "Pelacak Kebiasaan",
+  //   icon: Repeat,
+  // },
 ];
 
 export { muslimNavigationLink, toolsNavigationLink };

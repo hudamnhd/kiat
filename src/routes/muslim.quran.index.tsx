@@ -107,7 +107,7 @@ import {
 export function Component() {
   return (
     <React.Fragment>
-      <Header redirectTo="/muslim" title="Al Qur'an">
+      <Header redirectTo="/" title="Al Qur'an">
         <Link
           className={cn(
             buttonVariants({ size: "icon", variant: "ghost" }),

@@ -324,7 +324,7 @@ const VirtualizedAyahByJuz = ({ children }: { children: React.ReactNode }) => {
                                     : "",
                                 }}
                                 className={cn(
-                                  "focus:outline-none focus:ring min-w-3xl absolute p-2 max-w-3xl whiteSpace-pre-line break-words z-10",
+                                  "focus:outline-none focus:ring min-w-[98%] absolute p-2 max-w-[98%] whiteSpace-pre-line break-words z-10",
                                   opts?.fontStyle,
                                 )}
                                 style={{

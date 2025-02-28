@@ -416,7 +416,7 @@ const MemoHeader = React.memo(
     };
     return (
       <Header
-        redirectTo="/muslim"
+        redirectTo="/"
         title={`Juz' ${juz}`}
         subtitle={`Hal ${startPage}-${endPage}`}
       >

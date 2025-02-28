@@ -149,7 +149,7 @@ import {
 export function Component() {
   return (
     <React.Fragment>
-      <Header redirectTo="/muslim" title="Al Qur'an" />
+      <Header redirectTo="/" title="Al Qur'an" />
       <React.Fragment>
         <Tabs className="w-full">
           <TabList

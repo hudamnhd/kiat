@@ -23,7 +23,7 @@ export function Component() {
         }}
       >
         <Header
-          redirectTo="/muslim"
+          redirectTo="/"
           title="Do'a Sehari-hari"
         />
         <div className="text-center text-3xl font-bold leading-tight tracking-tighter md:text-4xl lg:leading-[1.1] capitalize py-3">

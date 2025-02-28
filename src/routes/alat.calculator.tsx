@@ -254,7 +254,7 @@ export const Component = () => {
       )}
     >
       <div>
-        <Header redirectTo="/alat" title="Kalkulator">
+        <Header redirectTo="/" title="Kalkulator">
           <DialogTrigger>
             <Button title="Riwayat" variant="ghost" className="gap-1.5">
               <History className="w-4 h-4" /> Riwayat

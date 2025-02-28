@@ -13,7 +13,7 @@ export function Component() {
 
   return (
     <>
-      <Header redirectTo="/muslim" title="Tahlil" />
+      <Header redirectTo="/" title="Tahlil" />
       <div className="text-center text-3xl font-bold leading-tight tracking-tighter md:text-4xl lg:leading-[1.1] capitalize py-3">
         Tahlil
       </div>

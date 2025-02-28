@@ -615,7 +615,7 @@ const TaskApp = ({
     <div className="">
       {/*<RenderTracker name="TASK APP" stateName={totalTargetSessions} />*/}
 
-      <Header redirectTo="/alat" title="Tasks">
+      <Header redirectTo="/" title="Tasks">
         {
           /*<Link
             to="./garden"

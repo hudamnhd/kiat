@@ -55,7 +55,7 @@ export function Component() {
 
   return (
     <>
-      <Header redirectTo="/muslim" title={`Dzikir ${time}`} />
+      <Header redirectTo="/" title={`Dzikir ${time}`} />
       <div className="flex items-center gap-x-3 justify-center text-center text-3xl font-bold leading-tight tracking-tighter md:text-4xl lg:leading-[1.1] capitalize py-3">
         <span>Dzikir {time}</span>
       </div>

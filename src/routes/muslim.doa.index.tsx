@@ -46,7 +46,7 @@ const data = sumber.map((d: string) => {
 export function Component() {
 	return (
 		<React.Fragment>
-			<Header redirectTo="/muslim" title="Kumpulan Do'a" />
+			<Header redirectTo="/" title="Kumpulan Do'a" />
 
 			<div className="text-center pt-3">
 				<div className="text-center text-3xl font-bold leading-tight tracking-tighter md:text-4xl lg:leading-[1.1]">

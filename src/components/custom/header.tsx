@@ -56,7 +56,7 @@ export function Header(props: HeaderProps) {
     <header
       id="navbar"
       // md:sticky  disable
-      className="px-1.5 py-2 flex justify-between gap-x-3 border-b top-0 border-b bg-background/95 backdrop-blur-sm supports-backdrop-filter:bg-background/60 z-10 duration-300"
+      className="px-1.5 py-2 flex justify-between gap-x-3 top-0 border-b bg-background/95 backdrop-blur-sm supports-backdrop-filter:bg-background/60 z-10 duration-300"
     >
       <div className="flex items-center gap-x-1.5">
         <Link

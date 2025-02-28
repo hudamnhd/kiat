@@ -164,7 +164,7 @@ const HabitTracker: React.FC = () => {
   const statistics = getStatistics(habits);
   return (
     <>
-      <Header redirectTo="/alat" title="Habit">
+      <Header redirectTo="/" title="Habit">
         <PopoverTrigger>
           <Button variant="ghost" size="icon">
             <Flame />

@@ -99,7 +99,7 @@ export function Component() {
 
   return (
     <>
-      <Header redirectTo="/alat" title="Pomodoro" />
+      <Header redirectTo="/" title="Pomodoro" />
       <div className="block text-2xl text-center leading-8 font-extrabold tracking-tight sm:text-3xl pt-3">
         Pomodoro
       </div>

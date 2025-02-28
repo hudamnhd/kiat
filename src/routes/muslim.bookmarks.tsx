@@ -90,7 +90,7 @@ export function Component() {
 
   return (
     <>
-      <Header redirectTo="/muslim" title="Bookmarks" />
+      <Header redirectTo="/" title="Bookmarks" />
       <div
         className={cn(
           "text-center text-3xl font-bold leading-tight tracking-tighter capitalize py-2 border-b",

@@ -110,21 +110,21 @@ const TrackLastRoutes = () => {
     }
     const matchedLink = navigate_link.find((link) => link.href === currentPath);
 
-    if (matchedLink) {
-      const lastRoutes = JSON.parse(
-        localStorage.getItem("lastUsedRoutes") || "[]",
-      );
-
-      const updatedRoutes = lastRoutes.filter(
-        (route: string) => route !== matchedLink.href,
-      );
-
-      updatedRoutes.unshift(matchedLink.href);
-
-      const limitedRoutes = updatedRoutes.slice(0, 12);
-
-      localStorage.setItem("lastUsedRoutes", JSON.stringify(limitedRoutes));
-    }
+    // if (matchedLink) {
+    //   const lastRoutes = JSON.parse(
+    //     localStorage.getItem("lastUsedRoutes") || "[]",
+    //   );
+    //
+    //   const updatedRoutes = lastRoutes.filter(
+    //     (route: string) => route !== matchedLink.href,
+    //   );
+    //
+    //   updatedRoutes.unshift(matchedLink.href);
+    //
+    //   const limitedRoutes = updatedRoutes.slice(0, 12);
+    //
+    //   localStorage.setItem("lastUsedRoutes", JSON.stringify(limitedRoutes));
+    // }
   }, [location.pathname]);
 
   return null;

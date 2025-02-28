@@ -80,7 +80,7 @@ export function Component() {
   }, [bookmarks]);
   return (
     <>
-      <Header redirectTo="/muslim" title="Sholawat" />
+      <Header redirectTo="/" title="Sholawat" />
       <div className="text-center text-3xl font-bold leading-tight tracking-tighter md:text-4xl lg:leading-[1.1] capitalize py-3">
         Sholawat
       </div>

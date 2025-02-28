@@ -5,7 +5,7 @@ import React from "react";
 export function Component() {
   return (
     <React.Fragment>
-      <Header redirectTo="/muslim" title="Susun Kata" />
+      <Header redirectTo="/" title="Susun Kata" />
       <NavigationSurah />
     </React.Fragment>
   );
