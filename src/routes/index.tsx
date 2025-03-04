@@ -20,7 +20,7 @@ import {
 import { cn } from "#src/utils/misc";
 import { BookOpenText, Info, Search, Wrench } from "lucide-react";
 import React from "react";
-import { useNavigate } from "react-router";
+import { Link, useNavigate } from "react-router";
 
 export default function Index() {
   const data = [...muslimNavigationLink, ...toolsNavigationLink];
@@ -50,27 +50,47 @@ export default function Index() {
   const date = "__DATE__";
   return (
     <LayoutMain>
-      <Header isIndex={true} redirectTo="/about" title="Kiat">
-        <CommandMenu />
-      </Header>
-      <div className="text-start pt-3 mb-1.5 px-3">
-        <h4 className="animate font-semibold text-black dark:text-white show">
-          Assalamu'alaikum Wr.Wb, 🙏
-        </h4>
-        <section>
-          <article className="space-y-4">
-            <p className="text-muted-foreground">
-              Alhamdulillah puji syukur ke hadirat Allah SWT. Sholawat serta
-              salam semoga selalu tercurahkan kepada Nabi Muhammad SAW.
-            </p>
-          </article>
-        </section>
+      <div className="flex flex-col  justify-center w-full h-screen gap-2 pb-2">
+        <Header isIndex={true} redirectTo="/about" title="Kiat">
+          <CommandMenu />
+        </Header>
+        <main className="flex-1 px-5 mx-auto w-full space-y-6">
+          <h1 className="font-medium pt-3">
+            <span className="">
+              Assalamu'alaikum Wr.Wb, 🙏
+            </span>
+          </h1>
+          <p className="leading-snug">
+            Alhamdulillah puji syukur ke hadirat Allah SWT. Sholawat serta salam
+            semoga selalu tercurahkan kepada Nabi Muhammad SAW. Semoga aplikasi
+            ini bisa bermanfaat terutama untuk <strong>saya sendiri</strong> dan
+            {" "}
+            <strong>orang lain</strong>.
+          </p>
+          <h2 className="font-medium mt-8 mb-3">
+            Applikasi
+          </h2>
+          <ul className="list-disc pl-5 space-y-1">
+            {data.map((item, itemIdx) => (
+              <li
+                key={itemIdx}
+                className="pl-1"
+              >
+                <Link
+                  title={item.description}
+                  to={item.href}
+                  className="text-blue-500 hover:text-blue-700 dark:text-blue-400 dark:hover:text-blue-300 sephia:text-blue-500 sephia:hover:text-blue-600"
+                >
+                  {item.title}
+                </Link>
+              </li>
+            ))}
+          </ul>
+        </main>
+        <Footer />
       </div>
 
-      <div className="px-3 mt-3 font-semibold">
-        Daftar applikasi
-      </div>
-      <NavigationList data={mainMenu} />
+      {/*<NavigationList data={mainMenu} />*/}
 
       {
         /*<div className="pb-7">
@@ -84,7 +104,6 @@ export default function Index() {
         )}
       </div>*/
       }
-      <Footer />
     </LayoutMain>
   );
 }

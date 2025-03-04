@@ -1,18 +1,90 @@
 import { Header } from "#src/components/custom/header";
 import { Button } from "#src/components/ui/button";
+import {
+  Popover,
+  PopoverDialog,
+  PopoverTrigger,
+} from "#src/components/ui/popover";
+import {
+  Select,
+  SelectItem,
+  SelectListBox,
+  SelectPopover,
+  SelectTrigger,
+  SelectValue,
+} from "#src/components/ui/select";
 import { cn } from "#src/utils/misc";
-import { Activity, Coffee, Pause, Play, TimerReset } from "lucide-react";
+import {
+  Activity,
+  CircleHelp,
+  Coffee,
+  Pause,
+  Play,
+  TimerReset,
+} from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 import { useBeforeUnload } from "react-router";
 
-enum MODE {
-  POMO = "Pomo",
-  SHORTBREAK = "ShortBreak",
-  LONGBREAK = "LongBreak",
+function SelectExample() {
+  return (
+    <Select className="w-[200px]" placeholder="Select an animal">
+      <SelectTrigger>
+        <SelectValue />
+      </SelectTrigger>
+      <SelectPopover>
+        <SelectListBox>
+          <SelectItem>Aardvark</SelectItem>
+          <SelectItem>Cat</SelectItem>
+          <SelectItem>Dog</SelectItem>
+          <SelectItem>Kangaroo</SelectItem>
+          <SelectItem>Panda</SelectItem>
+          <SelectItem>Snake</SelectItem>
+        </SelectListBox>
+      </SelectPopover>
+    </Select>
+  );
 }
 
+function InfoPopover() {
+  return (
+    <div className="flex gap-4">
+      <PopoverTrigger>
+        <Button variant="ghost" size="icon">
+          <CircleHelp />
+        </Button>
+        <Popover placement="bottom">
+          <PopoverDialog className="max-w-[400px]  p-0">
+            <p className="text-muted-foreground px-4 py-2.5 text-sm">
+              Kata <strong>pomodoro</strong>{" "}
+              berasal dari bahasa Italia yang berarti{" "}
+              <strong>tomat</strong>. Metode Pomodoro Technique dinamai demikian
+              karena Francesco Cirillo, pencipta metode ini, awalnya menggunakan
+              timer dapur berbentuk tomat untuk mengatur waktu kerjanya.
+              Pomodoro Technique Ini adalah teknik manajemen waktu yang membagi
+              waktu kerja menjadi interval fokus (biasanya{" "}
+              <strong>25 menit</strong>), yang disebut{" "}
+              <strong>pomodoros</strong>, diikuti dengan istirahat singkat
+              (biasanya <strong>5 menit</strong>
+              ).
+            </p>
+          </PopoverDialog>
+        </Popover>
+      </PopoverTrigger>
+    </div>
+  );
+}
+
+const MODETIMER = {
+  POMO: "Pomo",
+  SHORTBREAK: "ShortBreak",
+  MEDIUMBREAK: "MediumBreak",
+  LONGBREAK: "LongBreak",
+};
+
+type MODE = typeof MODETIMER;
+
 export function Component() {
-  const [mode, setMode] = useState<MODE>(MODE.POMO);
+  const [mode, setMode] = useState<MODE>(MODETIMER.POMO);
   const [timeLeft, setTimeLeft] = useState<number>(25 * 60); // Initial 25:00 minutes in seconds
   const [isRunning, setIsRunning] = useState<boolean>(false);
 
@@ -20,9 +92,10 @@ export function Component() {
 
   // Timer Durations
   const durations = {
-    [MODE.POMO]: 25 * 60, // 25 minutes
-    [MODE.SHORTBREAK]: 5 * 60, // 5 minutes
-    [MODE.LONGBREAK]: 15 * 60, // 15 minutes
+    [MODETIMER.POMO]: 25 * 60, // 25 minutes
+    [MODETIMER.SHORTBREAK]: 5 * 60, // 5 minutes
+    [MODETIMER.MEDIUMBREAK]: 10 * 60, // 10 minutes
+    [MODETIMER.LONGBREAK]: 15 * 60, // 15 minutes
   };
 
   // Load state from Local Storage on mount
@@ -30,8 +103,8 @@ export function Component() {
     const savedState = localStorage.getItem("pomodoroState");
     if (savedState) {
       const parsedState = JSON.parse(savedState);
-      setMode(parsedState.mode || MODE.POMO);
-      setTimeLeft(parsedState.timeLeft || durations[MODE.POMO]);
+      setMode(parsedState.mode || MODETIMER.POMO);
+      setTimeLeft(parsedState.timeLeft || durations[MODETIMER.POMO]);
       setIsRunning(parsedState.isRunning || false);
     }
   }, []);
@@ -100,36 +173,43 @@ export function Component() {
   return (
     <>
       <Header redirectTo="/" title="Pomodoro" />
-      <div className="block text-2xl text-center leading-8 font-extrabold tracking-tight sm:text-3xl pt-3">
-        Pomodoro
-      </div>
-      <div className="my-4 flex items-center justify-center gap-2 px-3">
-        <Button
-          variant={mode === MODE.POMO ? "default" : "outline"}
-          onPress={() => handleModeChange(MODE.POMO)}
-        >
-          <Activity />
-          <span className="sm:flex hidden">Pomodoro</span>
-          <span className="sm:hidden flex">Pomo</span>
-        </Button>
-        <Button
-          variant={mode === MODE.SHORTBREAK ? "default" : "outline"}
-          onPress={() => handleModeChange(MODE.SHORTBREAK)}
-        >
-          <Coffee />
-          <span className="sm:flex hidden">Short Break</span>
-          <span className="sm:hidden flex">5 m</span>
-        </Button>
-        <Button
-          variant={mode === MODE.LONGBREAK ? "default" : "outline"}
-          onPress={() => handleModeChange(MODE.LONGBREAK)}
-        >
-          <Coffee />
-          <span className="sm:flex hidden">Long Break</span>
-          <span className="sm:hidden flex">15 m</span>
-        </Button>
+      <div className="flex items-center justify-center gap-1 text-2xl text-center leading-8 font-extrabold tracking-tight sm:text-3xl pt-3">
+        <span>Pomodoro</span>
+        <InfoPopover />
       </div>
       {/* Modes */}
+      <Select
+        className="w-[200px] mx-auto my-4"
+        placeholder="Pilih mode"
+        selectedKey={mode}
+        aria-label="Pilih mode"
+        onSelectionChange={(selected) => handleModeChange(selected)}
+      >
+        <SelectTrigger>
+          <SelectValue className="flex gap-2" />
+        </SelectTrigger>
+        <SelectPopover>
+          <SelectListBox>
+            {Object.values(MODETIMER).map((d) => {
+              const ICON = d === "Pomo" ? Activity : Coffee;
+              return (
+                <SelectItem
+                  key={d}
+                  className="flex gap-2"
+                  textValue={d}
+                  id={d}
+                >
+                  <ICON
+                    className="h-5 w-5 text-foreground  sm:group-hover:-rotate-45 sm:duration-300"
+                    aria-hidden="true"
+                  />
+                  {d.replace("Break", " Break")}
+                </SelectItem>
+              );
+            })}
+          </SelectListBox>
+        </SelectPopover>
+      </Select>
 
       {/* Timer */}
 
@@ -189,7 +269,10 @@ export function Component() {
             </div>
           </div>
         </div>
-        <svg className="dark:bg-white/30 rounded-full" viewBox="0 0 100 100">
+        <svg
+          className="bg-primary/10 dark:bg-foreground/30 rounded-full"
+          viewBox="0 0 100 100"
+        >
           <circle
             cx="50"
             cy="50"
@@ -201,8 +284,8 @@ export function Component() {
           <circle
             className={cn(
               mode === "Pomo"
-                ? "dark:stroke-lime-400 stroke-lime-500"
-                : "dark:stroke-orange-400 stroke-orange-500",
+                ? "stroke-primary"
+                : "stroke-primary",
               " transition-all duration-500 ease-in-out",
             )}
             cx="50"
@@ -236,9 +319,10 @@ export function Component() {
         </Button>
       </div>
 
-      <div className="space-y-4 mt-3 px-3">
+      {
+        /*<div className="space-y-4 mt-3 px-3">
         <details className="group [&_summary::-webkit-details-marker]:hidden">
-          <summary className="flex cursor-pointer items-center justify-between gap-1.5 rounded-lg bg-gray-50 dark:bg-gray-900 px-4 py-2.5">
+          <summary className="flex cursor-pointer items-center justify-between gap-1.5 rounded-lg bg-muted-foreground/10 px-4 py-2.5">
             <p className="font-medium text-sm">Apa itu Pomodoro ?</p>
 
             <svg
@@ -271,7 +355,8 @@ export function Component() {
             ).
           </p>
         </details>
-      </div>
+      </div>*/
+      }
     </>
   );
 }

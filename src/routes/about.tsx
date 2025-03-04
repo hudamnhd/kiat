@@ -11,15 +11,15 @@ type Menu = typeof sources.content;
 export function Component() {
   return (
     <LayoutMain>
-      <Header redirectTo="/" title="Informasi" />
+      <Header redirectTo="/" title="Tentang" />
 
       <div className="text-center text-3xl font-bold leading-tight tracking-tighter md:text-4xl lg:leading-[1.1] capitalize py-3">
-        Informasi
+        Tentang Kiat Aplikasi
       </div>
 
-      <dl className="divide-y border-t -mt-1">
+      <dl className="divide-y border-t -mt-1 mb-4">
         <div className="px-4 py-3">
-          <dt className="text-sm font-medium text-muted-foreground">
+          <dt className="font-medium mb-3">
             Developer
           </dt>
           <dd className="mt-1 pl-5 text-sm text-foreground">
@@ -27,11 +27,13 @@ export function Component() {
           </dd>
         </div>
         <div className="px-4 py-3">
-          <dt className="text-sm font-medium text-muted-foreground">Nama</dt>
+          <dt className="font-medium mb-3">
+            Nama
+          </dt>
           <dd className="mt-1 pl-5 text-sm text-foreground">Kiat</dd>
         </div>
         <div className="px-4 py-3">
-          <dt className="text-sm font-medium text-muted-foreground">
+          <dt className="font-medium mb-3">
             Deskripsi
           </dt>
           <dd className="mt-1 pl-5 text-sm text-foreground">
@@ -39,7 +41,7 @@ export function Component() {
           </dd>
         </div>
         <div className="px-4 py-3">
-          <dt className="text-sm font-medium text-muted-foreground">
+          <dt className="font-medium mb-3">
             Sumber Konten
           </dt>
           <dd className="text-sm text-foreground">
@@ -47,7 +49,7 @@ export function Component() {
           </dd>
         </div>
         <div className="px-4 py-3">
-          <dt className="text-sm font-medium text-muted-foreground">
+          <dt className="font-medium mb-3">
             Huruf Arab
           </dt>
           <dd className="mt-1 text-sm text-foreground">
@@ -55,7 +57,7 @@ export function Component() {
           </dd>
         </div>
         <div className="px-4 py-3">
-          <dt className="text-sm font-medium text-muted-foreground">
+          <dt className="font-medium mb-3">
             Stack dan Dependesi
           </dt>
           <dd className="text-sm text-foreground">
@@ -63,17 +65,11 @@ export function Component() {
           </dd>
         </div>
         <div className="px-4 py-3">
-          <dt className="text-sm font-medium text-muted-foreground">Deploy</dt>
-          <dd className="mt-1 text-sm pl-5">
-            <List data={sources.deploy} />
-          </dd>
-        </div>
-        <div className="px-4 py-3">
-          <dt className="text-sm font-medium text-muted-foreground">
-            Components
+          <dt className="font-medium mb-3">
+            Deploy
           </dt>
-          <dd className="mt-1 text-sm pl-5">
-            <Link href="/components">Demo</Link>
+          <dd className="mt-1 text-sm pl-1">
+            <List data={sources.deploy} />
           </dd>
         </div>
       </dl>
@@ -84,29 +80,29 @@ export function Component() {
 const List = ({ data }: { data: Menu }) => {
   const navigate = useNavigate();
   return (
-    <div
+    <ul
       role="list"
-      className="marker:text-muted-foreground list-disc list-inside"
+      className="list-disc pl-5 space-y-1"
     >
-      {data.map((d, index: number) => (
-        <div key={index} className="break-all line-clamp-1">
+      {data.map((item, index: number) => (
+        <li key={index} className="pl-1 text-sm">
           <TooltipTrigger delay={300}>
             <Link
-              href={d.href}
-              className="flex items-start justify-start text-start gap-x-1"
+              to={item.href}
+              className="font-medium text-blue-500 hover:text-blue-700 dark:text-blue-400 dark:hover:text-blue-300 sephia:text-blue-500 sephia:hover:text-blue-600"
             >
-              <Minus className="text-muted-foreground w-4 mr-1" />
-              <span>
-                <strong>{d.title}</strong>{" "}
-                <span className="text-foreground">{d.desc}</span>.
-              </span>
+              {item.title}
+              <span className="text-foreground font-normal">
+                {" "}
+                {item.desc}
+              </span>.
             </Link>
             <Tooltip placement="bottom">
-              <p>{d.href}</p>
+              <p>{item.href}</p>
             </Tooltip>
           </TooltipTrigger>
-        </div>
+        </li>
       ))}
-    </div>
+    </ul>
   );
 };

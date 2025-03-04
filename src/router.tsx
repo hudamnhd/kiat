@@ -45,6 +45,10 @@ export const router = createBrowserRouter([
         element: <Index />,
       },
       {
+        path: "/wallpaper",
+        lazy: () => import("./routes/wallpaper"),
+      },
+      {
         path: "/components",
         lazy: () => import("./routes/demo.components"),
       },

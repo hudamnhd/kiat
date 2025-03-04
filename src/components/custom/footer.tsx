@@ -6,19 +6,18 @@ import { Link } from "react-router";
 const Footer = () => {
   const date = "__DATE__";
   return (
-    <div className="flex items-center justify-between absolute bottom-0 w-full">
-      <div className="Home-built px-4 text-muted-foreground gap-1 text-xs [&_svg]:size-3 mb-1">
-        Built at : {date}
-      </div>
+    <div className="flex flex-wrap items-center gap-2 justify-between bottom-2 w-full not-prose text-sm px-4">
       <Link
         className={cn(
-          buttonVariants({ variant: "link" }),
-          "text-muted-foreground gap-1 uppercase text-xs [&_svg]:size-3 mb-1",
+          "no-underline text-muted-foreground font-normal",
         )}
-        to="/about"
+        to="https://id.linkedin.com/in/hudamnhd"
       >
-        <Copyright /> 2025 Huda
+        Kiat Aplikasi
       </Link>
+      <div className="Home-built text-muted-foreground">
+        Built at : {date}
+      </div>
     </div>
   );
 };

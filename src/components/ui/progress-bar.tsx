@@ -1,12 +1,12 @@
-import * as React from 'react';
+import * as React from "react";
 import {
   composeRenderProps,
   ProgressBar as AriaProgressBar,
   ProgressBarProps as AriaProgressBarProps,
-} from 'react-aria-components';
+} from "react-aria-components";
 
-import { cn } from '#src/utils/misc';
-import { Label, labelVariants } from './field';
+import { cn } from "#src/utils/misc";
+import { Label, labelVariants } from "./field.tsx";
 
 interface ProgressProps extends AriaProgressBarProps {
   barClassName?: string;
@@ -22,7 +22,7 @@ const Progress = ({
 }: ProgressProps) => (
   <AriaProgressBar
     className={composeRenderProps(className, (className) =>
-      cn('w-full', className))}
+      cn("w-full", className))}
     {...props}
   >
     {composeRenderProps(children, (children, renderProps) => (
@@ -30,13 +30,13 @@ const Progress = ({
         {children}
         <div
           className={cn(
-            'relative h-2 w-full overflow-hidden rounded-full bg-primary/20',
+            "relative h-2 w-full overflow-hidden rounded-full bg-primary/20",
             barClassName,
           )}
         >
           <div
             className={cn(
-              'size-full flex-1 bg-primary transition-all',
+              "size-full flex-1 bg-primary transition-all",
               fillClassName,
             )}
             style={{
@@ -63,11 +63,11 @@ function JollyProgressBar({
   return (
     <Progress
       className={composeRenderProps(className, (className) =>
-        cn('group flex flex-col gap-2', className))}
+        cn("group flex flex-col gap-2", className))}
       {...props}
     >
       {({ valueText }) => (
-        <div className='flex w-full justify-between'>
+        <div className="flex w-full justify-between">
           <Label>{label}</Label>
           {showValue && <span className={labelVariants()}>{valueText}</span>}
         </div>

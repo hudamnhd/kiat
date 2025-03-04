@@ -20,3 +20,31 @@ export const lazyWrapper = (importFunction: () => Promise<any>) => {
 export function lightDarkVar(baseName: string) {
   return `var(--theme-light, hsl(var(--${baseName}))) var(--theme-dark, hsl(var(--${baseName}-dark))) var(--theme-sephia, hsl(var(--${baseName}-sephia)))`;
 }
+
+import React from "react";
+
+// https://dev.to/receter/usepersistentstate-3fn8
+export function usePersistentState<Type>(
+  key: string,
+  initialState: Type | (() => Type),
+): [Type, React.Dispatch<React.SetStateAction<Type>>] {
+  const prefixedKey = "use-persistent-state-" + key;
+  // read key from local storage if not found use default value
+  const [value, setValue] = React.useState<Type>(() => {
+    const storedValue = localStorage.getItem(prefixedKey);
+    if (storedValue === null) {
+      if (typeof initialState === "function") {
+        return (initialState as () => Type)();
+      } else {
+        return initialState;
+      }
+    } else {
+      return JSON.parse(storedValue);
+    }
+  });
+  // update local storage when value changes
+  React.useEffect(() => {
+    localStorage.setItem(prefixedKey, JSON.stringify(value));
+  }, [value, prefixedKey]);
+  return [value, setValue];
+}
