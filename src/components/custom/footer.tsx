@@ -6,7 +6,7 @@ import { Link } from "react-router";
 const Footer = () => {
   const date = "__DATE__";
   return (
-    <div className="flex flex-wrap items-center gap-2 justify-between bottom-2 w-full not-prose text-sm px-4">
+    <div className="flex flex-wrap items-center gap-2 justify-between bottom-1.5 w-full not-prose text-xs sm:text-sm px-3">
       <Link
         className={cn(
           "no-underline text-muted-foreground font-normal",

@@ -102,14 +102,14 @@ export function Component() {
                   "from-primary/10 to-secondary/10 dark:from-primary/20 dark:to-secondary/20",
               )}
             >
-              <div className="font-medium text-lg sm:text-xl  line-clamp-1">
+              <div className="font-medium text-lg sm:text-xl">
                 {ayat.nama}
               </div>
 
               <button
                 onClick={() => toggleBookmark(ayat)}
                 className={cn(
-                  "order-0 sm:order-1 bg-linear-to-br from-muted to-accent size-9 [&_svg]:size-5 inline-flex gap-2 items-center justify-center rounded-lg",
+                  "flex-none order-0 sm:order-1 bg-linear-to-br from-muted to-accent size-9 [&_svg]:size-5 inline-flex gap-2 items-center justify-center rounded-lg",
                   isFavorite &&
                     "from-rose-500/10 to-pink-500/10 dark:from-rose-500/20 dark:to-pink-500/20",
                 )}

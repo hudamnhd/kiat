@@ -105,8 +105,12 @@ export function Component() {
               if (
                 d.type === "ayat" ||
                 d.type === "doa" ||
+                d.type === "dzikir" ||
                 d.type === "sholawat"
               ) {
+                const arabText = d.type === "dzikir"
+                  ? removeHtmlTagsExceptNewline(d.arab)
+                  : d.arab;
                 return (
                   <div key={index} className="group relative p-3 last:border-b">
                     <div className="flex items-center justify-between gap-x-2">
@@ -157,7 +161,7 @@ export function Component() {
                     </div>
                     <div className="w-full text-right flex gap-x-2.5 items-start justify-end">
                       <TextArab
-                        text={d.arab}
+                        text={arabText}
                       />
                     </div>
                     <div className="">
@@ -191,6 +195,12 @@ export function Component() {
       </div>
     </>
   );
+}
+
+function removeHtmlTagsExceptNewline(input: string): string {
+  return input
+    .replace(/<(?!\/?br\s*\/?)[^>]+>/g, "") // Hapus semua tag HTML kecuali <br>
+    .replace(/@/g, "\n\n"); // Ganti '@' dengan newline
 }
 
 function ActionItem(props: MenuItemProps) {

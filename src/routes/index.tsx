@@ -47,18 +47,15 @@ export default function Index() {
     ...toolsNavigationLink,
   ];
 
-  const date = "__DATE__";
   return (
     <LayoutMain>
       <div className="flex flex-col  justify-center w-full h-screen gap-2 pb-2">
         <Header isIndex={true} redirectTo="/about" title="Kiat">
           <CommandMenu />
         </Header>
-        <main className="flex-1 px-5 mx-auto w-full space-y-6">
-          <h1 className="font-medium pt-3">
-            <span className="">
-              Assalamu'alaikum Wr.Wb, 🙏
-            </span>
+        <main className="flex-1 px-5 mx-auto w-full space-y-4 sm:space-y-6">
+          <h1 className="font-medium sm:pt-3">
+            Assalamu'alaikum Wr.Wb, 🙏
           </h1>
           <p className="leading-snug">
             Alhamdulillah puji syukur ke hadirat Allah SWT. Sholawat serta salam
@@ -67,7 +64,7 @@ export default function Index() {
             {" "}
             <strong>orang lain</strong>.
           </p>
-          <h2 className="font-medium mt-8 mb-3">
+          <h2 className="font-bold sm:mt-8 mb-3">
             Applikasi
           </h2>
           <ul className="list-disc pl-5 space-y-1">
