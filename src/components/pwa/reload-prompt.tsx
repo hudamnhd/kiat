@@ -66,7 +66,10 @@ function ReloadPrompt() {
                 {needRefresh && (
                   <button
                     className={cn(buttonVariants({ variant: "default" }))}
-                    onClick={() => updateServiceWorker(true)}
+                    onClick={() => {
+                      updateServiceWorker(true);
+                      window.location.reload();
+                    }}
                   >
                     <RefreshCcw /> Reload
                   </button>
@@ -78,7 +81,7 @@ function ReloadPrompt() {
                       variant: needRefresh ? "outline" : "default",
                     }),
                   )}
-                  onClick={() => close()}
+                  onClick={close}
                 >
                   <X /> Close
                 </button>
