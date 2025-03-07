@@ -68,7 +68,6 @@ function ReloadPrompt() {
                     className={cn(buttonVariants({ variant: "default" }))}
                     onClick={() => {
                       updateServiceWorker(true);
-                      window.location.reload();
                     }}
                   >
                     <RefreshCcw /> Reload
