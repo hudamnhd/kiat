@@ -22,8 +22,11 @@ export function Component() {
           <dt className="font-medium mb-3">
             Developer
           </dt>
-          <dd className="mt-1 pl-5 text-sm text-foreground">
+          <dd className="mt-1 pl-5 text-sm text-foreground space-x-1">
             <Link href="https://www.linkedin.com/in/hudamnhd">Huda</Link>
+            <Link href="mailto:muhamadhuda519@gmail.com">
+              ( muhamadhuda519@gmail.com )
+            </Link>
           </dd>
         </div>
         <div className="px-4 py-3">

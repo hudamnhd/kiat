@@ -172,12 +172,12 @@ const navigate_link = [
     description: "Reset data local",
     icon: TimerReset,
   },
-  {
-    title: "Info",
-    href: "/about",
-    description: "Info website",
-    icon: Info,
-  },
+  // {
+  //   title: "Info",
+  //   href: "/about",
+  //   description: "Info website",
+  //   icon: Info,
+  // },
 ];
 
 const CommandMenu = () => {

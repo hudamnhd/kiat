@@ -109,12 +109,12 @@ export const sources = {
   stack: [
     {
       title: "React.js",
-      desc: "Library",
+      desc: "Library UI",
       href: "https://react.dev",
     },
     {
       title: "React Router",
-      desc: "Dependesi untuk mengatur routing dan juga fetching data",
+      desc: "Library untuk mengatur routing dan juga fetching data",
       href: "https://developer.chrome.com/docs/workbox",
     },
     {
@@ -129,52 +129,52 @@ export const sources = {
     },
     {
       title: "Vite",
-      desc: "Dependesi alat pengembang",
+      desc: "Library alat pengembang",
       href: "https://vite.dev",
     },
     {
       title: "Vite PWA",
-      desc: "Dependesi untuk mendukung fitur PWA",
+      desc: "Library untuk mendukung fitur PWA",
       href: "https://vite-pwa-org.netlify.app",
     },
     {
       title: "Workbox",
-      desc: "Dependesi untuk mendukung fitur PWA",
+      desc: "Library untuk mendukung fitur PWA",
       href: "https://developer.chrome.com/docs/workbox",
     },
     {
       title: "React Virtual",
-      desc: "Dependesi untuk virtualisasi element",
+      desc: "Library untuk virtualisasi element",
       href: "https://tanstack.com/virtual/latest",
     },
     {
       title: "Lucide React",
-      desc: "Dependesi kumpulan icon svg",
+      desc: "Library kumpulan icon svg",
       href: "https://lucide.dev",
     },
     {
       title: "Redux",
-      desc: "Dependesi manajement state",
+      desc: "Library manajement state",
       href: "https://redux.js.org",
     },
     {
       title: "Motion",
-      desc: "Dependesi animasi",
+      desc: "Library animasi",
       href: "https://motion.dev",
     },
     {
       title: "Local forage",
-      desc: "Dependesi penyimpanan local",
+      desc: "Library penyimpanan local",
       href: "https://github.com/localForage/localForage",
     },
     {
       title: "Fzy.js",
-      desc: "Dependesi fuzzy",
+      desc: "Library fuzzy",
       href: "https://github.com/jhawthorn/fzy.js",
     },
     {
       title: "Flex Search",
-      desc: "Dependesi pencarian text panjang",
+      desc: "Library pencarian text panjang",
       href: "https://github.com/nextapps-de/flexsearch",
     },
     {

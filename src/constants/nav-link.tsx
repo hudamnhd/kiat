@@ -6,6 +6,7 @@ import {
   Calculator,
   Circle,
   Heart,
+  Info,
   type LucideProps,
   Puzzle,
   Star,
@@ -27,7 +28,7 @@ const muslimNavigationLink: NavigationLink[] = [
   {
     title: "Al Qur'an",
     href: "/muslim/quran",
-    description: "Temukan ketenangan melalui ayat-ayat Al Qur'an.",
+    description: "Al Qur'an dilengkapi terjemahan dan tafsir",
     icon: Book,
   },
   {
@@ -39,31 +40,31 @@ const muslimNavigationLink: NavigationLink[] = [
   {
     title: "Sholawat",
     href: "/muslim/sholawat",
-    description: "Dekatkan diri dengan Rasulullah melalui sholawat.",
+    description: "Kumpulan sholawat",
     icon: Heart,
   },
   {
     title: "Dzikir",
     href: "/muslim/dzikir",
-    description: "Hiasi hari dengan dzikir dan ingat Allah selalu.",
+    description: "Dzikir pagi dan petang",
     icon: BookOpen,
   },
   {
     title: "Tahlil",
     href: "/muslim/tahlil",
-    description: "Doakan yang tercinta dengan tahlil penuh makna.",
+    description: "Tahlil dan doa",
     icon: Circle,
   },
   {
     title: "Kumpulan Do'a",
     href: "/muslim/doa",
-    description: "Awali hari dengan doa untuk keberkahan hidup.",
+    description: "Kumpulan do'a berbagai sumber",
     icon: Sun,
   },
   {
     title: "Do'a Sehari-hari",
     href: "/muslim/doa-sehari-hari",
-    description: "Awali hari dengan doa untuk keberkahan hidup.",
+    description: "Kumpulan do'a sehari-hari",
     icon: Activity,
   },
   {
@@ -73,9 +74,9 @@ const muslimNavigationLink: NavigationLink[] = [
     icon: Puzzle,
   },
   {
-    title: "Bookmarks",
+    title: "Penanda",
     href: "/muslim/bookmarks",
-    description: "List Bookmark ayah, doa and anymore.",
+    description: "Daftar penanda ayat",
     icon: Star,
   },
 ];
@@ -87,24 +88,18 @@ const toolsNavigationLink: NavigationLink[] = [
     description: "Kalkulator penjumlahan sederhana",
     icon: Calculator,
   },
-  // {
-  //   title: "Tugas harian",
-  //   href: "/alat/daily-tasks",
-  //   description: "Daftar tugas dengan timer",
-  //   icon: List,
-  // },
   {
     title: "Pomodoro",
     href: "/alat/pomodoro",
     description: "Timer",
     icon: Timer,
   },
-  // {
-  //   title: "Habit",
-  //   href: "/alat/habit",
-  //   description: "Pelacak Kebiasaan",
-  //   icon: Repeat,
-  // },
+  {
+    title: "Tentang Aplikasi",
+    href: "/about",
+    description: "Tentang Kiat Aplikasi",
+    icon: Info,
+  },
 ];
 
 export { muslimNavigationLink, toolsNavigationLink };
