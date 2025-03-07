@@ -197,14 +197,6 @@ export const router = createBrowserRouter([
             lazy: () => import("./routes/alat.calculator"),
           },
           {
-            path: "/alat/habit",
-            lazy: () => import("./routes/alat.habit"),
-          },
-          {
-            path: "/alat/daily-tasks",
-            lazy: () => import("./routes/alat.daily-tasks"),
-          },
-          {
             path: "/alat/pomodoro",
             lazy: () => import("./routes/alat.pomodoro"),
           },
