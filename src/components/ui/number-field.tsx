@@ -4,19 +4,19 @@ import { cn } from "#src/utils/misc";
 import { Button } from "./button";
 import { FieldError, FieldGroup, Label } from "./field";
 
-import { Minus, Plus, ChevronDown, ChevronUp } from "lucide-react";
+import { ChevronDown, ChevronUp, Minus, Plus } from "lucide-react";
 
 import {
-  ButtonProps as AriaButtonProps,
   Button as AriaButton,
+  ButtonProps as AriaButtonProps,
+  composeRenderProps,
   Group,
   Input as AriaInput,
   InputProps as AriaInputProps,
   NumberField as AriaNumberField,
   NumberFieldProps as AriaNumberFieldProps,
-  ValidationResult as AriaValidationResult,
-  composeRenderProps,
   Text,
+  ValidationResult as AriaValidationResult,
 } from "react-aria-components";
 
 const NumberField = AriaNumberField;
@@ -28,8 +28,7 @@ function NumberFieldInput({ className, ...props }: AriaInputProps) {
         cn(
           "w-fit min-w-0 flex-1 border-r border-transparent bg-background pr-2 outline outline-0 placeholder:text-muted-foreground [&::-webkit-search-cancel-button]:hidden",
           className,
-        ),
-      )}
+        ))}
       {...props}
     />
   );
@@ -62,8 +61,7 @@ function NumberFieldStepper({ className, ...props }: AriaButtonProps) {
   return (
     <Button
       className={composeRenderProps(className, (className) =>
-        cn("w-auto grow rounded-none px-0.5 text-muted-foreground", className),
-      )}
+        cn("w-auto grow rounded-none px-0.5 text-muted-foreground", className))}
       variant={"ghost"}
       size={"icon"}
       {...props}
@@ -93,8 +91,7 @@ function JollyNumberField({
   return (
     <NumberField
       className={composeRenderProps(className, (className) =>
-        cn("group flex flex-col gap-2", className),
-      )}
+        cn("group flex flex-col gap-2", className))}
       {...props}
     >
       <Label>{label}</Label>
@@ -123,7 +120,7 @@ function JollyNumberFieldV2({
     <NumberField {...props}>
       <div className="spacey-0.5">
         <Label>{label}</Label>
-        <Group className="relative inline-flex h-9 w-full items-center overflow-hidden whitespace-nowrap rounded-lg border border-input text-sm shadow-xs shadow-black/5 transition-shadow data-focus-within:border-ring data-disabled:opacity-50 data-focus-within:outline-hidden data-focus-within:ring-[3px] data-focus-within:ring-ring/20">
+        <Group className="relative inline-flex h-9 w-full items-center overflow-hidden whitespace-nowrap rounded-lg border border-input text-sm shadow-xs shadow-black/5 transition-shadow data-focus-within:border-ring data-disabled:opacity-50 data-focus-within:outline-hidden data-focus-within:ring-[1px] data-focus-within:ring-ring/20">
           <AriaButton
             slot="decrement"
             className="-ms-px flex aspect-square h-[inherit] items-center justify-center rounded-s-lg border border-input bg-background text-sm text-muted-foreground/80 transition-shadow hover:bg-accent hover:text-foreground disabled:pointer-events-none disabled:cursor-not-allowed disabled:opacity-50"
@@ -150,12 +147,12 @@ function JollyNumberFieldV2({
 }
 
 export {
-  NumberField,
-  NumberFieldInput,
-  NumberFieldSteppers,
-  NumberFieldStepper,
   JollyNumberField,
   JollyNumberFieldV2,
+  NumberField,
+  NumberFieldInput,
+  NumberFieldStepper,
+  NumberFieldSteppers,
 };
 
 export type { JollyNumberFieldProps };

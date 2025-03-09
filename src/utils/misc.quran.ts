@@ -528,9 +528,22 @@ export function updateReadingProgress(
   return plan.map((entry) => {
     if (entry.day === day) {
       const totalItems = entry.pages || entry.surahs || [];
-      const updatedProgress = Array.from(
-        new Set([...entry.progress!, ...readItems]),
-      ); // Tambahkan item baru yang sudah dibaca
+      const updatedProgress = (() => {
+        if (!entry.progress || entry.progress.length === 0) return readItems;
+
+        const lastItem = Math.max(...entry.progress); // Ambil item terakhir
+        const sortedReadItems = readItems.sort((a, b) => a - b); // Urutkan jika perlu
+
+        const filteredItems = sortedReadItems.filter((item, index) => {
+          if (index === 0) return item === lastItem + 1; // Hanya terima jika langsung setelah lastItem
+          return item === sortedReadItems[index - 1] + 1; // Harus urut setelah item sebelumnya
+        });
+
+        // return [...entry.progress, ...filteredItems];
+        const t = new Set([...entry.progress, ...filteredItems]);
+
+        return Array.from(t);
+      })();
 
       return {
         ...entry,

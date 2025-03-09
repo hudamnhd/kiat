@@ -76,8 +76,9 @@ export default function Index() {
                 <Link
                   title={item.description}
                   to={item.href}
-                  className="text-blue-500 hover:text-blue-700 dark:text-blue-400 dark:hover:text-blue-300 sephia:text-blue-500 sephia:hover:text-blue-600"
+                  className="flex items-center gap-2 font-medium text-blue-500 hover:text-blue-700 dark:text-blue-400 dark:hover:text-blue-300 sephia:text-blue-500 sephia:hover:text-blue-600"
                 >
+                  {/*<item.icon className="w-4 h-4 text-foreground" />*/}
                   {item.title}
                 </Link>
               </li>

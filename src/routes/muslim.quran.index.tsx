@@ -8,12 +8,17 @@ import {
 import { Header } from "#src/components/custom/header";
 import NavigationSurah from "#src/components/custom/navigation-surah";
 import { Button, buttonVariants } from "#src/components/ui/button";
+import { Input } from "#src/components/ui/input";
 import { Label } from "#src/components/ui/label";
+import { JollyNumberFieldV2 } from "#src/components/ui/number-field";
 import { Tooltip, TooltipTrigger } from "#src/components/ui/tooltip";
 import { getCache, setCache } from "#src/utils/cache-client.ts";
 import { cn } from "#src/utils/misc";
 import type { QuranReadingPlan } from "#src/utils/misc.quran.ts";
-import { generateQuranReadingPlan } from "#src/utils/misc.quran.ts";
+import {
+  generateQuranReadingPlan,
+  updateReadingProgress,
+} from "#src/utils/misc.quran.ts";
 import {
   addMonths,
   eachDayOfInterval,
@@ -37,7 +42,7 @@ import {
   MoveRight,
   Rocket,
 } from "lucide-react";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import toast from "react-hot-toast";
 import type { ActionFunctionArgs, LoaderFunctionArgs } from "react-router";
 import { Link, useFetcher, useLoaderData } from "react-router";
@@ -82,12 +87,53 @@ export async function Loader({ params }: LoaderFunctionArgs) {
 export async function Action({ request }: ActionFunctionArgs) {
   const formData = await request.formData();
   const _days = formData.get("days");
-  // const data = Object.fromEntries(formData);
+  const _start = formData.get("start");
+  const _end = formData.get("end");
+  const date = formData.get("date");
+  const data = Object.fromEntries(formData);
+  console.warn("DEBUGPRINT[21]: muslim.quran.index.tsx:92: data=", data);
   if (_days) {
     const days = Number(_days);
     const readingPlan = generateQuranReadingPlan(604, 114, days, "page"); // Target khatam dalam 30 hari, baca per halaman
     await saveTarget(readingPlan);
     return { success: true };
+  } else if (_start) {
+    const start = Number(_start);
+    const end = _end ? Number(_end) : start;
+
+    const rangeArray = Array.from(
+      { length: end - start + 1 },
+      (_, i) => start + i,
+    );
+
+    const plan_read = (await getCache(PLANREAD_KEY)) || [];
+    if (plan_read.length > 0) {
+      const today = date ? date : format(new Date(), "yyyy-MM-dd");
+      const progressToday = plan_read.find(
+        (d: QuranReadingPlan) => d.date === today,
+      );
+      const validate = start >= progressToday.pages[0] &&
+        start <= progressToday.pages[progressToday.pages.length - 1] &&
+        end >= progressToday.pages[0] &&
+        end <= progressToday.pages[progressToday.pages.length - 1];
+      if (validate) {
+        let target = updateReadingProgress(
+          plan_read,
+          progressToday.day,
+          rangeArray,
+        );
+        await setCache(PLANREAD_KEY, target);
+        toast.success("Sukses memperbarui data");
+        return { success: true };
+      } else {
+        toast.error("Data tidak valid");
+        return { success: false };
+      }
+    }
+    // console.log(rangeArray);
+    // let target = updateReadingProgress(plan_read, progressToday.day, [PAGE]);
+    // await setCache(PLANREAD_KEY, target);
+    return { success: false };
   }
 
   return { success: false };
@@ -105,6 +151,8 @@ import {
 } from "#src/components/ui/select";
 
 export function Component() {
+  const loaderData = useLoaderData<typeof Loader>();
+  const target = loaderData.plan_read as QuranReadingPlan[];
   return (
     <React.Fragment>
       <Header redirectTo="/" title="Al Qur'an">
@@ -120,7 +168,10 @@ export function Component() {
         </Link>
       </Header>
       <React.Fragment>
-        <Tabs className="w-full">
+        <Tabs
+          defaultSelectedKey={target.length > 0 ? "target" : "surah"}
+          className="w-full"
+        >
           <TabList
             aria-label="Quran"
             className="surah-index grid grid-cols-3 border-b border-border text-sm"
@@ -319,6 +370,7 @@ function MyTabPanel(props: TabPanelProps) {
 }
 
 function Goals() {
+  const fetcher = useFetcher({ key: "create-plan" });
   const [rentang, setRentang] = React.useState<string>(
     "",
   );
@@ -370,6 +422,14 @@ function Goals() {
       }
     }
   }, [target]);
+
+  React.useEffect(() => {
+    if (fetcher.data?.success) {
+      setRentang("");
+      setTarget("");
+      setResult([]);
+    }
+  }, [fetcher.data]);
 
   return (
     <div className="max-w-3xl mx-auto text-start p-4">
@@ -468,17 +528,24 @@ function GoalsView() {
     (sum, todo) => sum + (todo?.progress?.length ?? 0),
     0,
   );
+  const totalPagesTarget = target?.reduce(
+    (sum, todo) => sum + (todo?.pages?.length ?? 0),
+    0,
+  );
   const pages_length = progressToday?.pages?.length || 0;
   const progress_length = progressToday?.progress?.length || 0;
   const next_read = pages_length > 0
     ? progressToday?.pages?.[progress_length]
+    : 0;
+  const last_read = pages_length > 0
+    ? progressToday?.pages?.[pages_length - 1]
     : 0;
   return (
     <div className="space-y-2 mt-3">
       <div className="max-w-3xl mx-auto text-start px-2 divide-y">
         <div className="mb-2">
           <div className="font-bold  px-2">
-            {target[0]?.pages?.length} Halaman / Hari
+            Target
           </div>
           <dl className="sm:divide-y sm:divide-border border rounded-md my-2">
             <div className="py-2 sm:grid sm:grid-cols-3 sm:gap-4 px-4">
@@ -488,7 +555,7 @@ function GoalsView() {
               <dd className="mt-1 text-sm sm:mt-0 sm:col-span-2 font-medium">
                 {totalPagesProgress} /{" "}
                 <span className="font-medium">
-                  {progressToday?.pages?.length} Halaman
+                  {totalPagesTarget} Halaman
                 </span>
               </dd>
             </div>
@@ -514,19 +581,32 @@ function GoalsView() {
             </div>
           </dl>
 
-          <Link
-            className={cn(
-              buttonVariants(),
-              "mb-2",
+          {!progressToday?.completed
+            ? (
+              <Link
+                className={cn(
+                  buttonVariants(),
+                  "mb-2",
+                )}
+                to={`/muslim/quran/${next_read ?? 0}`}
+                title={`Lanjut Baca Hal ${next_read ?? 0}`}
+              >
+                Lanjut Baca Hal {next_read ?? 0}
+                <ArrowRight />
+              </Link>
+            )
+            : (
+              <div className="my-3">
+                Alhamdulilah target hari ini sudah selesai.
+                <br /> Biar <strong>istiqomah{" "}</strong>
+                lanjut besok baca quran lagi.
+              </div>
             )}
-            to={`/muslim/quran/${next_read ?? 0}`}
-            title={`Lanjut Baca Hal ${next_read ?? 0}`}
-          >
-            Lanjut Baca Hal {next_read ?? 0}
-            <ArrowRight />
-          </Link>
           <Label>
-            Progress Harian
+            Progress Harian{" "}
+            <span className="text-muted-foreground font-semibold">
+              ( {progressToday?.progress?.length} Hal )
+            </span>
           </Label>
           <div
             style={{ animationDelay: `0.1s` }}
@@ -567,19 +647,28 @@ function GoalsView() {
                       (progressToday?.pages?.length ?? 0)
                     ? <CircleCheckBig className="ml-2 h-5 w-5" />
                     : <Circle className="h-5 w-5" />}
-                  {progressToday?.progress?.length} Hal
-                  <ArrowRight
-                    className={cn(
-                      "h-5 w-5 ",
-                      true && "ml-2 bounce-left-right",
+                  {progressToday.completed
+                    ? `Selesai ${progressToday?.progress?.length} hal`
+                    : `${progressToday?.progress?.length} Hal`}
+
+                  {!progressToday.completed &&
+                    (
+                      <ArrowRight
+                        className={cn(
+                          "h-5 w-5 ",
+                          true && "ml-2 bounce-left-right",
+                        )}
+                      />
                     )}
-                  />
                 </div>
               </div>
             </div>
           </div>
-          <CalendarMonthProggres plan={target} />
 
+          <div className="grid sm:grid-cols-2 gap-2 mt-1">
+            <CalendarMonthProggres plan={target} />
+            <UpdateProggres />
+          </div>
           <Label className="mt-3">
             Progress Khatam
           </Label>
@@ -639,6 +728,96 @@ function GoalsView() {
     </div>
   );
 }
+
+const UpdateProggres = () => {
+  const loaderData = useLoaderData<typeof Loader>();
+  const target = loaderData.plan_read as QuranReadingPlan[];
+  const fetcher = useFetcher({ key: "create-plan" });
+  const today = format(new Date(), "yyyy-MM-dd");
+  const _progressToday = target.find((d) => d.date === today);
+  const progressToday = target.find((d) => d.date === today);
+  const _uncompleted = target.filter((d) => d.completed === false);
+  const uncompleted = _uncompleted.length > 0 ? _uncompleted[0] : progressToday;
+  const [date, setDate] = useState(
+    _uncompleted.length > 0 ? uncompleted.date : today,
+  );
+
+  const pages_length = uncompleted?.pages?.length || 0;
+  const progress_length = uncompleted?.progress?.length || 0;
+  const next_read = progress_length > 0
+    ? uncompleted?.pages?.[progress_length]
+    : uncompleted?.pages?.[0];
+  const last_read = progress_length > 0
+    ? uncompleted?.pages?.[pages_length - 1]
+    : uncompleted?.pages?.[pages_length - 1];
+  const [valuePage, setValuePage] = useState({
+    start: next_read,
+    end: next_read,
+  });
+  useEffect(() => {
+    setValuePage(
+      {
+        ...valuePage,
+        start: next_read,
+        end: next_read,
+      },
+    );
+  }, [date]);
+
+  return (
+    <fetcher.Form
+      action="/muslim/quran?index"
+      method="post"
+      className="mx-auto max-w-xs"
+    >
+      <Label className="mt-3">
+        Perbarui progress manual
+      </Label>
+      <div className="grid grid-cols-2 gap-2 max-w-xs mt-1">
+        <JollyNumberFieldV2
+          value={valuePage.start}
+          onChange={(v) =>
+            setValuePage({
+              ...valuePage,
+              start: v,
+            })}
+          minValue={next_read}
+          name="start"
+        />
+        <JollyNumberFieldV2
+          value={valuePage.end}
+          onChange={(v) =>
+            setValuePage({
+              ...valuePage,
+              end: v,
+            })}
+          minValue={next_read}
+          maxValue={last_read}
+          name="end"
+        />
+        <Input
+          type="date"
+          name="date"
+          value={date}
+          onChange={(e) => setDate(e.target.value)}
+          className="col-span-2"
+        />
+      </div>
+      <ul className="list-disc pl-5 space-y-1">
+        <li className="text-xs mt-2 text-muted-foreground">
+          Masukan halaman mulai dan akhir ( jika hanya 1 halaman masukan halaman
+          mulai )
+        </li>
+        <li className="text-xs mb-2 mt-1 text-muted-foreground">
+          Jika memperbarui untuk hari ini kosongkan kolom tangal
+        </li>
+      </ul>
+      <Button type="submit">
+        Simpan
+      </Button>
+    </fetcher.Form>
+  );
+};
 
 const saveTarget = async (data: any) => {
   const response = await toast.promise(
@@ -847,7 +1026,7 @@ const CalendarMonthProggres = ({ plan }: { plan: QuranReadingPlan[] }) => {
 
 const CalendarMonth = ({ plan }: { plan: QuranReadingPlan[] }) => {
   const [currentMonth, setCurrentMonth] = useState(new Date());
-  const fetcher = useFetcher();
+  const fetcher = useFetcher({ key: "create-plan" });
   const [daysInMonth, setDaysInMonth] = useState<any[]>([]);
 
   // Fungsi untuk memperbarui kalender
