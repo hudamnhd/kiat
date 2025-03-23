@@ -11,19 +11,9 @@ export const Component = () => {
         Banyak pilihan{" "}
         <strong className="text-foreground">menawarkan kecepatan</strong>, tapi
         hanya sedikit{" "}
-        <strong className="text-foreground">yang benar-benar esensial</strong>.
-      </div>
-      <div>
-        <strong className="text-foreground">Fokus — energimu terbatas</strong>,
-        jadi gunakan dengan <strong className="text-foreground">bijak</strong>."
+        <strong className="text-foreground">yang benar-benar esensial</strong>".
       </div>
       <div className="mt-4">
-        <div className="text-base font-medium text-muted-foreground">
-          Text Editor
-          <strong className="text-foreground">{" "}just text editor</strong>.
-          Please
-          <strong className="text-foreground">{" "}dont't do no more</strong>
-        </div>
         <div className="text-base font-medium text-muted-foreground">
           Tool
           <strong className="text-foreground">{" "}just tool</strong>. Please

@@ -162,7 +162,7 @@ export function Component() {
             "prose-none [&_svg]:size-4",
           )}
           to={`/muslim/quran-hafalan/1`}
-          title="Quran mirip mushaf"
+          title="Qur'an Hafalan"
         >
           <BookOpenCheck />
         </Link>

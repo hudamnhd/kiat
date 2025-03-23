@@ -56,7 +56,7 @@ export function LayoutMain({ children }: { children: ReactNode }) {
     <div
       id="container-main"
       className={cn(
-        "border-x min-h-[calc(100vh)] sm:max-w-3xl sm:mx-auto relative",
+        "border min-h-[calc(100vh)] sm:max-w-3xl sm:mx-auto relative",
       )}
     >
       {children}

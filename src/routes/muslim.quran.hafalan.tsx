@@ -34,7 +34,7 @@ export async function Loader({ params, request }: LoaderFunctionArgs) {
   const url = new URL(request.url);
   const ayah = url.searchParams.get("ayah");
   const surah = url.searchParams.get("surah");
-  const mode = url.searchParams.get("mode") || "v1";
+  const mode = url.searchParams.get("mode") || "v2";
   const { id } = params;
 
   const prefs = await getCache(SETTING_PREFS_KEY);
