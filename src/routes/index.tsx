@@ -49,10 +49,10 @@ export default function Index() {
 
   return (
     <LayoutMain>
-      <div className="flex flex-col  justify-center w-full h-screen gap-2 pb-2">
-        <Header isIndex={true} redirectTo="/about" title="Kiat">
-          <CommandMenu />
-        </Header>
+      <Header isIndex={true} redirectTo="/about" title="Kiat">
+        <CommandMenu />
+      </Header>
+      <div className="h-full w-full gap-2">
         <main className="flex-1 px-5 mx-auto w-full space-y-4 sm:space-y-6">
           <h1 className="font-medium sm:pt-3">
             Assalamu'alaikum Wr.Wb, 🙏
@@ -84,6 +84,7 @@ export default function Index() {
               </li>
             ))}
           </ul>
+          <div className="h-12" />
         </main>
         <Footer />
       </div>

@@ -28,8 +28,9 @@ export function Component() {
                 {ayat.title}
               </div>
             </div>
-            <div className="w-full text-right flex gap-x-2.5 items-start justify-end">
+            <div className="w-full flex gap-x-2.5">
               <div
+                dir="rtl"
                 className={cn(
                   "relative text-right my-5 font-lpmq",
                   opts?.fontStyle,
