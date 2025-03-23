@@ -88,7 +88,7 @@ export default function Index() {
           }
 
           <NavigationList data={mainMenu} />
-          <div className="h-12" />
+          <div className="h-6" />
         </main>
         <Footer />
       </div>
