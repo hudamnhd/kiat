@@ -64,10 +64,11 @@ export default function Index() {
             {" "}
             <strong>orang lain</strong>.
           </p>
-          <h2 className="font-bold sm:mt-8 mb-3">
+          <h2 className="font-bold sm:mt-8 mb-1">
             Applikasi
           </h2>
-          <ul className="list-disc pl-5 space-y-1">
+          {
+            /*<ul className="list-disc pl-5 space-y-1">
             {data.map((item, itemIdx) => (
               <li
                 key={itemIdx}
@@ -78,18 +79,19 @@ export default function Index() {
                   to={item.href}
                   className="flex items-center gap-2 font-medium text-blue-500 hover:text-blue-700 dark:text-blue-400 dark:hover:text-blue-300 sephia:text-blue-500 sephia:hover:text-blue-600"
                 >
-                  {/*<item.icon className="w-4 h-4 text-foreground" />*/}
+                  <item.icon className="w-4 h-4 text-foreground" />
                   {item.title}
                 </Link>
               </li>
             ))}
-          </ul>
+          </ul>*/
+          }
+
+          <NavigationList data={mainMenu} />
           <div className="h-12" />
         </main>
         <Footer />
       </div>
-
-      {/*<NavigationList data={mainMenu} />*/}
 
       {
         /*<div className="pb-7">

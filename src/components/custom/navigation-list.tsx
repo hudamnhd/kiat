@@ -8,7 +8,7 @@ export const NavigationList = ({ data }: { data: NavigationLink[] }) => {
   return (
     <div
       role="list"
-      className="grid gap-2 px-3 pt-1.5 pb-4"
+      className="grid gap-2 pt-1.5 pb-4"
     >
       {data.map((item, itemIdx) => (
         <NavigationListItem key={itemIdx} i={itemIdx} item={item} />
