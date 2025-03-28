@@ -54,7 +54,7 @@ export default function Index() {
       </Header>
       <div className="h-full w-full gap-2">
         <main className="flex-1 px-5 mx-auto w-full space-y-4 sm:space-y-6">
-          <h1 className="font-medium sm:pt-3">
+          <h1 className="font-medium pt-3">
             Assalamu'alaikum Wr.Wb, 🙏
           </h1>
           <p className="leading-snug">
