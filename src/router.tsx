@@ -206,6 +206,17 @@ export const router = createBrowserRouter([
           },
         ],
       },
+      {
+        path: "/quran",
+        element: <Layout />,
+        children: [
+          {
+            path: "/quran",
+            index: true,
+            lazy: () => import("./routes/quran"),
+          },
+        ],
+      },
     ],
   },
   {

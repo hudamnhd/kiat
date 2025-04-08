@@ -52,19 +52,19 @@ export default function Index() {
       <Header isIndex={true} redirectTo="/about" title="Kiat">
         <CommandMenu />
       </Header>
-      <div className="h-full w-full gap-2">
-        <main className="flex-1 px-5 mx-auto w-full space-y-4 sm:space-y-6">
-          <h1 className="font-medium pt-3">
+      <div className="flex flex-col justify-between h-[calc(100vh-60px)]">
+        <main className="flex-1 px-4 mx-auto w-full space-y-4 sm:space-y-6">
+          <h1 className="font-medium pt-3 sm:block hidden">
             Assalamu'alaikum Wr.Wb, 🙏
           </h1>
-          <p className="leading-snug">
+          <p className="leading-snug sm:block hidden">
             Alhamdulillah puji syukur ke hadirat Allah SWT. Sholawat serta salam
             semoga selalu tercurahkan kepada Nabi Muhammad SAW. Semoga aplikasi
             ini bisa bermanfaat terutama untuk <strong>saya sendiri</strong> dan
             {" "}
             <strong>orang lain</strong>.
           </p>
-          <h2 className="font-bold sm:mt-8 mb-1">
+          <h2 className="font-bold mt-2 sm:mt-8 mb-1">
             Applikasi
           </h2>
           {

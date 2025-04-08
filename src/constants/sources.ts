@@ -115,7 +115,7 @@ export const sources = {
     {
       title: "React Router",
       desc: "Library untuk mengatur routing dan juga fetching data",
-      href: "https://developer.chrome.com/docs/workbox",
+      href: "https://reactrouter.com",
     },
     {
       title: "Tailwind",

@@ -16,6 +16,15 @@ export function Component() {
       <div className="text-center text-3xl font-bold leading-tight tracking-tighter md:text-4xl lg:leading-[1.1] capitalize py-3">
         Tentang Kiat Aplikasi
       </div>
+      <div className="px-5 mb-5">
+          <p className="leading-snug">
+            Alhamdulillah puji syukur ke hadirat Allah SWT. Sholawat serta salam
+            semoga selalu tercurahkan kepada Nabi Muhammad SAW. Semoga aplikasi
+            ini bisa bermanfaat terutama untuk <strong>saya sendiri</strong> dan
+            {" "}
+            <strong>orang lain</strong>.
+          </p>
+      </div>
 
       <dl className="divide-y border-t -mt-1 mb-4">
         <div className="px-4 py-3">

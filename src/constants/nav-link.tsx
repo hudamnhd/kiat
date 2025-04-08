@@ -1,5 +1,6 @@
 import {
   Activity,
+  Search,
   Book,
   Bookmark,
   BookOpen,
@@ -24,9 +25,9 @@ export type NavigationLink = {
   >;
 };
 
-const muslimNavigationLink: NavigationLink[] = [
+const quranNavigationLink: NavigationLink[] = [
   {
-    title: "Al Qur'an",
+    title: "Daftar Surat",
     href: "/muslim/quran",
     description: "Al Qur'an dilengkapi terjemahan dan tafsir",
     icon: Book,
@@ -35,6 +36,27 @@ const muslimNavigationLink: NavigationLink[] = [
     title: "Al Qur'an Per Juz",
     href: "/muslim/quran-v1/1",
     description: "Al Qur'an untuk focus baca",
+    icon: Book,
+  },
+  {
+    title: "Cari kata dari terjemahan",
+    href: "/muslim/quran/search",
+    description: "Pencarian kata dari terjemahan berbagai sumber",
+    icon: Search,
+  },
+  {
+    title: "Susun Ayat",
+    href: "/muslim/quran-word-by-word",
+    description: "Permainan susun kata quran",
+    icon: Puzzle,
+  },
+];
+
+const muslimNavigationLink: NavigationLink[] = [
+  {
+    title: "Al Qur'an",
+    href: "/quran",
+    description: "Al Qur'an menu",
     icon: Book,
   },
   {
@@ -61,24 +83,6 @@ const muslimNavigationLink: NavigationLink[] = [
     description: "Kumpulan do'a berbagai sumber",
     icon: Sun,
   },
-  {
-    title: "Do'a Sehari-hari",
-    href: "/muslim/doa-sehari-hari",
-    description: "Kumpulan do'a sehari-hari",
-    icon: Activity,
-  },
-  {
-    title: "Susun Ayat",
-    href: "/muslim/quran-word-by-word",
-    description: "Permainan susun kata quran",
-    icon: Puzzle,
-  },
-  {
-    title: "Penanda",
-    href: "/muslim/bookmarks",
-    description: "Daftar penanda ayat",
-    icon: Star,
-  },
 ];
 
 const toolsNavigationLink: NavigationLink[] = [
@@ -95,6 +99,12 @@ const toolsNavigationLink: NavigationLink[] = [
     icon: Timer,
   },
   {
+    title: "Penanda",
+    href: "/muslim/bookmarks",
+    description: "Daftar penanda ayat",
+    icon: Star,
+  },
+  {
     title: "Tentang Aplikasi",
     href: "/about",
     description: "Tentang Kiat Aplikasi",
@@ -102,4 +112,4 @@ const toolsNavigationLink: NavigationLink[] = [
   },
 ];
 
-export { muslimNavigationLink, toolsNavigationLink };
+export { quranNavigationLink, muslimNavigationLink, toolsNavigationLink };

@@ -155,7 +155,7 @@ export function Component() {
   const target = loaderData.plan_read as QuranReadingPlan[];
   return (
     <React.Fragment>
-      <Header redirectTo="/" title="Al Qur'an">
+      <Header redirectTo="/quran" title="Al Qur'an">
         <Link
           className={cn(
             buttonVariants({ size: "icon", variant: "ghost" }),
