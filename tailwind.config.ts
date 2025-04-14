@@ -6,7 +6,6 @@ import { marketingPreset } from "./src/utils/tailwind-preset";
 
 export default {
 	content: ["./index.html", "./src/**/*.{js,ts,jsx,tsx}"],
-	darkMode: "class",
 	theme: {
 		container: {
 			center: true,
