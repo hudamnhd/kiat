@@ -17,5 +17,5 @@ export default {
 		extend: extendedTheme,
 	},
 	presets: [marketingPreset],
-	plugins: [animatePlugin, require("@tailwindcss/typography")],
+	plugins: [animatePlugin],
 };

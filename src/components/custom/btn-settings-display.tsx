@@ -256,7 +256,7 @@ export function SettingsDisplay() {
                                   textValue={option.label}
                                 >
                                   <span className="uppercase">
-                                    {option.label.replace("prose-", "")}
+                                    {option.label.replace("text-", "")}
                                   </span>
                                 </SelectItem>
                               ))}

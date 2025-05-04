@@ -2,7 +2,7 @@ export const DEFAULT_PREFS = {
   fontStyle: "font-kemenag",
   fontWeight: "400",
   fontSize: "text-3xl",
-  fontTranslationSize: "prose-base",
+  fontTranslationSize: "text-base",
   showTranslation: "on",
   translationSource: "kemenag",
   showLatin: "on",
@@ -11,14 +11,8 @@ export const DEFAULT_PREFS = {
 };
 
 export const FONT_WEIGHT = [
-  // { value: "100", label: "Thin" },
-  // { value: "200", label: "Extralight" },
-  // { value: "300", label: "Light" },
   { value: "400", label: "Normal" },
-  // { value: "500", label: "Medium" },
-  // { value: "600", label: "Semibold" },
   { value: "700", label: "Bold" },
-  // { value: "800", label: "Extrabold" },
 ];
 
 export const FONT_STYLE = [
@@ -65,18 +59,18 @@ export const FONT_SIZE = [
 
 export const FONT_TRANSLATION_SIZE = [
   {
-    label: "prose-sm",
+    label: "text-sm",
   },
   {
-    label: "prose-base",
+    label: "text-base",
   },
   {
-    label: "prose-lg",
+    label: "text-lg",
   },
   {
-    label: "prose-xl",
+    label: "text-xl",
   },
   {
-    label: "prose-2xl",
+    label: "text-2xl",
   },
 ];

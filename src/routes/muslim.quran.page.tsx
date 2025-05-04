@@ -177,7 +177,7 @@ export function Component() {
           <Link
             className={cn(
               buttonVariants({ size: "icon", variant: "ghost" }),
-              "prose-none [&_svg]:size-4",
+              "[&_svg]:size-4",
             )}
             to={`/muslim/quran-v2/${page.p}`}
             title="Quran mirip mushaf"

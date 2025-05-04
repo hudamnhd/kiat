@@ -4,23 +4,23 @@ import { LayoutMain } from "#src/components/custom/layout.tsx";
 import { NavigationList } from "#src/components/custom/navigation-list.tsx";
 import { Button } from "#src/components/ui/button";
 import {
-  Command,
-  CommandEmpty,
-  CommandGroup,
-  CommandInput,
-  CommandItem,
-  CommandList,
-  CommandSeparator,
+    Command,
+    CommandEmpty,
+    CommandGroup,
+    CommandInput,
+    CommandItem,
+    CommandList,
+    CommandSeparator,
 } from "#src/components/ui/command";
 import {
-  muslimNavigationLink,
-  NavigationLink,
-  toolsNavigationLink,
+    muslimNavigationLink,
+    NavigationLink,
+    toolsNavigationLink,
 } from "#src/constants/nav-link";
 import { cn } from "#src/utils/misc";
-import { BookOpenText, Info, Search, Wrench } from "lucide-react";
+import { Search } from "lucide-react";
 import React from "react";
-import { Link, useNavigate } from "react-router";
+import { useNavigate } from "react-router";
 
 export default function Index() {
   const data = [...muslimNavigationLink, ...toolsNavigationLink];
@@ -54,7 +54,7 @@ export default function Index() {
       </Header>
       <div className="flex flex-col justify-between h-[calc(100vh-60px)]">
         <main className="flex-1 px-4 mx-auto w-full space-y-4 sm:space-y-6">
-          <h1 className="font-medium pt-3 sm:block hidden">
+          <h1 className="font-medium pt-3 sm:block hidden text-2xl text-center mt-4">
             Assalamu'alaikum Wr.Wb, 🙏
           </h1>
           <p className="leading-snug sm:block hidden">
@@ -110,10 +110,10 @@ export default function Index() {
 
 import { TimerReset } from "lucide-react";
 import {
-  Dialog,
-  Modal,
-  ModalContext,
-  ModalOverlay,
+    Dialog,
+    Modal,
+    ModalContext,
+    ModalOverlay,
 } from "react-aria-components";
 
 interface KeyboardModalTriggerProps {
