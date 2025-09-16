@@ -1,7 +1,7 @@
 {
   "name": "kiat-app-rr7",
   "private": true,
-  "version": "1.0.3",
+  "version": "1.0.4",
   "type": "module",
   "imports": {
     "#*": "./*"

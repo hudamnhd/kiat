@@ -240,11 +240,11 @@ export const Component = () => {
 
   const CN = {
     number:
-      "font-medium text-3xl h-14 data-[pressed]:bg-chart-2 data-[hovered]:bg-chart-2 data-[pressed]:text-background data-[hovered]:text-background",
+      "font-medium text-3xl h-14 data-[hovered]:bg-foreground data-[hovered]:text-background data-[pressed]:bg-foreground data-[pressed]:text-background ",
     operator:
-      "[&_svg]:size-9 h-14 bg-slate-600 dark:bg-slate-500 data-[pressed]:bg-chart-2 data-[hovered]:bg-chart-2 dark:data-[pressed]:bg-chart-2 dark:data-[hovered]:bg-chart-2",
+      "[&_svg]:size-9 h-14 bg-slate-600 dark:bg-slate-500 data-[hovered]:bg-foreground data-[hovered]:text-background data-[pressed]:bg-foreground data-[pressed]:text-background ",
     equal:
-      "[&_svg]:size-9 h-14 bg-orange-600 dark:bg-orange-500 data-hovered:bg-orange-600/90 dark:data-hovered:bg-orange-500/90",
+      "[&_svg]:size-9 h-14 bg-orange-500 dark:bg-orange-400 data-[hovered]:bg-orange-500/80 dark:data-[hovered]:bg-orange-400/80",
   };
   return (
     <div

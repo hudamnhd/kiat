@@ -1,3 +1,4 @@
+import React from "react";
 import { type ClassValue, clsx } from "clsx";
 import { twMerge } from "tailwind-merge";
 
@@ -21,7 +22,6 @@ export function lightDarkVar(baseName: string) {
   return `var(--theme-light, hsl(var(--${baseName}))) var(--theme-dark, hsl(var(--${baseName}-dark))) var(--theme-sephia, hsl(var(--${baseName}-sephia)))`;
 }
 
-import React from "react";
 
 // https://dev.to/receter/usepersistentstate-3fn8
 export function usePersistentState<Type>(

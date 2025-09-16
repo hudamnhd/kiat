@@ -323,6 +323,11 @@ export const getSurahByPage = async (
     initial_page = 1;
   }
   const pageData = pageAyahs.find(p => p.p === initial_page);
+  const nextPageData = pageAyahs.find(p => p.p === initial_page + 1);
+
+  if (pageData && nextPageData && nextPageData.s - pageData.e === 2) {
+    pageData.e = pageData.e + 1;
+  }
   if (!pageData) throw new Error("Not Found");
 
   // 🔹 Fetch Quran & Translation secara parallel untuk mempercepat
