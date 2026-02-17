@@ -227,13 +227,14 @@ export function Component() {
                   </div>
                   {opts?.showTranslation === "on" && (
                     <div className="">
-                      <div className="translation-text">
-                        <div
-                          className="max-w-none prose dark:prose-invert"
-                          dangerouslySetInnerHTML={{
-                            __html: translateContent,
-                          }}
-                        />
+
+                      <div
+                        className="text-start prose dark:prose-invert px-2 text-justify max-w-none whitespace-pre-line"
+                      >
+                        {ayat?.translated_id.replace(
+                          /(.{150,}?[\.\!\?])\s+/g,
+                          "$1\n\n",
+                        )}
                       </div>
 
                       <div className="font-normal text-start bg-muted p-3 rounded-md mt-2">

@@ -2,7 +2,6 @@ import { Header } from "#src/components/custom/header";
 import { Button } from "#src/components/ui/button";
 import { Spinner } from "#src/components/ui/spinner";
 import PERINTAH from "#src/constants/perintah.json";
-import { pageAyahs } from "#src/constants/quran-metadata";
 import { SOURCE_TRANSLATIONS } from "#src/constants/sources";
 import { cn } from "#src/utils/misc";
 import { getDataStyle, getTranslation } from "#src/utils/misc.quran.ts";
@@ -12,6 +11,7 @@ import { Minus, MoveRight, Search as SearchIcon } from "lucide-react";
 import React from "react";
 import type { LoaderFunctionArgs } from "react-router";
 import { useFetcher, useNavigate } from "react-router";
+import { getMeta } from "#src/utils/misc.quran.ts";
 
 type Ayah = {
   i: number;
@@ -21,6 +21,7 @@ type Ayah = {
 };
 
 export async function Loader({ request }: LoaderFunctionArgs) {
+  const qmeta = await getMeta();
   const url = new URL(request.url);
   const query = url.searchParams.get("query") || "";
   const source = url.searchParams.get("source") || "kemenag";
@@ -28,7 +29,7 @@ export async function Loader({ request }: LoaderFunctionArgs) {
 
   // 🔥 Ambil data ayat & terjemahan secara paralel
   const [verses, trans] = await Promise.all([
-    getDataStyle("indopak"),
+    getDataStyle("kemenag"),
     getTranslation(source),
   ]);
 
@@ -64,7 +65,7 @@ export async function Loader({ request }: LoaderFunctionArgs) {
     return acc;
   }, []);
   const sources = SOURCE_TRANSLATIONS.find((d) => d.id === source);
-  return { sources, source, query, data: results };
+  return { sources, source, query, data: results, pageAyahs: qmeta.pageAyahs };
 }
 
 import { ChevronDown } from "lucide-react";
@@ -298,7 +299,7 @@ const ResultSearch = () => {
               title={`Buka di quran`}
               // onPress={()=>navigate(`/muslim/quran`)}
               onPress={() => {
-                const page = pageAyahs.find((d) =>
+                const page = fetcher.data.pageAyahs.find((d) =>
                   item.i >= d.s && item.i <= d.e
                 );
                 if (page) {
@@ -319,7 +320,7 @@ const ResultSearch = () => {
               <div
                 className={cn(
                   "my-3 ",
-                  "font-indopak text-3xl sm:text-4xl leading-12 sm:leading-14",
+                  "font-kemenag text-3xl sm:text-4xl leading-16 sm:leading-20",
                 )}
               >
                 {item.ta}

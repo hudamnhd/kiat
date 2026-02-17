@@ -20,7 +20,7 @@ import {
 import { cn } from "#src/utils/misc";
 import { Search } from "lucide-react";
 import React from "react";
-import { useNavigate } from "react-router";
+import { useNavigate, useNavigation } from "react-router";
 
 export default function Index() {
   const data = [...muslimNavigationLink, ...toolsNavigationLink];

@@ -285,7 +285,7 @@ const VirtualizedAyahByJuz = ({ children }: { children: React.ReactNode }) => {
                   </div>
                   <div
                     className={cn(
-                      "px-4 text-center sm:text-justify pb-2 pt-3",
+                      "px-4 pb-2 pt-3",
                       opts?.fontStyle === "font-kemenag" && "px-4 sm:px-6",
                     )}
                     dir="rtl"

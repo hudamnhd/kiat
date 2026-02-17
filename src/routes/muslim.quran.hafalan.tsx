@@ -37,33 +37,8 @@ export async function Loader({ params, request }: LoaderFunctionArgs) {
   const mode = url.searchParams.get("mode") || "v2";
   const { id } = params;
 
-  const prefs = await getCache(SETTING_PREFS_KEY);
+  let style = "kemenag" as SurahStyle;
 
-  let style = "indopak" as SurahStyle;
-
-  switch (prefs?.fontStyle) {
-    case "font-indopak":
-      style = "indopak";
-      break;
-    case "font-kemenag":
-      style = "kemenag";
-      break;
-    case "font-uthmani-v2-reguler":
-      style = "imlaei";
-      break;
-    case "font-uthmani-v2-bold":
-      style = "imlaei";
-      break;
-    case "font-uthmani-hafs":
-      style = "uthmani";
-      break;
-    case "font-uthmani-hafs-simple":
-      style = "uthmani-simple";
-      break;
-    default:
-      style = "kemenag";
-      break;
-  }
   const response = await getSurahByJuz({
     juz: Number(id),
     style: style,
@@ -264,7 +239,6 @@ const VirtualizedAyahByJuz = ({ children }: { children: React.ReactNode }) => {
                         <React.Fragment>
                           <MemoHeader
                             scrollToAyat={scrollToAyat}
-                            mode={query.mode}
                             juz={juz}
                             startPage={startPage}
                             endPage={endPage}
@@ -422,7 +396,6 @@ const VirtualizedAyahByJuz = ({ children }: { children: React.ReactNode }) => {
                         <React.Fragment>
                           <MemoHeader
                             scrollToAyat={scrollToAyat}
-                            mode={query.mode}
                             juz={juz}
                             startPage={startPage}
                             endPage={endPage}
@@ -440,13 +413,15 @@ const VirtualizedAyahByJuz = ({ children }: { children: React.ReactNode }) => {
                           {d.surah[0].n} ({d.surah[0].s}-{d.surah[0].e})
                         </div>
                         <div className="font-semibold text-center">
-                          <span>Hal</span> {d.page.p}
+                          <span>
+                            Hal {d.page.p} {d.page.p % 2 === 0 ? "(left)" : "(right)"}
+                          </span>
                         </div>
                         <div className="text-right col-span-2">Juz' {juz}</div>
                       </div>
                       <div
                         className={cn(
-                          "px-4 text-center sm:text-justify pb-2 pt-3",
+                          "px-4 pb-2 pt-3",
                           opts?.fontStyle === "font-kemenag" && "px-4 sm:px-6",
                         )}
                         dir="rtl"
@@ -492,38 +467,24 @@ const VirtualizedAyahByJuz = ({ children }: { children: React.ReactNode }) => {
                                   <React.Fragment
                                     key={dt.vk}
                                   >
-                                    <PopoverTrigger>
-                                      <ButtonRAC
+                                      <div
+                                        title={dt.ta}
                                         style={style}
                                         className={cn(
                                           "inline-flex inline hover:bg-muted antialiased rounded-md mx-1 px-1 focus-visible:outline-hidden my-1 ring-1 ring-border",
                                           opts?.fontStyle,
                                         )}
                                       >
-                                        {smartSlice(dt.ta, 10)}
-
+                                        {smartSlice(dt.ta, 15)}
                                         <span
-                                          className="inline-flex text-right font-uthmani-v2-reguler mr-1.5"
+                                          className="inline-flex text-right font-uthmani-hafs mr-1.5 scale-150"
                                           style={style}
                                         >
-                                          ‎﴿{toArabicNumber(
+                                          {toArabicNumber(
                                             Number(dt.vk.split(":")[1]),
-                                          )}﴾‏
+                                          )}
                                         </span>
-                                      </ButtonRAC>
-
-                                      <Popover
-                                        placement="top"
-                                        className="w-fit inset-x-0 mx-2 sm:mx-auto max-w-3xl"
-                                      >
-                                        <PopoverDialog className="bg-muted/50 text-foreground ring-1 ring-border p-0 shadow-md">
-                                          <TextArab
-                                            text={dt.ta}
-                                            ayah={Number(dt.vk.split(":")[1])}
-                                          />
-                                        </PopoverDialog>
-                                      </Popover>
-                                    </PopoverTrigger>
+                                      </div>
                                   </React.Fragment>
                                 )}
                             </React.Fragment>
@@ -561,16 +522,15 @@ const MemoHeader = React.memo(
   ({
     juz,
     startPage,
-    mode,
     endPage,
     scrollToAyat,
   }: {
     scrollToAyat: (index: number) => void;
     juz: number;
     startPage: string;
-    mode: string;
     endPage: string;
   }) => {
+    const { query } = useLoaderData<typeof Loader>();
     const [isOpen, setIsOpen] = useState(false);
     const navigate = useNavigate();
     const fullPath = window.location.pathname;
@@ -597,106 +557,92 @@ const MemoHeader = React.memo(
         title={`Juz' ${juz}`}
         subtitle={`Hal ${startPage}-${endPage}`}
       >
-        <PopoverTrigger>
-          <Button
-            variant="ghost"
-            size="icon"
-            onPress={() => setIsOpen(true)}
-          >
-            <LayoutGrid />
-          </Button>
-
-          <Popover isOpen={isOpen} placement="bottom">
-            <PopoverDialog className="text-foreground ring-1 ring-border p-2 shadow-md space-y-2">
-              <React.Fragment>
-                <div className="grid border rounded-md">
-                  <select
-                    name="mode"
-                    defaultValue={mode}
-                    onChange={handleSelectModeChange}
-                    aria-label="Select mode"
-                    id="mode-select"
-                    className="col-start-1 row-start-1 appearance-none text-sm py-2 px-3 w-16"
-                  >
-                    <option value="v1">V1</option>
-                    <option value="v2">V2</option>
-                  </select>
-                  <svg
-                    className="pointer-events-none relative right-1 z-10 col-start-1 row-start-1 h-4 w-4 self-center justify-self-end forced-colors:hidden"
-                    viewBox="0 0 16 16"
-                    fill="currentColor"
-                    aria-hidden="true"
-                  >
-                    <path
-                      fillRule="evenodd"
-                      d="M4.22 6.22a.75.75 0 0 1 1.06 0L8 8.94l2.72-2.72a.75.75 0 1 1 1.06 1.06l-3.25 3.25a.75.75 0 0 1-1.06 0L4.22 7.28a.75.75 0 0 1 0-1.06Z"
-                      clipRule="evenodd"
-                    >
-                    </path>
-                  </svg>
-                </div>
-                <div className="grid border rounded-md">
-                  <select
-                    name="page"
-                    defaultValue={Number(startPage) - 1}
-                    onChange={handleSelectPageChange}
-                    aria-label="Select Juz"
-                    id="juz-select"
-                    className="col-start-1 row-start-1 appearance-none text-sm py-2 px-3 w-20"
-                  >
-                    {[...Array(Number(endPage) - Number(startPage) + 1)].map((
-                      _,
-                      i,
-                    ) => (
-                      <option key={i} value={i}>
-                        Hal {Number(startPage) + i}
-                      </option>
-                    ))}
-                  </select>
-                  <svg
-                    className="pointer-events-none relative right-1 z-10 col-start-1 row-start-1 h-4 w-4 self-center justify-self-end forced-colors:hidden"
-                    viewBox="0 0 16 16"
-                    fill="currentColor"
-                    aria-hidden="true"
-                  >
-                    <path
-                      fillRule="evenodd"
-                      d="M4.22 6.22a.75.75 0 0 1 1.06 0L8 8.94l2.72-2.72a.75.75 0 1 1 1.06 1.06l-3.25 3.25a.75.75 0 0 1-1.06 0L4.22 7.28a.75.75 0 0 1 0-1.06Z"
-                      clipRule="evenodd"
-                    >
-                    </path>
-                  </svg>
-                </div>
-                <div className="grid border rounded-md">
-                  <select
-                    name="juz"
-                    value={juz}
-                    onChange={handleSelectChange}
-                    aria-label="Select Juz"
-                    id="juz-select"
-                    className="col-start-1 row-start-1 appearance-none text-sm py-2 px-3 w-20"
-                  >
-                    {JUZ.map((d) => <option key={d.i} value={d.i}>{d.t}
-                    </option>)}
-                  </select>
-                  <svg
-                    className="pointer-events-none relative right-1 z-10 col-start-1 row-start-1 h-4 w-4 self-center justify-self-end forced-colors:hidden"
-                    viewBox="0 0 16 16"
-                    fill="currentColor"
-                    aria-hidden="true"
-                  >
-                    <path
-                      fillRule="evenodd"
-                      d="M4.22 6.22a.75.75 0 0 1 1.06 0L8 8.94l2.72-2.72a.75.75 0 1 1 1.06 1.06l-3.25 3.25a.75.75 0 0 1-1.06 0L4.22 7.28a.75.75 0 0 1 0-1.06Z"
-                      clipRule="evenodd"
-                    >
-                    </path>
-                  </svg>
-                </div>
-              </React.Fragment>
-            </PopoverDialog>
-          </Popover>
-        </PopoverTrigger>
+        <React.Fragment>
+          <div className="grid border rounded-md">
+            <select
+              name="mode"
+              defaultValue={query.mode}
+              onChange={handleSelectModeChange}
+              aria-label="Select mode"
+              id="mode-select"
+              className="col-start-1 row-start-1 appearance-none text-sm py-2 px-3 w-16"
+            >
+              <option value="v1">V1</option>
+              <option value="v2">V2</option>
+            </select>
+            <svg
+              className="pointer-events-none relative right-1 z-10 col-start-1 row-start-1 h-4 w-4 self-center justify-self-end forced-colors:hidden"
+              viewBox="0 0 16 16"
+              fill="currentColor"
+              aria-hidden="true"
+            >
+              <path
+                fillRule="evenodd"
+                d="M4.22 6.22a.75.75 0 0 1 1.06 0L8 8.94l2.72-2.72a.75.75 0 1 1 1.06 1.06l-3.25 3.25a.75.75 0 0 1-1.06 0L4.22 7.28a.75.75 0 0 1 0-1.06Z"
+                clipRule="evenodd"
+              >
+              </path>
+            </svg>
+          </div>
+          <div className="grid border rounded-md">
+            <select
+              name="page"
+              defaultValue={Number(startPage) - 1}
+              onChange={handleSelectPageChange}
+              aria-label="Select Juz"
+              id="juz-select"
+              className="col-start-1 row-start-1 appearance-none text-sm py-2 px-3 w-20"
+            >
+              {[...Array(Number(endPage) - Number(startPage) + 1)].map((
+                _,
+                i,
+              ) => (
+                <option key={i} value={i}>
+                  Hal {Number(startPage) + i}
+                </option>
+              ))}
+            </select>
+            <svg
+              className="pointer-events-none relative right-1 z-10 col-start-1 row-start-1 h-4 w-4 self-center justify-self-end forced-colors:hidden"
+              viewBox="0 0 16 16"
+              fill="currentColor"
+              aria-hidden="true"
+            >
+              <path
+                fillRule="evenodd"
+                d="M4.22 6.22a.75.75 0 0 1 1.06 0L8 8.94l2.72-2.72a.75.75 0 1 1 1.06 1.06l-3.25 3.25a.75.75 0 0 1-1.06 0L4.22 7.28a.75.75 0 0 1 0-1.06Z"
+                clipRule="evenodd"
+              >
+              </path>
+            </svg>
+          </div>
+          <div className="grid border rounded-md">
+            <select
+              name="juz"
+              value={juz}
+              onChange={handleSelectChange}
+              aria-label="Select Juz"
+              id="juz-select"
+              className="col-start-1 row-start-1 appearance-none text-sm py-2 px-3 w-20"
+            >
+              {JUZ.map((d) => <option key={d.i} value={d.i}>{d.t}
+              </option>)}
+            </select>
+            <svg
+              className="pointer-events-none relative right-1 z-10 col-start-1 row-start-1 h-4 w-4 self-center justify-self-end forced-colors:hidden"
+              viewBox="0 0 16 16"
+              fill="currentColor"
+              aria-hidden="true"
+            >
+              <path
+                fillRule="evenodd"
+                d="M4.22 6.22a.75.75 0 0 1 1.06 0L8 8.94l2.72-2.72a.75.75 0 1 1 1.06 1.06l-3.25 3.25a.75.75 0 0 1-1.06 0L4.22 7.28a.75.75 0 0 1 0-1.06Z"
+                clipRule="evenodd"
+              >
+              </path>
+            </svg>
+          </div>
+        </React.Fragment>
       </Header>
     );
   },
@@ -704,7 +650,7 @@ const MemoHeader = React.memo(
 );
 
 function smartSlice(text: string, length: number, last?: boolean) {
-  if (text.length <= length * 2) return text;
+  if (text.length <= length) return text;
 
   let firstPart = text.slice(0, length);
   let lastPart = last ? text.slice(-length) : "";
@@ -713,5 +659,6 @@ function smartSlice(text: string, length: number, last?: boolean) {
 
   lastPart = lastPart.replace(/^\S*\s+/, "");
 
-  return `${firstPart}...${lastPart}`;
+  // return `${firstPart}..${lastPart}`;
+  return `${firstPart}..`;
 }

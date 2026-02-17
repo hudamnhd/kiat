@@ -1,12 +1,6 @@
-import listSurahWithJuz from "#/src/constants/list-surah.json";
 import { LayoutMain } from "#src/components/custom/layout.tsx";
 import { Button } from "#src/components/ui/button";
 import { Spinner } from "#src/components/ui/spinner";
-import {
-  INDEXAYAHBYSURAH,
-  juzPages,
-  pageAyahs,
-} from "#src/constants/quran-metadata";
 import { cn } from "#src/utils/misc";
 import { hasMatch } from "fzy.js";
 import lodash from "lodash";
@@ -14,6 +8,7 @@ import { Search as SearchIcon } from "lucide-react";
 import React from "react";
 import type { LoaderFunctionArgs } from "react-router";
 import { Link, useFetcher, useNavigation } from "react-router";
+import { getSurah, getMeta } from "#src/utils/misc.quran.ts";
 
 const TAGS = Array.from({ length: 604 }).map(
   (_, i, a) => {
@@ -29,7 +24,10 @@ const TAGS = Array.from({ length: 604 }).map(
 export async function Loader({ request }: LoaderFunctionArgs) {
   const url = new URL(request.url);
   const query = url.searchParams.get("query") || "";
-  const juz = juzPages.map((d, i) => {
+
+  const listSurahWithJuz = await getSurah();
+  const qmeta = await getMeta();
+  const juz = qmeta.juzPages.map((d, i) => {
     return {
       i: i + 1,
       t: `Juz' ${i + 1}`,
@@ -37,7 +35,6 @@ export async function Loader({ request }: LoaderFunctionArgs) {
       m: "juz",
     };
   });
-
   const surah = listSurahWithJuz.map((d) => {
     return {
       i: d.index,
@@ -59,13 +56,13 @@ export async function Loader({ request }: LoaderFunctionArgs) {
       const surahNum = Number(match[1]); // Ambil angka sebelum ":"
       const ayahNum = Number(match[2]); // Ambil angka setelah ":"
 
-      const prevSurah = INDEXAYAHBYSURAH[surahNum - 1];
+      const prevSurah = qmeta.INDEXAYAHBYSURAH[surahNum - 1];
 
       const prevSurahIdx = ayahNum + Number(prevSurah) || 0; // Ambil angka sebelum ":"
       return surah.filter(
         (d) => d.i === surahNum && ayahNum <= Number(d.v), // Bandingkan dengan format "114:3"
       ).map((d) => {
-        const page = pageAyahs.find((d) =>
+        const page = qmeta.pageAyahs.find((d) =>
           prevSurahIdx >= d.s && prevSurahIdx <= d.e
         );
         if (page) {

@@ -37,18 +37,8 @@ export const sources = {
   content: [
     {
       title: "Quran text",
-      desc: "uthmani, imlaei",
-      href: "https://api-docs.quran.com",
-    },
-    {
-      title: "Quran text",
       desc: "kemenag",
       href: "https://github.com/rioastamal/quran-single-file",
-    },
-    {
-      title: "Quran text",
-      desc: "Indopak",
-      href: "https://github.com/marwan/indopak-quran-text",
     },
     ...map_translation,
     {
@@ -89,11 +79,6 @@ export const sources = {
       title: "LPMQ Isep Misbah",
       desc: "dari web Kemenag RI",
       href: "https://api-docs.quran.com",
-    },
-    {
-      title: "Indopak",
-      desc: "dari repositori Quran WBW",
-      href: "https://github.com/qazasaz/quranwbw/tree/master/assets/fonts",
     },
     {
       title: "Uthmani",

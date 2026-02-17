@@ -78,7 +78,7 @@ export function Component() {
                           lineHeight: lineHeight || "3.5rem",
                         }}
                       >
-                        {opts?.fontStyle === "font-indopak"
+                        {opts?.fontStyle === "font-kemenag"
                           ? bismillah.slice(0, 40)
                           : bismillah}
                       </div>

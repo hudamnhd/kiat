@@ -1,9 +1,3 @@
-import listSurah from "#/src/constants/list-surah.json";
-import {
-  INDEXAYAHBYSURAH,
-  juzPages,
-  pageAyahs,
-} from "#/src/constants/quran-metadata.ts";
 import { SOURCE_TRANSLATIONS } from "#src/constants/sources";
 import { getCache, setCache } from "#src/utils/cache-client.ts";
 import ky from "ky";
@@ -16,6 +10,30 @@ type Ayah = {
   d?: string;
 };
 
+const getQuranMetadata = async () => {
+  const response = await toast.promise(
+    ky.get(`/muslim/quran/data/metadata.json`).json<Ayah[]>(),
+    {
+      loading: `Loading data surah metadata...`,
+      success: `Berhasil memuat data surah metadata`,
+      error: `Gagal memuat data surah metadata`,
+    },
+  );
+
+  return response;
+};
+const getListSurah = async () => {
+  const response = await toast.promise(
+    ky.get(`/muslim/quran/data/list-surah.json`).json<Ayah[]>(),
+    {
+      loading: `Loading data surah metadata...`,
+      success: `Berhasil memuat data surah metadata`,
+      error: `Gagal memuat data surah metadata`,
+    },
+  );
+
+  return response;
+};
 const getStyleTextArabic = async (style: string) => {
   const response = await toast.promise(
     ky.get(`/muslim/quran/data/${style}.json.gz`).json<Ayah[]>(),
@@ -42,6 +60,38 @@ const getSourceTranslation = async (source: string) => {
 
   return response;
 };
+
+export async function getMeta() {
+  const cachedDataKey = `data-meta`;
+  const cachedData = await getCache(cachedDataKey) as Ayah[] | null;
+
+  if (cachedData) {
+    console.log(`✅ Cache hit: ${cachedDataKey}`);
+    return cachedData;
+  }
+
+  console.log(`❌ Cache miss: Fetching ${cachedDataKey} from API...`);
+  const fetchedData = await getQuranMetadata();
+
+  await setCache(cachedDataKey, fetchedData);
+  return fetchedData;
+}
+
+export async function getSurah() {
+  const cachedDataKey = `data-surah`;
+  const cachedData = await getCache(cachedDataKey) as Ayah[] | null;
+
+  if (cachedData) {
+    console.log(`✅ Cache hit: ${cachedDataKey}`);
+    return cachedData;
+  }
+
+  console.log(`❌ Cache miss: Fetching ${cachedDataKey} from API...`);
+  const fetchedData = await getListSurah();
+
+  await setCache(cachedDataKey, fetchedData);
+  return fetchedData;
+}
 
 export async function getDataStyle(style: string) {
   const cachedDataKey = `data-${style}`;
@@ -103,18 +153,21 @@ export const getSurahByJuz = async ({
   if (juz < 1 || juz > 30) {
     initial_index = 1;
   }
-  const juzData = juzPages[initial_index - 1];
-  const { s: startPage, e: endPage } = juzData;
-
-  // 🔹 Ambil semua halaman dalam rentang juz
-  const pagesInJuz = pageAyahs.filter(p => p.p >= startPage && p.p <= endPage);
-
   // 🔹 Fetch Quran & Translation secara paralel (ambil semua dalam satu juz)
-  const [verses, trans, tafsir] = await Promise.all([
+  const [verses, trans, tafsir, listSurah, qmeta] = await Promise.all([
     getDataStyle(style),
     translation ? getTranslation(translationSource) : Promise.resolve([]),
     showTafsir ? getTranslation("tafsir-kemenag") : Promise.resolve([]),
+    getSurah(),
+    getMeta(),
   ]);
+
+  const juzData = qmeta.juzPages[initial_index - 1];
+  const { s: startPage, e: endPage } = juzData;
+
+  // 🔹 Ambil semua halaman dalam rentang juz
+  const pagesInJuz = qmeta.pageAyahs.filter(p => p.p >= startPage && p.p <= endPage);
+
 
   // 🔹 Optimasi pencarian dengan Map()
   const transMap = new Map(trans.map(t => [t.i, t.t]));
@@ -322,8 +375,9 @@ export const getSurahByPage = async (
     );
     initial_page = 1;
   }
-  const pageData = pageAyahs.find(p => p.p === initial_page);
-  const nextPageData = pageAyahs.find(p => p.p === initial_page + 1);
+  const qmeta = await getMeta();
+  const pageData = qmeta?.pageAyahs.find(p => p.p === initial_page);
+  const nextPageData = qmeta?.pageAyahs.find(p => p.p === initial_page + 1);
 
   if (pageData && nextPageData && nextPageData.s - pageData.e === 2) {
     pageData.e = pageData.e + 1;
@@ -331,13 +385,14 @@ export const getSurahByPage = async (
   if (!pageData) throw new Error("Not Found");
 
   // 🔹 Fetch Quran & Translation secara parallel untuk mempercepat
-  const [verses, trans, tafsir] = await Promise.all([
+  const [verses, trans, tafsir, listSurah] = await Promise.all([
     getDataStyle(style),
     translation ? getTranslation(translationSource) : Promise.resolve([]),
     showTafsir ? getTranslation("tafsir-kemenag") : Promise.resolve([]),
+    getSurah(),
   ]);
 
-  const juzIndex = juzPages.findIndex(d =>
+  const juzIndex = qmeta.juzPages.findIndex(d =>
     initial_page >= d.s && initial_page <= d.e
   );
 
@@ -417,10 +472,11 @@ export const getSurahByIndex = async (
     initial_page = 1;
   }
   // 🔹 Fetch Quran & Translation secara parallel untuk mempercepat
-  const [verses, trans, tafsir] = await Promise.all([
+  const [verses, trans, tafsir,listSurah] = await Promise.all([
     getDataStyle(style),
     translation ? getTranslation(translationSource) : Promise.resolve([]),
     showTafsir ? getTranslation("tafsir-kemenag") : Promise.resolve([]),
+    getSurah(),
   ]);
   //
   const surahData = listSurah.find(d => d.index == index);

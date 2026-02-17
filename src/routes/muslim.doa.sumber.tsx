@@ -237,11 +237,11 @@ const DoaView = ({ children }: { children: React.ReactNode }) => {
                 </div>
 
                 <div className="p-2">
-                  <TextArab text={doa.arab} />
+                  <TextArab text={doa.doa} />
                   <div
                     className="translation-text prose dark:prose-invert max-w-none px-2"
                     dangerouslySetInnerHTML={{
-                      __html: doa.indo,
+                      __html: doa.artinya,
                     }}
                   />
                 </div>
