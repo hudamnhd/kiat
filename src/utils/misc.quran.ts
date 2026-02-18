@@ -135,6 +135,41 @@ export interface GetSurahByJuz {
   showTafsir?: boolean;
 }
 
+function checkSequence(arr) {
+  for (let i = 1; i < arr.length; i++) {
+    const prevE = arr[i - 1].e;
+    const currentS = arr[i].s;
+
+    if (currentS !== prevE + 1) {
+      return {
+        valid: false,
+        errorIndex: i,
+        message: `Urutan salah di index ${i}. Seharusnya s = ${prevE + 1}, tapi dapat ${currentS}`
+      };
+    }
+  }
+
+  return {
+    valid: true,
+    message: "Semua urutan sudah benar ✅"
+  };
+}
+
+function fixArray(arr) {
+  for (let i = 0; i < arr.length - 1; i++) {
+    const current = arr[i];
+    const next = arr[i + 1];
+
+    const expectedE = next.s - 1;
+
+    if (current.e !== expectedE) {
+      current.e = expectedE;
+    }
+  }
+
+  return arr;
+}
+
 export const getSurahByJuz = async ({
   juz,
   style,
@@ -166,8 +201,9 @@ export const getSurahByJuz = async ({
   const { s: startPage, e: endPage } = juzData;
 
   // 🔹 Ambil semua halaman dalam rentang juz
-  const pagesInJuz = qmeta.pageAyahs.filter(p => p.p >= startPage && p.p <= endPage);
-
+  const pagesInJuzOriginal = qmeta.pageAyahs.filter(p => p.p >= startPage && p.p <= endPage);
+  const pagesInJuz = fixArray(pagesInJuzOriginal);
+  // const pagesInJuz = result.filter(p => p.p >= startPage && p.p <= endPage);
 
   // 🔹 Optimasi pencarian dengan Map()
   const transMap = new Map(trans.map(t => [t.i, t.t]));

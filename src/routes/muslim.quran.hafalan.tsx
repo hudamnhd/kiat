@@ -471,7 +471,7 @@ const VirtualizedAyahByJuz = ({ children }: { children: React.ReactNode }) => {
                                         title={dt.ta}
                                         style={style}
                                         className={cn(
-                                          "inline-flex inline hover:bg-muted antialiased rounded-md mx-1 px-1 focus-visible:outline-hidden my-1 ring-1 ring-border",
+                                          "inline-flex rounded-md mx-1 px-1 focus-visible:outline-hidden my-1 whitespace-nowrap",
                                           opts?.fontStyle,
                                         )}
                                       >

@@ -30,7 +30,7 @@ export async function Loader({ params, request }: LoaderFunctionArgs) {
 
   const response = await getSurahByPage({
     page: Number(id),
-    style: "indopak",
+    style: "kemenag",
   });
 
   return { ...response, query: { surah, ayah } };
@@ -427,7 +427,7 @@ const PuzzleGame: React.FC<PuzzleProps> = ({
           ) => (
             <span
               className={cn(
-                "font-indopak text-center h-fit mx-1 border py-1 px-2 rounded-md mb-1",
+                "font-kemenag text-center h-fit mx-1 border py-1 px-2 rounded-md mb-1",
               )}
               style={{
                 fontWeight: opts?.fontWeight,
@@ -453,7 +453,7 @@ const PuzzleGame: React.FC<PuzzleProps> = ({
               <Button
                 variant="secondary"
                 className={cn(
-                  "font-indopak text-center h-fit",
+                  "font-kemenag text-center h-fit",
                 )}
                 style={{
                   fontWeight: opts?.fontWeight,
@@ -478,7 +478,7 @@ const PuzzleGame: React.FC<PuzzleProps> = ({
                 <div
                   className={cn(
                     buttonVariants({ size: "lg", variant: "outline" }),
-                    "font-indopak text-center h-fit",
+                    "font-kemenag text-center h-fit",
                     state.isCorrect && "bg-transparent",
                   )}
                   style={{
