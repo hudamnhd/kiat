@@ -144,14 +144,16 @@ function checkSequence(arr) {
       return {
         valid: false,
         errorIndex: i,
-        message: `Urutan salah di index ${i}. Seharusnya s = ${prevE + 1}, tapi dapat ${currentS}`
+        message: `Urutan salah di index ${i}. Seharusnya s = ${
+          prevE + 1
+        }, tapi dapat ${currentS}`,
       };
     }
   }
 
   return {
     valid: true,
-    message: "Semua urutan sudah benar ✅"
+    message: "Semua urutan sudah benar ✅",
   };
 }
 
@@ -201,7 +203,9 @@ export const getSurahByJuz = async ({
   const { s: startPage, e: endPage } = juzData;
 
   // 🔹 Ambil semua halaman dalam rentang juz
-  const pagesInJuzOriginal = qmeta.pageAyahs.filter(p => p.p >= startPage && p.p <= endPage);
+  const pagesInJuzOriginal = qmeta.pageAyahs.filter(p =>
+    p.p >= startPage && p.p <= endPage
+  );
   const pagesInJuz = fixArray(pagesInJuzOriginal);
   // const pagesInJuz = result.filter(p => p.p >= startPage && p.p <= endPage);
 
@@ -412,14 +416,13 @@ export const getSurahByPage = async (
     initial_page = 1;
   }
   const qmeta = await getMeta();
-  const pageData = qmeta?.pageAyahs.find(p => p.p === initial_page);
-  const nextPageData = qmeta?.pageAyahs.find(p => p.p === initial_page + 1);
+  const pagesInJuz = fixArray(
+    [initial_page, initial_page + 1]
+      .map(p => qmeta?.pageAyahs.find(x => x.p === p)),
+  );
 
-  if (pageData && nextPageData && nextPageData.s - pageData.e === 2) {
-    pageData.e = pageData.e + 1;
-  }
+  const [pageData] = pagesInJuz;
   if (!pageData) throw new Error("Not Found");
-
   // 🔹 Fetch Quran & Translation secara parallel untuk mempercepat
   const [verses, trans, tafsir, listSurah] = await Promise.all([
     getDataStyle(style),
@@ -508,7 +511,7 @@ export const getSurahByIndex = async (
     initial_page = 1;
   }
   // 🔹 Fetch Quran & Translation secara parallel untuk mempercepat
-  const [verses, trans, tafsir,listSurah] = await Promise.all([
+  const [verses, trans, tafsir, listSurah] = await Promise.all([
     getDataStyle(style),
     translation ? getTranslation(translationSource) : Promise.resolve([]),
     showTafsir ? getTranslation("tafsir-kemenag") : Promise.resolve([]),

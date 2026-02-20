@@ -24,7 +24,7 @@ import { format, formatDistanceToNow } from "date-fns";
 import { id } from "date-fns/locale";
 import {
   Bookmark,
-  BookOpen,
+  Book,
   ChevronLeft,
   ChevronRight,
   Ellipsis,
@@ -35,15 +35,11 @@ import React from "react";
 import type { MenuItemProps } from "react-aria-components";
 import { Menu, MenuItem, MenuTrigger } from "react-aria-components";
 import type { LoaderFunctionArgs } from "react-router";
-import {
-  Link,
-  useLoaderData,
-  useNavigate,
-  useRouteLoaderData,
-} from "react-router";
+import { Link, useLoaderData, useRouteLoaderData } from "react-router";
 import type { Loader as muslimLoader } from "./muslim.data";
 import { CommandNavigation } from "./muslim.quran.navigation";
 
+import { toArabicNumber } from "#src/utils/misc.quran.ts";
 function sleep(ms: number) {
   return new Promise((resolve) => setTimeout(resolve, ms));
 }
@@ -55,6 +51,11 @@ export async function Loader({ params, request }: LoaderFunctionArgs) {
   const ayah = url.searchParams.get("ayah");
   const surah = url.searchParams.get("surah");
   const { id } = params;
+
+  let vk = null;
+  if (ayah && surah) {
+    vk = surah + ":" + ayah;
+  }
 
   const prefs = await getCache(SETTING_PREFS_KEY);
 
@@ -112,7 +113,7 @@ export async function Loader({ params, request }: LoaderFunctionArgs) {
     }
     saveLastVisitPage(_recent_data);
   }
-  return { ...response, query: { surah, ayah } };
+  return { ...response, vk, query: { surah, ayah } };
 }
 
 function ActionItem(props: MenuItemProps) {
@@ -140,67 +141,160 @@ const saveLastVisitPage = async (data: any) => {
   const updatedData = Array.from(new Set([...savedData, ...data]));
   await setCache(LASTVISITPAGE_KEY, updatedData);
 };
+type Ayah = {
+  i: number;
+  vk: string;
+  ta: string;
+  tt: string;
+};
+
+const AyahViewer: React.FC = () => {
+  const { ayah } = useLoaderData<typeof Loader>();
+  const [currentIndex, setCurrentIndex] = React.useState<number>(0);
+
+  const nextAyat = () => {
+    if (currentIndex < ayah.length - 1) {
+      setCurrentIndex((prev) => prev + 1);
+    }
+  };
+
+  const prevAyat = () => {
+    if (currentIndex > 0) {
+      setCurrentIndex((prev) => prev - 1);
+    }
+  };
+
+  const currentAyah = ayah[currentIndex];
+
+  return (
+    <div className="flex flex-col items-center justify-center h-[calc(100vh-138px)]">
+      <div
+        title={currentAyah.ta}
+        dir="rtl"
+        className={cn(
+          "font-kemenag text-3xl inline-flex items-center rounded-md mx-1 px-1 focus-visible:outline-hidden mb-10 whitespace-nowrap",
+        )}
+      >
+        {smartSlice(currentAyah.ta, 15)}
+        <span className="inline-flex font-mono mr-1.5 font-bold">
+          {Number(currentAyah.vk.split(":")[1])}
+        </span>
+      </div>
+      <div
+        className="flex items-center justify-center gap-3 mb-10"
+      >
+        <Button onPress={prevAyat} isDisabled={currentIndex === 0}>
+          <ChevronLeft />
+          Prev
+        </Button>
+
+        <Button
+          onPress={nextAyat}
+          isDisabled={currentIndex === ayah.length - 1}
+        >
+          Next
+          <ChevronRight />
+        </Button>
+      </div>
+
+      <details
+        className={cn(
+          "group [&_summary::-webkit-details-marker]:hidden px-4 py-2 w-full",
+        )}
+      >
+        <summary className="flex cursor-pointer items-center gap-1.5 outline-hidden w-full justify-center">
+          <div className="font-medium text-sm text-muted-foreground">
+            Show full ayah
+          </div>
+
+          <svg
+            className="size-4 shrink-0 transition duration-300 group-open:-rotate-180 opacity-80"
+            xmlns="http://www.w3.org/2000/svg"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth="2"
+              d="M19 9l-7 7-7-7"
+            />
+          </svg>
+        </summary>
+
+        <div className="font-normal text-start group-open:animate-slide-top group-open:[animation-fill-mode:backwards] group-open:transition-all group-open:duration-300">
+          <h3 className="font-medium mt-4">QS. An-Naba: {currentAyah.vk}</h3>
+          <TextArab
+            text={currentAyah.ta}
+            ayah={Number(currentAyah.vk.split(":")[1])}
+          />
+          <p>{currentAyah.tt}</p>
+
+          <div className="text-muted-foreground text-xs py-2 hidden">
+            Sumber:
+            <br />
+            <div className="flex flex-wrap items-center justify-between">
+              <span>Muhammad Quraish Shihab et al</span>
+              <span>https://tanzil.net/download</span>
+            </div>
+          </div>
+        </div>
+      </details>
+    </div>
+  );
+};
 
 export function Component() {
-  const { page, juz, surah } = useLoaderData<typeof Loader>();
+  const { page, juz, surah, ayah } = useLoaderData<typeof Loader>();
 
-  const navigate = useNavigate();
   const title = `Hal ${page.p}`;
   const subtitle = `Juz' ${juz} - ` + surah[0].name.id;
-
-  const handleSelectPageChange = (e: { target: { value: string } }) => {
-    const index = Number(e.target.value);
-  };
-  const handleSelectModeChange = (e: { target: { value: string } }) => {
-    const target = `/muslim/${e.target.value}/${page.p}`;
-    navigate(target);
-  };
   return (
     <React.Fragment>
-      <VirtualizedListSurah>
-        <Header
-          redirectTo="/muslim/quran"
-          title={title}
-          subtitle={subtitle}
+      <Header
+        redirectTo="/muslim/quran"
+        title={title}
+        subtitle={subtitle}
+      >
+        <CommandNavigation />
+        <Link
+          className={cn(
+            buttonVariants({ size: "icon", variant: "ghost" }),
+            "[&_svg]:size-4",
+          )}
+          to={`/muslim/quran/${page.p}`}
+          title="Quran page"
         >
-          <CommandNavigation />
-          <Link
-            className={cn(
-              buttonVariants({ size: "icon", variant: "ghost" }),
-              "[&_svg]:size-4",
-            )}
-            to={`/muslim/quran/memorizer/${page.p}`}
-            title="Quran mirip mushaf"
-          >
-            <BookOpen />
-          </Link>
-        </Header>
-        <div
-          id="pagination-page"
-          className="ml-auto flex items-center justify-center gap-3 pt-5"
+          <Book />
+        </Link>
+      </Header>
+      <AyahViewer />
+      <div
+        id="pagination-page"
+        className="ml-auto flex items-center justify-center gap-3 pt-5"
+      >
+        <Link
+          className={cn(buttonVariants({ size: "icon", variant: "outline" }))}
+          title="Surat sebelumnya"
+          to={page?.p === 1 ? "#" : `/muslim/quran/memorizer/${page?.p - 1}`}
         >
-          <Link
-            className={cn(buttonVariants({ size: "icon", variant: "outline" }))}
-            title="Surat sebelumnya"
-            to={page?.p === 1 ? "#" : `/muslim/quran/${page?.p - 1}`}
-          >
-            <span className="sr-only">Go to previous page</span>
-            <ChevronLeft />
-          </Link>
+          <span className="sr-only">Go to previous page</span>
+          <ChevronLeft />
+        </Link>
 
-          <span className="text-accent-foreground text-sm">
-            Halaman <strong>{page?.p}</strong> dari <strong>604</strong>
-          </span>
-          <Link
-            className={cn(buttonVariants({ size: "icon", variant: "outline" }))}
-            title="Surat selanjutnya"
-            to={page?.p === 604 ? "#" : `/muslim/quran/${page?.p + 1}`}
-          >
-            <span className="sr-only">Go to next page</span>
-            <ChevronRight />
-          </Link>
-        </div>
-      </VirtualizedListSurah>
+        <span className="text-accent-foreground text-sm">
+          Halaman <strong>{page?.p}</strong> dari <strong>604</strong>
+        </span>
+        <Link
+          className={cn(buttonVariants({ size: "icon", variant: "outline" }))}
+          title="Surat selanjutnya"
+          to={page?.p === 604 ? "#" : `/muslim/quran/memorizer/${page?.p + 1}`}
+        >
+          <span className="sr-only">Go to next page</span>
+          <ChevronRight />
+        </Link>
+      </div>
 
       <ScrollTopButton />
     </React.Fragment>
@@ -467,7 +561,7 @@ const VirtualizedListSurah = ({ children }: { children: React.ReactNode }) => {
                           lineHeight: prefsOption?.lineHeight || "3.5rem",
                         }}
                       >
-                        {opts?.fontStyle === "font-kemenag"
+                        {opts?.fontStyle === "font-indopak"
                           ? bismillah.slice(0, 40)
                           : bismillah}
                       </div>
@@ -681,3 +775,17 @@ const VirtualizedListSurah = ({ children }: { children: React.ReactNode }) => {
     </React.Fragment>
   );
 };
+
+function smartSlice(text: string, length: number, last?: boolean) {
+  if (text.length <= length) return text;
+
+  let firstPart = text.slice(0, length);
+  let lastPart = last ? text.slice(-length) : "";
+
+  firstPart = firstPart.replace(/\s+\S*$/, "");
+
+  lastPart = lastPart.replace(/^\S*\s+/, "");
+
+  // return `${firstPart}..${lastPart}`;
+  return `${firstPart}..`;
+}

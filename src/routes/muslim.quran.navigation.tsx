@@ -2,13 +2,13 @@ import { LayoutMain } from "#src/components/custom/layout.tsx";
 import { Button } from "#src/components/ui/button";
 import { Spinner } from "#src/components/ui/spinner";
 import { cn } from "#src/utils/misc";
+import { getMeta, getSurah } from "#src/utils/misc.quran.ts";
 import { hasMatch } from "fzy.js";
 import lodash from "lodash";
 import { Search as SearchIcon } from "lucide-react";
 import React from "react";
 import type { LoaderFunctionArgs } from "react-router";
-import { Link, useFetcher, useNavigation } from "react-router";
-import { getSurah, getMeta } from "#src/utils/misc.quran.ts";
+import { Link, useFetcher, useNavigate, useNavigation, useLocation } from "react-router";
 
 const TAGS = Array.from({ length: 604 }).map(
   (_, i, a) => {
@@ -434,58 +434,97 @@ function KeyboardModalTrigger(props: KeyboardModalTriggerProps) {
 }
 
 export function CommandNavigation() {
+  const navigate = useNavigate();
+  let location = useLocation();
+
+  const handleSelectPageChange = (e: { target: { value: string } }) => {
+    const index = Number(e.target.value);
+  };
+  const handleSelectModeChange = (e: { target: { value: string } }) => {
+    const target = `/muslim/${e.target.value}/${location.pathname.split("/")[3]}${location.search}`;
+    navigate(target);
+  };
   return (
-    <KeyboardModalTrigger keyboardShortcut="/">
-      <ModalOverlay
-        isDismissable
-        className={cn(
-          "fixed inset-0 z-50 bg-black/80",
-          "data-exiting:duration-300 data-exiting:animate-out data-exiting:fade-out-0",
-          "data-entering:animate-in data-entering:fade-in-0",
-        )}
-      >
-        <Modal
+    <React.Fragment>
+      <KeyboardModalTrigger keyboardShortcut="/">
+        <ModalOverlay
+          isDismissable
           className={cn(
-            "fixed sm:left-[50%] sm:top-[50%] z-50 w-full sm:max-w-lg sm:translate-x-[-50%] sm:translate-y-[-50%] border-b sm:border-none bg-background sm:rounded-md inset-x-0 top-0 shadow-xl bg-background",
+            "fixed inset-0 z-50 bg-black/80",
             "data-exiting:duration-300 data-exiting:animate-out data-exiting:fade-out-0",
             "data-entering:animate-in data-entering:fade-in-0",
           )}
         >
-          <Dialog
-            aria-label="Command Menu"
-            role="alertdialog"
-            className="outline-hidden relative"
-          >
-            {({ close }) => (
-              <>
-                <div className="flex flex-col justify-between mx-auto max-w-xl transform divide-y divide-gray-100 overflow-hidden sm:rounded-lg bg-background transition-all">
-                  <FzyTest />
-
-                  <ResultSearch />
-                  <div className="flex flex-row flex-wrap sm:items-center bg-primary/10 py-2.5 px-2 sm:px-3 text-xs sticky bottom-0 border-t">
-                    <span className="">Ketik{" "}</span>
-                    <span className="block">
-                      <span className="font-bold mx-1">
-                        2:255
-                      </span>
-                      <span className="">untuk menujuk ayat,</span>
-                      {" "}
-                    </span>
-                    <span className="">
-                      <span className="font-bold mx-1">
-                        1 - 604
-                      </span>
-                      menuju surah, juz atau halaman.
-                    </span>
-                  </div>
-                </div>
-                <CloseModal close={close} />
-              </>
+          <Modal
+            className={cn(
+              "fixed sm:left-[50%] sm:top-[50%] z-50 w-full sm:max-w-lg sm:translate-x-[-50%] sm:translate-y-[-50%] border-b sm:border-none bg-background sm:rounded-md inset-x-0 top-0 shadow-xl bg-background",
+              "data-exiting:duration-300 data-exiting:animate-out data-exiting:fade-out-0",
+              "data-entering:animate-in data-entering:fade-in-0",
             )}
-          </Dialog>
-        </Modal>
-      </ModalOverlay>
-    </KeyboardModalTrigger>
+          >
+            <Dialog
+              aria-label="Command Menu"
+              role="alertdialog"
+              className="outline-hidden relative"
+            >
+              {({ close }) => (
+                <>
+                  <div className="flex flex-col justify-between mx-auto max-w-xl transform divide-y divide-gray-100 overflow-hidden sm:rounded-lg bg-background transition-all">
+                    <FzyTest />
+
+                    <ResultSearch />
+                    <div className="flex flex-row flex-wrap sm:items-center bg-primary/10 py-2.5 px-2 sm:px-3 text-xs sticky bottom-0 border-t">
+                      <span className="">Ketik{" "}</span>
+                      <span className="block">
+                        <span className="font-bold mx-1">
+                          2:255
+                        </span>
+                        <span className="">untuk menujuk ayat,</span>
+                        {" "}
+                      </span>
+                      <span className="">
+                        <span className="font-bold mx-1">
+                          1 - 604
+                        </span>
+                        menuju surah, juz atau halaman.
+                      </span>
+                    </div>
+                  </div>
+                  <CloseModal close={close} />
+                </>
+              )}
+            </Dialog>
+          </Modal>
+        </ModalOverlay>
+      </KeyboardModalTrigger>
+      <div className="grid border rounded-md">
+        <select
+          name="mode"
+          defaultValue={location.pathname.split("/")[2]}
+          onChange={handleSelectModeChange}
+          aria-label="Select mode"
+          id="mode-select"
+          className="col-start-1 row-start-1 appearance-none text-xs py-2 px-3 w-16"
+        >
+          <option value="quran">V1</option>
+          <option value="quran-v2">V2</option>
+          <option value="quran-v3">V3</option>
+        </select>
+        <svg
+          className="pointer-events-none relative right-1 z-10 col-start-1 row-start-1 h-4 w-4 self-center justify-self-end forced-colors:hidden"
+          viewBox="0 0 16 16"
+          fill="currentColor"
+          aria-hidden="true"
+        >
+          <path
+            fillRule="evenodd"
+            d="M4.22 6.22a.75.75 0 0 1 1.06 0L8 8.94l2.72-2.72a.75.75 0 1 1 1.06 1.06l-3.25 3.25a.75.75 0 0 1-1.06 0L4.22 7.28a.75.75 0 0 1 0-1.06Z"
+            clipRule="evenodd"
+          >
+          </path>
+        </svg>
+      </div>
+    </React.Fragment>
   );
 }
 
